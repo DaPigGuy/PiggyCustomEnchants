@@ -11,6 +11,7 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\ShortTag;
 use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\TextFormat;
 
 /**
  * Class Main
@@ -77,6 +78,8 @@ class Main extends PluginBase
                     "id" => new ShortTag("id", $ench->getId()),
                     "lvl" => new ShortTag("lvl", $ench->getLevel())
                 ]);
+                $item->setNamedTag($tag);
+                $item->setCustomName(str_replace(TextFormat::GRAY . $ench->getName() . " " . $this->getRomanNumber($entry["lvl"]), TextFormat::GRAY . $ench->getName() . " " . $this->getRomanNumber($ench->getLevel()), $item->getName()));
                 $found = true;
                 break;
             }
@@ -86,27 +89,26 @@ class Main extends PluginBase
                 "id" => new ShortTag("id", $ench->getId()),
                 "lvl" => new ShortTag("lvl", $ench->getLevel())
             ]);
+            $level = $this->getRomanNumber($ench->getLevel());
             $item->setNamedTag($tag);
+            $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $ench->getName() . " " . $level);
         }
-        $level = $ench->getLevel();
-        switch ($level) { //If 1-5 use roman numerals
-            case 1:
-                $level = "I";
-                break;
-            case 2:
-                $level = "II";
-                break;
-            case 3:
-                $level = "III";
-                break;
-            case 4:
-                $level = "IV";
-                break;
-            case 5:
-                $level = "V";
-                break;
-        }
-        $item->setCustomName($item->getName() . "\n" . $ench->getName() . " " . $level);
         $player->getInventory()->setItemInHand($item);
+    }
+
+    public function getRomanNumber($integer) //Thank you @Muqsit!
+    {
+        $table = array('M'=>1000, 'CM'=>900, 'D'=>500, 'CD'=>400, 'C'=>100, 'XC'=>90, 'L'=>50, 'XL'=>40, 'X'=>10, 'IX'=>9, 'V'=>5, 'IV'=>4, 'I'=>1);
+        $return = '';
+        while($integer > 0) {
+            foreach($table as $rom=>$arb) {
+                if($integer >= $arb) {
+                    $integer -= $arb;
+                    $return .= $rom;
+                    break;
+                }
+            }
+        }
+        return $return;
     }
 }

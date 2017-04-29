@@ -24,17 +24,17 @@ class CustomEnchants extends Enchantment
     //const THUNDERBLOW = 110;
     //const VAMPIRE = 111;
     //const DEEPWOUNDS = 112;
-    //const CHARGE = 113;
+    const CHARGE = 113;
     //const AERIAL = 114;
     //const WITHER = 115;
     //const HEADLESS = 116;
-    //const DISARMING = 117;
+    const DISARMING = 117;
 
     //TOOLS
     const EXPLOSIVE = 200;
     const SMELTING = 201;
     //const ENERGIZING = 202;
-    //const QUICKENING = 203;
+    const QUICKENING = 203;
 
     public $id;
     public $level = 1;
@@ -52,9 +52,12 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::BLIND] = new CustomEnchants(self::BLIND, "Blind", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::DEATHBRINGER] = new CustomEnchants(self::DEATHBRINGER, "Death Bringer", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::POISON] = new CustomEnchants(self::POISON, "Poison", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::CHARGE] = new CustomEnchants(self::CHARGE, "Charge", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::DISARMING] = new CustomEnchants(self::DISARMING, "Disarming", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
 
         self::$enchantments[self::EXPLOSIVE] = new CustomEnchants(self::EXPLOSIVE, "Explosive", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::SMELTING] = new CustomEnchants(self::SMELTING, "Smelting", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
+        self::$enchantments[self::QUICKENING] = new CustomEnchants(self::QUICKENING, "Quickening", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
     }
 
     /**

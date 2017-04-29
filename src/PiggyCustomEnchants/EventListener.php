@@ -92,6 +92,14 @@ class EventListener implements Listener
             }
             $event->setDrops(array_merge($finaldrop, $otherdrops));
         }
+        $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::QUICKENING);
+        if ($enchantment !== null) {
+            $effect = Effect::getEffect(Effect::SPEED);
+            $effect->setAmplifier(3 + $enchantment->getLevel() - 1);
+            $effect->setDuration(40);
+            $effect->setVisible(false);
+            $player->addEffect($effect);
+        }
     }
 
     /**
@@ -134,6 +142,21 @@ class EventListener implements Listener
                     $effect->setDuration(100 + 20 * $enchantment->getLevel());
                     $effect->setVisible(false);
                     $entity->addEffect($effect);
+                }
+                $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CHARGE);
+                if ($enchantment !== null) {
+                    if ($damager->isSprinting()) {
+                        $event->setDamage($event->getDamage() * (1 + 10 * $enchantment->getLevel()));
+                    }
+                }
+                $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMING);
+                if ($enchantment !== null) {
+                    if ($entity instanceof Player) {
+                        $item = $entity->getInventory()->getItemInHand();
+                        $entity->getInventory()->removeItem($item);
+                        $motion = $entity->getDirectionVector()->multiply(0.4);
+                        $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                    }
                 }
             }
         }
