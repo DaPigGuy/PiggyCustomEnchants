@@ -33,7 +33,7 @@ class CustomEnchants extends Enchantment
     //TOOLS
     const EXPLOSIVE = 200;
     const SMELTING = 201;
-    //const ENERGIZING = 202;
+    const ENERGIZING = 202;
     const QUICKENING = 203;
 
     public $id;
@@ -57,6 +57,7 @@ class CustomEnchants extends Enchantment
 
         self::$enchantments[self::EXPLOSIVE] = new CustomEnchants(self::EXPLOSIVE, "Explosive", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::SMELTING] = new CustomEnchants(self::SMELTING, "Smelting", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
+        self::$enchantments[self::ENERGIZING] = new CustomEnchants(self::ENERGIZING, "Energizing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::QUICKENING] = new CustomEnchants(self::QUICKENING, "Quickening", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
     }
 

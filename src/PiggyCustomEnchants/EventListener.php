@@ -92,6 +92,14 @@ class EventListener implements Listener
             }
             $event->setDrops(array_merge($finaldrop, $otherdrops));
         }
+        $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::ENERGIZING);
+        if ($enchantment !== null) {
+            $effect = Effect::getEffect(Effect::HASTE);
+            $effect->setAmplifier(1 + $enchantment->getLevel() - 1);
+            $effect->setDuration(20);
+            $effect->setVisible(false);
+            $player->addEffect($effect);
+        }
         $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::QUICKENING);
         if ($enchantment !== null) {
             $effect = Effect::getEffect(Effect::SPEED);
