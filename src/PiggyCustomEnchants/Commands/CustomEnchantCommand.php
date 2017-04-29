@@ -4,6 +4,7 @@ namespace PiggyCustomEnchants\Commands;
 
 use PiggyCustomEnchants\Main;
 use pocketmine\command\CommandSender;
+use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\Player;
 use pocketmine\plugin\Plugin;
@@ -23,7 +24,7 @@ class CustomEnchantCommand extends PluginCommand
     {
         parent::__construct($name, $plugin);
         $this->setDescription("Enchant with custom enchants");
-        $this->setUsage("/customenchant <enchant> <level>");
+        $this->setUsage("/customenchant <enchant> <level> [player]");
         $this->setAliases(["ce"]);
         $this->setPermission("piggycustomenchants.command.ce");
     }
@@ -39,14 +40,22 @@ class CustomEnchantCommand extends PluginCommand
         if (!$this->testPermission($sender)) {
             return true;
         }
-        if (!$sender instanceof Player) {
-            $sender->sendMessage("Please use this in game.");
+        if (count($args) < 2) {
+            $sender->sendMessage("/customenchant <enchant> <level> [player]");
             return false;
         }
-        if(count($args) < 2){
-            $sender->sendMessage("/customenchant <enchant> <level>");
+        $target = $sender;
+        if (isset($args[2])) {
+            $target = $this->getPlugin()->getServer()->getPlayer($args[2]);
+        }
+        if (!$target instanceof Player) {
+            if($target instanceof ConsoleCommandSender){
+                $sender->sendMessage("§cPlease provide a player.");
+                return false;
+            }
+            $sender->sendMessage("§cInvalid player.");
             return false;
         }
-        $this->getPlugin()->addEnchantment($sender->getInventory()->getItemInHand(), $args[0], $args[1], $sender);
+        $this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[0], $args[1], $target);
     }
 }
