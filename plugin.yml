@@ -1,0 +1,18 @@
+name: PiggyCustomEnchants
+main: PiggyCustomEnchants\Main
+version: 1.0.0
+api: [2.0.0, 3.0.0-ALPHA1, 3.0.0-ALPHA2, 3.0.0-ALPHA3, 3.0.0-ALPHA4, 3.0.0-ALPHA5]
+load: POSTWORLD
+author: MCPEPIG
+permissions:
+  piggycustomenchants:
+    default: false
+    description: "Use everything in PiggyCustomEnchants"
+    children:
+      piggycustomenchants.command:
+        default: op
+        description: "use all PiggyCustomEnchants commands"
+        children:
+          piggycustomenchants.command.customenchant:
+          default: op
+          description: "Use /customenchant"
