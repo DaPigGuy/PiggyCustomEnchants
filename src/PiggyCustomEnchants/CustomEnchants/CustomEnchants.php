@@ -16,18 +16,18 @@ class CustomEnchants extends Enchantment
     const DEATHBRINGER = 102;
     //const GOOEY = 103;
     const POISON = 104;
-    //const BLOCK = 105;
-    //const ICEASPECT = 106;
-    //const SHOCKWAVE = 107;
-    //const AUTOREPAIR = 108;
-    //const CRIPPLINGSTRIKE = 109;
-    //const THUNDERBLOW = 110;
-    //const VAMPIRE = 111;
-    //const DEEPWOUNDS = 112;
+    /*const BLOCK = 105;
+    const ICEASPECT = 106;
+    const SHOCKWAVE = 107;
+    const AUTOREPAIR = 108;
+    const CRIPPLINGSTRIKE = 109;
+    const THUNDERBLOW = 110;
+    const VAMPIRE = 111;
+    const DEEPWOUNDS = 112;*/
     const CHARGE = 113;
-    //const AERIAL = 114;
-    //const WITHER = 115;
-    //const HEADLESS = 116;
+    /*const AERIAL = 114;
+    const WITHER = 115;
+    const HEADLESS = 116;*/
     const DISARMING = 117;
 
     //TOOLS
@@ -35,6 +35,36 @@ class CustomEnchants extends Enchantment
     const SMELTING = 201;
     const ENERGIZING = 202;
     const QUICKENING = 203;
+
+    //BOWS
+    /*const BOMBARDMENT = 300;
+    const LIGHTNING = 301;
+    const FIREWORK = 302;
+    const PARALYZE = 303;
+    const MOLOTOV = 304;
+    const VOLLEY = 305;
+    //WITHER SHOULD BE HERE AGAIN... BUT...
+    const PIERCING = 307;
+    const SHUFFLING = 308;
+    const BOUNTYHUNTER = 309;
+    const HEALING = 310; //NO ONE WANTS YOU, SHOO!
+    const BLAZE = 311;
+    */
+
+    //ARMOR
+
+
+    //BOOTS
+    /*
+    const GEARS = 500;
+    const SPRINGS = 501;
+    const STOMP = 502;
+    */
+
+    //HELMET
+    /*
+    const IMPLANTS = 600;
+    const GLOWING = 601;*/
 
     public $id;
     public $level = 1;

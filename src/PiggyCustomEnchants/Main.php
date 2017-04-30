@@ -56,6 +56,7 @@ class Main extends PluginBase
      */
     public function addEnchantment(Item $item, $ench, $level, Player $player)
     {
+        //TODO: Check if item can get enchant
         $ench = CustomEnchants::getEnchantByName($ench);
         if ($ench == null) {
             $player->sendMessage("Invalid enchantment.");
@@ -102,11 +103,11 @@ class Main extends PluginBase
      */
     public function getRomanNumber($integer) //Thank you @Muqsit!
     {
-        $table = array('M'=>1000, 'CM'=>900, 'D'=>500, 'CD'=>400, 'C'=>100, 'XC'=>90, 'L'=>50, 'XL'=>40, 'X'=>10, 'IX'=>9, 'V'=>5, 'IV'=>4, 'I'=>1);
+        $table = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
         $return = '';
-        while($integer > 0) {
-            foreach($table as $rom=>$arb) {
-                if($integer >= $arb) {
+        while ($integer > 0) {
+            foreach ($table as $rom => $arb) {
+                if ($integer >= $arb) {
                     $integer -= $arb;
                     $return .= $rom;
                     break;
@@ -114,5 +115,16 @@ class Main extends PluginBase
             }
         }
         return $return;
+    }
+
+    /**
+     * @param Item $item
+     * @param CustomEnchants $enchant
+     * @param $event
+     * @return bool
+     */
+    public function canUse(Item $item, CustomEnchants $enchant, $event = null)
+    {
+        //TODO: Implement
     }
 }
