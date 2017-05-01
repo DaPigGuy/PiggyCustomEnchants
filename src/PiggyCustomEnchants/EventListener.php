@@ -40,6 +40,98 @@ class EventListener implements Listener
     public function onBreak(BlockBreakEvent $event)
     {
         $player = $event->getPlayer();
+        $this->checkToolEnchants($player, $event);
+    }
+
+    /**
+     * @param EntityDamageEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onDamage(EntityDamageEvent $event)
+    {
+        $entity = $event->getEntity();
+        if ($event instanceof EntityDamageByChildEntityEvent) {
+            $damager = $event->getDamager();
+            $child = $event->getChild();
+            if ($damager instanceof Player && $child instanceof Arrow) {
+                $this->checkGlobalEnchants($damager, $entity, $event);
+                $this->checkBowEnchants($damager, $entity, $event);
+            }
+        }
+        if ($event instanceof EntityDamageByEntityEvent) {
+            $damager = $event->getDamager();
+            if ($damager instanceof Player) {
+                if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) { //TODO: Move to canUse() function
+                    return false;
+                }
+                $this->checkGlobalEnchants($damager, $entity, $event);
+                return true;
+            }
+        }
+    }
+
+    /**
+     * @param Player $damager
+     * @param Entity $entity
+     * @param EntityDamageEvent $event
+     */
+    public function checkGlobalEnchants(Player $damager, Entity $entity, EntityDamageEvent $event)
+    {
+        //TODO: Check to make sure you can use enchant with item
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::LIFESTEAL);
+        if ($enchantment !== null) {
+            if ($damager->getHealth() + 2 + $enchantment->getLevel() <= $damager->getMaxHealth()) {
+                $damager->setHealth($damager->getHealth() + 2 + $enchantment->getLevel());
+            } else {
+                $damager->setHealth($damager->getMaxHealth());
+            }
+        }
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLIND);
+        if ($enchantment !== null) {
+            $effect = Effect::getEffect(Effect::BLINDNESS);
+            $effect->setAmplifier(0);
+            $effect->setDuration(100 + 20 * $enchantment->getLevel());
+            $effect->setVisible(false);
+            $entity->addEffect($effect);
+        }
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DEATHBRINGER);
+        if ($enchantment !== null) {
+            $damage = 2 + ($enchantment->getLevel() / 10);
+            $event->setDamage($event->getDamage() + $damage);
+        }
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::POISON);
+        if ($enchantment !== null) {
+            $effect = Effect::getEffect(Effect::POISON);
+            $effect->setAmplifier(0);
+            $effect->setDuration(100 + 20 * $enchantment->getLevel());
+            $effect->setVisible(false);
+            $entity->addEffect($effect);
+        }
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CHARGE);
+        if ($enchantment !== null) {
+            if ($damager->isSprinting()) {
+                $event->setDamage($event->getDamage() * (1 + 10 * $enchantment->getLevel()));
+            }
+        }
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMING);
+        if ($enchantment !== null) {
+            if ($entity instanceof Player) {
+                $item = $entity->getInventory()->getItemInHand();
+                $entity->getInventory()->removeItem($item);
+                $motion = $entity->getDirectionVector()->multiply(0.4);
+                $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+            }
+        }
+    }
+
+    /**
+     * @param Player $player
+     * @param BlockBreakEvent $event
+     */
+    public function checkToolEnchants(Player $player, BlockBreakEvent $event)
+    {
         $block = $event->getBlock();
         $drops = $event->getDrops();
         $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::EXPLOSIVE);
@@ -99,7 +191,7 @@ class EventListener implements Listener
         $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::ENERGIZING);
         if ($enchantment !== null) {
             $effect = Effect::getEffect(Effect::HASTE);
-            $effect->setAmplifier(1 + $enchantment->getLevel() - 1);
+            $effect->setAmplifier(1 + $enchantment->getLevel() - 2);
             $effect->setDuration(20);
             $effect->setVisible(false);
             $player->addEffect($effect);
@@ -107,7 +199,8 @@ class EventListener implements Listener
         $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::QUICKENING);
         if ($enchantment !== null) {
             $effect = Effect::getEffect(Effect::SPEED);
-            $effect->setAmplifier(3 + $enchantment->getLevel() - 1);
+            var_dump(3 + $enchantment->getLevel() - 1);
+            $effect->setAmplifier(3 + $enchantment->getLevel() - 2);
             $effect->setDuration(40);
             $effect->setVisible(false);
             $player->addEffect($effect);
@@ -115,79 +208,27 @@ class EventListener implements Listener
     }
 
     /**
+     * @param Player $damager
+     * @param Entity $entity
      * @param EntityDamageEvent $event
-     *
-     * @priority HIGHEST
-     * @ignoreCancelled true
      */
-    public function onDamage(EntityDamageEvent $event)
+    public function checkBowEnchants(Player $damager, Entity $entity, EntityDamageEvent $event)
     {
-        $entity = $event->getEntity();
-        if ($event instanceof EntityDamageByChildEntityEvent) {
-            $damager = $event->getDamager();
-            $child = $event->getChild();
-            if ($damager instanceof Player && $child instanceof Arrow) {
-                $this->checkGlobalEnchants($damager, $entity, $event);
-            }
-        }
-        if ($event instanceof EntityDamageByEntityEvent) {
-            $damager = $event->getDamager();
-            if ($damager instanceof Player) {
-                if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) { //TODO: Move to canUse() function
-                    return false;
-                }
-                $this->checkGlobalEnchants($damager, $entity, $event);
-                return true;
-            }
-        }
-    }
-
-    public function checkGlobalEnchants(Player $damager, Entity $entity, Event $event)
-    {
-        //TODO: Check to make sure you can use enchant with item
-        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::LIFESTEAL);
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::SHUFFLE);
         if ($enchantment !== null) {
-            if ($damager->getHealth() + 2 + $enchantment->getLevel() <= $damager->getMaxHealth()) {
-                $damager->setHealth($damager->getHealth() + 2 + $enchantment->getLevel());
+            $pos1 = clone $damager->getPosition();
+            $pos2 = clone $entity->getPosition();
+            $damager->teleport($pos2);
+            $entity->teleport($pos1);
+        }
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HEALING);
+        if ($enchantment !== null) {
+            if ($entity->getHealth() + $event->getDamage() + $enchantment->getLevel() <= $entity->getMaxHealth()) {
+                $entity->setHealth($entity->getHealth() + $event->getDamage() + $enchantment->getLevel());
             } else {
-                $damager->setHealth($damager->getMaxHealth());
+                $entity->setHealth($entity->getMaxHealth());
             }
-        }
-        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLIND);
-        if ($enchantment !== null) {
-            $effect = Effect::getEffect(Effect::BLINDNESS);
-            $effect->setAmplifier(0);
-            $effect->setDuration(100 + 20 * $enchantment->getLevel());
-            $effect->setVisible(false);
-            $entity->addEffect($effect);
-        }
-        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DEATHBRINGER);
-        if ($enchantment !== null) {
-            $damage = 2 + ($enchantment->getLevel() / 10);
-            $event->setDamage($event->getDamage() + $damage);
-        }
-        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::POISON);
-        if ($enchantment !== null) {
-            $effect = Effect::getEffect(Effect::POISON);
-            $effect->setAmplifier(0);
-            $effect->setDuration(100 + 20 * $enchantment->getLevel());
-            $effect->setVisible(false);
-            $entity->addEffect($effect);
-        }
-        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CHARGE);
-        if ($enchantment !== null) {
-            if ($damager->isSprinting()) {
-                $event->setDamage($event->getDamage() * (1 + 10 * $enchantment->getLevel()));
-            }
-        }
-        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMING);
-        if ($enchantment !== null) {
-            if ($entity instanceof Player) {
-                $item = $entity->getInventory()->getItemInHand();
-                $entity->getInventory()->removeItem($item);
-                $motion = $entity->getDirectionVector()->multiply(0.4);
-                $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
-            }
+            $event->setDamage(0);
         }
     }
 }

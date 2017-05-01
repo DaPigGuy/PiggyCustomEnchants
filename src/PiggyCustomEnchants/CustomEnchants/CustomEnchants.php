@@ -44,12 +44,12 @@ class CustomEnchants extends Enchantment
     const MOLOTOV = 304;
     const VOLLEY = 305;
     //WITHER SHOULD BE HERE AGAIN... BUT...
-    const PIERCING = 307;
-    const SHUFFLING = 308;
-    const BOUNTYHUNTER = 309;
+    const PIERCING = 307;*/
+    const SHUFFLE = 308;
+    //const BOUNTYHUNTER = 309;
     const HEALING = 310; //NO ONE WANTS YOU, SHOO!
-    const BLAZE = 311;
-    */
+    //const BLAZE = 311;
+
 
     //ARMOR
 
@@ -89,6 +89,9 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::SMELTING] = new CustomEnchants(self::SMELTING, "Smelting", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::ENERGIZING] = new CustomEnchants(self::ENERGIZING, "Energizing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::QUICKENING] = new CustomEnchants(self::QUICKENING, "Quickening", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
+
+        self::$enchantments[self::SHUFFLE] = new CustomEnchants(self::SHUFFLE, "Shuffling", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
+        self::$enchantments[self::HEALING] = new CustomEnchants(self::HEALING, "Healing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
     }
 
     /**

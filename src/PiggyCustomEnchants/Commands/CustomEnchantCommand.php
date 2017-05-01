@@ -7,7 +7,6 @@ use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\Player;
-use pocketmine\plugin\Plugin;
 
 /**
  * Class CustomEnchantCommand
