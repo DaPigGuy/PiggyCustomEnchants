@@ -104,15 +104,15 @@ class EventListener implements Listener
         $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::POISON);
         if ($enchantment !== null) {
             $effect = Effect::getEffect(Effect::POISON);
-            $effect->setAmplifier(0);
-            $effect->setDuration(100 + 20 * $enchantment->getLevel());
+            $effect->setAmplifier($enchantment->getLevel());
+            $effect->setDuration(60 * $enchantment->getLevel());
             $effect->setVisible(false);
             $entity->addEffect($effect);
         }
         $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CHARGE);
         if ($enchantment !== null) {
             if ($damager->isSprinting()) {
-                $event->setDamage($event->getDamage() * (1 + 10 * $enchantment->getLevel()));
+                $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
             }
         }
         $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMING);
@@ -199,7 +199,6 @@ class EventListener implements Listener
         $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::QUICKENING);
         if ($enchantment !== null) {
             $effect = Effect::getEffect(Effect::SPEED);
-            var_dump(3 + $enchantment->getLevel() - 1);
             $effect->setAmplifier(3 + $enchantment->getLevel() - 2);
             $effect->setDuration(40);
             $effect->setVisible(false);
