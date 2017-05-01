@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fd5a167-c39a-4d93-94f7-a459084730dd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -27,8 +28,8 @@
       <file leaf-file-name="Main.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="850">
-              <caret line="59" column="8" lean-forward="false" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="56" />
+            <state relative-caret-position="578">
+              <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
               <folding>
                 <element signature="e#39#93#0#PHP" expanded="true" />
               </folding>
@@ -36,21 +37,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CustomEnchants.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="CustomEnchants.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-272">
-              <caret line="92" column="77" lean-forward="false" selection-start-line="92" selection-start-column="77" selection-end-line="92" selection-end-column="77" />
+            <state relative-caret-position="510">
+              <caret line="93" column="87" lean-forward="false" selection-start-line="93" selection-start-column="87" selection-end-line="93" selection-end-column="87" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EventListener.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EventListener.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="108" column="39" lean-forward="true" selection-start-line="108" selection-start-column="39" selection-end-line="108" selection-end-column="39" />
+            <state relative-caret-position="1486">
+              <caret line="121" column="39" lean-forward="true" selection-start-line="121" selection-start-column="39" selection-end-line="121" selection-end-column="39" />
               <folding>
                 <element signature="e#39#93#0#PHP" expanded="true" />
               </folding>
@@ -87,6 +88,7 @@
       <find>getname</find>
       <find>charge</find>
       <find>113</find>
+      <find>838</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -106,8 +108,8 @@
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Enchanting/EnchantInventory.php" />
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php" />
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Commands/CustomEnchantCommand.php" />
-        <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" />
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" />
+        <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" />
       </list>
     </option>
   </component>
@@ -351,7 +353,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../PiggyAuth" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -459,12 +461,12 @@
       <workItem from="1493432139475" duration="8331000" />
       <workItem from="1493491301729" duration="14082000" />
       <workItem from="1493519127869" duration="8628000" />
-      <workItem from="1493594658861" duration="4294000" />
+      <workItem from="1493594658861" duration="7291000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="44389000" />
+    <option name="totallyTimeSpent" value="47386000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1444" height="867" extended-state="0" />
@@ -746,16 +748,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="850">
-          <caret line="59" column="8" lean-forward="false" selection-start-line="59" selection-start-column="8" selection-end-line="59" selection-end-column="56" />
-          <folding>
-            <element signature="e#39#93#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Commands/CustomEnchantCommand.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-119">
@@ -768,21 +760,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php">
+    <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-272">
-          <caret line="92" column="77" lean-forward="false" selection-start-line="92" selection-start-column="77" selection-end-line="92" selection-end-column="77" />
-          <folding />
+        <state relative-caret-position="578">
+          <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+          <folding>
+            <element signature="e#39#93#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="108" column="39" lean-forward="true" selection-start-line="108" selection-start-column="39" selection-end-line="108" selection-end-column="39" />
+        <state relative-caret-position="1486">
+          <caret line="121" column="39" lean-forward="true" selection-start-line="121" selection-start-column="39" selection-end-line="121" selection-end-column="39" />
           <folding>
             <element signature="e#39#93#0#PHP" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="93" column="87" lean-forward="false" selection-start-line="93" selection-start-column="87" selection-end-line="93" selection-end-column="87" />
+          <folding />
         </state>
       </provider>
     </entry>

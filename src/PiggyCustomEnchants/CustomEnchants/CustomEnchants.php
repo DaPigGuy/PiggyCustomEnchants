@@ -19,9 +19,9 @@ class CustomEnchants extends Enchantment
     /*const BLOCK = 105;
     const ICEASPECT = 106;
     const SHOCKWAVE = 107;
-    const AUTOREPAIR = 108;
+    const AUTOREPAIR = 108;*/
     const CRIPPLINGSTRIKE = 109;
-    const THUNDERBLOW = 110;
+    /*const THUNDERBLOW = 110;
     const VAMPIRE = 111;
     const DEEPWOUNDS = 112;*/
     const CHARGE = 113;
@@ -82,6 +82,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::BLIND] = new CustomEnchants(self::BLIND, "Blind", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::DEATHBRINGER] = new CustomEnchants(self::DEATHBRINGER, "Death Bringer", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::POISON] = new CustomEnchants(self::POISON, "Poison", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::CRIPPLINGSTRIKE] = new CustomEnchants(self::CRIPPLINGSTRIKE, "Cripple", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::CHARGE] = new CustomEnchants(self::CHARGE, "Charge", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::DISARMING] = new CustomEnchants(self::DISARMING, "Disarming", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
 
@@ -90,7 +91,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::ENERGIZING] = new CustomEnchants(self::ENERGIZING, "Energizing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::QUICKENING] = new CustomEnchants(self::QUICKENING, "Quickening", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
 
-        self::$enchantments[self::SHUFFLE] = new CustomEnchants(self::SHUFFLE, "Shuffling", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
+        self::$enchantments[self::SHUFFLE] = new CustomEnchants(self::SHUFFLE, "Shuffle", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::HEALING] = new CustomEnchants(self::HEALING, "Healing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
     }
 

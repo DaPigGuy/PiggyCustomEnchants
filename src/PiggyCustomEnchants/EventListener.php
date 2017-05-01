@@ -109,6 +109,19 @@ class EventListener implements Listener
             $effect->setVisible(false);
             $entity->addEffect($effect);
         }
+        $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CRIPPLINGSTRIKE);
+        if ($enchantment !== null) {
+            $effect = Effect::getEffect(Effect::NAUSEA);
+            $effect->setAmplifier(0);
+            $effect->setDuration(100 * $enchantment->getLevel());
+            $effect->setVisible(false);
+            $entity->addEffect($effect);
+            $effect = Effect::getEffect(Effect::SLOWNESS);
+            $effect->setAmplifier($enchantment->getLevel());
+            $effect->setDuration(100 * $enchantment->getLevel());
+            $effect->setVisible(false);
+            $entity->addEffect($effect);
+        }
         $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CHARGE);
         if ($enchantment !== null) {
             if ($damager->isSprinting()) {
