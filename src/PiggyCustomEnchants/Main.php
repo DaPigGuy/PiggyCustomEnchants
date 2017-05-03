@@ -19,6 +19,8 @@ use pocketmine\utils\TextFormat;
  */
 class Main extends PluginBase
 {
+    public $vampirecd;
+
     public function onEnable()
     {
         CustomEnchants::init();
