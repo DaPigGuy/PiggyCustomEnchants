@@ -4,6 +4,7 @@ namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
@@ -20,6 +21,7 @@ use pocketmine\utils\TextFormat;
 class Main extends PluginBase
 {
     public $vampirecd;
+    public $cloakingcd;
 
     public function onEnable()
     {
@@ -56,12 +58,12 @@ class Main extends PluginBase
      * @param Player $player
      * @return bool
      */
-    public function addEnchantment(Item $item, $ench, $level, Player $player)
+    public function addEnchantment(Item $item, $ench, $level, Player $player, CommandSender $sender)
     {
         //TODO: Check if item can get enchant
         $ench = CustomEnchants::getEnchantByName($ench);
         if ($ench == null) {
-            $player->sendMessage("Invalid enchantment.");
+            $sender->sendMessage("§cInvalid enchantment.");
             return false;
         }
         $ench->setLevel($level);
@@ -97,6 +99,7 @@ class Main extends PluginBase
             $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $ench->getName() . " " . $level);
         }
         $player->getInventory()->setItemInHand($item);
+        $sender->sendMessage("§aEnchanting suceeded.");
     }
 
     /**

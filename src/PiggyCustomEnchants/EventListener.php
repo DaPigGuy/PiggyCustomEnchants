@@ -16,7 +16,14 @@ use pocketmine\event\entity\EntitySpawnEvent;
 use pocketmine\event\Listener;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
+use pocketmine\math\Vector3;
+use pocketmine\nbt\tag\ByteTag;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\tag\DoubleTag;
+use pocketmine\nbt\tag\FloatTag;
+use pocketmine\nbt\tag\ListTag;
 use pocketmine\Player;
+use pocketmine\utils\Random;
 
 /**
  * Class EventListener
@@ -54,6 +61,7 @@ class EventListener implements Listener
     public function onDamage(EntityDamageEvent $event)
     {
         $entity = $event->getEntity();
+        $this->checkArmorEnchants($entity, $event);
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $damager = $event->getDamager();
             $child = $event->getChild();
@@ -173,7 +181,6 @@ class EventListener implements Listener
                     $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
                 }
             }
-
         }
     }
 
@@ -282,6 +289,48 @@ class EventListener implements Listener
                     $entity->setHealth($entity->getMaxHealth());
                 }
                 $event->setDamage(0);
+            }
+        }
+    }
+
+    public function checkArmorEnchants(Entity $entity, EntityEvent $event)
+    {
+        if ($entity instanceof Player) {
+            $random = new Random();
+            foreach ($entity->getInventory()->getArmorContents() as $armor) {
+                if($event instanceof EntityDamageByEntityEvent) {
+                    $damager = $event->getDamager();
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::FROZEN);
+                    if ($enchantment !== null) {
+                        $effect = Effect::getEffect(Effect::SLOWNESS);
+                        $effect->setAmplifier($enchantment->getLevel());
+                        $effect->setDuration(60 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $damager->addEffect($effect);
+                    }
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CLOAKING);
+                    if ($enchantment !== null) {
+                        if (isset($this->plugin->cloakingcd[strtolower($damager->getName())]) && time() > $this->plugin->cloakingcd[strtolower($damager->getName())] + 200) {
+                            return false;
+                        }
+                        $this->plugin->cloakingcd[strtolower($damager->getName())] = time();
+                        $effect = Effect::getEffect(Effect::INVISIBILITY);
+                        $effect->setAmplifier(0);
+                        $effect->setDuration(60 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $entity->addEffect($effect);
+                    }
+                }
+                $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SELFDESTRUCT);
+                if ($enchantment !== null) {
+                    if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
+                        for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
+                            $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
+                            $tnt->setMotion(new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1));
+                            $tnt->spawnToAll();
+                        }
+                    }
+                }
             }
         }
     }

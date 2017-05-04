@@ -53,10 +53,13 @@ class CustomEnchantCommand extends PluginCommand
                 $sender->sendMessage(implode(", ", $enchants));
                 break;
             case "enchant":
-                if (count($args) < 3) {
-                    $sender->sendMessage("/customenchant enchant <enchant> <level> [player]");
+                if (count($args) < 2) {
+                    $sender->sendMessage("/customenchant enchant <enchant> [level] [player]");
                 }
                 $target = $sender;
+                if (!isset($args[2])) {
+                    $args[2] = 1;
+                }
                 if (isset($args[3])) {
                     $target = $this->getPlugin()->getServer()->getPlayer($args[3]);
                 }
@@ -68,7 +71,10 @@ class CustomEnchantCommand extends PluginCommand
                     $sender->sendMessage("§cInvalid player.");
                     return false;
                 }
-                $this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $target);
+                $this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $target, $sender);
+                break;
+            default:
+                $sender->sendMessage("/customenchant <enchant|list>");
                 break;
         }
     }

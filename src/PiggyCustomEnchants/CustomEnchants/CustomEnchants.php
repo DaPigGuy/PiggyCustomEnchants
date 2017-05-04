@@ -52,6 +52,19 @@ class CustomEnchants extends Enchantment
 
 
     //ARMOR
+    const MOLTEN = 400;
+    const ENLIGHTED = 401;
+    const HARDENED = 402;
+    const POISONED = 403;
+    const FROZEN = 404;
+    const OBSIDIANSHIELD = 405;
+    const REVULSION = 406;
+    const SELFDESTRUCT = 407;
+    const CURSED = 408;
+    const ENDERSHIFT = 409;
+    const DRUNK = 410;
+    const BERSERKER = 411;
+    const CLOAKING = 412;
 
 
     //BOOTS
@@ -95,6 +108,10 @@ class CustomEnchants extends Enchantment
 
         self::$enchantments[self::SHUFFLE] = new CustomEnchants(self::SHUFFLE, "Shuffle", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::HEALING] = new CustomEnchants(self::HEALING, "Healing", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
+
+        self::$enchantments[self::FROZEN] = new CustomEnchants(self::FROZEN, "Frozen", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+        self::$enchantments[self::SELFDESTRUCT] = new CustomEnchants(self::SELFDESTRUCT, "Self Destruct", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+        self::$enchantments[self::CLOAKING] = new CustomEnchants(self::CLOAKING, "Cloaking", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
     }
 
     /**
@@ -149,7 +166,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

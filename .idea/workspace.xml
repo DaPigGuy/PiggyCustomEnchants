@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1fd5a167-c39a-4d93-94f7-a459084730dd" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/Commands/CustomEnchantCommand.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/Commands/CustomEnchantCommand.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php" />
@@ -30,8 +31,8 @@
       <file leaf-file-name="Main.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-442">
-              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+            <state relative-caret-position="391">
+              <caret line="23" column="23" lean-forward="false" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
               <folding>
                 <element signature="e#39#93#0#PHP" expanded="true" />
               </folding>
@@ -42,8 +43,11 @@
       <file leaf-file-name="EventListener.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php">
           <provider selected="true" editor-type-id="text-editor">
-              <caret line="17" column="31" lean-forward="false" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
-              <folding />
+            <state relative-caret-position="530">
+              <caret line="328" column="136" lean-forward="false" selection-start-line="328" selection-start-column="136" selection-end-line="328" selection-end-column="136" />
+              <folding>
+                <element signature="e#39#93#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -51,12 +55,12 @@
       <file leaf-file-name="CustomEnchantCommand.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Commands/CustomEnchantCommand.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="60" column="38" lean-forward="true" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
+            <state relative-caret-position="-204">
+              <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
               <folding>
                 <element signature="e#48#102#0#PHP" expanded="true" />
-                <marker date="1493694022567" expanded="true" signature="734:770" ph="..." />
-                <marker date="1493694022567" expanded="true" signature="740:770" ph="..." />
+                <marker date="1493775252168" expanded="true" signature="734:770" ph="..." />
+                <marker date="1493775252168" expanded="true" signature="740:770" ph="..." />
               </folding>
             </state>
           </provider>
@@ -65,8 +69,38 @@
       <file leaf-file-name="CustomEnchants.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1122">
-              <caret line="66" column="26" lean-forward="false" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+            <state relative-caret-position="428">
+              <caret line="112" column="68" lean-forward="false" selection-start-line="112" selection-start-column="68" selection-end-line="112" selection-end-column="68" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Enchantment.php" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src/pocketmine/item/enchantment/Enchantment.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-745">
+              <caret line="84" column="15" lean-forward="true" selection-start-line="84" selection-start-column="15" selection-end-line="84" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EnchantmentEntry.php" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src/pocketmine/item/enchantment/EnchantmentEntry.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="EnchantmentList.php" pinned="false" current-in-tab="false">
+        <entry file="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src/pocketmine/item/enchantment/EnchantmentList.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -106,8 +140,8 @@
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Enchanting/Range.php" />
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Enchanting/EnchantInventory.php" />
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Commands/CustomEnchantCommand.php" />
-        <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php" />
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" />
+        <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php" />
         <option value="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" />
       </list>
     </option>
@@ -461,10 +495,12 @@
       <workItem from="1493491301729" duration="14082000" />
       <workItem from="1493519127869" duration="8628000" />
       <workItem from="1493594658861" duration="7291000" />
+      <workItem from="1493647618437" duration="19963000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="67349000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1444" height="867" extended-state="0" />
@@ -545,7 +581,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1853">
           <caret line="121" column="39" lean-forward="true" selection-start-line="121" selection-start-column="39" selection-end-line="121" selection-end-column="39" />
-          <folding />
+          <folding>
+            <element signature="e#39#93#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -555,8 +593,8 @@
           <caret line="8" column="22" lean-forward="false" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
           <folding>
             <element signature="e#48#102#0#PHP" expanded="true" />
-            <marker date="1493694022567" expanded="true" signature="734:770" ph="..." />
-            <marker date="1493694022567" expanded="true" signature="740:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="734:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="740:770" ph="..." />
           </folding>
         </state>
       </provider>
@@ -591,7 +629,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3451">
           <caret line="215" column="119" lean-forward="false" selection-start-line="215" selection-start-column="119" selection-end-line="215" selection-end-column="119" />
-          <folding />
+          <folding>
+            <element signature="e#39#93#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -601,8 +641,8 @@
           <caret line="8" column="22" lean-forward="false" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
           <folding>
             <element signature="e#48#102#0#PHP" expanded="true" />
-            <marker date="1493694022567" expanded="true" signature="734:770" ph="..." />
-            <marker date="1493694022567" expanded="true" signature="740:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="734:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="740:770" ph="..." />
           </folding>
         </state>
       </provider>
@@ -635,7 +675,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1513">
           <caret line="97" column="35" lean-forward="false" selection-start-line="97" selection-start-column="35" selection-end-line="97" selection-end-column="35" />
-          <folding />
+          <folding>
+            <element signature="e#39#93#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -645,8 +687,8 @@
           <caret line="48" column="65" lean-forward="false" selection-start-line="48" selection-start-column="65" selection-end-line="48" selection-end-column="65" />
           <folding>
             <element signature="e#48#102#0#PHP" expanded="true" />
-            <marker date="1493694022567" expanded="true" signature="734:770" ph="..." />
-            <marker date="1493694022567" expanded="true" signature="740:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="734:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="740:770" ph="..." />
           </folding>
         </state>
       </provider>
@@ -681,7 +723,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
           <caret line="42" column="84" lean-forward="false" selection-start-line="42" selection-start-column="84" selection-end-line="42" selection-end-column="84" />
-          <folding />
+          <folding>
+            <element signature="e#39#93#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -691,8 +735,8 @@
           <caret line="49" column="42" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="51" selection-end-column="1" />
           <folding>
             <element signature="e#48#102#0#PHP" expanded="true" />
-            <marker date="1493694022567" expanded="true" signature="734:770" ph="..." />
-            <marker date="1493694022567" expanded="true" signature="740:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="734:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="740:770" ph="..." />
           </folding>
         </state>
       </provider>
@@ -735,7 +779,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
           <caret line="40" column="48" lean-forward="false" selection-start-line="40" selection-start-column="48" selection-end-line="40" selection-end-column="48" />
-          <folding />
+          <folding>
+            <element signature="e#39#93#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -776,18 +822,10 @@
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Enchanting/Range.php" />
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Enchanting/EnchantingTable.php" />
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Enchanting/EnchantInventory.php" />
-    <entry file="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src/pocketmine/item/enchantment/Enchantment.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="86" column="34" lean-forward="true" selection-start-line="86" selection-start-column="34" selection-end-line="86" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Main.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-442">
-          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+        <state relative-caret-position="391">
+          <caret line="23" column="23" lean-forward="false" selection-start-line="23" selection-start-column="23" selection-end-line="23" selection-end-column="23" />
           <folding>
             <element signature="e#39#93#0#PHP" expanded="true" />
           </folding>
@@ -796,28 +834,55 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/Commands/CustomEnchantCommand.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="60" column="38" lean-forward="true" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
+        <state relative-caret-position="-204">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
           <folding>
             <element signature="e#48#102#0#PHP" expanded="true" />
-            <marker date="1493694022567" expanded="true" signature="734:770" ph="..." />
-            <marker date="1493694022567" expanded="true" signature="740:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="734:770" ph="..." />
+            <marker date="1493775252168" expanded="true" signature="740:770" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1122">
-          <caret line="66" column="26" lean-forward="false" selection-start-line="66" selection-start-column="26" selection-end-line="66" selection-end-column="26" />
+        <state relative-caret-position="428">
+          <caret line="112" column="68" lean-forward="false" selection-start-line="112" selection-start-column="68" selection-end-line="112" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src/pocketmine/item/enchantment/Enchantment.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-745">
+          <caret line="84" column="15" lean-forward="true" selection-start-line="84" selection-start-column="15" selection-end-line="84" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src/pocketmine/item/enchantment/EnchantmentEntry.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src/pocketmine/item/enchantment/EnchantmentList.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php">
       <provider selected="true" editor-type-id="text-editor">
-          <caret line="17" column="31" lean-forward="false" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
-          <folding />
+        <state relative-caret-position="530">
+          <caret line="328" column="136" lean-forward="false" selection-start-line="328" selection-start-column="136" selection-end-line="328" selection-end-column="136" />
+          <folding>
+            <element signature="e#39#93#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
