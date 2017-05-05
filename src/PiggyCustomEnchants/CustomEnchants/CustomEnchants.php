@@ -88,6 +88,7 @@ class CustomEnchants extends Enchantment
 
     public static $enchantments;
 
+
     public static function init()
     {
         self::$enchantments[self::LIFESTEAL] = new CustomEnchants(self::LIFESTEAL, "Lifesteal", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
@@ -139,7 +140,7 @@ class CustomEnchants extends Enchantment
      * @param int $id
      * @return CustomEnchants
      */
-    public static function getEnchantment(int $id)
+    public static function getEnchantment($id)
     {
         if (isset(self::$enchantments[$id])) {
             return clone self::$enchantments[(int)$id];
@@ -151,7 +152,7 @@ class CustomEnchants extends Enchantment
      * @param $name
      * @return $this|null|CustomEnchants
      */
-    public static function getEnchantByName(string $name)
+    public static function getEnchantByName($name)
     {
         if (defined(CustomEnchants::class . "::" . strtoupper($name))) {
             return self::getEnchantment(constant(CustomEnchants::class . "::" . strtoupper($name)));
@@ -160,9 +161,9 @@ class CustomEnchants extends Enchantment
     }
 
     /**
-     * @return int
+     * @return mixed
      */
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }
@@ -178,7 +179,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return int
      */
-    public function getRarity(): int
+    public function getRarity()
     {
         return $this->rarity;
     }
@@ -186,7 +187,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return int
      */
-    public function getActivationType(): int
+    public function getActivationType()
     {
         return $this->activationType;
     }
@@ -194,17 +195,16 @@ class CustomEnchants extends Enchantment
     /**
      * @return int
      */
-    public function getSlot(): int
+    public function getSlot()
     {
         return $this->slot;
     }
 
     /**
-     * @param int $slot
-     *
+     * @param $slot
      * @return bool
      */
-    public function hasSlot(int $slot): bool
+    public function hasSlot($slot)
     {
         return ($this->slot & $slot) > 0;
     }
@@ -212,19 +212,18 @@ class CustomEnchants extends Enchantment
     /**
      * @return int
      */
-    public function getLevel(): int
+    public function getLevel()
     {
         return $this->level;
     }
 
     /**
-     * @param int $level
-     *
+     * @param $level
      * @return $this
      */
-    public function setLevel(int $level)
+    public function setLevel($level)
     {
-        $this->level = $level;
+        $this->level = (int)$level;
 
         return $this;
     }
