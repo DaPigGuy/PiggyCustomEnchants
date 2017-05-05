@@ -143,7 +143,7 @@ class EventListener implements Listener
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::VAMPIRE);
             if ($enchantment !== null) {
-                if (isset($this->plugin->vampirecd[strtolower($damager->getName())]) && time() > $this->plugin->vampirecd[strtolower($damager->getName())] + 10) {
+                if (isset($this->plugin->vampirecd[strtolower($damager->getName())]) && time() > $this->plugin->vampirecd[strtolower($damager->getName())] + 5) {
                     return false;
                 }
                 $this->plugin->vampirecd[strtolower($damager->getName())] = time();
@@ -298,8 +298,20 @@ class EventListener implements Listener
         if ($entity instanceof Player) {
             $random = new Random();
             foreach ($entity->getInventory()->getArmorContents() as $armor) {
-                if($event instanceof EntityDamageByEntityEvent) {
+                if ($event instanceof EntityDamageByEntityEvent) {
                     $damager = $event->getDamager();
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::MOLTEN);
+                    if ($enchantment !== null) {
+                        $damager->setOnFire(3 * $enchantment->getLevel());
+                    }
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENLIGHTED);
+                    if ($enchantment !== null) {
+                        $effect = Effect::getEffect(Effect::REGENERATION);
+                        $effect->setAmplifier($enchantment->getLevel());
+                        $effect->setDuration(60 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $entity->addEffect($effect);
+                    }
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::FROZEN);
                     if ($enchantment !== null) {
                         $effect = Effect::getEffect(Effect::SLOWNESS);
@@ -308,9 +320,49 @@ class EventListener implements Listener
                         $effect->setVisible(false);
                         $damager->addEffect($effect);
                     }
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CURSED);
+                    if ($enchantment !== null) {
+                        $effect = Effect::getEffect(Effect::WITHER);
+                        $effect->setAmplifier($enchantment->getLevel());
+                        $effect->setDuration(60 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $damager->addEffect($effect);
+                    }
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::DRUNK);
+                    if ($enchantment !== null) {
+                        $effect = Effect::getEffect(Effect::SLOWNESS);
+                        $effect->setAmplifier($enchantment->getLevel());
+                        $effect->setDuration(60 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $damager->addEffect($effect);
+                        $effect = Effect::getEffect(Effect::MINING_FATIGUE);
+                        $effect->setAmplifier($enchantment->getLevel());
+                        $effect->setDuration(60 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $damager->addEffect($effect);
+                        $effect = Effect::getEffect(Effect::NAUSEA);
+                        $effect->setAmplifier(0);
+                        $effect->setDuration(60 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $damager->addEffect($effect);
+                    }
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::BERSERKER);
+                    if ($enchantment !== null) {
+                        if ($entity->getHealth() <= 4) {
+                            if (isset($this->plugin->berserkercd[strtolower($damager->getName())]) && time() > $this->plugin->berserkercd[strtolower($damager->getName())] + 300) {
+                                return false;
+                            }
+                            $this->plugin->berserkercd[strtolower($damager->getName())] = time();
+                            $effect = Effect::getEffect(Effect::STRENGTH);
+                            $effect->setAmplifier(3 + $enchantment->getLevel());
+                            $effect->setDuration(200 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $entity->addEffect($effect);
+                        }
+                    }
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CLOAKING);
                     if ($enchantment !== null) {
-                        if (isset($this->plugin->cloakingcd[strtolower($damager->getName())]) && time() > $this->plugin->cloakingcd[strtolower($damager->getName())] + 200) {
+                        if (isset($this->plugin->cloakingcd[strtolower($damager->getName())]) && time() > $this->plugin->cloakingcd[strtolower($damager->getName())] + 10) {
                             return false;
                         }
                         $this->plugin->cloakingcd[strtolower($damager->getName())] = time();
