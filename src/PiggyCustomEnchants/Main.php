@@ -57,6 +57,7 @@ class Main extends PluginBase
      * @param $ench
      * @param $level
      * @param Player $player
+     * @param CommandSender $sender
      * @return bool
      */
     public function addEnchantment(Item $item, $ench, $level, Player $player, CommandSender $sender)

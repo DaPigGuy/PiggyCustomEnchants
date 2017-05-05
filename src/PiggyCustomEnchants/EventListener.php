@@ -82,18 +82,10 @@ class EventListener implements Listener
         }
     }
 
-    public function onShoot(EntitySpawnEvent $event)
-    {
-        $entity = $event->getEntity();
-        if ($entity instanceof Arrow && $entity->shootingEntity instanceof Player) {
-            $this->checkBowEnchants($entity->shootingEntity, $entity, $event);
-        }
-    }
-
     /**
      * @param Player $damager
      * @param Entity $entity
-     * @param EntityDamageEvent $event
+     * @param EntityEvent $event
      */
     public function checkGlobalEnchants(Player $damager, Entity $entity, EntityEvent $event)
     {
@@ -186,7 +178,7 @@ class EventListener implements Listener
 
     /**
      * @param Player $player
-     * @param BlockBreakEvent $event
+     * @param BlockEvent $event
      */
     public function checkToolEnchants(Player $player, BlockEvent $event)
     {
@@ -266,10 +258,11 @@ class EventListener implements Listener
         }
     }
 
+
     /**
      * @param Player $damager
      * @param Entity $entity
-     * @param EntityDamageEvent $event
+     * @param EntityEvent $event
      */
     public function checkBowEnchants(Player $damager, Entity $entity, EntityEvent $event)
     {
@@ -293,6 +286,10 @@ class EventListener implements Listener
         }
     }
 
+    /**
+     * @param Entity $entity
+     * @param EntityEvent $event
+     */
     public function checkArmorEnchants(Entity $entity, EntityEvent $event)
     {
         if ($entity instanceof Player) {
