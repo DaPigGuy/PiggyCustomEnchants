@@ -44,11 +44,11 @@ class CustomEnchantCommand extends PluginCommand
             $sender->sendMessage("/customenchant <enchant|list>");
             return false;
         }
-        switch ($args[0]) {
+        switch($args[0]){
             case "list":
                 $enchants = array();
-                foreach (CustomEnchants::$enchantments as $id => $enchant) {
-                    array_push($enchants, $enchant->getName());
+                foreach (CustomEnchants::$enchantments as $id => $enchant){
+                   array_push($enchants, $enchant->getName());
                 }
                 $sender->sendMessage(implode(", ", $enchants));
                 break;
@@ -64,7 +64,7 @@ class CustomEnchantCommand extends PluginCommand
                     $target = $this->getPlugin()->getServer()->getPlayer($args[3]);
                 }
                 if (!$target instanceof Player) {
-                    if ($target instanceof ConsoleCommandSender) {
+                    if($target instanceof ConsoleCommandSender){
                         $sender->sendMessage("§cPlease provide a player.");
                         return false;
                     }
