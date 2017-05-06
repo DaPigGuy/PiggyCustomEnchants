@@ -8,6 +8,7 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockEvent;
+use pocketmine\event\entity\EntityArmorChangeEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -51,6 +52,18 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         $this->checkToolEnchants($player, $event);
+    }
+
+    /**
+     * @param EntityArmorChangeEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onArmorChange(EntityArmorChangeEvent $event)
+    {
+        $entity = $event->getEntity();
+        $this->checkArmorEnchants($entity, $event);
     }
 
     /**
@@ -301,13 +314,28 @@ class EventListener implements Listener
     {
         if ($entity instanceof Player) {
             $random = new Random();
-            foreach ($entity->getInventory()->getArmorContents() as $armor) {
-                if ($event instanceof EntityDamageEvent) {
+            if ($event instanceof EntityArmorChangeEvent) {
+                $olditem = $event->getOldItem();
+                $newitem = $event->getNewItem();
+                $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::OBSIDIANSHIELD);
+                if ($enchantment !== null) {
+                    $effect = Effect::getEffect(Effect::FIRE_RESISTANCE);
+                    $effect->setAmplifier(0);
+                    $effect->setDuration(PHP_INT_MAX);
+                    $effect->setVisible(false);
+                    $entity->addEffect($effect);
+                    echo 1;
+                }
+                $enchantment = $this->plugin->getEnchantment($olditem, CustomEnchants::OBSIDIANSHIELD);
+                if ($enchantment !== null) {
+                    $entity->removeEffect(Effect::FIRE_RESISTANCE);
+                }
+            }
+            if ($event instanceof EntityDamageEvent) {
+                foreach ($entity->getInventory()->getArmorContents() as $armor) {
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENDERSHIFT);
                     if ($enchantment !== null) {
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
-                            var_dump($this->plugin->endershiftcd[strtolower($entity->getName())]);
-                            var_dump(time());
                             if (isset($this->plugin->endershiftcd[strtolower($entity->getName())]) && time() < $this->plugin->endershiftcd[strtolower($entity->getName())]) {
                                 return false;
                             }
@@ -339,100 +367,100 @@ class EventListener implements Listener
                             $entity->addEffect($effect);
                         }
                     }
-                }
-                if ($event instanceof EntityDamageByEntityEvent) {
-                    $damager = $event->getDamager();
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::MOLTEN);
-                    if ($enchantment !== null) {
-                        $damager->setOnFire(3 * $enchantment->getLevel());
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENLIGHTED);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::REGENERATION);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $entity->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::HARDENED);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::WEAKNESS);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::POISONED);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::POISON);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::FROZEN);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::SLOWNESS);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVULSION);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::NAUSEA);
-                        $effect->setAmplifier(0);
-                        $effect->setDuration(20 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CURSED);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::WITHER);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::DRUNK);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::SLOWNESS);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                        $effect = Effect::getEffect(Effect::MINING_FATIGUE);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                        $effect = Effect::getEffect(Effect::NAUSEA);
-                        $effect->setAmplifier(0);
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $damager->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CLOAKING);
-                    if ($enchantment !== null) {
-                        if (isset($this->plugin->cloakingcd[strtolower($entity->getName())]) && time() < $this->plugin->cloakingcd[strtolower($entity->getName())]) {
-                            return false;
+                    if ($event instanceof EntityDamageByEntityEvent) {
+                        $damager = $event->getDamager();
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::MOLTEN);
+                        if ($enchantment !== null) {
+                            $damager->setOnFire(3 * $enchantment->getLevel());
                         }
-                        $this->plugin->cloakingcd[strtolower($entity->getName())] = time() + 10;
-                        $effect = Effect::getEffect(Effect::INVISIBILITY);
-                        $effect->setAmplifier(0);
-                        $effect->setDuration(60 * $enchantment->getLevel());
-                        $effect->setVisible(false);
-                        $entity->addEffect($effect);
-                        $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
-                    }
-                }
-                $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SELFDESTRUCT);
-                if ($enchantment !== null) {
-                    if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
-                        for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
-                            $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
-                            $tnt->setMotion(new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1));
-                            $tnt->spawnToAll();
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENLIGHTED);
+                        if ($enchantment !== null) {
+                            $effect = Effect::getEffect(Effect::REGENERATION);
+                            $effect->setAmplifier($enchantment->getLevel());
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $entity->addEffect($effect);
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::HARDENED);
+                        if ($enchantment !== null) {
+                            $effect = Effect::getEffect(Effect::WEAKNESS);
+                            $effect->setAmplifier($enchantment->getLevel());
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::POISONED);
+                        if ($enchantment !== null) {
+                            $effect = Effect::getEffect(Effect::POISON);
+                            $effect->setAmplifier($enchantment->getLevel());
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::FROZEN);
+                        if ($enchantment !== null) {
+                            $effect = Effect::getEffect(Effect::SLOWNESS);
+                            $effect->setAmplifier($enchantment->getLevel());
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVULSION);
+                        if ($enchantment !== null) {
+                            $effect = Effect::getEffect(Effect::NAUSEA);
+                            $effect->setAmplifier(0);
+                            $effect->setDuration(20 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CURSED);
+                        if ($enchantment !== null) {
+                            $effect = Effect::getEffect(Effect::WITHER);
+                            $effect->setAmplifier($enchantment->getLevel());
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::DRUNK);
+                        if ($enchantment !== null) {
+                            $effect = Effect::getEffect(Effect::SLOWNESS);
+                            $effect->setAmplifier($enchantment->getLevel());
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                            $effect = Effect::getEffect(Effect::MINING_FATIGUE);
+                            $effect->setAmplifier($enchantment->getLevel());
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                            $effect = Effect::getEffect(Effect::NAUSEA);
+                            $effect->setAmplifier(0);
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $damager->addEffect($effect);
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CLOAKING);
+                        if ($enchantment !== null) {
+                            if (isset($this->plugin->cloakingcd[strtolower($entity->getName())]) && time() < $this->plugin->cloakingcd[strtolower($entity->getName())]) {
+                                return false;
+                            }
+                            $this->plugin->cloakingcd[strtolower($entity->getName())] = time() + 10;
+                            $effect = Effect::getEffect(Effect::INVISIBILITY);
+                            $effect->setAmplifier(0);
+                            $effect->setDuration(60 * $enchantment->getLevel());
+                            $effect->setVisible(false);
+                            $entity->addEffect($effect);
+                            $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
+                        }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SELFDESTRUCT);
+                        if ($enchantment !== null) {
+                            if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
+                                for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
+                                    $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
+                                    $tnt->setMotion(new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1));
+                                    $tnt->spawnToAll();
+                                }
+                            }
                         }
                     }
                 }
