@@ -68,16 +68,13 @@ class CustomEnchants extends Enchantment
 
 
     //BOOTS
-    /*
     const GEARS = 500;
     const SPRINGS = 501;
-    const STOMP = 502;
-    */
+    //const STOMP = 502;
 
     //HELMET
-    /*
-    const IMPLANTS = 600;
-    const GLOWING = 601;*/
+    //const IMPLANTS = 600;
+    const GLOWING = 601;
 
     public $id;
     public $level = 1;
@@ -122,6 +119,11 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::DRUNK] = new CustomEnchants(self::DRUNK, "Drunk", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::BERSERKER] = new CustomEnchants(self::BERSERKER, "Berserker", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::CLOAKING] = new CustomEnchants(self::CLOAKING, "Cloaking", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+
+        self::$enchantments[self::GEARS] = new CustomEnchants(self::GEARS, "Gears", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
+        self::$enchantments[self::SPRINGS] = new CustomEnchants(self::SPRINGS, "Springs", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
+
+        self::$enchantments[self::GLOWING] = new CustomEnchants(self::GLOWING, "Glowing", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
     }
 
     /**
