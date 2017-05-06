@@ -54,14 +54,14 @@ class CustomEnchants extends Enchantment
     //ARMOR
     const MOLTEN = 400;
     const ENLIGHTED = 401;
-    /*const HARDENED = 402;
-    const POISONED = 403;*/
+    const HARDENED = 402;
+    const POISONED = 403;
     const FROZEN = 404;
-    /* const OBSIDIANSHIELD = 405;
-     const REVULSION = 406;*/
+    // const OBSIDIANSHIELD = 405;
+    const REVULSION = 406;
     const SELFDESTRUCT = 407;
     const CURSED = 408;
-    //const ENDERSHIFT = 409;
+    const ENDERSHIFT = 409;
     const DRUNK = 410;
     const BERSERKER = 411;
     const CLOAKING = 412;
@@ -111,9 +111,13 @@ class CustomEnchants extends Enchantment
 
         self::$enchantments[self::MOLTEN] = new CustomEnchants(self::MOLTEN, "Molten", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::ENLIGHTED] = new CustomEnchants(self::ENLIGHTED, "Enlighted", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+        self::$enchantments[self::HARDENED] = new CustomEnchants(self::HARDENED, "Hardened", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+        self::$enchantments[self::POISONED] = new CustomEnchants(self::POISONED, "Poisoned", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::FROZEN] = new CustomEnchants(self::FROZEN, "Frozen", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+        self::$enchantments[self::REVULSION] = new CustomEnchants(self::REVULSION, "Revulsion", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::SELFDESTRUCT] = new CustomEnchants(self::SELFDESTRUCT, "Self Destruct", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::CURSED] = new CustomEnchants(self::CURSED, "Cursed", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+        self::$enchantments[self::ENDERSHIFT] = new CustomEnchants(self::ENDERSHIFT, "Endershift", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::DRUNK] = new CustomEnchants(self::DRUNK, "Drunk", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::BERSERKER] = new CustomEnchants(self::BERSERKER, "Berserker", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::CLOAKING] = new CustomEnchants(self::CLOAKING, "Cloaking", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);

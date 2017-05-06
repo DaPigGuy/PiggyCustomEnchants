@@ -23,6 +23,7 @@ class Main extends PluginBase
     public $vampirecd;
     public $cloakingcd;
     public $berserkercd;
+    public $endershiftcd;
 
     public function onEnable()
     {
