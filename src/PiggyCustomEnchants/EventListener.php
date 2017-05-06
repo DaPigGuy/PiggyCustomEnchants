@@ -33,6 +33,8 @@ use pocketmine\utils\TextFormat;
  */
 class EventListener implements Listener
 {
+    private $plugin;
+
     /**
      * EventListener constructor.
      * @param Main $plugin
@@ -330,7 +332,7 @@ class EventListener implements Listener
                 if ($enchantment !== null) {
                     $entity->removeEffect(Effect::FIRE_RESISTANCE);
                 }
-                if($slot == $entity->getInventory()->getSize() + 3){ //Boot slot
+                if ($slot == $entity->getInventory()->getSize() + 3) { //Boot slot
                     $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::GEARS);
                     if ($enchantment !== null) {
                         $effect = Effect::getEffect(Effect::SPEED);
@@ -356,7 +358,7 @@ class EventListener implements Listener
                         $entity->removeEffect(Effect::JUMP);
                     }
                 }
-                if($slot == $entity->getInventory()->getSize()){ //Helmet slot
+                if ($slot == $entity->getInventory()->getSize()) { //Helmet slot
                     $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::GLOWING);
                     if ($enchantment !== null) {
                         $effect = Effect::getEffect(Effect::NIGHT_VISION);
@@ -372,6 +374,25 @@ class EventListener implements Listener
                 }
             }
             if ($event instanceof EntityDamageEvent) {
+                $damage = $event->getDamage();
+                $cause = $event->getCause();
+                if ($cause == EntityDamageEvent::CAUSE_FALL) {
+                    $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::STOMP);
+                    if ($enchantment !== null) {
+                        $entities = $entity->getLevel()->getNearbyEntities($entity->getBoundingBox());
+                        foreach ($entities as $e) {
+                            if($entity == $e){
+                                continue;
+                            }
+                            $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $damage / 2);
+                            $this->plugin->getServer()->getPluginManager()->callEvent($ev);
+                            $e->attack($damage / 2, $ev);
+                        }
+                        if(count($entities) > 1) {
+                            $event->setDamage($event->getDamage() / 4);
+                        }
+                    }
+                }
                 foreach ($entity->getInventory()->getArmorContents() as $armor) {
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENDERSHIFT);
                     if ($enchantment !== null) {

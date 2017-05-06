@@ -70,7 +70,7 @@ class CustomEnchants extends Enchantment
     //BOOTS
     const GEARS = 500;
     const SPRINGS = 501;
-    //const STOMP = 502;
+    const STOMP = 502;
 
     //HELMET
     //const IMPLANTS = 600;
@@ -122,6 +122,7 @@ class CustomEnchants extends Enchantment
 
         self::$enchantments[self::GEARS] = new CustomEnchants(self::GEARS, "Gears", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
         self::$enchantments[self::SPRINGS] = new CustomEnchants(self::SPRINGS, "Springs", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
+        self::$enchantments[self::STOMP] = new CustomEnchants(self::STOMP, "Stomp", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
 
         self::$enchantments[self::GLOWING] = new CustomEnchants(self::GLOWING, "Glowing", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
     }
