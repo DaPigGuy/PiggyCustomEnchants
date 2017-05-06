@@ -361,7 +361,7 @@ class EventListener implements Listener
                     if ($enchantment !== null) {
                         $effect = Effect::getEffect(Effect::NIGHT_VISION);
                         $effect->setAmplifier(0);
-                        $effect->setDuration(PHP_INT_MAX);
+                        $effect->setDuration(2147483647); //Effect wont show up for PHP_INT_MAX or it's value for 64 bit (I'm on 64 bit system), highest value i can use
                         $effect->setVisible(false);
                         $entity->addEffect($effect);
                     }

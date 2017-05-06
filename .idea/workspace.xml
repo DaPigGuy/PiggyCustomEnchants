@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1fd5a167-c39a-4d93-94f7-a459084730dd" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/CustomEnchants/CustomEnchants.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" afterPath="$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,8 +39,8 @@
       <file leaf-file-name="EventListener.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="324" column="164" lean-forward="false" selection-start-line="324" selection-start-column="164" selection-end-line="324" selection-end-column="164" />
+            <state relative-caret-position="602">
+              <caret line="364" column="0" lean-forward="false" selection-start-line="364" selection-start-column="0" selection-end-line="364" selection-end-column="0" />
               <folding>
                 <element signature="e#39#93#0#PHP" expanded="true" />
               </folding>
@@ -469,7 +468,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="84943000" />
+    <option name="totallyTimeSpent" value="85449000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1444" height="867" extended-state="0" />
@@ -933,8 +932,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/PiggyCustomEnchants/EventListener.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="324" column="164" lean-forward="false" selection-start-line="324" selection-start-column="164" selection-end-line="324" selection-end-column="164" />
+        <state relative-caret-position="602">
+          <caret line="364" column="0" lean-forward="false" selection-start-line="364" selection-start-column="0" selection-end-line="364" selection-end-column="0" />
           <folding>
             <element signature="e#39#93#0#PHP" expanded="true" />
           </folding>
