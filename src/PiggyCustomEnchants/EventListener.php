@@ -146,6 +146,11 @@ class EventListener implements Listener
                 $damage = 2 + ($enchantment->getLevel() / 10);
                 $event->setDamage($event->getDamage() + $damage);
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::GOOEY);
+            if ($enchantment !== null) {
+                $task = new GoeyTask($this->plugin, $entity, $enchantment->getLevel());
+                $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 1);
+            }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::POISON);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::POISON);

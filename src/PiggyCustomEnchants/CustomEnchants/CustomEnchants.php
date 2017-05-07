@@ -14,7 +14,7 @@ class CustomEnchants extends Enchantment
     const LIFESTEAL = 100;
     const BLIND = 101;
     const DEATHBRINGER = 102;
-    //const GOOEY = 103;
+    const GOOEY = 103;
     const POISON = 104;
     /*const BLOCK = 105;
     const ICEASPECT = 106;
@@ -31,7 +31,7 @@ class CustomEnchants extends Enchantment
     const DISARMING = 117;
 
     //TOOLS
-    const EXPLOSIVE = 200;
+    const EXPLOSIVE = 200; //Not accurate
     const SMELTING = 201;
     const ENERGIZING = 202;
     const QUICKENING = 203;
@@ -41,13 +41,13 @@ class CustomEnchants extends Enchantment
     const LIGHTNING = 301;
     const FIREWORK = 302;
     const PARALYZE = 303;*/
-    const MOLOTOV = 304;
+    const MOLOTOV = 304; //Falling sand fire doesn't appear
     const VOLLEY = 305;
     //WITHER SHOULD BE HERE AGAIN... BUT...
     const PIERCING = 307;
     const SHUFFLE = 308;
     //const BOUNTYHUNTER = 309;
-    const HEALING = 310; //NO ONE WANTS YOU, SHOO!
+    const HEALING = 310;
     //const BLAZE = 311;
 
 
@@ -91,6 +91,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::LIFESTEAL] = new CustomEnchants(self::LIFESTEAL, "Lifesteal", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::BLIND] = new CustomEnchants(self::BLIND, "Blind", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::DEATHBRINGER] = new CustomEnchants(self::DEATHBRINGER, "Death Bringer", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::GOOEY] = new CustomEnchants(self::GOOEY, "Gooey", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::POISON] = new CustomEnchants(self::POISON, "Poison", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::CRIPPLINGSTRIKE] = new CustomEnchants(self::CRIPPLINGSTRIKE, "Cripple", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::VAMPIRE] = new CustomEnchants(self::VAMPIRE, "Vampire", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
