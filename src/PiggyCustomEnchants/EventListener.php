@@ -101,6 +101,22 @@ class EventListener implements Listener
     }
 
     /**
+     * @param EntitySpawnEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onSpawn(EntitySpawnEvent $event)
+    {
+        $entity = $event->getEntity();
+        if ($entity instanceof Arrow && $entity->shootingEntity instanceof Player) {
+            if (!isset($entity->namedtag["Volley"])) {
+                $this->checkBowEnchants($entity->shootingEntity, $entity, $event);
+            }
+        }
+    }
+
+    /**
      * @param Player $damager
      * @param Entity $entity
      * @param EntityEvent $event
@@ -291,7 +307,7 @@ class EventListener implements Listener
                 for ($x = $boundaries; $x >= -$boundaries; $x -= 0.1) {
                     for ($z = $boundaries; $z >= -$boundaries; $z -= 0.1) {
                         $entity->getLevel()->setBlock($entity->add(0, 1), Block::get(Block::FIRE));
-                        $fire = Entity::createEntity("FallingSand", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x + 0.5), new DoubleTag("", $entity->y + 1), new DoubleTag("", $entity->z + 0.5)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $x), new DoubleTag("", 0.1), new DoubleTag("", $z)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "TileID" => new IntTag("TileID", 51), "Data" => new ByteTag("Data", 0),]));
+                        $fire = Entity::createEntity("FallingSand", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x + 0.5), new DoubleTag("", $entity->y + 1), new DoubleTag("", $entity->z + 0.5)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $x), new DoubleTag("", 0.1), new DoubleTag("", $z)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "TileID" => new IntTag("TileID", 51), "Data" => new ByteTag("Data", 0)]));
                         $fire->spawnToAll();
                     }
                 }
@@ -321,6 +337,26 @@ class EventListener implements Listener
                     $entity->setHealth($entity->getMaxHealth());
                 }
                 $event->setDamage(0);
+            }
+        }
+        if ($event instanceof EntitySpawnEvent) {
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::VOLLEY);
+            if ($enchantment !== null) {
+                $amount = 1 + 2 * $enchantment->getLevel();
+                $anglesbetweenarrows = (45 / ($amount - 1)) * M_PI / 180;
+                $pitch = ($damager->getLocation()->getPitch() + 90) * M_PI / 180;
+                $yaw = ($damager->getLocation()->getYaw() + 90 - 45 / 2) * M_PI / 180;
+                $sZ = cos($pitch);
+                for ($i = 0; $i < $amount; $i++) {
+                    $nX = sin($pitch) * cos($yaw + $anglesbetweenarrows * $i);
+                    $nY = sin($pitch) * sin($yaw + $anglesbetweenarrows * $i);
+                    $newDir = new Vector3($nX, $sZ, $nY);
+                    $arrow = Entity::createEntity("Arrow", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $damager->x), new DoubleTag("", $damager->y + $damager->getEyeHeight()), new DoubleTag("", $damager->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $damager->yaw), new FloatTag("", $damager->pitch)]), "Volley" => new ByteTag("Volley", 1)]), $damager);
+                    $arrow->setMotion($newDir->normalize()->multiply($entity->getMotion()->length()));
+                    $arrow->setOnFire($entity->fireTicks * 20);
+                    $arrow->spawnToAll();
+                }
+                $entity->close();
             }
         }
     }
