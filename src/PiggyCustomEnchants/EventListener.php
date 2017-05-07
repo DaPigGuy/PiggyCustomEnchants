@@ -3,6 +3,7 @@
 namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
@@ -22,6 +23,7 @@ use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
+use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\Player;
 use pocketmine\utils\Random;
@@ -283,6 +285,21 @@ class EventListener implements Listener
     public function checkBowEnchants(Player $damager, Entity $entity, EntityEvent $event)
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::MOLOTOV);
+            if ($enchantment !== null) {
+                $boundaries = 0.1 * $enchantment->getLevel();
+                for ($x = $boundaries; $x >= -$boundaries; $x -= 0.1) {
+                    for ($z = $boundaries; $z >= -$boundaries; $z -= 0.1) {
+                        $entity->getLevel()->setBlock($entity->add(0, 1), Block::get(Block::FIRE));
+                        $fire = Entity::createEntity("FallingSand", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x + 0.5), new DoubleTag("", $entity->y + 1), new DoubleTag("", $entity->z + 0.5)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $x), new DoubleTag("", 0.1), new DoubleTag("", $z)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "TileID" => new IntTag("TileID", 51), "Data" => new ByteTag("Data", 0),]));
+                        $fire->spawnToAll();
+                    }
+                }
+            }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PIERCING);
+            if ($enchantment !== null) {
+                $event->setDamage(0, EntityDamageEvent::MODIFIER_ARMOR);
+            }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::SHUFFLE);
             if ($enchantment !== null) {
                 $pos1 = clone $damager->getPosition();
@@ -381,14 +398,14 @@ class EventListener implements Listener
                     if ($enchantment !== null) {
                         $entities = $entity->getLevel()->getNearbyEntities($entity->getBoundingBox());
                         foreach ($entities as $e) {
-                            if($entity == $e){
+                            if ($entity == $e) {
                                 continue;
                             }
                             $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $damage / 2);
                             $this->plugin->getServer()->getPluginManager()->callEvent($ev);
                             $e->attack($damage / 2, $ev);
                         }
-                        if(count($entities) > 1) {
+                        if (count($entities) > 1) {
                             $event->setDamage($event->getDamage() / 4);
                         }
                     }
@@ -517,8 +534,7 @@ class EventListener implements Listener
                         if ($enchantment !== null) {
                             if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
                                 for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
-                                    $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
-                                    $tnt->setMotion(new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1));
+                                    $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
                                     $tnt->spawnToAll();
                                 }
                             }
