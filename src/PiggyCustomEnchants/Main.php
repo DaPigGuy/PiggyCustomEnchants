@@ -4,7 +4,9 @@ namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\Entities\Fireball;
 use pocketmine\command\CommandSender;
+use pocketmine\entity\Entity;
 use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
@@ -28,6 +30,7 @@ class Main extends PluginBase
     public function onEnable()
     {
         CustomEnchants::init();
+        Entity::registerEntity(Fireball::class);
         $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getLogger()->info("§aEnabled");

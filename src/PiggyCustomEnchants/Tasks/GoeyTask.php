@@ -1,7 +1,8 @@
 <?php
 
-namespace PiggyCustomEnchants;
+namespace PiggyCustomEnchants\Tasks;
 
+use PiggyCustomEnchants\Main;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use pocketmine\scheduler\PluginTask;
@@ -18,6 +19,9 @@ class GoeyTask extends PluginTask
 
     /**
      * GoeyTask constructor.
+     * @param Main $plugin
+     * @param Entity $entity
+     * @param $level
      */
     public function __construct(Main $plugin, Entity $entity, $level)
     {

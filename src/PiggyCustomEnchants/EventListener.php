@@ -3,6 +3,7 @@
 namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\Tasks\GoeyTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Effect;
@@ -363,6 +364,13 @@ class EventListener implements Listener
                 }
                 $entity->close();
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLAZE);
+            if ($enchantment !== null) {
+                $fireball = Entity::createEntity("Fireball", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $entity->yaw), new FloatTag("", $entity->pitch)])]), $damager);
+                $fireball->setMotion($entity->getMotion());
+                $fireball->spawnToAll();
+                $entity->close();
+            }
         }
     }
 
@@ -484,6 +492,7 @@ class EventListener implements Listener
                             $effect->setDuration(200 * $enchantment->getLevel());
                             $effect->setVisible(false);
                             $entity->addEffect($effect);
+                            $entity->sendMessage("Your bloodloss makes your stronger!");
                         }
                     }
                     if ($event instanceof EntityDamageByEntityEvent) {

@@ -48,7 +48,7 @@ class CustomEnchants extends Enchantment
     const SHUFFLE = 308;
     //const BOUNTYHUNTER = 309;
     const HEALING = 310;
-    //const BLAZE = 311;
+    const BLAZE = 311;
 
 
     //ARMOR
@@ -109,6 +109,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::PIERCING] = new CustomEnchants(self::PIERCING, "Piercing", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::SHUFFLE] = new CustomEnchants(self::SHUFFLE, "Shuffle", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::HEALING] = new CustomEnchants(self::HEALING, "Healing", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
+        self::$enchantments[self::BLAZE] = new CustomEnchants(self::BLAZE, "Blaze", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
 
         self::$enchantments[self::MOLTEN] = new CustomEnchants(self::MOLTEN, "Molten", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::ENLIGHTED] = new CustomEnchants(self::ENLIGHTED, "Enlighted", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
