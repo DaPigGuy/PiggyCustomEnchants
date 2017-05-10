@@ -27,6 +27,8 @@ class Main extends PluginBase
     public $berserkercd;
     public $endershiftcd;
 
+    public $breakingTree;
+
     public function onEnable()
     {
         CustomEnchants::init();

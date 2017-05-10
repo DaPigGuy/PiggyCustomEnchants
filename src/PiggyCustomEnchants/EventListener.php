@@ -196,6 +196,12 @@ class EventListener implements Listener
                     $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::AERIAL);
+            if ($enchantment !== null) {
+                if (!$damager->isOnGround()) {
+                    $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
+                }
+            }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::WITHER);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::WITHER);
@@ -294,6 +300,16 @@ class EventListener implements Listener
                 $effect->setDuration(40);
                 $effect->setVisible(false);
                 $player->addEffect($effect);
+            }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::LUMBERJACK);
+            if ($enchantment !== null) {
+                if ($player->isSneaking()) {
+                    if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
+                        if (!isset($this->plugin->breakingTree[strtolower($player->getName())]) || $this->plugin->breakingTree[strtolower($player->getName())] < time()) {
+                            $this->breakTree($block, $player);
+                        }
+                    }
+                }
             }
         }
     }
@@ -447,7 +463,7 @@ class EventListener implements Listener
                     if ($enchantment !== null) {
                         $entities = $entity->getLevel()->getNearbyEntities($entity->getBoundingBox());
                         foreach ($entities as $e) {
-                            if ($entity == $e) {
+                            if ($entity === $e) {
                                 continue;
                             }
                             $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $damage / 2);
@@ -592,6 +608,30 @@ class EventListener implements Listener
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * @param Block $block
+     * @param Player $player
+     * @param Block|null $oldblock
+     */
+    public function breakTree(Block $block, Player $player, Block $oldblock = null)
+    {
+        $item = $player->getInventory()->getItemInHand();
+        for ($i = 0; $i <= 5; $i++) {
+            $this->plugin->breakingTree[strtolower($player->getName())] = time() + 1;
+            $side = $block->getSide($i);
+            if ($oldblock !== null) {
+                if ($side->equals($oldblock)) {
+                    continue;
+                }
+            }
+            if ($side->getId() !== Block::WOOD && $side->getId() !== Block::WOOD2) {
+                continue;
+            }
+            $player->getLevel()->useBreakOn($side, $item, $player);
+            $this->breakTree($side, $player, $block);
         }
     }
 }

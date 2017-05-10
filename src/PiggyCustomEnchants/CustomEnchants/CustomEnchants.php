@@ -25,7 +25,7 @@ class CustomEnchants extends Enchantment
     const VAMPIRE = 111;
     //const DEEPWOUNDS = 112;
     const CHARGE = 113;
-    //const AERIAL = 114;
+    const AERIAL = 114;
     const WITHER = 115;
     //const HEADLESS = 116;
     const DISARMING = 117;
@@ -35,6 +35,7 @@ class CustomEnchants extends Enchantment
     const SMELTING = 201;
     const ENERGIZING = 202;
     const QUICKENING = 203;
+    const LUMBERJACK = 204;
 
     //BOWS
     /*const BOMBARDMENT = 300;
@@ -96,6 +97,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::CRIPPLINGSTRIKE] = new CustomEnchants(self::CRIPPLINGSTRIKE, "Cripple", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::VAMPIRE] = new CustomEnchants(self::VAMPIRE, "Vampire", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::CHARGE] = new CustomEnchants(self::CHARGE, "Charge", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::AERIAL] = new CustomEnchants(self::AERIAL, "Aerial", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::WITHER] = new CustomEnchants(self::WITHER, "Wither", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::DISARMING] = new CustomEnchants(self::DISARMING, "Disarming", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
 
@@ -103,6 +105,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::SMELTING] = new CustomEnchants(self::SMELTING, "Smelting", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::ENERGIZING] = new CustomEnchants(self::ENERGIZING, "Energizing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::QUICKENING] = new CustomEnchants(self::QUICKENING, "Quickening", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
+        self::$enchantments[self::LUMBERJACK] = new CustomEnchants(self::LUMBERJACK, "Lumberjack", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
 
         self::$enchantments[self::MOLOTOV] = new CustomEnchants(self::MOLOTOV, "Molotov", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::VOLLEY] = new CustomEnchants(self::VOLLEY, "Volley", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_BOW);
