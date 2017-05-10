@@ -16,7 +16,9 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityEvent;
 use pocketmine\event\entity\EntitySpawnEvent;
+use pocketmine\event\Event;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
@@ -96,9 +98,9 @@ class EventListener implements Listener
                     return false;
                 }
                 $this->checkGlobalEnchants($damager, $entity, $event);
-                return true;
             }
         }
+        return true;
     }
 
     /**
@@ -118,11 +120,28 @@ class EventListener implements Listener
     }
 
     /**
+     * @param PlayerMoveEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onMove(PlayerMoveEvent $event)
+    {
+        $player = $event->getPlayer();
+        $from = $event->getFrom();
+        if ($from->getFloorX() == $player->getFloorX() && $from->getFloorY() == $player->getFloorY() && $from->getFloorZ() == $player->getFloorZ()) {
+            return false;
+        }
+        $this->checkGlobalEnchants($player, null, $event);
+        return true;
+    }
+
+    /**
      * @param Player $damager
      * @param Entity $entity
      * @param EntityEvent $event
      */
-    public function checkGlobalEnchants(Player $damager, Entity $entity, EntityEvent $event)
+    public function checkGlobalEnchants(Player $damager, Entity $entity = null, Event $event)
     {
         //TODO: Check to make sure you can use enchant with item
         if ($event instanceof EntityDamageEvent) {
@@ -217,6 +236,20 @@ class EventListener implements Listener
                     $entity->getInventory()->removeItem($item);
                     $motion = $entity->getDirectionVector()->multiply(0.4);
                     $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                }
+            }
+        }
+        if ($event instanceof PlayerMoveEvent) {
+            foreach ($damager->getInventory()->getContents() as $slot => $item) {
+                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::AUTOREPAIR);
+                if ($enchantment !== null) {
+                    $newDir = $item->getDamage() - (1 + (1 * $enchantment->getLevel()));
+                    if ($newDir < 0) {
+                        $item->setDamage(0);
+                    } else {
+                        $item->setDamage($newDir);
+                    }
+                    $damager->getInventory()->setItem($slot, $item);
                 }
             }
         }

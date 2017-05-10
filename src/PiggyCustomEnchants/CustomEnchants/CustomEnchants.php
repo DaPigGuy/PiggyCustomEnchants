@@ -18,8 +18,8 @@ class CustomEnchants extends Enchantment
     const POISON = 104;
     /*const BLOCK = 105;
     const ICEASPECT = 106;
-    const SHOCKWAVE = 107;
-    const AUTOREPAIR = 108;*/
+    const SHOCKWAVE = 107;*/
+    const AUTOREPAIR = 108;
     const CRIPPLINGSTRIKE = 109;
     //const THUNDERBLOW = 110;
     const VAMPIRE = 111;
@@ -94,6 +94,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::DEATHBRINGER] = new CustomEnchants(self::DEATHBRINGER, "Death Bringer", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::GOOEY] = new CustomEnchants(self::GOOEY, "Gooey", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::POISON] = new CustomEnchants(self::POISON, "Poison", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::AUTOREPAIR] = new CustomEnchants(self::AUTOREPAIR, "Autorepair", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::CRIPPLINGSTRIKE] = new CustomEnchants(self::CRIPPLINGSTRIKE, "Cripple", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::VAMPIRE] = new CustomEnchants(self::VAMPIRE, "Vampire", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::CHARGE] = new CustomEnchants(self::CHARGE, "Charge", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
@@ -105,7 +106,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::SMELTING] = new CustomEnchants(self::SMELTING, "Smelting", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::ENERGIZING] = new CustomEnchants(self::ENERGIZING, "Energizing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::QUICKENING] = new CustomEnchants(self::QUICKENING, "Quickening", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
-        self::$enchantments[self::LUMBERJACK] = new CustomEnchants(self::LUMBERJACK, "Lumberjack", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
+        self::$enchantments[self::LUMBERJACK] = new CustomEnchants(self::LUMBERJACK, "Lumberjack", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_AXE);
 
         self::$enchantments[self::MOLOTOV] = new CustomEnchants(self::MOLOTOV, "Molotov", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::VOLLEY] = new CustomEnchants(self::VOLLEY, "Volley", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_BOW);
