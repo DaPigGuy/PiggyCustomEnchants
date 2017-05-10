@@ -28,6 +28,7 @@ class Main extends PluginBase
     public $endershiftcd;
 
     public $breakingTree;
+    public $mined;
 
     public function onEnable()
     {

@@ -339,6 +339,7 @@ class EventListener implements Listener
                 if ($player->isSneaking()) {
                     if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
                         if (!isset($this->plugin->breakingTree[strtolower($player->getName())]) || $this->plugin->breakingTree[strtolower($player->getName())] < time()) {
+                            $this->plugin->mined[strtolower($player->getName())] = 0;
                             $this->breakTree($block, $player);
                         }
                     }
@@ -653,6 +654,9 @@ class EventListener implements Listener
     {
         $item = $player->getInventory()->getItemInHand();
         for ($i = 0; $i <= 5; $i++) {
+            if ($this->plugin->mined[strtolower($player->getName())] > 800) {
+                break;
+            }
             $this->plugin->breakingTree[strtolower($player->getName())] = time() + 1;
             $side = $block->getSide($i);
             if ($oldblock !== null) {
@@ -664,6 +668,7 @@ class EventListener implements Listener
                 continue;
             }
             $player->getLevel()->useBreakOn($side, $item, $player);
+            $this->plugin->mined[strtolower($player->getName())]++;
             $this->breakTree($side, $player, $block);
         }
     }
