@@ -18,6 +18,7 @@ use pocketmine\event\entity\EntityEvent;
 use pocketmine\event\entity\EntitySpawnEvent;
 use pocketmine\event\Event;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
@@ -120,6 +121,18 @@ class EventListener implements Listener
     }
 
     /**
+     * @param PlayerDeathEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onDeath(PlayerDeathEvent $event)
+    {
+        $player = $event->getEntity();
+        $this->checkGlobalEnchants($player, null, $event);
+    }
+
+    /**
      * @param PlayerMoveEvent $event
      *
      * @priority HIGHEST
@@ -139,7 +152,8 @@ class EventListener implements Listener
     /**
      * @param Player $damager
      * @param Entity $entity
-     * @param EntityEvent $event
+     * @param EntityEvent|Event $event
+     * @return bool
      */
     public function checkGlobalEnchants(Player $damager, Entity $entity = null, Event $event)
     {
@@ -239,6 +253,26 @@ class EventListener implements Listener
                 }
             }
         }
+        if ($event instanceof PlayerDeathEvent) {
+            $drops = $event->getDrops();
+            $soulbounded = [];
+            foreach ($damager->getInventory()->getContents() as $item) {
+                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::SOULBOUND);
+                if ($enchantment !== null) {
+                    $index = array_search($item, $drops);
+                    if ($index !== false) {
+                        unset($drops[$index]);
+                    }
+                    array_push($soulbounded, $this->plugin->removeEnchantment($item, $enchantment, $damager));
+                }
+            }
+            $event->setDrops([]);
+            $event->setKeepInventory(true);
+            foreach ($drops as $drop) {
+                $damager->getLevel()->dropItem($damager, $drop);
+            }
+            $damager->getInventory()->setContents($soulbounded);
+        }
         if ($event instanceof PlayerMoveEvent) {
             foreach ($damager->getInventory()->getContents() as $slot => $item) {
                 $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::AUTOREPAIR);
@@ -253,6 +287,7 @@ class EventListener implements Listener
                 }
             }
         }
+        return true;
     }
 
     /**
@@ -294,7 +329,7 @@ class EventListener implements Listener
                         case Item::NETHERRACK:
                             array_push($finaldrop, Item::get(Item::NETHER_BRICK, 0, $drop->getCount()));
                             break;
-                        case Item::STONE_BRICK: //SINCE WHEN CAN YOU SMELT STONE BRICKS TO MAKE THEM CRACKED???
+                        case Item::STONE_BRICK:
                             if ($drop->getDamage() == 0) {
                                 array_push($finaldrop, Item::get(Item::STONE_BRICK, 2, $drop->getCount()));
                             }
@@ -345,6 +380,13 @@ class EventListener implements Listener
                     }
                 }
             }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::TELEPATHY);
+            if ($enchantment !== null) {
+                foreach ($drops as $drop) {
+                    $player->getInventory()->addItem($drop);
+                }
+                $event->setDrops([]);
+            }
         }
     }
 
@@ -393,6 +435,14 @@ class EventListener implements Listener
                     $entity->setHealth($entity->getMaxHealth());
                 }
                 $event->setDamage(0);
+            }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HEADHUNTER);
+            if ($enchantment !== null) {
+                $projectile = $event->getChild();
+                if ($projectile->y > $entity->getPosition()->y + $entity->getEyeHeight()) {
+                    $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
+                }
+
             }
         }
         if ($event instanceof EntitySpawnEvent) {
@@ -509,7 +559,7 @@ class EventListener implements Listener
                         }
                     }
                 }
-                foreach ($entity->getInventory()->getArmorContents() as $armor) {
+                foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENDERSHIFT);
                     if ($enchantment !== null) {
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
@@ -639,10 +689,22 @@ class EventListener implements Listener
                                 }
                             }
                         }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVIVE);
+                        if ($enchantment !== null) {
+                            if ($event->getDamage() >= $entity->getHealth()) {
+                                $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment, $entity));
+                                $entity->removeAllEffects();
+                                $entity->setHealth($entity->getMaxHealth());
+                                $entity->setFood($entity->getMaxFood());
+                                $event->setDamage(0);
+                                //TODO: Side effect
+                            }
+                        }
                     }
                 }
             }
         }
+        return true;
     }
 
     /**

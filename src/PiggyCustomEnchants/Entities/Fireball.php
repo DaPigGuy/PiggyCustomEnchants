@@ -4,7 +4,7 @@ namespace PiggyCustomEnchants\Entities;
 
 
 use pocketmine\block\Block;
-use pocketmine\block\Transparent;
+
 use pocketmine\entity\Projectile;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;

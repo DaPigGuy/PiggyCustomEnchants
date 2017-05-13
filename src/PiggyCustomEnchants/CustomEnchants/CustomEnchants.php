@@ -29,6 +29,7 @@ class CustomEnchants extends Enchantment
     const WITHER = 115;
     //const HEADLESS = 116;
     const DISARMING = 117;
+    const SOULBOUND = 118;
 
     //TOOLS
     const EXPLOSIVE = 200; //Not accurate
@@ -36,6 +37,7 @@ class CustomEnchants extends Enchantment
     const ENERGIZING = 202;
     const QUICKENING = 203;
     const LUMBERJACK = 204;
+    const TELEPATHY = 205;
 
     //BOWS
     /*const BOMBARDMENT = 300;
@@ -50,6 +52,7 @@ class CustomEnchants extends Enchantment
     //const BOUNTYHUNTER = 309;
     const HEALING = 310;
     const BLAZE = 311;
+    const HEADHUNTER = 312;
 
 
     //ARMOR
@@ -66,6 +69,7 @@ class CustomEnchants extends Enchantment
     const DRUNK = 410;
     const BERSERKER = 411;
     const CLOAKING = 412;
+    const REVIVE = 413;
 
 
     //BOOTS
@@ -91,7 +95,7 @@ class CustomEnchants extends Enchantment
     {
         self::$enchantments[self::LIFESTEAL] = new CustomEnchants(self::LIFESTEAL, "Lifesteal", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::BLIND] = new CustomEnchants(self::BLIND, "Blind", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_SWORD);
-        self::$enchantments[self::DEATHBRINGER] = new CustomEnchants(self::DEATHBRINGER, "Death Bringer", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::DEATHBRINGER] = new CustomEnchants(self::DEATHBRINGER, "Deathbringer", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::GOOEY] = new CustomEnchants(self::GOOEY, "Gooey", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::POISON] = new CustomEnchants(self::POISON, "Poison", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::AUTOREPAIR] = new CustomEnchants(self::AUTOREPAIR, "Autorepair", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
@@ -101,12 +105,14 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::AERIAL] = new CustomEnchants(self::AERIAL, "Aerial", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::WITHER] = new CustomEnchants(self::WITHER, "Wither", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_SWORD);
         self::$enchantments[self::DISARMING] = new CustomEnchants(self::DISARMING, "Disarming", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_SWORD);
+        self::$enchantments[self::SOULBOUND] = new CustomEnchants(self::SOULBOUND, "Soulbound", self::RARITY_MYTHIC, self::ACTIVATION_SELF, self::SLOT_ALL);
 
         self::$enchantments[self::EXPLOSIVE] = new CustomEnchants(self::EXPLOSIVE, "Explosive", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::SMELTING] = new CustomEnchants(self::SMELTING, "Smelting", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::ENERGIZING] = new CustomEnchants(self::ENERGIZING, "Energizing", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::QUICKENING] = new CustomEnchants(self::QUICKENING, "Quickening", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
         self::$enchantments[self::LUMBERJACK] = new CustomEnchants(self::LUMBERJACK, "Lumberjack", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_AXE);
+        self::$enchantments[self::TELEPATHY] = new CustomEnchants(self::TELEPATHY, "Telepathy", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_PICKAXE);
 
         self::$enchantments[self::MOLOTOV] = new CustomEnchants(self::MOLOTOV, "Molotov", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::VOLLEY] = new CustomEnchants(self::VOLLEY, "Volley", self::RARITY_MYTHIC, self::ACTIVATION_HELD, self::SLOT_BOW);
@@ -114,6 +120,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::SHUFFLE] = new CustomEnchants(self::SHUFFLE, "Shuffle", self::RARITY_UNCOMMON, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::HEALING] = new CustomEnchants(self::HEALING, "Healing", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
         self::$enchantments[self::BLAZE] = new CustomEnchants(self::BLAZE, "Blaze", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
+        self::$enchantments[self::HEADHUNTER] = new CustomEnchants(self::HEADHUNTER, "Headhunter", self::RARITY_RARE, self::ACTIVATION_HELD, self::SLOT_BOW);
 
         self::$enchantments[self::MOLTEN] = new CustomEnchants(self::MOLTEN, "Molten", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::ENLIGHTED] = new CustomEnchants(self::ENLIGHTED, "Enlighted", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
@@ -128,6 +135,7 @@ class CustomEnchants extends Enchantment
         self::$enchantments[self::DRUNK] = new CustomEnchants(self::DRUNK, "Drunk", self::RARITY_RARE, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::BERSERKER] = new CustomEnchants(self::BERSERKER, "Berserker", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
         self::$enchantments[self::CLOAKING] = new CustomEnchants(self::CLOAKING, "Cloaking", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
+        self::$enchantments[self::REVIVE] = new CustomEnchants(self::REVIVE, "Revive", self::RARITY_MYTHIC, self::ACTIVATION_EQUIP, self::SLOT_ARMOR);
 
         self::$enchantments[self::GEARS] = new CustomEnchants(self::GEARS, "Gears", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);
         self::$enchantments[self::SPRINGS] = new CustomEnchants(self::SPRINGS, "Springs", self::RARITY_UNCOMMON, self::ACTIVATION_EQUIP, self::SLOT_HEAD);

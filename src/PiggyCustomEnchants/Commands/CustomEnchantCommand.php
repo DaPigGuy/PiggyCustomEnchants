@@ -77,5 +77,6 @@ class CustomEnchantCommand extends PluginCommand
                 $sender->sendMessage("/customenchant <enchant|list>");
                 break;
         }
+        return true;
     }
 }
