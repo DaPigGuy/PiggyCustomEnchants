@@ -30,6 +30,8 @@ class Main extends PluginBase
     public $breakingTree;
     public $mined;
 
+    public $nofall;
+
     public function onEnable()
     {
         CustomEnchants::init();
@@ -120,6 +122,7 @@ class Main extends PluginBase
     /**
      * @param Item $item
      * @param CustomEnchants $enchant
+     * @param Player $player
      * @return bool|Item
      * @internal param CustomEnchants $ench
      */
