@@ -67,10 +67,11 @@ class Main extends PluginBase
      * @param $level
      * @param Player $player
      * @param CommandSender $sender
+     * @param null $slot
      * @return bool
      * @internal param $ench
      */
-    public function addEnchantment(Item $item, $enchant, $level, Player $player, CommandSender $sender = null)
+    public function addEnchantment(Item $item, $enchant, $level, Player $player, CommandSender $sender = null, $slot = null)
     {
         //TODO: Check if item can get enchant
         $enchant = CustomEnchants::getEnchantByName($enchant);
@@ -112,7 +113,11 @@ class Main extends PluginBase
             $item->setNamedTag($tag);
             $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
         }
-        $player->getInventory()->setItemInHand($item);
+        if ($slot == null) {
+            $player->getInventory()->setItemInHand($item);
+        } else {
+            $player->getInventory()->setItem($slot, $item);
+        }
         if ($sender !== null) {
             $sender->sendMessage("§aEnchanting suceeded.");
         }
@@ -123,10 +128,11 @@ class Main extends PluginBase
      * @param Item $item
      * @param CustomEnchants $enchant
      * @param Player $player
+     * @param $slot
      * @return bool|Item
      * @internal param CustomEnchants $ench
      */
-    public function removeEnchantment(Item $item, CustomEnchants $enchant, Player $player)
+    public function removeEnchantment(Item $item, CustomEnchants $enchant, Player $player, $slot)
     {
         if (!$item->hasEnchantments()) {
             return false;
@@ -140,7 +146,7 @@ class Main extends PluginBase
         }
         $item = Item::get($item->getId(), $item->getDamage(), $item->getCount());
         foreach ($enchants as $ench) {
-            $this->addEnchantment($item, str_replace(" ", "", $ench->getName()), $ench->getLevel(), $player);
+            $this->addEnchantment($item, str_replace(" ", "", $ench->getName()), $ench->getLevel(), $player, null, $slot);
         }
         return $item;
     }
