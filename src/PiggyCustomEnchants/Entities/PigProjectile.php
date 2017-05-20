@@ -44,6 +44,17 @@ class PigProjectile extends Projectile
         if ($porklevel > 3) {
             $porklevel = 3;
         }
+        switch ($porklevel){
+            case 1:
+                $this->damage = 1.5;
+                break;
+            case 2:
+                $this->damage = 2;
+                break;
+            case 3:
+                $this->damage = 3;
+                break;
+        }
         $this->porklevel = $porklevel;
     }
 
