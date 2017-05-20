@@ -216,75 +216,80 @@ class Main extends PluginBase
      * @param CommandSender $sender
      * @param null $slot
      * @param bool $check
-     * @return bool
      * @internal param $ench
      */
-    public function addEnchantment(Item $item, $enchant, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true)
+    public function addEnchantment(Item $item, $enchants, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true)
     {
         //TODO: Check if item can get enchant
-        $enchant = CustomEnchants::getEnchantByName($enchant);
-        if ($enchant == null) {
-            if ($sender !== null) {
-                $sender->sendMessage("§cInvalid enchantment.");
-            }
-            return false;
+        if (!is_array($enchants)) {
+            $enchants = [$enchants];
         }
-        $result = $this->canBeEnchanted($item, $enchant, $level);
-        if ($result === true || $check !== true) {
-            $enchant->setLevel($level);
-            if (!$item->hasCompoundTag()) {
-                $tag = new CompoundTag("", []);
-            } else {
-                $tag = $item->getNamedTag();
+
+        foreach ($enchants as $enchant) {
+            $enchant = CustomEnchants::getEnchantByName($enchant);
+            if ($enchant == null) {
+                if ($sender !== null) {
+                    $sender->sendMessage("§cInvalid enchantment.");
+                }
+                continue;
             }
-            if (!isset($tag->ench)) {
-                $tag->ench = new ListTag("ench", []);
-                $tag->ench->setTagType(NBT::TAG_Compound);
-            }
-            $found = false;
-            foreach ($tag->ench as $k => $entry) {
-                if ($entry["id"] === $enchant->getId()) {
-                    $tag->ench->{$k} = new CompoundTag("", [
+            $result = $this->canBeEnchanted($item, $enchant, $level);
+            if ($result === true || $check !== true) {
+                $enchant->setLevel($level);
+                if (!$item->hasCompoundTag()) {
+                    $tag = new CompoundTag("", []);
+                } else {
+                    $tag = $item->getNamedTag();
+                }
+                if (!isset($tag->ench)) {
+                    $tag->ench = new ListTag("ench", []);
+                    $tag->ench->setTagType(NBT::TAG_Compound);
+                }
+                $found = false;
+                foreach ($tag->ench as $k => $entry) {
+                    if ($entry["id"] === $enchant->getId()) {
+                        $tag->ench->{$k} = new CompoundTag("", [
+                            "id" => new ShortTag("id", $enchant->getId()),
+                            "lvl" => new ShortTag("lvl", $enchant->getLevel())
+                        ]);
+                        $item->setNamedTag($tag);
+                        $item->setCustomName(str_replace(TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
+                        $found = true;
+                        break;
+                    }
+                }
+                if (!$found) {
+                    $tag->ench->{count($tag->ench) + 1} = new CompoundTag($enchant->getName(), [
                         "id" => new ShortTag("id", $enchant->getId()),
                         "lvl" => new ShortTag("lvl", $enchant->getLevel())
                     ]);
+                    $level = $this->getRomanNumber($enchant->getLevel());
                     $item->setNamedTag($tag);
-                    $item->setCustomName(str_replace(TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
-                    $found = true;
-                    break;
+                    $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
                 }
-            }
-            if (!$found) {
-                $tag->ench->{count($tag->ench) + 1} = new CompoundTag($enchant->getName(), [
-                    "id" => new ShortTag("id", $enchant->getId()),
-                    "lvl" => new ShortTag("lvl", $enchant->getLevel())
-                ]);
-                $level = $this->getRomanNumber($enchant->getLevel());
-                $item->setNamedTag($tag);
-                $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
-            }
-            if ($slot == null) {
-                $player->getInventory()->setItemInHand($item);
-            } else {
-                $player->getInventory()->setItem($slot, $item);
+                if ($slot == null) {
+                    $player->getInventory()->setItemInHand($item);
+                } else {
+                    $player->getInventory()->setItem($slot, $item);
+                }
+                if ($sender !== null) {
+                    $sender->sendMessage("§aEnchanting suceeded.");
+                }
+                continue;
             }
             if ($sender !== null) {
-                $sender->sendMessage("§aEnchanting suceeded.");
+                if ($result == self::NOT_COMPATIBLE) {
+                    $sender->sendMessage("§cThe item is not compatible with this enchant.");
+                }
+                if ($result == self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT) {
+                    $sender->sendMessage("§cThe enchant is not compatible with another enchant.");
+                }
+                if ($result == self::MAX_LEVEL) {
+                    $sender->sendMessage("§cThe max level is " . $this->getEnchantMaxLevel($enchant) . ".");
+                }
             }
-            return true;
+            continue;
         }
-        if ($sender !== null) {
-            if ($result == self::NOT_COMPATIBLE) {
-                $sender->sendMessage("§cThe item is not compatible with this enchant.");
-            }
-            if ($result == self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT) {
-                $sender->sendMessage("§cThe enchant is not compatible with another enchant.");
-            }
-            if ($result == self::MAX_LEVEL) {
-                $sender->sendMessage("§cThe max level is " . $this->getEnchantMaxLevel($enchant) . ".");
-            }
-        }
-        return false;
     }
 
     /**
