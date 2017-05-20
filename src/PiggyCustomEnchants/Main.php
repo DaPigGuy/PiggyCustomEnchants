@@ -39,7 +39,7 @@ class Main extends PluginBase
 
     public $nofall;
 
-    public $blockface;
+    public $nightmare;
 
     //Missing some rarities
     public $enchants = [
@@ -48,7 +48,7 @@ class Main extends PluginBase
         CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 6],
         CustomEnchants::BERSERKER => ["Berserker", "Armor", "Damaged", "", 5],
         CustomEnchants::CLOAKING => ["Cloaking", "Armor", "Damaged", "", 5],
-        CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "", 1],
+        CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1],
         CustomEnchants::BLIND => ["Blind", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5],
@@ -65,30 +65,31 @@ class Main extends PluginBase
         CustomEnchants::GEARS => ["Gears", "Boots", "Equip", "Uncommon", 5],
         CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1],
         CustomEnchants::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5],
-        CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "", 1],
-        CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "", 5],
-        CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "", 5],
+        CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1],
+        CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
+        CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
-        CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "", 5],
+        CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "", 5],
-        CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "", 5],
+        CustomEnchants::NIGHTMARE => ["Nightmare", "Weapons", "Damage", "Mythic", 5],
+        CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5],
         CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "", 5],
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
-        CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "", 5],
-        CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "", 3],
-        CustomEnchants::QUICKENING => ["Quickening", "Tools", "Break", "", 5],
-        CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "", 5],
-        CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "", 5],
-        CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "", 5],
-        CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "", 1],
-        CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "", 1],
+        CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
+        CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
+        CustomEnchants::QUICKENING => ["Quickening", "Tools", "Break", "Uncommon", 5],
+        CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "Rare", 5],
+        CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5],
+        CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5],
+        CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1],
+        CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1],
         CustomEnchants::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1],
         CustomEnchants::SPRINGS => ["Springs", "Boots", "Equip", "Uncommon", 5],
         CustomEnchants::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5],
-        CustomEnchants::TELEPATHY => ["Telepathy", "Tools", "Break", "", 1],
+        CustomEnchants::TELEPATHY => ["Telepathy", "Tools", "Break", "Rare", 1],
         CustomEnchants::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1],
-        CustomEnchants::VOLLEY => ["Volley", "Bow", "Shoot", "", 5],
+        CustomEnchants::VOLLEY => ["Volley", "Bow", "Shoot", "Uncommon", 5],
         CustomEnchants::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5]
 
     ];
@@ -210,13 +211,12 @@ class Main extends PluginBase
 
     /**
      * @param Item $item
-     * @param $enchant
+     * @param $enchants
      * @param $level
      * @param Player $player
-     * @param CommandSender $sender
+     * @param CommandSender|null $sender
      * @param null $slot
      * @param bool $check
-     * @internal param $ench
      */
     public function addEnchantment(Item $item, $enchants, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true)
     {

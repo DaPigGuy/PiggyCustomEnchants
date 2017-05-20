@@ -31,6 +31,7 @@ class CustomEnchants extends Enchantment
     //const HEADLESS = 116;
     const DISARMING = 117;
     const SOULBOUND = 118;
+    const NIGHTMARE = 119;
 
     //TOOLS
     const EXPLOSIVE = 200; //Not accurate

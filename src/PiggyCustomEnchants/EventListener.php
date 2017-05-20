@@ -7,6 +7,7 @@ use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
+use PiggyCustomEnchants\Tasks\NightmareTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Effect;
@@ -278,6 +279,17 @@ class EventListener implements Listener
                     $entity->getInventory()->removeItem($item);
                     $motion = $entity->getDirectionVector()->multiply(0.4);
                     $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                }
+            }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::NIGHTMARE);
+            if($enchantment !== null){
+                $chance = 5 * $enchantment->getLevel();
+                $random = mt_rand(0, 100);
+                if($random <= $chance && isset($this->plugin->nightmare[strtolower($entity->getName())]) !== true){
+                    $this->plugin->nightmare[strtolower($entity->getName())] = true;
+                    $task = new NightmareTask($this->plugin, $entity, $entity->getPosition());
+                    $handler = $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask($task, 1);
+                    $task->setHandler($handler);
                 }
             }
         }

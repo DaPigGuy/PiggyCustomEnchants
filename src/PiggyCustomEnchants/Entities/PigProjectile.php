@@ -25,6 +25,7 @@ class PigProjectile extends Projectile
     protected $gravity = 0.05;
     protected $drag = 0.01;
     protected $damage = 1.5;
+    private $zombie = false;
 
     const NETWORK_ID = 12;
 
@@ -41,10 +42,10 @@ class PigProjectile extends Projectile
         if ($porklevel < 1) {
             $porklevel = 1;
         }
-        if ($porklevel > 3) {
-            $porklevel = 3;
+        if ($porklevel > 5) {
+            $porklevel = 5;
         }
-        switch ($porklevel){
+        switch ($porklevel) {
             case 1:
                 $this->damage = 1.5;
                 break;
@@ -53,6 +54,16 @@ class PigProjectile extends Projectile
                 break;
             case 3:
                 $this->damage = 3;
+                break;
+            case 4: //Secret
+                $this->setNameTag("Dinnerbone");
+                break;
+            case 5: //Secret
+                $this->zombie = true;
+                break;
+            case 6: //Secret
+                $this->setNameTag("Dinnerbone");
+                $this->zombie = true;
                 break;
         }
         $this->porklevel = $porklevel;
@@ -71,6 +82,9 @@ class PigProjectile extends Projectile
                     $this->getLevel()->dropItem($this, Item::get(Item::RAW_PORKCHOP, 0, 1)->setCustomName("Mysterious Raw Pork"));
                     break;
                 case 3:
+                case 4:
+                case 5:
+                case 6:
                     $this->getLevel()->dropItem($this, Item::get(Item::COOKED_PORKCHOP, 0, 1)->setCustomName("Mysterious Cooked Pork"));
                     break;
             }
@@ -86,7 +100,11 @@ class PigProjectile extends Projectile
     public function spawnTo(Player $player)
     {
         $pk = new AddEntityPacket();
-        $pk->type = PigProjectile::NETWORK_ID;
+        if ($this->zombie) {
+            $pk->type = 36;
+        } else {
+            $pk->type = PigProjectile::NETWORK_ID;
+        }
         $pk->eid = $this->getId();
         $pk->x = $this->x;
         $pk->y = $this->y;
