@@ -5,8 +5,11 @@ namespace PiggyCustomEnchants;
 use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
+use PiggyCustomEnchants\Entities\PigProjectile;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
+
+use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
@@ -22,6 +25,10 @@ use pocketmine\utils\TextFormat;
  */
 class Main extends PluginBase
 {
+    const MAX_LEVEL = 0;
+    const NOT_COMPATIBLE = 1;
+    const NOT_COMPATIBLE_WITH_OTHER_ENCHANT = 2;
+
     public $vampirecd;
     public $cloakingcd;
     public $berserkercd;
@@ -32,13 +39,153 @@ class Main extends PluginBase
 
     public $nofall;
 
+    public $blockface;
+
+    //Missing some rarities
+    public $enchants = [
+        //id => ["name", "slot", "trigger", "rarity", maxlevel"]
+        CustomEnchants::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5],
+        CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 6],
+        CustomEnchants::BERSERKER => ["Berserker", "Armor", "Damaged", "", 5],
+        CustomEnchants::CLOAKING => ["Cloaking", "Armor", "Damaged", "", 5],
+        CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "", 1],
+        CustomEnchants::BLIND => ["Blind", "Weapons", "Damage", "Common", 5],
+        CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5],
+        CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5],
+        CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5],
+        CustomEnchants::CURSED => ["Cursed", "Armor", "Damaged", "", 5],
+        CustomEnchants::DEATHBRINGER => ["Deathbringer", "Weapons", "Damage", "Rare", 5],
+        CustomEnchants::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 1],
+        CustomEnchants::DRUNK => ["Drunk", "Armor", "Damaged", "", 5],
+        CustomEnchants::ENDERSHIFT => ["Endershift", "Armor", "Damaged", "", 5],
+        CustomEnchants::ENERGIZING => ["Energizing", "Tools", "Break", "Uncommon", 5],
+        CustomEnchants::ENLIGHTED => ["Enlighted", "Armor", "Damaged", "", 5],
+        CustomEnchants::EXPLOSIVE => ["Explosive", "Tools", "Break", "Rare", 5],
+        CustomEnchants::FROZEN => ["Frozen", "Armor", "Damaged", "", 5],
+        CustomEnchants::GEARS => ["Gears", "Boots", "Equip", "Uncommon", 5],
+        CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1],
+        CustomEnchants::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5],
+        CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "", 1],
+        CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "", 5],
+        CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "", 5],
+        CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
+        CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
+        CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "", 5],
+        CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "", 5],
+        CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "", 5],
+        CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "", 5],
+        CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
+        CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "", 5],
+        CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "", 3],
+        CustomEnchants::QUICKENING => ["Quickening", "Tools", "Break", "", 5],
+        CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "", 5],
+        CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "", 5],
+        CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "", 5],
+        CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "", 1],
+        CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "", 1],
+        CustomEnchants::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1],
+        CustomEnchants::SPRINGS => ["Springs", "Boots", "Equip", "Uncommon", 5],
+        CustomEnchants::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5],
+        CustomEnchants::TELEPATHY => ["Telepathy", "Tools", "Break", "", 1],
+        CustomEnchants::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1],
+        CustomEnchants::VOLLEY => ["Volley", "Bow", "Shoot", "", 5],
+        CustomEnchants::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5]
+
+    ];
+
     public function onEnable()
     {
+        if (!$this->isSpoon()) {
+            $this->initCustomEnchants();
+            Entity::registerEntity(Fireball::class);
+            Entity::registerEntity(PigProjectile::class);
+            $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
+            $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+            $this->getLogger()->info("§aEnabled.");
+        }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSpoon()
+    {
+        if ($this->getServer()->getName() !== "PocketMine-MP") {
+            $this->getLogger()->error("Well... You're using a spoon. PIGS HATE SPOONS! So enjoy a featureless Custom Enchant plugin by Piggy until you switch to PMMP! :)");
+            return true;
+        }
+        return false;
+    }
+
+    public function initCustomEnchants()
+    {
         CustomEnchants::init();
-        Entity::registerEntity(Fireball::class);
-        $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-        $this->getLogger()->info("§aEnabled");
+        foreach ($this->enchants as $id => $data) {
+            $ce = $this->translateDataToCE($id, $data);
+            CustomEnchants::registerEnchants($id, $ce);
+        }
+    }
+
+    /**
+     * @param $id
+     * @param $data
+     * @return CustomEnchants
+     */
+    public function translateDataToCE($id, $data)
+    {
+        $slot = CustomEnchants::SLOT_NONE;
+        switch ($data[1]) {
+            case "Global":
+                $slot = CustomEnchants::SLOT_ALL;
+                break;
+            case "Weapons":
+                $slot = CustomEnchants::SLOT_SWORD;
+                break;
+            case "Bow":
+                $slot = CustomEnchants::SLOT_BOW;
+                break;
+            case "Tools":
+                $slot = CustomEnchants::SLOT_TOOL;
+                break;
+            case "Pickaxe":
+                $slot = CustomEnchants::SLOT_PICKAXE;
+                break;
+            case "Axe":
+                $slot = CustomEnchants::SLOT_AXE;
+                break;
+            case "Armor":
+                $slot = CustomEnchants::SLOT_ARMOR;
+                break;
+            case "Helmets":
+                $slot = CustomEnchants::SLOT_HEAD;
+                break;
+            case "Chestplate":
+                $slot = CustomEnchants::SLOT_TORSO;
+                break;
+            case "Leggings":
+                $slot = CustomEnchants::SLOT_LEGS;
+                break;
+            case "Boots":
+                $slot = CustomEnchants::SLOT_FEET;
+                break;
+        }
+        $rarity = CustomEnchants::RARITY_COMMON;
+        switch ($data[3]) {
+            case "Common":
+                $rarity = CustomEnchants::RARITY_COMMON;
+                break;
+            case "Uncommon":
+                $rarity = CustomEnchants::RARITY_UNCOMMON;
+                break;
+            case "Rare":
+                $rarity = CustomEnchants::RARITY_RARE;
+                break;
+            case "Mythic":
+                $rarity = CustomEnchants::RARITY_MYTHIC;
+                break;
+        }
+        $ce = new CustomEnchants($id, $data[0], $rarity, CustomEnchants::ACTIVATION_SELF, $slot);
+        return $ce;
     }
 
     /**
@@ -68,10 +215,11 @@ class Main extends PluginBase
      * @param Player $player
      * @param CommandSender $sender
      * @param null $slot
+     * @param bool $check
      * @return bool
      * @internal param $ench
      */
-    public function addEnchantment(Item $item, $enchant, $level, Player $player, CommandSender $sender = null, $slot = null)
+    public function addEnchantment(Item $item, $enchant, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true)
     {
         //TODO: Check if item can get enchant
         $enchant = CustomEnchants::getEnchantByName($enchant);
@@ -81,47 +229,62 @@ class Main extends PluginBase
             }
             return false;
         }
-        $enchant->setLevel($level);
-        if (!$item->hasCompoundTag()) {
-            $tag = new CompoundTag("", []);
-        } else {
-            $tag = $item->getNamedTag();
-        }
-        if (!isset($tag->ench)) {
-            $tag->ench = new ListTag("ench", []);
-            $tag->ench->setTagType(NBT::TAG_Compound);
-        }
-        $found = false;
-        foreach ($tag->ench as $k => $entry) {
-            if ($entry["id"] === $enchant->getId()) {
-                $tag->ench->{$k} = new CompoundTag("", [
+        $result = $this->canBeEnchanted($item, $enchant, $level);
+        if ($result === true || $check !== true) {
+            $enchant->setLevel($level);
+            if (!$item->hasCompoundTag()) {
+                $tag = new CompoundTag("", []);
+            } else {
+                $tag = $item->getNamedTag();
+            }
+            if (!isset($tag->ench)) {
+                $tag->ench = new ListTag("ench", []);
+                $tag->ench->setTagType(NBT::TAG_Compound);
+            }
+            $found = false;
+            foreach ($tag->ench as $k => $entry) {
+                if ($entry["id"] === $enchant->getId()) {
+                    $tag->ench->{$k} = new CompoundTag("", [
+                        "id" => new ShortTag("id", $enchant->getId()),
+                        "lvl" => new ShortTag("lvl", $enchant->getLevel())
+                    ]);
+                    $item->setNamedTag($tag);
+                    $item->setCustomName(str_replace(TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
+                    $found = true;
+                    break;
+                }
+            }
+            if (!$found) {
+                $tag->ench->{count($tag->ench) + 1} = new CompoundTag($enchant->getName(), [
                     "id" => new ShortTag("id", $enchant->getId()),
                     "lvl" => new ShortTag("lvl", $enchant->getLevel())
                 ]);
+                $level = $this->getRomanNumber($enchant->getLevel());
                 $item->setNamedTag($tag);
-                $item->setCustomName(str_replace(TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
-                $found = true;
-                break;
+                $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
             }
-        }
-        if (!$found) {
-            $tag->ench->{count($tag->ench) + 1} = new CompoundTag($enchant->getName(), [
-                "id" => new ShortTag("id", $enchant->getId()),
-                "lvl" => new ShortTag("lvl", $enchant->getLevel())
-            ]);
-            $level = $this->getRomanNumber($enchant->getLevel());
-            $item->setNamedTag($tag);
-            $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
-        }
-        if ($slot == null) {
-            $player->getInventory()->setItemInHand($item);
-        } else {
-            $player->getInventory()->setItem($slot, $item);
+            if ($slot == null) {
+                $player->getInventory()->setItemInHand($item);
+            } else {
+                $player->getInventory()->setItem($slot, $item);
+            }
+            if ($sender !== null) {
+                $sender->sendMessage("§aEnchanting suceeded.");
+            }
+            return true;
         }
         if ($sender !== null) {
-            $sender->sendMessage("§aEnchanting suceeded.");
+            if ($result == self::NOT_COMPATIBLE) {
+                $sender->sendMessage("§cThe item is not compatible with this enchant.");
+            }
+            if ($result == self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT) {
+                $sender->sendMessage("§cThe enchant is not compatible with another enchant.");
+            }
+            if ($result == self::MAX_LEVEL) {
+                $sender->sendMessage("§cThe max level is " . $this->getEnchantMaxLevel($enchant) . ".");
+            }
         }
-        return true;
+        return false;
     }
 
     /**
@@ -152,6 +315,51 @@ class Main extends PluginBase
     }
 
     /**
+     * @param CustomEnchants $enchant
+     * @return string
+     */
+    public function getEnchantType(CustomEnchants $enchant)
+    {
+        foreach ($this->enchants as $id => $data) {
+            if ($enchant->getId() == $id) {
+                return $data[1];
+            }
+        }
+        return "Unknown";
+    }
+
+    /**
+     * @param CustomEnchants $enchant
+     * @return int
+     */
+    public function getEnchantMaxLevel(CustomEnchants $enchant)
+    {
+        foreach ($this->enchants as $id => $data) {
+            if ($enchant->getId() == $id) {
+                return $data[4];
+            }
+        }
+        return 5;
+    }
+
+    /**
+     * @return array
+     */
+    public function sortEnchants()
+    {
+        $sorted = [];
+        foreach ($this->enchants as $id => $data) {
+            $type = $data[1];
+            if (!isset($sorted[$type])) {
+                $sorted[$type] = [$data[0]];
+            } else {
+                array_push($sorted[$type], $data[0]);
+            }
+        }
+        return $sorted;
+    }
+
+    /**
      * @param $integer
      * @return string
      */
@@ -174,12 +382,75 @@ class Main extends PluginBase
     /**
      * @param Item $item
      * @param CustomEnchants $enchant
-     * @param $event
+     * @param $level
      * @return bool
      */
-    public function canUse(Item $item, CustomEnchants $enchant, $event = null)
+    public function canBeEnchanted(Item $item, CustomEnchants $enchant, $level)
     {
-        //TODO: Implement
-        return false;
+        $type = $this->getEnchantType($enchant);
+        if ($this->getEnchantMaxLevel($enchant) < $level) {
+            return self::MAX_LEVEL;
+        }
+        if (($enchant->getId() == CustomEnchants::PORKIFIED && $this->getEnchantment($item, CustomEnchants::BLAZE) !== null) || ($enchant->getId() == CustomEnchants::BLAZE && $this->getEnchantment($item, CustomEnchants::PORKIFIED) !== null)) {
+            return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
+        }
+        switch ($type) {
+            case "Global":
+                return true;
+            case "Damageable":
+                if ($item->getMaxDurability() !== 0) {
+                    return true;
+                }
+                break;
+            case "Weapons":
+                if ($item->isSword() !== false || $item->isAxe() || $item->getId() == Item::BOW) {
+                    return true;
+                }
+                break;
+            case "Bow":
+                if ($item->getId() == Item::BOW) {
+                    return true;
+                }
+                break;
+            case "Tools":
+                if ($item->isPickaxe() || $item->isAxe() || $item->isShovel() || $item->isShears()) {
+                    return true;
+                }
+                break;
+            case "Pickaxe":
+                if ($item->isPickaxe()) {
+                    return true;
+                }
+                break;
+            case "Axe":
+                if ($item->isAxe()) {
+                    return true;
+                }
+                break;
+            case "Armor":
+                if ($item instanceof Armor) {
+                    return true;
+                }
+                break;
+            case "Helmets":
+                switch ($item->getId()) {
+                    case Item::LEATHER_CAP:
+                    case Item::IRON_HELMET:
+                    case Item::GOLD_HELMET:
+                    case Item::DIAMOND_HELMET:
+                        return true;
+                }
+                break;
+            case "Boots":
+                switch ($item->getId()) {
+                    case Item::LEATHER_BOOTS:
+                    case Item::IRON_BOOTS:
+                    case Item::GOLD_BOOTS:
+                    case Item::DIAMOND_BOOTS:
+                        return true;
+                }
+                break;
+        }
+        return self::NOT_COMPATIBLE;
     }
 }

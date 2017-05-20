@@ -4,6 +4,7 @@ namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
+use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
 use pocketmine\block\Block;
@@ -83,6 +84,7 @@ class EventListener implements Listener
      *
      * @priority HIGHEST
      * @ignoreCancelled true
+     * @return bool
      */
     public function onDamage(EntityDamageEvent $event)
     {
@@ -146,6 +148,7 @@ class EventListener implements Listener
      *
      * @priority HIGHEST
      * @ignoreCancelled true
+     * @return bool
      */
     public function onMove(PlayerMoveEvent $event)
     {
@@ -414,7 +417,6 @@ class EventListener implements Listener
         }
     }
 
-
     /**
      * @param Player $damager
      * @param Entity $entity
@@ -482,6 +484,14 @@ class EventListener implements Listener
                 $entity->close();
                 $entity = $fireball;
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PORKIFIED);
+            if ($enchantment !== null && $entity instanceof PigProjectile !== true) {
+                $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $entity->yaw), new FloatTag("", $entity->pitch)])]), $damager, $enchantment->getLevel());
+                $pig->setMotion($entity->getMotion());
+                $pig->spawnToAll();
+                $entity->close();
+                $entity = $pig;
+            }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::VOLLEY);
             if ($enchantment !== null) {
                 $amount = 1 + 2 * $enchantment->getLevel();
@@ -499,6 +509,9 @@ class EventListener implements Listener
                     }
                     if ($entity instanceof Fireball) {
                         $projectile = Entity::createEntity("Fireball", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $damager->x), new DoubleTag("", $damager->y + $damager->getEyeHeight()), new DoubleTag("", $damager->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $damager->yaw), new FloatTag("", $damager->pitch)]), "Volley" => new ByteTag("Volley", 1)]), $damager);
+                    }
+                    if ($entity instanceof PigProjectile) {
+                        $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $damager->x), new DoubleTag("", $damager->y + $damager->getEyeHeight()), new DoubleTag("", $damager->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $damager->yaw), new FloatTag("", $damager->pitch)]), "Volley" => new ByteTag("Volley", 1)]), $damager, $entity->getPorkLevel());
                     }
                     $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->length()));
                     $projectile->setOnFire($entity->fireTicks * 20);

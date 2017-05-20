@@ -2,12 +2,13 @@
 
 namespace PiggyCustomEnchants\Commands;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+
 use PiggyCustomEnchants\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\PluginCommand;
 use pocketmine\Player;
+use pocketmine\utils\TextFormat;
 
 /**
  * Class CustomEnchantCommand
@@ -46,15 +47,18 @@ class CustomEnchantCommand extends PluginCommand
         }
         switch ($args[0]) {
             case "list":
-                $enchants = array();
-                foreach (CustomEnchants::$enchantments as $id => $enchant) {
-                    array_push($enchants, $enchant->getName());
+                $sorted = $this->getPlugin()->sortEnchants();
+                $list = "";
+                foreach ($sorted as $type => $enchants) {
+                    $list .= "\n" . TextFormat::GREEN . TextFormat::BOLD . $type . "\n" . TextFormat::RESET;
+                    $list .= implode(", ", $enchants);
                 }
-                $sender->sendMessage(implode(", ", $enchants));
+                $sender->sendMessage($list);
                 break;
             case "enchant":
                 if (count($args) < 2) {
                     $sender->sendMessage("/customenchant enchant <enchant> [level] [player]");
+                    return false;
                 }
                 $target = $sender;
                 if (!isset($args[2])) {
@@ -71,7 +75,7 @@ class CustomEnchantCommand extends PluginCommand
                     $sender->sendMessage("§cInvalid player.");
                     return false;
                 }
-                $this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $target, $sender);
+                $this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $target, $sender, null, $sender->hasPermission("piggycustomenchants.overridecheck") ? false : true);
                 break;
             default:
                 $sender->sendMessage("/customenchant <enchant|list>");
