@@ -84,8 +84,10 @@ class PigProjectile extends Projectile
                 case 3:
                 case 4:
                 case 5:
-                case 6:
                     $this->getLevel()->dropItem($this, Item::get(Item::COOKED_PORKCHOP, 0, 1)->setCustomName("Mysterious Cooked Pork"));
+                    break;
+                case 6:
+                    $this->getLevel()->dropItem($this, Item::get(Item::ROTTEN_FLESH, 0, 1)->setCustomName("Mysterious Rotten Pork"));
                     break;
             }
         } else {

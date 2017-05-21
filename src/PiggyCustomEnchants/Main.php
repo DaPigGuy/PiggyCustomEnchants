@@ -66,13 +66,13 @@ class Main extends PluginBase
         CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1],
         CustomEnchants::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1],
+        CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "", 5],
-        CustomEnchants::NIGHTMARE => ["Nightmare", "Weapons", "Damage", "Mythic", 5],
         CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5],
         CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "", 5],
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
@@ -91,7 +91,6 @@ class Main extends PluginBase
         CustomEnchants::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1],
         CustomEnchants::VOLLEY => ["Volley", "Bow", "Shoot", "Uncommon", 5],
         CustomEnchants::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5]
-
     ];
 
     public function onEnable()
