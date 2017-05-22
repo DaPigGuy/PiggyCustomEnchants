@@ -13,9 +13,9 @@ permissions:
         default: op
         description: "use all PiggyCustomEnchants commands"
         children:
-          piggycustomenchants.command.customenchant:
-          default: op
-          description: "Use /customenchant"
+          piggycustomenchants.command.ce:
+            default: op
+            description: "Use /customenchant"
       piggycustomenchants.overridecheck:
         default: false
         description: "Override the check and enchant any item with any enchant"
