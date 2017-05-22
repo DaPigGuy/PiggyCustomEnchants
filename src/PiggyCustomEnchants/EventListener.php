@@ -281,7 +281,7 @@ class EventListener implements Listener
                     $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::NIGHTMARE);
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HALLUCINATION);
             if($enchantment !== null){
                 $chance = 5 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
@@ -465,6 +465,7 @@ class EventListener implements Listener
                 }
                 $damager->sendMessage(TextFormat::DARK_PURPLE . "You have switched positions with " . $name);
             }
+            
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HEALING);
             if ($enchantment !== null) {
                 if ($entity->getHealth() + $event->getDamage() + $enchantment->getLevel() <= $entity->getMaxHealth()) {
