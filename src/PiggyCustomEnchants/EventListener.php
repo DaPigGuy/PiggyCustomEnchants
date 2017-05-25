@@ -448,6 +448,24 @@ class EventListener implements Listener
                     }
                 }
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PARALYZE);
+            if ($enchantment !== null) {
+                $effect = Effect::getEffect(Effect::SLOWNESS);
+                $effect->setAmplifier(5 + $enchantment->getLevel() - 1);
+                $effect->setDuration(60 + ($enchantment->getLevel() - 1) * 20);
+                $effect->setVisible(false);
+                $entity->addEffect($effect);
+                $effect = Effect::getEffect(Effect::BLINDNESS);
+                $effect->setAmplifier(1);
+                $effect->setDuration(60 + ($enchantment->getLevel() - 1) * 20);
+                $effect->setVisible(false);
+                $entity->addEffect($effect);
+                $effect = Effect::getEffect(Effect::WEAKNESS);
+                $effect->setAmplifier(5 + $enchantment->getLevel() - 1);
+                $effect->setDuration(60 + ($enchantment->getLevel() - 1) * 20);
+                $effect->setVisible(false);
+                $entity->addEffect($effect);
+            }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PIERCING);
             if ($enchantment !== null) {
                 $event->setDamage(0, EntityDamageEvent::MODIFIER_ARMOR);

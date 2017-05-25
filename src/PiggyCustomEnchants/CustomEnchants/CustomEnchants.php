@@ -44,14 +44,14 @@ class CustomEnchants extends Enchantment
     //BOWS
     /*const BOMBARDMENT = 300;
     const LIGHTNING = 301;
-    const FIREWORK = 302;
-    const PARALYZE = 303;*/
+    const FIREWORK = 302;*/
+    const PARALYZE = 303;
     const MOLOTOV = 304; //Falling sand fire doesn't appear
     const VOLLEY = 305;
     //WITHER SHOULD BE HERE AGAIN... BUT...
     const PIERCING = 307;
     const SHUFFLE = 308;
-    const BOUNTYHUNTER = 309;
+    const BOUNTYHUNTER = 309; //Not accurate
     const HEALING = 310;
     const BLAZE = 311;
     const HEADHUNTER = 312;
