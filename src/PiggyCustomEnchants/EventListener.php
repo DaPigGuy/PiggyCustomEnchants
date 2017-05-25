@@ -282,10 +282,10 @@ class EventListener implements Listener
                 }
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HALLUCINATION);
-            if($enchantment !== null){
+            if ($enchantment !== null) {
                 $chance = 5 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
-                if($random <= $chance && isset($this->plugin->nightmare[strtolower($entity->getName())]) !== true){
+                if ($random <= $chance && isset($this->plugin->nightmare[strtolower($entity->getName())]) !== true) {
                     $this->plugin->nightmare[strtolower($entity->getName())] = true;
                     $task = new NightmareTask($this->plugin, $entity, $entity->getPosition());
                     $handler = $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask($task, 1);
@@ -465,7 +465,14 @@ class EventListener implements Listener
                 }
                 $damager->sendMessage(TextFormat::DARK_PURPLE . "You have switched positions with " . $name);
             }
-            
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BOUNTYHUNTER);
+            if ($enchantment !== null) {
+                if (!isset($this->plugin->bountyhuntercd[strtolower($damager->getName())]) || time() > $this->plugin->bountyhuntercd[strtolower($damager->getName())]) {
+                    $bountydrop = $this->getBounty();
+                    $damager->getInventory()->addItem(Item::get($bountydrop, 0, mt_rand(0, 8 + $enchantment->getLevel()) + 1));
+                    $this->plugin->bountyhuntercd[strtolower($damager->getName())] = time() + 30;
+                }
+            }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HEALING);
             if ($enchantment !== null) {
                 if ($entity->getHealth() + $event->getDamage() + $enchantment->getLevel() <= $entity->getMaxHealth()) {
@@ -817,5 +824,30 @@ class EventListener implements Listener
             $this->plugin->mined[strtolower($player->getName())]++;
             $this->breakTree($side, $player, $block);
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getBounty()
+    {
+        $random = mt_rand(0, 75);
+        $currentchance = 2.5;
+        if ($random < $currentchance) {
+            return Item::EMERALD;
+        }
+        $currentchance += 5;
+        if ($random < $currentchance) {
+            return Item::DIAMOND;
+        }
+        $currentchance += 15;
+        if ($random < $currentchance) {
+            return Item::GOLD_INGOT;
+        }
+        $currentchance += 27.5;
+        if ($random < $currentchance) {
+            return Item::IRON_INGOT;
+        }
+        return Item::COAL;
     }
 }

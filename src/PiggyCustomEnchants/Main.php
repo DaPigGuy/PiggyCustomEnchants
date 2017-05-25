@@ -33,6 +33,7 @@ class Main extends PluginBase
     public $cloakingcd;
     public $berserkercd;
     public $endershiftcd;
+    public $bountyhuntercd;
 
     public $breakingTree;
     public $mined;
@@ -50,6 +51,7 @@ class Main extends PluginBase
         CustomEnchants::CLOAKING => ["Cloaking", "Armor", "Damaged", "", 5],
         CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1],
         CustomEnchants::BLIND => ["Blind", "Weapons", "Damage", "Common", 5],
+        CustomEnchants::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "", 5],
         CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5],

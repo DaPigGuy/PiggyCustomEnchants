@@ -42,8 +42,8 @@ class PigProjectile extends Projectile
         if ($porklevel < 1) {
             $porklevel = 1;
         }
-        if ($porklevel > 5) {
-            $porklevel = 5;
+        if ($porklevel > 6) {
+            $porklevel = 6;
         }
         switch ($porklevel) {
             case 1:
@@ -56,12 +56,16 @@ class PigProjectile extends Projectile
                 $this->damage = 3;
                 break;
             case 4: //Secret
+                $this->damage = 3;
                 $this->setNameTag("Dinnerbone");
                 break;
             case 5: //Secret
+                $this->damage = 5;
                 $this->zombie = true;
                 break;
             case 6: //Secret
+                $this->damage = 5;
+
                 $this->setNameTag("Dinnerbone");
                 $this->zombie = true;
                 break;
@@ -83,9 +87,9 @@ class PigProjectile extends Projectile
                     break;
                 case 3:
                 case 4:
-                case 5:
                     $this->getLevel()->dropItem($this, Item::get(Item::COOKED_PORKCHOP, 0, 1)->setCustomName("Mysterious Cooked Pork"));
                     break;
+                case 5:
                 case 6:
                     $this->getLevel()->dropItem($this, Item::get(Item::ROTTEN_FLESH, 0, 1)->setCustomName("Mysterious Rotten Pork"));
                     break;

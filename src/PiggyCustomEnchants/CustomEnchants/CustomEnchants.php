@@ -51,7 +51,7 @@ class CustomEnchants extends Enchantment
     //WITHER SHOULD BE HERE AGAIN... BUT...
     const PIERCING = 307;
     const SHUFFLE = 308;
-    //const BOUNTYHUNTER = 309;
+    const BOUNTYHUNTER = 309;
     const HEALING = 310;
     const BLAZE = 311;
     const HEADHUNTER = 312;
@@ -98,7 +98,8 @@ class CustomEnchants extends Enchantment
      * @param $id
      * @param CustomEnchants $enchant
      */
-    public static function registerEnchants($id, CustomEnchants $enchant){
+    public static function registerEnchants($id, CustomEnchants $enchant)
+    {
         self::$enchantments[$id] = $enchant;
     }
 
