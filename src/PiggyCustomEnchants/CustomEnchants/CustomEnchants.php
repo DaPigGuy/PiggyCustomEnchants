@@ -87,6 +87,11 @@ class CustomEnchants extends Enchantment
     //const IMPLANTS = 600;
     const GLOWING = 601;
 
+    //COMPASS
+    const RADAR = 700;
+
+    const SLOT_COMPASS = 0b10000000000000;
+
     public $id;
     public $level = 1;
     public $name;

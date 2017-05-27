@@ -6,6 +6,7 @@ use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
+use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
@@ -47,7 +48,7 @@ class Main extends PluginBase
 
     public $shrunk;
     public $grew;
-    public $wasshrunk; //Temporary
+    public $sizemanipulated; //Temporary
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -90,6 +91,7 @@ class Main extends PluginBase
         CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
         CustomEnchants::QUICKENING => ["Quickening", "Tools", "Break", "Uncommon", 5],
+        CustomEnchants::RADAR => ["Radar", "Compass", "Inventory", "", 5], //TODO: Pick rarity
         CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "Rare", 5],
         CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5],
@@ -112,7 +114,8 @@ class Main extends PluginBase
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
-           $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
             $this->getLogger()->info("§aEnabled.");
         }
@@ -180,6 +183,9 @@ class Main extends PluginBase
                 break;
             case "Boots":
                 $slot = CustomEnchants::SLOT_FEET;
+                break;
+            case "Compass":
+                $slot = CustomEnchants::SLOT_COMPASS;
                 break;
         }
         $rarity = CustomEnchants::RARITY_COMMON;
@@ -465,6 +471,11 @@ class Main extends PluginBase
                     case Item::GOLD_BOOTS:
                     case Item::DIAMOND_BOOTS:
                         return true;
+                }
+                break;
+            case "Compass":
+                if ($item->getId() == Item::COMPASS) {
+                    return true;
                 }
                 break;
         }

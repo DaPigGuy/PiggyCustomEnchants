@@ -34,8 +34,8 @@ class SizeTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $shrinkpoints = 0;
             $growpoints = 0;
-            if(isset($this->plugin->wasshrunk[strtolower($player->getName())]) && $this->plugin->wasshrunk[strtolower($player->getName())] <= time()){
-                unset($this->plugin->wasshrunk[strtolower($player->getName())]);
+            if(isset($this->plugin->sizemanipulated[strtolower($player->getName())]) && $this->plugin->sizemanipulated[strtolower($player->getName())] <= time()){
+                unset($this->plugin->sizemanipulated[strtolower($player->getName())]);
             }
             foreach ($player->getInventory()->getArmorContents() as $armor) {
                 $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SHRINK);
@@ -45,7 +45,7 @@ class SizeTask extends PluginTask
             }
             if (isset($this->plugin->shrunk[strtolower($player->getName())]) && ($this->plugin->shrunk[strtolower($player->getName())] <= time() || $shrinkpoints < 4)) {
                 unset($this->plugin->shrunk[strtolower($player->getName())]);
-                $this->plugin->wasshrunk[strtolower($player->getName())] = time() + 1;
+                $this->plugin->sizemanipulated[strtolower($player->getName())] = time() + 5;
                 $player->sendMessage(TextFormat::RED . "You have grown back to normal size.");
                 $player->setScale(1);
             }
@@ -57,6 +57,7 @@ class SizeTask extends PluginTask
             }
             if (isset($this->plugin->grew[strtolower($player->getName())]) && ($this->plugin->grew[strtolower($player->getName())] <= time() || $growpoints < 4)) {
                 unset($this->plugin->grew[strtolower($player->getName())]);
+                $this->plugin->sizemanipulated[strtolower($player->getName())] = time() + 5;
                 $player->sendMessage(TextFormat::RED . "You have shrunk back to normal size.");
                 $player->setScale(1);
             }
