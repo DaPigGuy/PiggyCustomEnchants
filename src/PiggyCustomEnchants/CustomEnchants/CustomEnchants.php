@@ -74,6 +74,8 @@ class CustomEnchants extends Enchantment
     const BERSERKER = 411;
     const CLOAKING = 412;
     const REVIVE = 413;
+    const SHRINK = 414;
+    const GROW = 415;
 
 
     //BOOTS

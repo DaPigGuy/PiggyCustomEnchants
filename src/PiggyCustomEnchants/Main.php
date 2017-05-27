@@ -6,6 +6,7 @@ use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
+use PiggyCustomEnchants\Tasks\SizeTask;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 
@@ -34,13 +35,18 @@ class Main extends PluginBase
     public $berserkercd;
     public $endershiftcd;
     public $bountyhuntercd;
+    public $shrinkcd;
+    public $growcd;
 
     public $breakingTree;
     public $mined;
 
     public $nofall;
 
-    public $nightmare;
+    public $hallucination;
+
+    public $shrunk;
+    public $grew;
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -67,6 +73,7 @@ class Main extends PluginBase
         CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1],
         CustomEnchants::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1],
+        CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "", 5],
         CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
@@ -84,6 +91,7 @@ class Main extends PluginBase
         CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "Rare", 5],
         CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5],
+        CustomEnchants::SHRINK => ["Shrink", "Armor", "Sneak", "", 2],
         CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1],
         CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1],
         CustomEnchants::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1],
@@ -102,6 +110,7 @@ class Main extends PluginBase
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
+           $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
             $this->getLogger()->info("§aEnabled.");
         }

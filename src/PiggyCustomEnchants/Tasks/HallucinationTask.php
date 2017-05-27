@@ -4,27 +4,27 @@ namespace PiggyCustomEnchants\Tasks;
 
 use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
-use pocketmine\entity\Entity;
+
 use pocketmine\level\Position;
-use pocketmine\math\Vector2;
-use pocketmine\math\Vector3;
+
+
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\mcpe\protocol\AddEntityPacket;
+
 use pocketmine\network\mcpe\protocol\BlockEntityDataPacket;
-use pocketmine\network\mcpe\protocol\RemoveEntityPacket;
+
 use pocketmine\Player;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\tile\Tile;
 use pocketmine\utils\TextFormat;
 
 /**
- * Class NightmareTask
+ * Class HallucinationTask
  * @package PiggyCustomEnchants
  */
-class NightmareTask extends PluginTask
+class HallucinationTask extends PluginTask
 {
     private $plugin;
     private $player;
@@ -32,7 +32,7 @@ class NightmareTask extends PluginTask
     private $time = 0;
 
     /**
-     * NightmareTask constructor.
+     * HallucinationTask constructor.
      * @param Main $plugin
      * @param Player $player
      * @param Position $position
@@ -92,7 +92,7 @@ class NightmareTask extends PluginTask
             }
         }
         if ($this->time >= 20 * 60) {
-            unset($this->plugin->nightmare[strtolower($this->player->getName())]);
+            unset($this->plugin->hallucination[strtolower($this->player->getName())]);
             $this->plugin->getServer()->getScheduler()->cancelTask($this->getHandler()->getTaskId());
         }
     }

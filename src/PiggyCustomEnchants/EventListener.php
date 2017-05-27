@@ -7,7 +7,7 @@ use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
-use PiggyCustomEnchants\Tasks\NightmareTask;
+use PiggyCustomEnchants\Tasks\HallucinationTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Effect;
@@ -25,7 +25,9 @@ use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Event;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
@@ -145,6 +147,24 @@ class EventListener implements Listener
     }
 
     /**
+     * Temporary solution to players getting kicked
+     * @param PlayerKickEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onKick(PlayerKickEvent $event)
+    {
+        $player = $event->getPlayer();
+        $reason = $event->getReason();
+        if ($reason == "Flying is not enabled on this server") {
+            if (isset($this->plugin->shrunk[strtolower($player->getName())])) {
+                $event->setCancelled();
+            }
+        }
+    }
+
+    /**
      * @param PlayerMoveEvent $event
      *
      * @priority HIGHEST
@@ -170,7 +190,24 @@ class EventListener implements Listener
     }
 
     /**
+     * @param PlayerToggleSneakEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onSneak(PlayerToggleSneakEvent $event)
+    {
+        $player = $event->getPlayer();
+        if ($event->isSneaking()) {
+            $this->checkArmorEnchants($player, $event);
+        }
+    }
+
+    /**
      * @param ProjectileHitEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onHit(ProjectileHitEvent $event)
     {
@@ -285,9 +322,9 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 $chance = 5 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
-                if ($random <= $chance && isset($this->plugin->nightmare[strtolower($entity->getName())]) !== true) {
-                    $this->plugin->nightmare[strtolower($entity->getName())] = true;
-                    $task = new NightmareTask($this->plugin, $entity, $entity->getPosition());
+                if ($random <= $chance && isset($this->plugin->hallucination[strtolower($entity->getName())]) !== true) {
+                    $this->plugin->hallucination[strtolower($entity->getName())] = true;
+                    $task = new HallucinationTask($this->plugin, $entity, $entity->getPosition());
                     $handler = $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask($task, 1);
                     $task->setHandler($handler);
                 }
@@ -591,7 +628,7 @@ class EventListener implements Listener
      * @param Entity $entity
      * @param EntityEvent $event
      */
-    public function checkArmorEnchants(Entity $entity, EntityEvent $event)
+    public function checkArmorEnchants(Entity $entity, Event $event)
     {
         if ($entity instanceof Player) {
             $random = new Random();
@@ -811,6 +848,41 @@ class EventListener implements Listener
                             }
                         }
                     }
+                }
+            }
+            if ($event instanceof PlayerToggleSneakEvent) {
+                $shrinkpoints = 0;
+                $growpoints = 0;
+                $level = 0;
+                foreach ($entity->getInventory()->getArmorContents() as $armor) {
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SHRINK);
+                    if ($enchantment !== null) {
+                        if (!isset($this->plugin->shrinkcd[strtolower($entity->getName())]) || $this->plugin->shrinkcd[strtolower($entity->getName())] <= time()) {
+                            $level += $enchantment->getLevel();
+                            $shrinkpoints++;
+                        }
+                    }
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::GROW);
+                    if ($enchantment !== null) {
+                        if (!isset($this->plugin->growcd[strtolower($entity->getName())]) || $this->plugin->growcd[strtolower($entity->getName())] <= time()) {
+                            $level += $enchantment->getLevel();
+                            $growpoints++;
+                        }
+                    }
+                }
+                if ($shrinkpoints >= 4 && isset($this->plugin->shrunk[strtolower($entity->getName())]) !== true) {
+                    $scale = 0.30 - (($level / 4) * 0.05);
+                    $entity->sendMessage(TextFormat::GREEN . "You have shrunk.");
+                    $entity->setScale($scale);
+                    $this->plugin->shrunk[strtolower($entity->getName())] = time() + 60;
+                    $this->plugin->shrinkcd[strtolower($entity->getName())] = time() + 75;
+                }
+                if ($growpoints >= 4 && isset($this->plugin->grew[strtolower($entity->getName())]) !== true) {
+                    $scale = 1.30 + (($level / 4) * 0.05);
+                    $entity->sendMessage(TextFormat::GREEN . "You have grown.");
+                    $entity->setScale($scale);
+                    $this->plugin->grew[strtolower($entity->getName())] = time() + 60;
+                    $this->plugin->growcd[strtolower($entity->getName())] = time() + 75;
                 }
             }
         }
