@@ -1,22 +1,6 @@
-# PiggyCustomEnchants
-You saw that server had custom enchants? Now yours does too!
+# PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/ci.badge/MCPEPIG/PiggyAuth/PiggyAuth/master)](https://poggit.pmmp.io/ci/MCPEPIG/PiggyAuth)
+PiggyCustomEnchants is a open-sourced custom enchants plugin for PMMP.
 
-# Notice
-We do not support Tesseract or any spoons.
-
-# For Developers
-
-To add a custom enchantment to the item player is holding:
-```
-$item = $player->getInventory->getItemInHand(); //$player as in the player
-$ce = $this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants");
-$ce->addEnchantment($item, $enchants, 3, $player, $sender, $slot, $check) //Enchants can be an array of enchantment names or just a string. You don't need to add $sender, $slot, or $check, but if you want to override checks, you can set it to false and you can set $slot and $sender to null.
-```
-
-To add a custom enchantment to an item in a certain slot:
-```
-$item = $player->getInventory->getItem($slot); //$player as in the player and $slot as in the slot
-$ce = $this->getServer()->getPluginManager()->getPlugin("PiggyCustomEnchants");
-$ce->addEnchantment($item, $enchants, 3, $player, $sender, $slot, $check) //Enchants can be an array of enchantment names or just a string. If you don't have a sender, you can replace it with null. You don't need to add $check but if you want to override checks, you can set it to false.
-```
-
+# Information
+* Are you a developer? Check out our API Documentation [here.](https://github.com/MCPEPIG/PiggyCustomEnchants/wiki/API-Documentation)
+* A list of custom enchants can be found [here,](https://github.com/MCPEPIG/PiggyCustomEnchants/wiki/Enchantments) with a description of what each one does.
