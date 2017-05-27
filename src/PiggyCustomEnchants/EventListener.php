@@ -158,7 +158,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $reason = $event->getReason();
         if ($reason == "Flying is not enabled on this server") {
-            if (isset($this->plugin->shrunk[strtolower($player->getName())])) {
+            if (isset($this->plugin->shrunk[strtolower($player->getName())]) || isset($this->plugin->wasshrunk[strtolower($player->getName())])) {
                 $event->setCancelled();
             }
         }

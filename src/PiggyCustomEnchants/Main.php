@@ -47,6 +47,7 @@ class Main extends PluginBase
 
     public $shrunk;
     public $grew;
+    public $wasshrunk; //Temporary
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -73,9 +74,9 @@ class Main extends PluginBase
         CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1],
         CustomEnchants::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1],
-        CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "", 5],
+        CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "", 5], //TODO: Pick rarity
         CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5],
-        CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "", 5],
+        CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "", 5], //TODO: Pick rarity
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
@@ -84,7 +85,7 @@ class Main extends PluginBase
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5],
         CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5],
-        CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "", 5],
+        CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "", 5], //TODO: Pick rarity
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
@@ -92,7 +93,7 @@ class Main extends PluginBase
         CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "Rare", 5],
         CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5],
-        CustomEnchants::SHRINK => ["Shrink", "Armor", "Sneak", "", 2],
+        CustomEnchants::SHRINK => ["Shrink", "Armor", "Sneak", "", 2], //TODO: Pick rarity
         CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1],
         CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1],
         CustomEnchants::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1],
