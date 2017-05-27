@@ -64,7 +64,7 @@ class RadarTask extends PluginTask
                                 $player->dataPacket($pk);
                                 $radar = true;
                                 $this->radars[strtolower($player->getName())] = true;
-                                $player->sendTip(TextFormat::GREEN . "Nearest player " . $distance . " away.");
+                                $player->sendTip(TextFormat::GREEN . "Nearest player " . $minimum . " away.");
                                 break;
                             }
                         }
