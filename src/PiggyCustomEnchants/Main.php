@@ -75,6 +75,7 @@ class Main extends PluginBase
         CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1],
         CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "", 5],
         CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5],
+        CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
