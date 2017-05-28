@@ -6,6 +6,7 @@ use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
+use PiggyCustomEnchants\Tasks\JetpackTask;
 use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
 use pocketmine\command\CommandSender;
@@ -38,6 +39,7 @@ class Main extends PluginBase
     public $bountyhuntercd;
     public $shrinkcd;
     public $growcd;
+    public $jetpackcd;
 
     public $breakingTree;
     public $mined;
@@ -49,6 +51,8 @@ class Main extends PluginBase
     public $shrunk;
     public $grew;
     public $sizemanipulated; //Temporary
+
+    public $flying;
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -80,6 +84,7 @@ class Main extends PluginBase
         CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "", 5], //TODO: Pick rarity
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
+        CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "", 5], //TODO: Pick rarity
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
@@ -114,8 +119,9 @@ class Main extends PluginBase
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
             $this->getLogger()->info("§aEnabled.");
         }

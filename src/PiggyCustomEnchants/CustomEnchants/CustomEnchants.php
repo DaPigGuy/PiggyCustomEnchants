@@ -82,6 +82,7 @@ class CustomEnchants extends Enchantment
     const GEARS = 500;
     const SPRINGS = 501;
     const STOMP = 502;
+    const JETPACK = 503;
 
     //HELMET
     //const IMPLANTS = 600;

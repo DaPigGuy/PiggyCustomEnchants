@@ -94,7 +94,7 @@ class EventListener implements Listener
         $entity = $event->getEntity();
         $cause = $event->getCause();
         $this->checkArmorEnchants($entity, $event);
-        if ($cause == EntityDamageEvent::CAUSE_FALL && $entity instanceof Player && isset($this->plugin->nofall[strtolower($entity->getName())])) {
+        if ($cause == EntityDamageEvent::CAUSE_FALL && $entity instanceof Player && (isset($this->plugin->nofall[strtolower($entity->getName())]) || isset($this->plugin->flying[strtolower($entity->getName())]))) {
             unset($this->plugin->nofall[strtolower($entity->getName())]);
             $event->setCancelled();
         }
@@ -158,7 +158,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $reason = $event->getReason();
         if ($reason == "Flying is not enabled on this server") {
-            if (isset($this->plugin->shrunk[strtolower($player->getName())]) || isset($this->plugin->grew[strtolower($player->getName())]) || isset($this->plugin->sizemanipulated[strtolower($player->getName())])) {
+            if (isset($this->plugin->shrunk[strtolower($player->getName())]) || isset($this->plugin->grew[strtolower($player->getName())]) || isset($this->plugin->sizemanipulated[strtolower($player->getName())]) || isset($this->plugin->flying[strtolower($player->getName())])) {
                 $event->setCancelled();
             }
         }
@@ -626,7 +626,7 @@ class EventListener implements Listener
 
     /**
      * @param Entity $entity
-     * @param EntityEvent $event
+     * @param EntityEvent|Event $event
      */
     public function checkArmorEnchants(Entity $entity, Event $event)
     {
@@ -883,6 +883,13 @@ class EventListener implements Listener
                     $entity->setScale($scale);
                     $this->plugin->grew[strtolower($entity->getName())] = time() + 60;
                     $this->plugin->growcd[strtolower($entity->getName())] = time() + 75;
+                }
+                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::JETPACK);
+                if ($enchantment !== null) {
+                    if (!isset($this->plugin->jetpackcd[strtolower($entity->getName())]) || $this->plugin->jetpackcd[strtolower($entity->getName())] <= time()) {
+                        $this->plugin->flying[strtolower($entity->getName())] = time() + 300;
+                        $this->plugin->jetpackcd[strtolower($entity->getName())] = time() + 360;
+                    }
                 }
             }
         }
