@@ -245,7 +245,7 @@ class Main extends PluginBase
      * @param null $slot
      * @param bool $check
      */
-    public function addEnchantment(Item $item, $enchants, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true)
+    public function addEnchantment(Item $item, $enchants, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true, $set = true)
     {
         //TODO: Check if item can get enchant
         if (!is_array($enchants)) {
@@ -294,10 +294,12 @@ class Main extends PluginBase
                     $item->setNamedTag($tag);
                     $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
                 }
-                if ($slot == null) {
-                    $player->getInventory()->setItemInHand($item);
-                } else {
-                    $player->getInventory()->setItem($slot, $item);
+                if ($set == true) {
+                    if ($slot == null) {
+                        $player->getInventory()->setItemInHand($item);
+                    } else {
+                        $player->getInventory()->setItem($slot, $item);
+                    }
                 }
                 if ($sender !== null) {
                     $sender->sendMessage("§aEnchanting suceeded.");
@@ -317,6 +319,7 @@ class Main extends PluginBase
             }
             continue;
         }
+        return $item;
     }
 
     /**
