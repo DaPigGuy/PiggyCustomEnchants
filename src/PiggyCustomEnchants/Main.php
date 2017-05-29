@@ -51,8 +51,11 @@ class Main extends PluginBase
     public $shrunk;
     public $grew;
     public $sizemanipulated; //Temporary
+    public $shrinkremaining;
+    public $growremaining;
 
     public $flying;
+    public $flyremaining;
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -420,7 +423,7 @@ class Main extends PluginBase
         if ($this->getEnchantMaxLevel($enchant) < $level) {
             return self::MAX_LEVEL;
         }
-        if (($enchant->getId() == CustomEnchants::PORKIFIED && $this->getEnchantment($item, CustomEnchants::BLAZE) !== null) || ($enchant->getId() == CustomEnchants::BLAZE && $this->getEnchantment($item, CustomEnchants::PORKIFIED) !== null)) {
+        if (($enchant->getId() == CustomEnchants::PORKIFIED && $this->getEnchantment($item, CustomEnchants::BLAZE) !== null) || ($enchant->getId() == CustomEnchants::BLAZE && $this->getEnchantment($item, CustomEnchants::PORKIFIED) !== null) || ($enchant->getId() == CustomEnchants::SHRINK && $this->getEnchantment($item, CustomEnchants::GROW)) || ($enchant->getId() == CustomEnchants::GROW && $this->getEnchantment($item, CustomEnchants::SHRINK))) {
             return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
         }
         switch ($type) {

@@ -8,6 +8,7 @@ use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
+use PiggyCustomEnchants\Tasks\UnsneakTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Effect;
@@ -37,6 +38,7 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\Player;
 use pocketmine\utils\Random;
 use pocketmine\utils\TextFormat;
@@ -853,42 +855,82 @@ class EventListener implements Listener
             if ($event instanceof PlayerToggleSneakEvent) {
                 $shrinkpoints = 0;
                 $growpoints = 0;
-                $level = 0;
+                $shrinklevel = 0;
+                $growlevel = 0;
                 foreach ($entity->getInventory()->getArmorContents() as $armor) {
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SHRINK);
                     if ($enchantment !== null) {
-                        if (!isset($this->plugin->shrinkcd[strtolower($entity->getName())]) || $this->plugin->shrinkcd[strtolower($entity->getName())] <= time()) {
-                            $level += $enchantment->getLevel();
-                            $shrinkpoints++;
-                        }
+                        $shrinklevel += $enchantment->getLevel();
+                        $shrinkpoints++;
                     }
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::GROW);
                     if ($enchantment !== null) {
-                        if (!isset($this->plugin->growcd[strtolower($entity->getName())]) || $this->plugin->growcd[strtolower($entity->getName())] <= time()) {
-                            $level += $enchantment->getLevel();
-                            $growpoints++;
+                        $growlevel += $enchantment->getLevel();
+                        $growpoints++;
+                    }
+                }
+                if ($shrinkpoints >= 4) {
+                    if (isset($this->plugin->shrunk[strtolower($entity->getName())]) && $this->plugin->shrunk[strtolower($entity->getName())] > time()) {
+                        $this->plugin->shrinkremaining[strtolower($entity->getName())] = $this->plugin->shrunk[strtolower($entity->getName())] - time();
+                        unset($this->plugin->shrinkcd[strtolower($entity->getName())]);
+                        unset($this->plugin->shrunk[strtolower($entity->getName())]);
+                        $this->plugin->sizemanipulated[strtolower($entity->getName())] = time() + 5;
+                        $entity->setScale(1);
+                        $entity->sendTip(TextFormat::RED . "You have grown back to normal size.");
+                    } else {
+                        if (!isset($this->plugin->shrinkcd[strtolower($entity->getName())]) || $this->plugin->shrinkcd[strtolower($entity->getName())] <= time()) {
+                            $scale = $entity->getScale() - 0.70 - (($shrinklevel / 4) * 0.05);
+                            $entity->setScale($scale);
+                            $this->plugin->shrunk[strtolower($entity->getName())] = isset($this->plugin->shrinkremaining[strtolower($entity->getName())]) ? time() + $this->plugin->shrinkremaining[strtolower($entity->getName())] : time() + 60;
+                            $this->plugin->shrinkcd[strtolower($entity->getName())] = isset($this->plugin->shrinkremaining[strtolower($entity->getName())]) ? time() + (75 - (60 - $this->plugin->shrinkremaining[strtolower($entity->getName())])) : time() + 75;
+                            $entity->sendTip(TextFormat::GREEN . "You have shrunk. Sneak again to grow back to normal size.");
+                            if (isset($this->plugin->shrinkremaining[strtolower($entity->getName())])) {
+                                unset($this->plugin->shrinkremaining[strtolower($entity->getName())]);
+                            }
                         }
                     }
                 }
-                if ($shrinkpoints >= 4 && isset($this->plugin->shrunk[strtolower($entity->getName())]) !== true) {
-                    $scale = 0.30 - (($level / 4) * 0.05);
-                    $entity->sendMessage(TextFormat::GREEN . "You have shrunk.");
-                    $entity->setScale($scale);
-                    $this->plugin->shrunk[strtolower($entity->getName())] = time() + 60;
-                    $this->plugin->shrinkcd[strtolower($entity->getName())] = time() + 75;
-                }
-                if ($growpoints >= 4 && isset($this->plugin->grew[strtolower($entity->getName())]) !== true) {
-                    $scale = 1.30 + (($level / 4) * 0.05);
-                    $entity->sendMessage(TextFormat::GREEN . "You have grown.");
-                    $entity->setScale($scale);
-                    $this->plugin->grew[strtolower($entity->getName())] = time() + 60;
-                    $this->plugin->growcd[strtolower($entity->getName())] = time() + 75;
+                if ($growpoints >= 4) {
+                    if (isset($this->plugin->grew[strtolower($entity->getName())]) && $this->plugin->grew[strtolower($entity->getName())] > time()) {
+                        $this->plugin->growremaining[strtolower($entity->getName())] = $this->plugin->grew[strtolower($entity->getName())] - time();
+                        unset($this->plugin->growcd[strtolower($entity->getName())]);
+                        unset($this->plugin->grew[strtolower($entity->getName())]);
+                        $this->plugin->sizemanipulated[strtolower($entity->getName())] = time() + 5;
+                        $entity->setScale(1);
+                        $entity->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
+                    } else {
+                        if (!isset($this->plugin->growcd[strtolower($entity->getName())]) || $this->plugin->growcd[strtolower($entity->getName())] <= time()) {
+                            $scale = $entity->getScale() + 0.30 + (($growlevel / 4) * 0.05);
+                            $entity->setScale($scale);
+                            $this->plugin->grew[strtolower($entity->getName())] = isset($this->plugin->growremaining[strtolower($entity->getName())]) ? time() + $this->plugin->growremaining[strtolower($entity->getName())] : time() + 60;
+                            $this->plugin->growcd[strtolower($entity->getName())] = isset($this->plugin->growremaining[strtolower($entity->getName())]) ? time() + (75 - (60 - $this->plugin->growremaining[strtolower($entity->getName())])) : time() + 75;
+                            $entity->sendTip(TextFormat::GREEN . "You have grown. Sneak again to shrink back to normal size.");
+                            if (isset($this->plugin->growremaining[strtolower($entity->getName())])) {
+                                unset($this->plugin->growremaining[strtolower($entity->getName())]);
+                            }
+                        }
+                    }
                 }
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::JETPACK);
                 if ($enchantment !== null) {
-                    if (!isset($this->plugin->jetpackcd[strtolower($entity->getName())]) || $this->plugin->jetpackcd[strtolower($entity->getName())] <= time()) {
-                        $this->plugin->flying[strtolower($entity->getName())] = time() + 300;
-                        $this->plugin->jetpackcd[strtolower($entity->getName())] = time() + 360;
+                    if (isset($this->plugin->flying[strtolower($entity->getName())]) && $this->plugin->flying[strtolower($entity->getName())] > time()) {
+                        if ($entity->isOnGround()) {
+                            $this->plugin->flyremaining[strtolower($entity->getName())] = $this->plugin->flying[strtolower($entity->getName())] - time();
+                            unset($this->plugin->jetpackcd[strtolower($entity->getName())]);
+                            unset($this->plugin->flying[strtolower($entity->getName())]);
+                            $entity->sendTip(TextFormat::RED . "Jetpack disabled.");
+                        } else {
+                            $entity->sendTip(TextFormat::RED . "It is unsafe to disable your jetpack in the air.");
+                        }
+                    } else {
+                        if (!isset($this->plugin->jetpackcd[strtolower($entity->getName())]) || $this->plugin->jetpackcd[strtolower($entity->getName())] <= time()) {
+                            $this->plugin->flying[strtolower($entity->getName())] = isset($this->plugin->flyremaining[strtolower($entity->getName())]) ? time() + $this->plugin->flyremaining[strtolower($entity->getName())] : time() + 300;
+                            $this->plugin->jetpackcd[strtolower($entity->getName())] = isset($this->plugin->flyremaining[strtolower($entity->getName())]) ? time() + (360 - (300 - $this->plugin->flyremaining[strtolower($entity->getName())])) : time() + 360;
+                            $entity->sendTip(TextFormat::GREEN . "Jetpack enabled. Sneak again to turn off your jetpack.");
+                            if (isset($this->plugin->flyremaining[strtolower($entity->getName())])) {
+                                unset($this->plugin->flyremaining[strtolower($entity->getName())]);
+                            }
+                        }
                     }
                 }
             }

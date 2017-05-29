@@ -46,7 +46,12 @@ class JetpackTask extends PluginTask
                 }
             }
             if (isset($this->plugin->flying[strtolower($player->getName())])) {
+                if ($this->plugin->flying[strtolower($player->getName())] > time()) {
+                    $this->plugin->flyremaining[strtolower($player->getName())] = $this->plugin->flying[strtolower($player->getName())] - time();
+                    unset($this->plugin->jetpackcd[strtolower($player->getName())]);
+                }
                 unset($this->plugin->flying[strtolower($player->getName())]);
+                $player->sendTip(TextFormat::RED . "Jetpack disabled.");
             }
         }
     }

@@ -34,7 +34,7 @@ class SizeTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $shrinkpoints = 0;
             $growpoints = 0;
-            if(isset($this->plugin->sizemanipulated[strtolower($player->getName())]) && $this->plugin->sizemanipulated[strtolower($player->getName())] <= time()){
+            if (isset($this->plugin->sizemanipulated[strtolower($player->getName())]) && $this->plugin->sizemanipulated[strtolower($player->getName())] <= time()) {
                 unset($this->plugin->sizemanipulated[strtolower($player->getName())]);
             }
             foreach ($player->getInventory()->getArmorContents() as $armor) {
@@ -44,10 +44,14 @@ class SizeTask extends PluginTask
                 }
             }
             if (isset($this->plugin->shrunk[strtolower($player->getName())]) && ($this->plugin->shrunk[strtolower($player->getName())] <= time() || $shrinkpoints < 4)) {
+                if ($this->plugin->shrunk[strtolower($player->getName())] > time()) {
+                    $this->plugin->shrinkremaining[strtolower($player->getName())] = $this->plugin->shrunk[strtolower($player->getName())] - time();
+                    unset($this->plugin->shrinkcd[strtolower($player->getName())]);
+                }
                 unset($this->plugin->shrunk[strtolower($player->getName())]);
                 $this->plugin->sizemanipulated[strtolower($player->getName())] = time() + 5;
-                $player->sendMessage(TextFormat::RED . "You have grown back to normal size.");
                 $player->setScale(1);
+                $player->sendTip(TextFormat::RED . "You have grown back to normal size.");
             }
             foreach ($player->getInventory()->getArmorContents() as $armor) {
                 $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::GROW);
@@ -56,10 +60,14 @@ class SizeTask extends PluginTask
                 }
             }
             if (isset($this->plugin->grew[strtolower($player->getName())]) && ($this->plugin->grew[strtolower($player->getName())] <= time() || $growpoints < 4)) {
+                if ($this->plugin->grew[strtolower($player->getName())] > time()) {
+                    $this->plugin->growremaining[strtolower($player->getName())] = $this->plugin->grew[strtolower($player->getName())] - time();
+                    unset($this->plugin->growcd[strtolower($player->getName())]);
+                }
                 unset($this->plugin->grew[strtolower($player->getName())]);
                 $this->plugin->sizemanipulated[strtolower($player->getName())] = time() + 5;
-                $player->sendMessage(TextFormat::RED . "You have shrunk back to normal size.");
                 $player->setScale(1);
+                $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
             }
         }
     }
