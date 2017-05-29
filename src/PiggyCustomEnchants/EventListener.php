@@ -8,6 +8,7 @@ use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
+use PiggyCustomEnchants\Tasks\MoltenTask;
 use PiggyCustomEnchants\Tasks\UnsneakTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
@@ -749,7 +750,7 @@ class EventListener implements Listener
                         $damager = $event->getDamager();
                         $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::MOLTEN);
                         if ($enchantment !== null) {
-                            $damager->setOnFire(3 * $enchantment->getLevel());
+                            $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
                         }
                         $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENLIGHTED);
                         if ($enchantment !== null) {
