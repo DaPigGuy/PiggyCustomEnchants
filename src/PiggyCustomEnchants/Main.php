@@ -336,7 +336,7 @@ class Main extends PluginBase
      * @return bool|Item
      * @internal param CustomEnchants $ench
      */
-    public function removeEnchantment(Item $item, CustomEnchants $enchant, Player $player, $slot)
+    public function removeEnchantment(Item $item, CustomEnchants $enchant, Player $player, $slot, $set = true)
     {
         if (!$item->hasEnchantments()) {
             return false;
@@ -350,7 +350,7 @@ class Main extends PluginBase
         }
         $item = Item::get($item->getId(), $item->getDamage(), $item->getCount());
         foreach ($enchants as $ench) {
-            $this->addEnchantment($item, str_replace(" ", "", $ench->getName()), $ench->getLevel(), $player, null, $slot);
+            $item = $this->addEnchantment($item, str_replace(" ", "", $ench->getName()), $ench->getLevel(), $player, null, $slot, $set);
         }
         return $item;
     }
