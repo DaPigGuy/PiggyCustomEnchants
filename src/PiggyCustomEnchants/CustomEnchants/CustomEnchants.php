@@ -76,6 +76,7 @@ class CustomEnchants extends Enchantment
     const REVIVE = 413;
     const SHRINK = 414;
     const GROW = 415;
+    const CACTUS = 416;
 
 
     //BOOTS

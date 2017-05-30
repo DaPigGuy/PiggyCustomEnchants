@@ -6,6 +6,7 @@ use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
+use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\JetpackTask;
 use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
@@ -60,12 +61,13 @@ class Main extends PluginBase
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
         CustomEnchants::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5],
-        CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 6],
+        CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5],
         CustomEnchants::BERSERKER => ["Berserker", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::CLOAKING => ["Cloaking", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1],
         CustomEnchants::BLIND => ["Blind", "Weapons", "Damage", "Common", 5],
         CustomEnchants::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "", 5],
+        CustomEnchants::CACTUS => ["Cactus", "Armor", "Equip", "", 1],
         CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5],
@@ -122,6 +124,7 @@ class Main extends PluginBase
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
@@ -244,6 +247,9 @@ class Main extends PluginBase
      * @param CommandSender|null $sender
      * @param null $slot
      * @param bool $check
+     * @param bool $set
+     * @return Item
+     * @return Item
      */
     public function addEnchantment(Item $item, $enchants, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true, $set = true)
     {
