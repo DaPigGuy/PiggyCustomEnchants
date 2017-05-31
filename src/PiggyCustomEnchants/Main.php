@@ -251,14 +251,23 @@ class Main extends PluginBase
      * @return Item
      * @return Item
      */
-    public function addEnchantment(Item $item, $enchants, $level, Player $player, CommandSender $sender = null, $slot = null, $check = true, $set = true)
+    public function addEnchantment(Item $item, $enchants, $levels, Player $player, CommandSender $sender = null, $slot = null, $check = true, $set = true)
     {
         //TODO: Check if item can get enchant
         if (!is_array($enchants)) {
             $enchants = [$enchants];
         }
-
+        if (!is_array($levels)) {
+            $levels = [$levels];
+            if(count($enchants) > count($levels)){
+                for ($i = 0; $i <= count($enchants) - count($levels); $i++){
+                    array_push($levels, 1);
+                }
+            }
+        }
+        $combined = array_combine($enchants, $levels);
         foreach ($enchants as $enchant) {
+            $level = $combined[$enchant];
             $enchant = CustomEnchants::getEnchantByName($enchant);
             if ($enchant == null) {
                 if ($sender !== null) {
