@@ -78,16 +78,15 @@ class CustomEnchants extends Enchantment
     const GROW = 415;
     const CACTUS = 416;
 
+    //HELMET
+    //const IMPLANTS = 600;
+    const GLOWING = 601;
 
     //BOOTS
     const GEARS = 500;
     const SPRINGS = 501;
     const STOMP = 502;
     const JETPACK = 503;
-
-    //HELMET
-    //const IMPLANTS = 600;
-    const GLOWING = 601;
 
     //COMPASS
     const RADAR = 700;

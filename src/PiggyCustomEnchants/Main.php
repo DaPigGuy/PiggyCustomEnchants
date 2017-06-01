@@ -67,7 +67,7 @@ class Main extends PluginBase
         CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1],
         CustomEnchants::BLIND => ["Blind", "Weapons", "Damage", "Common", 5],
         CustomEnchants::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "", 5],
-        CustomEnchants::CACTUS => ["Cactus", "Armor", "Equip", "", 1],
+        CustomEnchants::CACTUS => ["Cactus", "Armor", "Equip", "", 1], //TODO: Pick rarity
         CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5],
@@ -259,8 +259,8 @@ class Main extends PluginBase
         }
         if (!is_array($levels)) {
             $levels = [$levels];
-            if(count($enchants) > count($levels)){
-                for ($i = 0; $i <= count($enchants) - count($levels); $i++){
+            if (count($enchants) > count($levels)) {
+                for ($i = 0; $i <= count($enchants) - count($levels); $i++) {
                     array_push($levels, 1);
                 }
             }
@@ -485,15 +485,37 @@ class Main extends PluginBase
             case "Helmets":
                 switch ($item->getId()) {
                     case Item::LEATHER_CAP:
+                    case Item::CHAIN_HELMET:
                     case Item::IRON_HELMET:
                     case Item::GOLD_HELMET:
                     case Item::DIAMOND_HELMET:
                         return true;
                 }
                 break;
+            case "Chestplate":
+                switch ($item->getId()) {
+                    case Item::LEATHER_TUNIC:
+                    case Item::CHAIN_CHESTPLATE;
+                    case Item::IRON_CHESTPLATE:
+                    case Item::GOLD_CHESTPLATE:
+                    case Item::DIAMOND_CHESTPLATE:
+                        return true;
+                }
+                break;
+            case "Leggings":
+                switch ($item->getId()) {
+                    case Item::LEATHER_PANTS:
+                    case Item::CHAIN_LEGGINGS:
+                    case Item::IRON_LEGGINGS:
+                    case Item::GOLD_LEGGINGS:
+                    case Item::DIAMOND_LEGGINGS:
+                        return true;
+                }
+                break;
             case "Boots":
                 switch ($item->getId()) {
                     case Item::LEATHER_BOOTS:
+                    case Item::CHAIN_BOOTS:
                     case Item::IRON_BOOTS:
                     case Item::GOLD_BOOTS:
                     case Item::DIAMOND_BOOTS:
