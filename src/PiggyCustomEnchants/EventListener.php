@@ -130,9 +130,9 @@ class EventListener implements Listener
     public function onSpawn(EntitySpawnEvent $event)
     {
         $entity = $event->getEntity();
-        if ($entity instanceof Projectile && $entity->shootingEntity instanceof Player) {
+        if ($entity instanceof Projectile && $entity->getOwningEntity() instanceof Player) {
             if (!isset($entity->namedtag["Volley"])) {
-                $this->checkBowEnchants($entity->shootingEntity, $entity, $event);
+                $this->checkBowEnchants($entity->getOwningEntity(), $entity, $event);
             }
         }
     }
@@ -215,8 +215,8 @@ class EventListener implements Listener
     public function onHit(ProjectileHitEvent $event)
     {
         $entity = $event->getEntity();
-        if ($entity->shootingEntity instanceof Player) {
-            $this->checkBowEnchants($entity->shootingEntity, $entity, $event);
+        if ($entity->getOwningEntity() instanceof Player) {
+            $this->checkBowEnchants($entity->getOwningEntity(), $entity, $event);
         }
     }
 
