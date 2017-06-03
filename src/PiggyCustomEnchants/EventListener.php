@@ -523,6 +523,7 @@ class EventListener implements Listener
 
                             }
                         }
+                        unset($this->plugin->blockface[strtolower($player->getName())]);
                     }
                 }
             }
