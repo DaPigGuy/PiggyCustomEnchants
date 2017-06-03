@@ -60,7 +60,7 @@ class Fireball extends Projectile
 
             foreach ($list as $entity) {
                 if (/*!$entity->canCollideWith($this) or */
-                ($entity === $this->shootingEntity and $this->ticksLived < 5)
+                ($entity === $this->getOwningEntity() and $this->ticksLived < 5)
                 ) {
                     continue;
                 }
