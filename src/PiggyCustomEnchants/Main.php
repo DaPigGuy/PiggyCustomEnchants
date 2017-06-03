@@ -42,8 +42,10 @@ class Main extends PluginBase
     public $growcd;
     public $jetpackcd;
 
-    public $breakingTree;
+    public $breaking;
     public $mined;
+
+    public $blockface;
 
     public $nofall;
 
@@ -74,6 +76,7 @@ class Main extends PluginBase
         CustomEnchants::CURSED => ["Cursed", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::DEATHBRINGER => ["Deathbringer", "Weapons", "Damage", "Rare", 5],
         CustomEnchants::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 1],
+        CustomEnchants::DRILLER => ["Driller", "Tools", "Break", "", 5], //TODO: Pick rarity
         CustomEnchants::DRUNK => ["Drunk", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::ENDERSHIFT => ["Endershift", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::ENERGIZING => ["Energizing", "Tools", "Break", "Uncommon", 5],

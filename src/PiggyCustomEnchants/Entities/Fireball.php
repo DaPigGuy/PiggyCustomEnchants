@@ -91,10 +91,10 @@ class Fireball extends Projectile
 
                     $damage = 5;
 
-                    if ($this->shootingEntity === null) {
+                    if ($this->getOwningEntity() === null) {
                         $ev = new EntityDamageByEntityEvent($this, $movingObjectPosition->entityHit, EntityDamageEvent::CAUSE_PROJECTILE, $damage);
                     } else {
-                        $ev = new EntityDamageByChildEntityEvent($this->shootingEntity, $this, $movingObjectPosition->entityHit, EntityDamageEvent::CAUSE_PROJECTILE, $damage);
+                        $ev = new EntityDamageByChildEntityEvent($this->getOwningEntity(), $this, $movingObjectPosition->entityHit, EntityDamageEvent::CAUSE_PROJECTILE, $damage);
                     }
 
                     $movingObjectPosition->entityHit->attack($ev->getFinalDamage(), $ev);
@@ -151,7 +151,7 @@ class Fireball extends Projectile
     {
         $pk = new AddEntityPacket();
         $pk->type = Fireball::NETWORK_ID;
-        $pk->eid = $this->getId();
+        $pk->entityRuntimeId = $this->getId();
         $pk->x = $this->x;
         $pk->y = $this->y;
         $pk->z = $this->z;

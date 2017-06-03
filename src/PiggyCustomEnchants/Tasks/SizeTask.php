@@ -14,7 +14,6 @@ use pocketmine\utils\TextFormat;
 class SizeTask extends PluginTask
 {
     private $plugin;
-    private $radars;
 
     /**
      * SizeTask constructor.

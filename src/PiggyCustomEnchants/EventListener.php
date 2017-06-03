@@ -9,7 +9,6 @@ use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
 use PiggyCustomEnchants\Tasks\MoltenTask;
-use PiggyCustomEnchants\Tasks\UnsneakTask;
 use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Effect;
@@ -27,11 +26,13 @@ use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Event;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
+
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
@@ -39,7 +40,7 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
-use pocketmine\network\mcpe\protocol\PlayerActionPacket;
+
 use pocketmine\Player;
 use pocketmine\utils\Random;
 use pocketmine\utils\TextFormat;
@@ -147,6 +148,22 @@ class EventListener implements Listener
     {
         $player = $event->getEntity();
         $this->checkGlobalEnchants($player, null, $event);
+    }
+
+    /**
+     * @param PlayerInteractEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onInteract(PlayerInteractEvent $event)
+    {
+        $player = $event->getPlayer();
+        $action = $event->getAction();
+        $face = $event->getFace();
+        if ($action == PlayerInteractEvent::LEFT_CLICK_BLOCK) {
+            $this->plugin->blockface[strtolower($player->getName())] = $face;
+        }
     }
 
     /**
@@ -452,7 +469,7 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 if ($player->isSneaking()) {
                     if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
-                        if (!isset($this->plugin->breakingTree[strtolower($player->getName())]) || $this->plugin->breakingTree[strtolower($player->getName())] < time()) {
+                        if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
                             $this->plugin->mined[strtolower($player->getName())] = 0;
                             $this->breakTree($block, $player);
                         }
@@ -465,6 +482,49 @@ class EventListener implements Listener
                     $player->getInventory()->addItem($drop);
                 }
                 $event->setDrops([]);
+            }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::DRILLER);
+            if ($enchantment !== null) {
+                if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
+                    if (isset($this->plugin->blockface[strtolower($player->getName())])) {
+                        $side = $this->plugin->blockface[strtolower($player->getName())];
+                        $sides = [];
+                        $sides2 = [];
+                        switch ($side) {
+                            case Vector3::SIDE_NORTH:
+                            case Vector3::SIDE_SOUTH:
+                                $sides = [Vector3::SIDE_WEST, Vector3::SIDE_EAST, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
+                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_EAST, Vector3::SIDE_WEST];
+                                break;
+                            case Vector3::SIDE_WEST:
+                            case Vector3::SIDE_EAST:
+                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
+                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
+                                break;
+                            case Vector3::SIDE_UP:
+                            case Vector3::SIDE_DOWN:
+                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST, Vector3::SIDE_EAST];
+                                $sides2 = [Vector3::SIDE_EAST, Vector3::SIDE_WEST, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
+                                break;
+                        }
+                        $item = $player->getInventory()->getItemInHand();
+                        for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
+                            $b = $block->getSide($side ^ 0x01, $i);
+                            $combined = array_combine($sides, $sides2);
+                            $this->plugin->breaking[strtolower($player->getName())] = time() + 1;
+                            $player->getLevel()->useBreakOn($b, $item, $player);
+                            foreach ($sides as $s) {
+                                $b2 = $b->getSide($s, 1);
+                                $b3 = $b2->getSide($combined[$s], 1);
+                                $b4 = $b2->getSide($combined[$s] ^ 0x01, 1);
+                                $player->getLevel()->useBreakOn($b2, $item, $player);
+                                $player->getLevel()->useBreakOn($b3, $item, $player);
+                                $player->getLevel()->useBreakOn($b4, $item, $player);
+
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -950,7 +1010,7 @@ class EventListener implements Listener
             if ($this->plugin->mined[strtolower($player->getName())] > 800) {
                 break;
             }
-            $this->plugin->breakingTree[strtolower($player->getName())] = time() + 1;
+            $this->plugin->breaking[strtolower($player->getName())] = time() + 1;
             $side = $block->getSide($i);
             if ($oldblock !== null) {
                 if ($side->equals($oldblock)) {
