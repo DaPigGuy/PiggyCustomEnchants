@@ -206,6 +206,7 @@ class EventListener implements Listener
             return false;
         }
         $this->checkGlobalEnchants($player, null, $event);
+        $this->checkArmorEnchants($player, $event);
         return true;
     }
 
@@ -909,6 +910,25 @@ class EventListener implements Listener
                                 $entity->setFood($entity->getMaxFood());
                                 $event->setDamage(0);
                                 //TODO: Side effect
+                            }
+                        }
+                    }
+                }
+            }
+            if ($event instanceof PlayerMoveEvent) {
+                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::MAGMAWALKER);
+                if ($enchantment !== null) {
+                    $block = $entity->getLevel()->getBlock($entity);
+                    if ($block->getId() !== Block::LAVA && $block->getId() !== Block::STILL_LAVA) {
+                        $radius = $enchantment->getLevel() + 2;
+                        for ($x = -$radius; $x <= $radius; $x++) {
+                            for ($z = -$radius; $z <= $radius; $z++) {
+                                $b = $entity->getLevel()->getBlock(new Vector3($entity->x + $x, $entity->y - 1, $entity->z + $z));
+                                if ($b->getId() == Block::LAVA || $b->getId() == Block::STILL_LAVA) {
+                                    if ($entity->getLevel()->getBlock($b->floor()->add(0, 1))->getId() !== Block::LAVA && $entity->getLevel()->getBlock($b->floor()->add(0, 1))->getId() !== Block::STILL_LAVA) {
+                                        $entity->getLevel()->setBlock($b, Block::get(Block::OBSIDIAN));
+                                    }
+                                }
                             }
                         }
                     }

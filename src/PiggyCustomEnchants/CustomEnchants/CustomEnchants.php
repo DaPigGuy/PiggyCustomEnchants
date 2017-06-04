@@ -88,6 +88,7 @@ class CustomEnchants extends Enchantment
     const SPRINGS = 501;
     const STOMP = 502;
     const JETPACK = 503;
+    const MAGMAWALKER = 504;
 
     //COMPASS
     const RADAR = 700;

@@ -95,6 +95,7 @@ class Main extends PluginBase
         CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 5],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
+        CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "", 2], //TODO: Pick rarity
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5],
