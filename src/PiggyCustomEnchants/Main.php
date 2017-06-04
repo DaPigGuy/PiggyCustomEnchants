@@ -69,14 +69,14 @@ class Main extends PluginBase
         CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1],
         CustomEnchants::BLIND => ["Blind", "Weapons", "Damage", "Common", 5],
         CustomEnchants::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "", 5],
-        CustomEnchants::CACTUS => ["Cactus", "Armor", "Equip", "", 1], //TODO: Pick rarity
+        CustomEnchants::CACTUS => ["Cactus", "Armor", "Equip", "Rare", 1],
         CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CURSED => ["Cursed", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::DEATHBRINGER => ["Deathbringer", "Weapons", "Damage", "Rare", 5],
         CustomEnchants::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 1],
-        CustomEnchants::DRILLER => ["Driller", "Tools", "Break", "", 5], //TODO: Pick rarity
+        CustomEnchants::DRILLER => ["Driller", "Tools", "Break", "Uncommon", 5],
         CustomEnchants::DRUNK => ["Drunk", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::ENDERSHIFT => ["Endershift", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::ENERGIZING => ["Energizing", "Tools", "Break", "Uncommon", 5],
@@ -87,12 +87,12 @@ class Main extends PluginBase
         CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1],
         CustomEnchants::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1],
-        CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "", 5], //TODO: Pick rarity
+        CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "Uncommon", 5],
         CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5],
-        CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "", 5], //TODO: Pick rarity
+        CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
-        CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "", 5], //TODO: Pick rarity
+        CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 5],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
@@ -104,11 +104,11 @@ class Main extends PluginBase
         CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
         CustomEnchants::QUICKENING => ["Quickening", "Tools", "Break", "Uncommon", 5],
-        CustomEnchants::RADAR => ["Radar", "Compass", "Inventory", "", 5], //TODO: Pick rarity
+        CustomEnchants::RADAR => ["Radar", "Compass", "Inventory", "Rare", 5],
         CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "Rare", 5],
         CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5],
-        CustomEnchants::SHRINK => ["Shrink", "Armor", "Sneak", "", 2], //TODO: Pick rarity
+        CustomEnchants::SHRINK => ["Shrink", "Armor", "Sneak", "Uncommon", 2],
         CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1],
         CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1],
         CustomEnchants::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1],
@@ -245,14 +245,14 @@ class Main extends PluginBase
     /**
      * @param Item $item
      * @param $enchants
-     * @param $level
+     * @param $levels
      * @param Player $player
      * @param CommandSender|null $sender
      * @param null $slot
      * @param bool $check
      * @param bool $set
      * @return Item
-     * @return Item
+     * @internal param $level
      */
     public function addEnchantment(Item $item, $enchants, $levels, Player $player, CommandSender $sender = null, $slot = null, $check = true, $set = true)
     {
@@ -345,6 +345,7 @@ class Main extends PluginBase
      * @param CustomEnchants $enchant
      * @param Player $player
      * @param $slot
+     * @param bool $set
      * @return bool|Item
      * @internal param CustomEnchants $ench
      */
