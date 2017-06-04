@@ -4,7 +4,7 @@ namespace PiggyCustomEnchants\Tasks;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Main;
-use PiggyCustomEnchants\Packets\SetSpawnPositionPacket;
+use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\Player;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\utils\TextFormat;
