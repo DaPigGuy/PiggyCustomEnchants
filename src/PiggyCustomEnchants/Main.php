@@ -162,6 +162,23 @@ class Main extends PluginBase
     }
 
     /**
+     * Registers enchantment from id, name, trigger, rarity, and max level
+     *
+     * @param $id
+     * @param $name
+     * @param $type
+     * @param $trigger
+     * @param $rarity
+     * @param $maxlevel
+     */
+    public function registerEnchantment($id, $name, $type, $trigger, $rarity, $maxlevel){
+        $data = [$name, $type, $trigger, $rarity, $maxlevel];
+        $this->enchants[$id] = $data;
+        $ce = $this->translateDataToCE($id, $data);
+        CustomEnchants::registerEnchants($id, $ce);
+    }
+
+    /**
      * Translates data from strings to int
      *
      * @param $id
