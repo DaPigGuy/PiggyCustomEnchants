@@ -369,7 +369,7 @@ class Main extends PluginBase
      * @param CustomEnchants $enchant
      * @return bool|Item
      */
-    public function removeEnchantment(Item $item, CustomEnchants $enchant)
+    public function removeEnchantment(Item $item, CustomEnchants $enchant, $level = -1)
     {
         if (!$item->hasEnchantments()) {
             return false;
@@ -377,7 +377,7 @@ class Main extends PluginBase
         $tag = $item->getNamedTag();
         $item = Item::get($item->getId(), $item->getDamage(), $item->getCount());
         foreach ($tag->ench as $k => $enchantment) {
-            if ($enchantment["id"] !== $enchant->getId()) {
+            if (($enchantment["id"] == $enchant->getId() && ($enchantment["lvl"] == $level || $level == -1)) !== true) {
                 $item = $this->addEnchantment($item, $enchantment["id"], $enchantment["lvl"], true);
             }
         }

@@ -169,6 +169,7 @@ class EventListener implements Listener
 
     /**
      * Temporary solution to players getting kicked
+     *
      * @param PlayerKickEvent $event
      *
      * @priority HIGHEST
