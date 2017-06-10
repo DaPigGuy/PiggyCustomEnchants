@@ -75,7 +75,7 @@ class CustomEnchantCommand extends PluginCommand
                     $sender->sendMessage("§cInvalid player.");
                     return false;
                 }
-                $this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $target, $sender, null, $sender->hasPermission("piggycustomenchants.overridecheck") ? false : true);
+                $target->getInventory()->setItemInHand($this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $sender->hasPermission("piggycustomenchants.overridecheck") ? false : true, $sender));
                 break;
             default:
                 $sender->sendMessage("/customenchant <enchant|list>");

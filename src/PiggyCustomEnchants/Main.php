@@ -247,15 +247,11 @@ class Main extends PluginBase
      * @param Item $item
      * @param $enchants
      * @param $levels
-     * @param Player $player
-     * @param CommandSender|null $sender
-     * @param null $slot
      * @param bool $check
-     * @param bool $set
+     * @param CommandSender|null $sender
      * @return Item
-     * @internal param $level
      */
-    public function addEnchantment(Item $item, $enchants, $levels, Player $player, CommandSender $sender = null, $slot = null, $check = true, $set = true)
+    public function addEnchantment(Item $item, $enchants, $levels, $check = true, CommandSender $sender = null)
     {
         //TODO: Check if item can get enchant
         if (!is_array($enchants)) {
@@ -263,16 +259,22 @@ class Main extends PluginBase
         }
         if (!is_array($levels)) {
             $levels = [$levels];
-            if (count($enchants) > count($levels)) {
-                for ($i = 0; $i <= count($enchants) - count($levels); $i++) {
-                    array_push($levels, 1);
-                }
+        }
+        if (count($enchants) > count($levels)) {
+            for ($i = 0; $i <= count($enchants) - count($levels); $i++) {
+                array_push($levels, 1);
             }
         }
         $combined = array_combine($enchants, $levels);
         foreach ($enchants as $enchant) {
             $level = $combined[$enchant];
-            $enchant = CustomEnchants::getEnchantByName($enchant);
+            if (!$enchant instanceof CustomEnchants) {
+                if (is_int($enchant)) {
+                    $enchant = CustomEnchants::getEnchantment($enchant);
+                } else {
+                    $enchant = CustomEnchants::getEnchantByName($enchant);
+                }
+            }
             if ($enchant == null) {
                 if ($sender !== null) {
                     $sender->sendMessage("§cInvalid enchantment.");
@@ -305,20 +307,13 @@ class Main extends PluginBase
                     }
                 }
                 if (!$found) {
-                    $tag->ench->{count($tag->ench) + 1} = new CompoundTag($enchant->getName(), [
+                    $tag->ench->{count($tag->ench->getValue()) + 1} = new CompoundTag($enchant->getName(), [
                         "id" => new ShortTag("id", $enchant->getId()),
                         "lvl" => new ShortTag("lvl", $enchant->getLevel())
                     ]);
                     $level = $this->getRomanNumber($enchant->getLevel());
                     $item->setNamedTag($tag);
                     $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
-                }
-                if ($set == true) {
-                    if ($slot == null) {
-                        $player->getInventory()->setItemInHand($item);
-                    } else {
-                        $player->getInventory()->setItem($slot, $item);
-                    }
                 }
                 if ($sender !== null) {
                     $sender->sendMessage("§aEnchanting suceeded.");
@@ -344,27 +339,19 @@ class Main extends PluginBase
     /**
      * @param Item $item
      * @param CustomEnchants $enchant
-     * @param Player $player
-     * @param $slot
-     * @param bool $set
      * @return bool|Item
-     * @internal param CustomEnchants $ench
      */
-    public function removeEnchantment(Item $item, CustomEnchants $enchant, Player $player, $slot, $set = true)
+    public function removeEnchantment(Item $item, CustomEnchants $enchant)
     {
         if (!$item->hasEnchantments()) {
             return false;
         }
         $tag = $item->getNamedTag();
-        $enchants = [];
+        $item = Item::get($item->getId(), $item->getDamage(), $item->getCount());
         foreach ($tag->ench as $k => $enchantment) {
             if ($enchantment["id"] !== $enchant->getId()) {
-                array_push($enchants, CustomEnchants::getEnchantment($enchantment["id"])->setLevel($enchantment["lvl"]));
+                $item = $this->addEnchantment($item, $enchantment["id"], $enchantment["lvl"], true);
             }
-        }
-        $item = Item::get($item->getId(), $item->getDamage(), $item->getCount());
-        foreach ($enchants as $ench) {
-            $item = $this->addEnchantment($item, str_replace(" ", "", $ench->getName()), $ench->getLevel(), $player, null, $slot, $set);
         }
         return $item;
     }

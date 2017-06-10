@@ -361,7 +361,7 @@ class EventListener implements Listener
                     if ($index !== false) {
                         unset($drops[$index]);
                     }
-                    array_push($soulbounded, $this->plugin->removeEnchantment($item, $enchantment, $damager, $k));
+                    array_push($soulbounded, $this->plugin->removeEnchantment($item, $enchantment));
                 }
             }
             $event->setDrops([]);
@@ -904,7 +904,7 @@ class EventListener implements Listener
                         $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVIVE);
                         if ($enchantment !== null) {
                             if ($event->getDamage() >= $entity->getHealth()) {
-                                $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment, $entity, $slot));
+                                $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
                                 $entity->removeAllEffects();
                                 $entity->setHealth($entity->getMaxHealth());
                                 $entity->setFood($entity->getMaxFood());
