@@ -131,9 +131,10 @@ class EventListener implements Listener
     public function onSpawn(EntitySpawnEvent $event)
     {
         $entity = $event->getEntity();
-        if ($entity instanceof Projectile && $entity->getOwningEntity() instanceof Player) {
+        $shooter = $entity->getOwningEntity();
+        if ($entity instanceof Projectile && $shooter instanceof Player) {
             if (!isset($entity->namedtag["Volley"])) {
-                $this->checkBowEnchants($entity->getOwningEntity(), $entity, $event);
+                $this->checkBowEnchants($shooter, $entity, $event);
             }
         }
     }
@@ -233,8 +234,9 @@ class EventListener implements Listener
     public function onHit(ProjectileHitEvent $event)
     {
         $entity = $event->getEntity();
-        if ($entity->getOwningEntity() instanceof Player) {
-            $this->checkBowEnchants($entity->getOwningEntity(), $entity, $event);
+        $shooter = $entity->getOwningEntity();
+        if ($shooter instanceof Player) {
+            $this->checkBowEnchants($shooter, $entity, $event);
         }
     }
 
@@ -660,32 +662,40 @@ class EventListener implements Listener
                 $entity->close();
             }
         }
-        if ($event instanceof ProjectileHitEvent && $entity instanceof Projectile && $entity->hadCollision) {
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::GRAPPLING);
-            if ($enchantment !== null) {
-                $location = $entity->getPosition();
-                $damagerloc = $damager->getPosition();
-                if ($damager->distance($entity) < 6) {
-                    if ($location->y > $damager->y) {
-                        $damager->setMotion(new Vector3(0, 0.25, 0));
+        if ($event instanceof ProjectileHitEvent && $entity instanceof Projectile) {
+            if ($entity->hadCollision) {
+                $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::GRAPPLING);
+                if ($enchantment !== null) {
+                    $location = $entity->getPosition();
+                    $damagerloc = $damager->getPosition();
+                    if ($damager->distance($entity) < 6) {
+                        if ($location->y > $damager->y) {
+                            $damager->setMotion(new Vector3(0, 0.25, 0));
+                        } else {
+                            $v = $location->subtract($damagerloc);
+                            $damager->setMotion($v);
+                        }
                     } else {
-                        $v = $location->subtract($damagerloc);
+                        $g = -0.08;
+                        $d = $location->distance($damagerloc);
+                        $t = $d;
+                        $v_x = (1.0 + 0.07 * $t) * ($location->x - $damagerloc->x) / $t;
+                        $v_y = (1.0 + 0.03 * $t) * ($location->y - $damagerloc->y) / $t - 0.5 * $g * $t;
+                        $v_z = (1.0 + 0.07 * $t) * ($location->z - $damagerloc->z) / $t;
+                        $v = $damager->getMotion();
+                        $v->setComponents($v_x, $v_y, $v_z);
                         $damager->setMotion($v);
                     }
-                } else {
-                    $g = -0.08;
-                    $d = $location->distance($damagerloc);
-                    $t = $d;
-                    $v_x = (1.0 + 0.07 * $t) * ($location->x - $damagerloc->x) / $t;
-                    $v_y = (1.0 + 0.03 * $t) * ($location->y - $damagerloc->y) / $t - 0.5 * $g * $t;
-                    $v_z = (1.0 + 0.07 * $t) * ($location->z - $damagerloc->z) / $t;
-                    $v = $damager->getMotion();
-                    $v->setComponents($v_x, $v_y, $v_z);
-                    $damager->setMotion($v);
+                    $this->plugin->nofall[strtolower($damager->getName())] = time() + 1;
                 }
-                $this->plugin->nofall[strtolower($damager->getName())] = time() + 1;
             }
-
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::MISSILE);
+            if($enchantment !== null){
+                for($i = 0; $i <= $enchantment->getLevel(); $i++){
+                    $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
+                    $tnt->spawnToAll();
+                }
+            }
         }
     }
 

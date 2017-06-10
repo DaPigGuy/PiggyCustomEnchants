@@ -58,7 +58,7 @@ class CustomEnchants extends Enchantment
     const HEADHUNTER = 312;
     const GRAPPLING = 313;
     const PORKIFIED = 314;
-
+    const MISSILE = 315;
 
     //ARMOR
     const MOLTEN = 400;

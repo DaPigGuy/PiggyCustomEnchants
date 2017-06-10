@@ -19,7 +19,7 @@ use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\ShortTag;
-use pocketmine\Player;
+
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 
@@ -95,12 +95,13 @@ class Main extends PluginBase
         CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 5],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
-        CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "", 2], //TODO: Pick rarity
+        CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "Uncommon", 2],
+        CustomEnchants::MISSILE => ["Missile", "Bow", "Projectile_Hit", "Rare", 5],
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5],
         CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5],
-        CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "", 5], //TODO: Pick rarity
+        CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
@@ -138,6 +139,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Checks if server is using a spoon.
+     *
      * @return bool
      */
     public function isSpoon()
@@ -159,6 +162,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Translates data from strings to int
+     *
      * @param $id
      * @param $data
      * @return CustomEnchants
@@ -224,6 +229,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Get enchantment on an item with specific id. Returns null if not found.
+     *
      * @param Item $item
      * @param $id
      * @return null|CustomEnchants
@@ -244,6 +251,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Adds enchantment to item
+     *
      * @param Item $item
      * @param $enchants
      * @param $levels
@@ -337,6 +346,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Removes enchantment from item
+     *
      * @param Item $item
      * @param CustomEnchants $enchant
      * @return bool|Item
@@ -357,6 +368,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Returns enchantment type
+     *
      * @param CustomEnchants $enchant
      * @return string
      */
@@ -371,6 +384,24 @@ class Main extends PluginBase
     }
 
     /**
+     * Returns rarity of enchantment
+     *
+     * @param CustomEnchants $enchant
+     * @return string
+     */
+    public function getEnchantRarity(CustomEnchants $enchant)
+    {
+        foreach ($this->enchants as $id => $data) {
+            if ($enchant->getId() == $id) {
+                return $data[3];
+            }
+        }
+        return "Common";
+    }
+
+    /**
+     * Returns the max level the enchantment can have
+     *
      * @param CustomEnchants $enchant
      * @return int
      */
@@ -385,6 +416,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Sorts enchantments by type.
+     *
      * @return array
      */
     public function sortEnchants()
@@ -402,6 +435,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Returns roman numeral of a number
+     *
      * @param $integer
      * @return string
      */
@@ -422,6 +457,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Checks if an item can be enchanted with a specific enchantment and level
+     *
      * @param Item $item
      * @param CustomEnchants $enchant
      * @param $level

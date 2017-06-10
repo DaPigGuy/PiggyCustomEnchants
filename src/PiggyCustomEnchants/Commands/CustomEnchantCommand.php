@@ -45,42 +45,45 @@ class CustomEnchantCommand extends PluginCommand
             $sender->sendMessage("/customenchant <enchant|list>");
             return false;
         }
-        switch ($args[0]) {
-            case "list":
-                $sorted = $this->getPlugin()->sortEnchants();
-                $list = "";
-                foreach ($sorted as $type => $enchants) {
-                    $list .= "\n" . TextFormat::GREEN . TextFormat::BOLD . $type . "\n" . TextFormat::RESET;
-                    $list .= implode(", ", $enchants);
-                }
-                $sender->sendMessage($list);
-                break;
-            case "enchant":
-                if (count($args) < 2) {
-                    $sender->sendMessage("/customenchant enchant <enchant> [level] [player]");
-                    return false;
-                }
-                $target = $sender;
-                if (!isset($args[2])) {
-                    $args[2] = 1;
-                }
-                if (isset($args[3])) {
-                    $target = $this->getPlugin()->getServer()->getPlayer($args[3]);
-                }
-                if (!$target instanceof Player) {
-                    if ($target instanceof ConsoleCommandSender) {
-                        $sender->sendMessage("§cPlease provide a player.");
+        $plugin = $this->getPlugin();
+        if ($plugin instanceof Main) {
+            switch ($args[0]) {
+                case "list":
+                    $sorted = $plugin->sortEnchants();
+                    $list = "";
+                    foreach ($sorted as $type => $enchants) {
+                        $list .= "\n" . TextFormat::GREEN . TextFormat::BOLD . $type . "\n" . TextFormat::RESET;
+                        $list .= implode(", ", $enchants);
+                    }
+                    $sender->sendMessage($list);
+                    break;
+                case "enchant":
+                    if (count($args) < 2) {
+                        $sender->sendMessage("/customenchant enchant <enchant> [level] [player]");
                         return false;
                     }
-                    $sender->sendMessage("§cInvalid player.");
-                    return false;
-                }
-                $target->getInventory()->setItemInHand($this->getPlugin()->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $sender->hasPermission("piggycustomenchants.overridecheck") ? false : true, $sender));
-                break;
-            default:
-                $sender->sendMessage("/customenchant <enchant|list>");
-                break;
+                    $target = $sender;
+                    if (!isset($args[2])) {
+                        $args[2] = 1;
+                    }
+                    if (isset($args[3])) {
+                        $target = $this->getPlugin()->getServer()->getPlayer($args[3]);
+                    }
+                    if (!$target instanceof Player) {
+                        if ($target instanceof ConsoleCommandSender) {
+                            $sender->sendMessage("§cPlease provide a player.");
+                            return false;
+                        }
+                        $sender->sendMessage("§cInvalid player.");
+                        return false;
+                    }
+                    $target->getInventory()->setItemInHand($plugin->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $sender->hasPermission("piggycustomenchants.overridecheck") ? false : true, $sender));
+                    break;
+                default:
+                    $sender->sendMessage("/customenchant <enchant|list>");
+                    break;
+            }
+            return true;
         }
-        return true;
     }
 }
