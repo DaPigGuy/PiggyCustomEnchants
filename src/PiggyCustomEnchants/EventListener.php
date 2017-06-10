@@ -775,6 +775,15 @@ class EventListener implements Listener
                     }
                 }
                 foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SELFDESTRUCT);
+                    if ($enchantment !== null) {
+                        if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
+                            for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
+                                $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
+                                $tnt->spawnToAll();
+                            }
+                        }
+                    }
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENDERSHIFT);
                     if ($enchantment !== null) {
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
@@ -806,6 +815,17 @@ class EventListener implements Listener
                                 $entity->addEffect($effect);
                                 $entity->sendMessage("Your bloodloss makes your stronger!");
                             }
+                        }
+                    }
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVIVE);
+                    if ($enchantment !== null) {
+                        if ($event->getDamage() >= $entity->getHealth()) {
+                            $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
+                            $entity->removeAllEffects();
+                            $entity->setHealth($entity->getMaxHealth());
+                            $entity->setFood($entity->getMaxFood());
+                            $event->setDamage(0);
+                            //TODO: Side effect
                         }
                     }
                     if ($event instanceof EntityDamageByEntityEvent) {
@@ -890,26 +910,6 @@ class EventListener implements Listener
                                 $effect->setVisible(false);
                                 $entity->addEffect($effect);
                                 $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
-                            }
-                        }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SELFDESTRUCT);
-                        if ($enchantment !== null) {
-                            if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
-                                for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
-                                    $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
-                                    $tnt->spawnToAll();
-                                }
-                            }
-                        }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVIVE);
-                        if ($enchantment !== null) {
-                            if ($event->getDamage() >= $entity->getHealth()) {
-                                $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
-                                $entity->removeAllEffects();
-                                $entity->setHealth($entity->getMaxHealth());
-                                $entity->setFood($entity->getMaxFood());
-                                $event->setDamage(0);
-                                //TODO: Side effect
                             }
                         }
                     }
