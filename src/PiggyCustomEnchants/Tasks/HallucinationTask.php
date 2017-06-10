@@ -76,16 +76,16 @@ class HallucinationTask extends PluginTask
                                     new IntTag("z", $pos->z)
                                 ]));
                                 $pk = new BlockEntityDataPacket();
-                                $pk->x = $pos->x;
-                                $pk->y = $pos->y;
-                                $pk->z = $pos->z;
+                                $pk->x = (int) $pos->x;
+                                $pk->y = (int) $pos->y;
+                                $pk->z = (int) $pos->z;
                                 $pk->namedtag = $nbt->write(true);
                                 $this->player->dataPacket($pk);
                             }
                         } else {
                             $block = Block::get(Block::LAVA);
                         }
-                        $block->setComponents($pos->x, $pos->y, $pos->z);
+                        $block->setComponents((int) $pos->x, (int) $pos->y, (int) $pos->z);
                         $position->getLevel()->sendBlocks([$this->player], [$block]);
                     }
                 }

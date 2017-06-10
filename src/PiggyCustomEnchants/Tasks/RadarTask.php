@@ -56,9 +56,9 @@ class RadarTask extends PluginTask
                             $detected = $this->plugin->getServer()->getPlayerExact($key);
                             if ($detected instanceof Player) {
                                 $pk = new SetSpawnPositionPacket();
-                                $pk->x = $detected->getFloorX();
-                                $pk->y = $detected->getFloorY();
-                                $pk->z = $detected->getFloorZ();
+                                $pk->x = (int) $detected->x;
+                                $pk->y = (int) $detected->y;
+                                $pk->z = (int) $detected->z;
                                 $pk->spawnForced = true;
                                 $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
                                 $player->dataPacket($pk);
@@ -74,9 +74,9 @@ class RadarTask extends PluginTask
             if (!$radar) {
                 if (isset($this->radars[strtolower($player->getName())])) {
                     $pk = new SetSpawnPositionPacket();
-                    $pk->x = $player->x;
-                    $pk->y = $player->y;
-                    $pk->z = $player->z;
+                    $pk->x = (int) $player->x;
+                    $pk->y = (int) $player->y;
+                    $pk->z = (int) $player->z;
                     $pk->spawnForced = true;
                     $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
                     $player->dataPacket($pk);
