@@ -53,7 +53,6 @@ class Main extends PluginBase
 
     public $shrunk;
     public $grew;
-    public $sizemanipulated; //Temporary
     public $shrinkremaining;
     public $growremaining;
 
@@ -171,7 +170,8 @@ class Main extends PluginBase
      * @param $rarity
      * @param $maxlevel
      */
-    public function registerEnchantment($id, $name, $type, $trigger, $rarity, $maxlevel){
+    public function registerEnchantment($id, $name, $type, $trigger, $rarity, $maxlevel)
+    {
         $data = [$name, $type, $trigger, $rarity, $maxlevel];
         $this->enchants[$id] = $data;
         $ce = $this->translateDataToCE($id, $data);

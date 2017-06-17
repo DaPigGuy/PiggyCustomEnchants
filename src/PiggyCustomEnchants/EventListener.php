@@ -168,7 +168,7 @@ class EventListener implements Listener
     }
 
     /**
-     * Temporary solution to players getting kicked
+     * Disable kicking for flying when using jetpacks
      *
      * @param PlayerKickEvent $event
      *
@@ -180,7 +180,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $reason = $event->getReason();
         if ($reason == "Flying is not enabled on this server") {
-            if (isset($this->plugin->shrunk[strtolower($player->getName())]) || isset($this->plugin->grew[strtolower($player->getName())]) || isset($this->plugin->sizemanipulated[strtolower($player->getName())]) || isset($this->plugin->flying[strtolower($player->getName())])) {
+            if (isset($this->plugin->flying[strtolower($player->getName())])) {
                 $event->setCancelled();
             }
         }
@@ -691,8 +691,8 @@ class EventListener implements Listener
                 }
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::MISSILE);
-            if($enchantment !== null){
-                for($i = 0; $i <= $enchantment->getLevel(); $i++){
+            if ($enchantment !== null) {
+                for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
                     $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
                     $tnt->spawnToAll();
                 }
@@ -967,7 +967,6 @@ class EventListener implements Listener
                         $this->plugin->shrinkremaining[strtolower($entity->getName())] = $this->plugin->shrunk[strtolower($entity->getName())] - time();
                         unset($this->plugin->shrinkcd[strtolower($entity->getName())]);
                         unset($this->plugin->shrunk[strtolower($entity->getName())]);
-                        $this->plugin->sizemanipulated[strtolower($entity->getName())] = time() + 5;
                         $entity->setScale(1);
                         $entity->sendTip(TextFormat::RED . "You have grown back to normal size.");
                     } else {
@@ -988,7 +987,6 @@ class EventListener implements Listener
                         $this->plugin->growremaining[strtolower($entity->getName())] = $this->plugin->grew[strtolower($entity->getName())] - time();
                         unset($this->plugin->growcd[strtolower($entity->getName())]);
                         unset($this->plugin->grew[strtolower($entity->getName())]);
-                        $this->plugin->sizemanipulated[strtolower($entity->getName())] = time() + 5;
                         $entity->setScale(1);
                         $entity->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
                     } else {
