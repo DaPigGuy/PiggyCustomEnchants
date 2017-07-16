@@ -1,0 +1,91 @@
+<?php
+
+namespace PiggyCustomEnchants\Tasks;
+
+use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\Main;
+use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
+use pocketmine\Player;
+use pocketmine\scheduler\PluginTask;
+use pocketmine\utils\TextFormat;
+
+/**
+ * Class RadarTask
+ * @package PiggyCustomEnchants
+ */
+class RadarTask extends PluginTask
+{
+    private $plugin;
+    private $radars;
+
+    /**
+     * RadarTask constructor.
+     * @param Main $plugin
+     */
+    public function __construct(Main $plugin)
+    {
+        parent::__construct($plugin);
+        $this->plugin = $plugin;
+    }
+
+    /**
+     * @param $currentTick
+     */
+    public function onRun(int $currentTick)
+    {
+        foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
+            $radar = false;
+            $hasradar = false;
+            foreach ($player->getInventory()->getContents() as $item) {
+                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::RADAR);
+                if ($enchantment !== null) {
+                    $distance = [];
+                    $hasradar = true;
+                    foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
+                        if ($player !== $p) {
+                            $d = $player->distance($p);
+                            if ($d <= $enchantment->getLevel() * 50) {
+                                $distance[strtolower($p->getName())] = $d;
+                            }
+                        }
+                    }
+                    if (count($distance) > 0) {
+                        $minimum = min($distance);
+                        $key = array_search($minimum, $distance);
+                        if ($key !== false) {
+                            $detected = $this->plugin->getServer()->getPlayerExact($key);
+                            if ($detected instanceof Player) {
+                                $pk = new SetSpawnPositionPacket();
+                                $pk->x = $detected->x;
+                                $pk->y = $detected->y;
+                                $pk->z = $detected->z;
+                                $pk->spawnForced = true;
+                                $pk->spawnType = (int) SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
+                                $player->dataPacket($pk);
+                                $radar = true;
+                                $this->radars[strtolower($player->getName())] = true;
+                                $player->sendTip(TextFormat::GREEN . "Nearest player " . $minimum . " blocks away.");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (!$radar) {
+                if (isset($this->radars[strtolower($player->getName())])) {
+                    $pk = new SetSpawnPositionPacket();
+                    $pk->x = $player->x;
+                    $pk->y = $player->y;
+                    $pk->z = $player->z;
+                    $pk->spawnForced = true;
+                    $pk->spawnType = (int) SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
+                    $player->dataPacket($pk);
+                    unset($this->radars[strtolower($player->getName())]);
+                }
+                if ($hasradar) {
+                    $player->sendTip(TextFormat::RED . "No players found.");
+                }
+            }
+        }
+    }
+}
