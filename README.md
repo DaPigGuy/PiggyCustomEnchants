@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/ci.badge/DaPigGuy/PiggyCustomEnchants/PiggyCustomEnchants/master)](https://poggit.pmmp.io/ci/MCPEPIG/PiggyCustomEnchants)
-=======
 # PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/ci.badge/DaPigGuy/PiggyCustomEnchants/PiggyCustomEnchants/master)](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants)
->>>>>>> origin/master
 PiggyCustomEnchants is an open-sourced custom enchants plugin for PMMP.
 
 ## Servers
