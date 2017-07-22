@@ -34,7 +34,7 @@ class GoeyTask extends PluginTask
     /**
      * @param $currentTick
      */
-    public function onRun($currentTick)
+    public function onRun(int $currentTick)
     {
         $this->entity->setMotion(new Vector3($this->entity->getMotion()->x, (3 * $this->level * 0.05) + 0.75, $this->entity->getMotion()->z));
     }

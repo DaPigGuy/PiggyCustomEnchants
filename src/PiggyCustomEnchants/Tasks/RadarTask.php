@@ -31,7 +31,7 @@ class RadarTask extends PluginTask
     /**
      * @param $currentTick
      */
-    public function onRun($currentTick)
+    public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $radar = false;

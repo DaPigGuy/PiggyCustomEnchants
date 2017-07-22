@@ -32,7 +32,7 @@ class JetpackTask extends PluginTask
     /**
      * @param $currentTick
      */
-    public function onRun($currentTick)
+    public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getBoots(), CustomEnchants::JETPACK);

@@ -148,6 +148,10 @@ class Main extends PluginBase
             $this->getLogger()->error("Well... You're using a spoon. PIGS HATE SPOONS! So enjoy a featureless Custom Enchant plugin by Piggy until you switch to PMMP! :)");
             return true;
         }
+        if($this->getDescription()->getAuthors() !== ["DaPigGuy"] || $this->getDescription()->getName() !== "PiggyCustomEnchants"){
+            $this->getLogger()->error("You are not using the original version of this plugin (PiggyCustomEnchants) by DaPigGuy/MCPEPIG.");
+            return true;
+        }
         return false;
     }
 
@@ -367,6 +371,7 @@ class Main extends PluginBase
      *
      * @param Item $item
      * @param CustomEnchants $enchant
+     * @param int $level
      * @return bool|Item
      */
     public function removeEnchantment(Item $item, CustomEnchants $enchant, $level = -1)

@@ -48,7 +48,7 @@ class HallucinationTask extends PluginTask
     /**
      * @param $currentTick
      */
-    public function onRun($currentTick)
+    public function onRun(int $currentTick)
     {
         $position = $this->position;
         $this->time++;

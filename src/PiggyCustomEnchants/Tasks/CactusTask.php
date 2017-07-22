@@ -30,7 +30,7 @@ class CactusTask extends PluginTask
     /**
      * @param $currentTick
      */
-    public function onRun($currentTick)
+    public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             foreach ($player->getInventory()->getContents() as $item) {
