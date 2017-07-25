@@ -134,7 +134,7 @@ class CustomEnchants extends Enchantment
      * @param int $id
      * @return CustomEnchants
      */
-    public static function getEnchantment($id)
+    public static function getEnchantment(int $id)
     {
         if (isset(self::$enchantments[$id])) {
             return clone self::$enchantments[(int)$id];
@@ -157,7 +157,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return mixed
      */
-    public function getId()
+    public function getId() : int
     {
         return $this->id;
     }
@@ -165,7 +165,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return string
      */
-    public function getName()
+    public function getName() : string
     {
         return $this->name;
     }
@@ -173,7 +173,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return int
      */
-    public function getRarity()
+    public function getRarity() : int
     {
         return $this->rarity;
     }
@@ -189,7 +189,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return int
      */
-    public function getSlot()
+    public function getSlot() : int
     {
         return $this->slot;
     }
@@ -198,7 +198,7 @@ class CustomEnchants extends Enchantment
      * @param $slot
      * @return bool
      */
-    public function hasSlot($slot)
+    public function hasSlot(int $slot) : bool
     {
         return ($this->slot & $slot) > 0;
     }
@@ -206,7 +206,7 @@ class CustomEnchants extends Enchantment
     /**
      * @return int
      */
-    public function getLevel()
+    public function getLevel() : int
     {
         return $this->level;
     }
@@ -215,7 +215,7 @@ class CustomEnchants extends Enchantment
      * @param $level
      * @return $this
      */
-    public function setLevel($level)
+    public function setLevel(int $level)
     {
         $this->level = (int)$level;
 
