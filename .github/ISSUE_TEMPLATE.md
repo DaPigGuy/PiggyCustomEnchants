@@ -11,8 +11,8 @@ Please make sure your issue complies with these guidelines:
 #### **General**
 <!-- Briefly describe what is wrong. -->
 
-#### **Version of PiggyAuth:**
-<!-- Do /version PiggyAuth to check, do not input "latest". -->
+#### **Version of PiggyCustomEnchants:**
+<!-- Do /version PiggyCustomEnchants to check, do not input "latest". -->
 
 #### **Data Provider:**
 <!-- What are you currently using to save data? -->
