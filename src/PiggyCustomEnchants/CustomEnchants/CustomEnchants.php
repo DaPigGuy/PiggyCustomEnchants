@@ -124,7 +124,7 @@ class CustomEnchants extends Enchantment
         if (isset(self::$enchantments[$id])) {
             return clone self::$enchantments[(int)$id];
         }
-        return new CustomEnchants(self::INVALID, "unknown", 0, 0, 0);
+        return null;
     }
 
     /**
@@ -140,7 +140,7 @@ class CustomEnchants extends Enchantment
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getId() : int
     {
@@ -180,7 +180,7 @@ class CustomEnchants extends Enchantment
     }
 
     /**
-     * @param $slot
+     * @param int $slot
      * @return bool
      */
     public function hasSlot(int $slot) : bool
@@ -197,7 +197,7 @@ class CustomEnchants extends Enchantment
     }
 
     /**
-     * @param $level
+     * @param int $level
      * @return $this
      */
     public function setLevel(int $level)

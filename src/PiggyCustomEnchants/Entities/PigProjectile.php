@@ -77,7 +77,7 @@ class PigProjectile extends Projectile
      * @param $currentTick
      * @return bool
      */
-    public function onUpdate($currentTick)
+    public function onUpdate(int $currentTick) : bool
     {
         $hasUpdate = parent::onUpdate($currentTick);
         if (!$this->hadCollision) {
