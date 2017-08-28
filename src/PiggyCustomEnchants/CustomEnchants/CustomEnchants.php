@@ -97,13 +97,6 @@ class CustomEnchants extends Enchantment
 
     const SLOT_COMPASS = 0b10000000000000;
 
-    public $id;
-    public $level = 1;
-    public $name;
-    public $rarity;
-    public $activationType;
-    public $slot;
-
     public static $enchantments;
 
     /**
@@ -122,89 +115,21 @@ class CustomEnchants extends Enchantment
     public static function getEnchantment(int $id)
     {
         if (isset(self::$enchantments[$id])) {
-            return clone self::$enchantments[(int)$id];
+            return clone self::$enchantments[$id];
         }
         return null;
     }
 
     /**
      * @param $name
-     * @return $this|null|CustomEnchants
+     * @return null|CustomEnchants
      */
-    public static function getEnchantByName($name)
+    public static function getEnchantByName(string $name)
     {
         if (defined(CustomEnchants::class . "::" . strtoupper($name))) {
             return self::getEnchantment(constant(CustomEnchants::class . "::" . strtoupper($name)));
         }
         return null;
-    }
-
-    /**
-     * @return int
-     */
-    public function getId() : int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName() : string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRarity() : int
-    {
-        return $this->rarity;
-    }
-
-    /**
-     * @return int
-     */
-    public function getActivationType() : int
-    {
-        return $this->activationType;
-    }
-
-    /**
-     * @return int
-     */
-    public function getSlot() : int
-    {
-        return $this->slot;
-    }
-
-    /**
-     * @param int $slot
-     * @return bool
-     */
-    public function hasSlot(int $slot) : bool
-    {
-        return ($this->slot & $slot) > 0;
-    }
-
-    /**
-     * @return int
-     */
-    public function getLevel() : int
-    {
-        return $this->level;
-    }
-
-    /**
-     * @param int $level
-     * @return $this
-     */
-    public function setLevel(int $level)
-    {
-        $this->level = (int)$level;
-
-        return $this;
     }
 
 

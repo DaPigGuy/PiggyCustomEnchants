@@ -91,7 +91,7 @@ class Main extends PluginBase
         CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
-        CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 5],
+        CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
         CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "Uncommon", 2],
@@ -148,7 +148,7 @@ class Main extends PluginBase
             $this->getLogger()->error("Well... You're using a spoon. PIGS HATE SPOONS! So enjoy a featureless Custom Enchant plugin by Piggy until you switch to PMMP! :)");
             return true;
         }
-        if($this->getDescription()->getAuthors() !== ["DaPigGuy"] || $this->getDescription()->getName() !== "PiggyCustomEnchants"){
+        if ($this->getDescription()->getAuthors() !== ["DaPigGuy"] || $this->getDescription()->getName() !== "PiggyCustomEnchants") {
             $this->getLogger()->error("You are not using the original version of this plugin (PiggyCustomEnchants) by DaPigGuy/MCPEPIG.");
             return true;
         }
@@ -299,8 +299,8 @@ class Main extends PluginBase
         foreach ($enchants as $enchant) {
             $level = $combined[$enchant];
             if (!$enchant instanceof CustomEnchants) {
-                if (is_int($enchant)) {
-                    $enchant = CustomEnchants::getEnchantment($enchant);
+                if (is_numeric($enchant)) {
+                    $enchant = CustomEnchants::getEnchantment((int)$enchant);
                 } else {
                     $enchant = CustomEnchants::getEnchantByName($enchant);
                 }
