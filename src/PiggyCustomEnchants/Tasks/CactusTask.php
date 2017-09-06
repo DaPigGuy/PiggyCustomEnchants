@@ -37,7 +37,7 @@ class CactusTask extends PluginTask
                 if ($this->plugin->getEnchantment($item, CustomEnchants::CACTUS) !== null) {
                     foreach ($player->getLevel()->getNearbyEntities($player->getBoundingBox()->grow(1, 0, 1), $player) as $p) {
                         $ev = new EntityDamageByEntityEvent($player, $p, EntityDamageEvent::CAUSE_CONTACT, 1);
-                        $p->attack($ev->getFinalDamage(), $ev);
+                        $p->attack($ev);
                     }
                     break;
                 }
