@@ -1,7 +1,7 @@
 name: PiggyCustomEnchants
 main: PiggyCustomEnchants\Main
 version: 1.0.2
-api: [3.0.0-ALPHA7]
+api: [3.0.0-ALPHA7, 3.0.0-ALPHA8]
 load: POSTWORLD
 author: DaPigGuy
 permissions:
