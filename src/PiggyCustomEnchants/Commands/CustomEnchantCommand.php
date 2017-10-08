@@ -36,8 +36,7 @@ class CustomEnchantCommand extends PluginCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $sender, string $commandLabel, array $args)
-    {
+   public function execute(CommandSender $sender, string $commandLabel, array $args) {
         if (!$this->testPermission($sender)) {
             return true;
         }
