@@ -19,7 +19,6 @@ class PigProjectile extends Projectile
 {
     private $porklevel = 1;
 
-    public $length = 0.5;
     public $width = 0.5;
     public $height = 0.5;
     protected $gravity = 0.05;
@@ -112,12 +111,8 @@ class PigProjectile extends Projectile
             $pk->type = PigProjectile::NETWORK_ID;
         }
         $pk->entityRuntimeId = $this->getId();
-        $pk->x = $this->x;
-        $pk->y = $this->y;
-        $pk->z = $this->z;
-        $pk->speedX = $this->motionX;
-        $pk->speedY = $this->motionY;
-        $pk->speedZ = $this->motionZ;
+		$pk->position = $this->asVector3();
+		$pk->motion = $this->getMotion();
         $pk->metadata = $this->dataProperties;
         $player->dataPacket($pk);
 
