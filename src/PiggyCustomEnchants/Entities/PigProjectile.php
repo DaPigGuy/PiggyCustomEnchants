@@ -4,7 +4,7 @@ namespace PiggyCustomEnchants\Entities;
 
 
 use pocketmine\entity\Entity;
-use pocketmine\entity\Projectile;
+use pocketmine\entity\projectile\Projectile;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;

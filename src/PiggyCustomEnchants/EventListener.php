@@ -13,7 +13,7 @@ use pocketmine\block\Block;
 use pocketmine\entity\Arrow;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
-use pocketmine\entity\Projectile;
+use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockEvent;
 use pocketmine\event\entity\EntityArmorChangeEvent;
