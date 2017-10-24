@@ -4,17 +4,12 @@ namespace PiggyCustomEnchants\Tasks;
 
 use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
-
 use pocketmine\level\Position;
-
-
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
-
 use pocketmine\network\mcpe\protocol\BlockEntityDataPacket;
-
 use pocketmine\Player;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\tile\Tile;

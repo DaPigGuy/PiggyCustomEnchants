@@ -7,10 +7,10 @@
     <orderEntry type="module-library">
       <library name="PHP" type="php">
         <CLASSES>
-          <root url="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src" />
+          <root url="file://$USER_HOME$/OneDrive/Documents/GitKraken/PocketMine-MP" />
         </CLASSES>
         <SOURCES>
-          <root url="file://$USER_HOME$/Downloads/Pigsplosion-Hub/src" />
+          <root url="file://$USER_HOME$/OneDrive/Documents/GitKraken/PocketMine-MP" />
         </SOURCES>
       </library>
     </orderEntry>

@@ -12,14 +12,12 @@ use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
-
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\ShortTag;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 

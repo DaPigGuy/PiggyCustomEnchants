@@ -2,10 +2,8 @@
 
 namespace PiggyCustomEnchants\Entities;
 
-
 use pocketmine\block\Block;
-
-use pocketmine\entity\Projectile;
+use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
