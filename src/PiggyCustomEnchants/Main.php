@@ -346,7 +346,7 @@ class Main extends PluginBase
                     $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
                 }
                 if ($sender !== null) {
-                    $sender->sendMessage("§aEnchanting suceeded.");
+                    $sender->sendMessage("§aEnchanting succeeded.");
                 }
                 continue;
             }
