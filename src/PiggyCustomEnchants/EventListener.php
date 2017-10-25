@@ -776,7 +776,7 @@ class EventListener implements Listener
                             }
                             $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $damage / 2);
                             $this->plugin->getServer()->getPluginManager()->callEvent($ev);
-                            $e->attack($damage / 2, $ev);
+                            $e->attack($ev);
                         }
                         if (count($entities) > 1) {
                             $event->setDamage($event->getDamage() / 4);

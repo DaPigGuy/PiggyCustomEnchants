@@ -471,6 +471,10 @@ class Main extends PluginBase
         return $return;
     }
 
+    /**
+     * @param $rarity
+     * @return string
+     */
     public function getRarityColor($rarity)
     {
         switch ($rarity) {
