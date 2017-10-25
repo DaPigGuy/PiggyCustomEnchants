@@ -39,21 +39,15 @@ class Main extends PluginBase
     public $shrinkcd;
     public $growcd;
     public $jetpackcd;
-
     public $breaking;
     public $mined;
-
     public $blockface;
-
     public $nofall;
-
     public $hallucination;
-
     public $shrunk;
     public $grew;
     public $shrinkremaining;
     public $growremaining;
-
     public $flying;
     public $flyremaining;
 
@@ -123,6 +117,7 @@ class Main extends PluginBase
     {
         if (!$this->isSpoon()) {
             $this->initCustomEnchants();
+            $this->saveDefaultConfig();
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
@@ -480,14 +475,29 @@ class Main extends PluginBase
     {
         switch ($rarity) {
             case CustomEnchants::RARITY_COMMON:
-                //Add customization
-                return TextFormat::GREEN;
+                $colorCommon = $this->getConfig()->getNested("color.common");
+                if (defined("TextFormat::" . $colorCommon)) {
+                    return "TextFormat::" . $colorCommon;
+                }
+                break;
             case CustomEnchants::RARITY_UNCOMMON:
-                return TextFormat::BLUE;
+                $colorUncommon = $this->getConfig()->getNested("color.uncommon");
+                if (defined("TextFormat::" . $colorUncommon)) {
+                    return "TextFormat::" . $colorUncommon;
+                }
+                break;
             case CustomEnchants::RARITY_RARE:
-                return TextFormat::WHITE;
+                $colorRare = $this->getConfig()->getNested("color.rare");
+                if (defined("TextFormat::" . $colorRare)) {
+                    return "TextFormat::" . $colorRare;
+                }
+                break;
             case CustomEnchants::RARITY_MYTHIC:
-                return TextFormat::DARK_PURPLE;
+                $colorMythic = $this->getConfig()->getNested("color.mythic");
+                if (defined("TextFormat::" . $colorMythic)) {
+                    return "TextFormat::" . $colorMythic;
+                }
+                break;
             default:
                 return TextFormat::GRAY;
         }
