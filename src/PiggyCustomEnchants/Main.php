@@ -329,7 +329,7 @@ class Main extends PluginBase
                             "lvl" => new ShortTag("lvl", $enchant->getLevel())
                         ]);
                         $item->setNamedTag($tag);
-                        $item->setCustomName(str_replace(TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
+                        $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
                         $found = true;
                         break;
                     }
@@ -341,7 +341,7 @@ class Main extends PluginBase
                     ]);
                     $level = $this->getRomanNumber($enchant->getLevel());
                     $item->setNamedTag($tag);
-                    $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
+                    $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $level);
                 }
                 if ($sender !== null) {
                     $sender->sendMessage("§aEnchanting succeeded.");
@@ -474,6 +474,23 @@ class Main extends PluginBase
             }
         }
         return $return;
+    }
+
+    public function getRarityColor($rarity)
+    {
+        switch ($rarity) {
+            case CustomEnchants::RARITY_COMMON:
+                //Add customization
+                return TextFormat::GREEN;
+            case CustomEnchants::RARITY_UNCOMMON:
+                return TextFormat::BLUE;
+            case CustomEnchants::RARITY_RARE:
+                return TextFormat::WHITE;
+            case CustomEnchants::RARITY_MYTHIC:
+                return TextFormat::DARK_PURPLE;
+            default:
+                return TextFormat::GRAY;
+        }
     }
 
     /**
