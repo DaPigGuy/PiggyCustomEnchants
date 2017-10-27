@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants\Commands;
 
-
 use PiggyCustomEnchants\Main;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;

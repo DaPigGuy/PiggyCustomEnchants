@@ -12,14 +12,12 @@ use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
-
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\ShortTag;
-
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 
@@ -33,6 +31,22 @@ class Main extends PluginBase
     const NOT_COMPATIBLE = 1;
     const NOT_COMPATIBLE_WITH_OTHER_ENCHANT = 2;
 
+    const ROMAN_CONVERSION_TABLE = [
+        'M' => 1000,
+        'CM' => 900,
+        'D' => 500,
+        'CD' => 400,
+        'C' => 100,
+        'XC' => 90,
+        'L' => 50,
+        'XL' => 40,
+        'X' => 10,
+        'IX' => 9,
+        'V' => 5,
+        'IV' => 4,
+        'I' => 1
+    ];
+
     public $vampirecd;
     public $cloakingcd;
     public $berserkercd;
@@ -41,21 +55,15 @@ class Main extends PluginBase
     public $shrinkcd;
     public $growcd;
     public $jetpackcd;
-
     public $breaking;
     public $mined;
-
     public $blockface;
-
     public $nofall;
-
     public $hallucination;
-
     public $shrunk;
     public $grew;
     public $shrinkremaining;
     public $growremaining;
-
     public $flying;
     public $flyremaining;
 
@@ -125,6 +133,7 @@ class Main extends PluginBase
     {
         if (!$this->isSpoon()) {
             $this->initCustomEnchants();
+            $this->saveDefaultConfig();
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
@@ -331,7 +340,7 @@ class Main extends PluginBase
                             "lvl" => new ShortTag("lvl", $enchant->getLevel())
                         ]);
                         $item->setNamedTag($tag);
-                        $item->setCustomName(str_replace(TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), TextFormat::GRAY . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
+                        $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
                         $found = true;
                         break;
                     }
@@ -343,10 +352,10 @@ class Main extends PluginBase
                     ]);
                     $level = $this->getRomanNumber($enchant->getLevel());
                     $item->setNamedTag($tag);
-                    $item->setCustomName($item->getName() . "\n" . TextFormat::GRAY . $enchant->getName() . " " . $level);
+                    $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $level);
                 }
                 if ($sender !== null) {
-                    $sender->sendMessage("§aEnchanting suceeded.");
+                    $sender->sendMessage("§aEnchanting succeeded.");
                 }
                 continue;
             }
@@ -464,18 +473,53 @@ class Main extends PluginBase
      */
     public function getRomanNumber($integer) //Thank you @Muqsit!
     {
-        $table = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
-        $return = '';
+        $romanString = "";
         while ($integer > 0) {
-            foreach ($table as $rom => $arb) {
+            foreach (self::ROMAN_CONVERSION_TABLE as $rom => $arb) {
                 if ($integer >= $arb) {
                     $integer -= $arb;
-                    $return .= $rom;
+                    $romanString .= $rom;
                     break;
                 }
             }
         }
-        return $return;
+        return $romanString;
+    }
+
+    /**
+     * @param $rarity
+     * @return string
+     */
+    public function getRarityColor($rarity)
+    {
+        switch ($rarity) {
+            case CustomEnchants::RARITY_COMMON:
+                $colorCommon = $this->getConfig()->getNested("color.common");
+                if (defined("TextFormat::" . $colorCommon)) {
+                    return "TextFormat::" . $colorCommon;
+                }
+                break;
+            case CustomEnchants::RARITY_UNCOMMON:
+                $colorUncommon = $this->getConfig()->getNested("color.uncommon");
+                if (defined("TextFormat::" . $colorUncommon)) {
+                    return "TextFormat::" . $colorUncommon;
+                }
+                break;
+            case CustomEnchants::RARITY_RARE:
+                $colorRare = $this->getConfig()->getNested("color.rare");
+                if (defined("TextFormat::" . $colorRare)) {
+                    return "TextFormat::" . $colorRare;
+                }
+                break;
+            case CustomEnchants::RARITY_MYTHIC:
+                $colorMythic = $this->getConfig()->getNested("color.mythic");
+                if (defined("TextFormat::" . $colorMythic)) {
+                    return "TextFormat::" . $colorMythic;
+                }
+                break;
+            default:
+                return TextFormat::GRAY;
+        }
     }
 
     /**

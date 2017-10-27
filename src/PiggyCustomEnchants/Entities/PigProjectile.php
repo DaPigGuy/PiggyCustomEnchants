@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants\Entities;
 
-
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\item\Item;

@@ -17,6 +17,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# PhpStorm
+
+\.idea/
+
 # =========================
 # Operating System Files
 # =========================

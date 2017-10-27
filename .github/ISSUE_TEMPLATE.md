@@ -14,13 +14,6 @@ Please make sure your issue complies with these guidelines:
 #### **Version of PiggyCustomEnchants:**
 <!-- Do /version PiggyCustomEnchants to check, do not input "latest". -->
 
-#### **Data Provider:**
-<!-- What are you currently using to save data? -->
-- [ ] MySQL
-- [ ] SQLite
-- [ ] YAML
-- [ ] JSON
-
 #### **Steps to Reproduce the Issue**
 <!-- How do you reproduce the issue? -->
 1.

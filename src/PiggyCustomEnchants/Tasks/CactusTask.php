@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Main;
 use pocketmine\event\entity\EntityDamageByEntityEvent;

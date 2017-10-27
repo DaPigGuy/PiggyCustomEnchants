@@ -10,7 +10,7 @@ use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
 use PiggyCustomEnchants\Tasks\MoltenTask;
 use pocketmine\block\Block;
-use pocketmine\entity\Arrow;
+use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
@@ -32,7 +32,6 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
-
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
@@ -40,7 +39,6 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
-
 use pocketmine\Player;
 use pocketmine\utils\Random;
 use pocketmine\utils\TextFormat;
@@ -778,7 +776,7 @@ class EventListener implements Listener
                             }
                             $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $damage / 2);
                             $this->plugin->getServer()->getPluginManager()->callEvent($ev);
-                            $e->attack($damage / 2, $ev);
+                            $e->attack($ev);
                         }
                         if (count($entities) > 1) {
                             $event->setDamage($event->getDamage() / 4);
