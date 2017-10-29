@@ -355,6 +355,7 @@ class EventListener implements Listener
         if ($event instanceof PlayerDeathEvent) {
             $drops = $event->getDrops();
             $soulbounded = [];
+            $soulboundedarmor = [];
             foreach ($damager->getInventory()->getContents() as $k => $item) {
                 $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::SOULBOUND);
                 if ($enchantment !== null) {
@@ -362,7 +363,17 @@ class EventListener implements Listener
                     if ($index !== false) {
                         unset($drops[$index]);
                     }
-                    array_push($soulbounded, $this->plugin->removeEnchantment($item, $enchantment));
+                    $soulbounded[$k] = $this->plugin->removeEnchantment($item, $enchantment);
+                }
+            }
+            foreach ($damager->getInventory()->getArmorContents() as $k => $item) {
+                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::SOULBOUND);
+                if ($enchantment !== null) {
+                    $index = array_search($item, $drops);
+                    if ($index !== false) {
+                        unset($drops[$index]);
+                    }
+                    $soulboundedarmor[$k] = $this->plugin->removeEnchantment($item, $enchantment);
                 }
             }
             $event->setDrops([]);
@@ -370,6 +381,7 @@ class EventListener implements Listener
             foreach ($drops as $drop) {
                 $damager->getLevel()->dropItem($damager, $drop);
             }
+            $damager->getInventory()->setArmorContents($soulboundedarmor);
             $damager->getInventory()->setContents($soulbounded);
         }
         if ($event instanceof PlayerMoveEvent) {
