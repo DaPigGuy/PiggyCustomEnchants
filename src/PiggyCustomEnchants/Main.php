@@ -47,6 +47,25 @@ class Main extends PluginBase
         'I' => 1
     ];
 
+    const COLOR_CONVERSION_TABLE = [
+        "BLACK" => TextFormat::BLACK,
+        "DARK_BLUE" => TextFormat::DARK_BLUE,
+        "DARK_GREEN" => TextFormat::DARK_GREEN,
+        "DARK_AQUA" => TextFormat::DARK_AQUA,
+        "DARK_RED" => TextFormat::DARK_RED,
+        "DARK_PURPLE" => TextFormat::DARK_PURPLE,
+        "GOLD" => TextFormat::GOLD,
+        "GRAY" => TextFormat::GRAY,
+        "DARK_GRAY" => TextFormat::DARK_GRAY,
+        "BLUE" => TextFormat::BLUE,
+        "GREEN" => TextFormat::GREEN,
+        "AQUA" => TextFormat::AQUA,
+        "RED" => TextFormat::RED,
+        "LIGHT_PURPLE" => TextFormat::LIGHT_PURPLE,
+        "YELLOW" => TextFormat::YELLOW,
+        "WHITE" => TextFormat::WHITE
+    ];
+
     public $vampirecd;
     public $cloakingcd;
     public $berserkercd;
@@ -494,32 +513,34 @@ class Main extends PluginBase
     {
         switch ($rarity) {
             case CustomEnchants::RARITY_COMMON:
-                $colorCommon = $this->getConfig()->getNested("color.common");
-                if (defined("TextFormat::" . $colorCommon)) {
-                    return "TextFormat::" . $colorCommon;
-                }
-                break;
+                $color = strtoupper($this->getConfig()->getNested("color.common"));
+                return $this->translateColorNameToTextFormat($color) == false ? TextFormat::YELLOW : $this->translateColorNameToTextFormat($color);
             case CustomEnchants::RARITY_UNCOMMON:
-                $colorUncommon = $this->getConfig()->getNested("color.uncommon");
-                if (defined("TextFormat::" . $colorUncommon)) {
-                    return "TextFormat::" . $colorUncommon;
-                }
-                break;
+                $color = strtoupper($this->getConfig()->getNested("color.uncommon"));
+                return $this->translateColorNameToTextFormat($color) == false ? TextFormat::BLUE : $this->translateColorNameToTextFormat($color);
             case CustomEnchants::RARITY_RARE:
-                $colorRare = $this->getConfig()->getNested("color.rare");
-                if (defined("TextFormat::" . $colorRare)) {
-                    return "TextFormat::" . $colorRare;
-                }
-                break;
+                $color = strtoupper($this->getConfig()->getNested("color.rare"));
+                return $this->translateColorNameToTextFormat($color) == false ? TextFormat::GOLD : $this->translateColorNameToTextFormat($color);
             case CustomEnchants::RARITY_MYTHIC:
-                $colorMythic = $this->getConfig()->getNested("color.mythic");
-                if (defined("TextFormat::" . $colorMythic)) {
-                    return "TextFormat::" . $colorMythic;
-                }
-                break;
+                $color = strtoupper($this->getConfig()->getNested("color.mythic"));
+                return $this->translateColorNameToTextFormat($color) == false ? TextFormat::LIGHT_PURPLE : $this->translateColorNameToTextFormat($color);
             default:
                 return TextFormat::GRAY;
         }
+    }
+
+    /**
+     * @param $color
+     * @return bool|mixed
+     */
+    public function translateColorNameToTextFormat($color)
+    {
+        foreach (self::COLOR_CONVERSION_TABLE as $name => $textformat) {
+            if ($color == $name) {
+                return $textformat;
+            }
+        }
+        return false;
     }
 
     /**

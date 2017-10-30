@@ -1,10 +1,24 @@
-# PiggyCustomEnchants Configuration File v1.0
+#,-.----.
+#\    /  \                                           ,----..      ,---,.
+#|   :    \   ,--,                                  /   /   \   ,'  .' |
+#|   |  .\ :,--.'|                                 |   :     :,---.'   |
+#.   :  |: ||  |,     ,----._,.  ,----._,.         .   |  ;. /|   |   .'
+#|   |   \ :`--'_    /   /  ' / /   /  ' /     .--,.   ; /--` :   :  |-,
+#|   : .   /,' ,'|  |   :     ||   :     |   /_ ./|;   | ;    :   |  ;/|
+#;   | |`-' '  | |  |   | .\  .|   | .\  ., ' , ' :|   : |    |   :   .'
+#|   | ;    |  | :  .   ; ';  |.   ; ';  /___/ \: |.   | '___ |   |  |-,
+#:   ' |    '  : |__'   .   . |'   .   . |.  \  ' |'   ; : .'|'   :  ;/|
+#:   : :    |  | '.'|`---`-'| | `---`-'| | \  ;   :'   | '/  :|   |    \
+#|   | :    ;  :    ;.'__/\_: | .'__/\_: |  \  \  ;|   :    / |   :   .'
+#`---'.|    |  ,   / |   :    : |   :    :   :  \  \\   \ .'  |   | ,'
+#  `---`     ---`-'   \   \  /   \   \  /     \  ' ; `---`    `----'
+#                      `--`-'     `--`-'       `--`
 
-# Enchant Rarity Color Customization
+# Enchant Rarity Color
 # List of available colors:
 # black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, and white.
 color:
   common: yellow
   uncommon: blue
-  rare: green
-  mythical: purple
+  rare: gold
+  mythical: light_purple
