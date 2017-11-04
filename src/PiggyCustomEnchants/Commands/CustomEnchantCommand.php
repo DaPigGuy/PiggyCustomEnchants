@@ -41,7 +41,7 @@ class CustomEnchantCommand extends PluginCommand
             return true;
         }
         if (count($args) < 1) {
-            $sender->sendMessage("/customenchant <enchant|list>");
+            $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <enchant|list>");
             return false;
         }
         $plugin = $this->getPlugin();
@@ -58,7 +58,7 @@ class CustomEnchantCommand extends PluginCommand
                     break;
                 case "enchant":
                     if (count($args) < 2) {
-                        $sender->sendMessage("/customenchant enchant <enchant> [level] [player]");
+                        $sender->sendMessage(TextFormat::RED . "Usage: /customenchant enchant <enchant> [level] [player]");
                         return false;
                     }
                     $target = $sender;
@@ -70,16 +70,16 @@ class CustomEnchantCommand extends PluginCommand
                     }
                     if (!$target instanceof Player) {
                         if ($target instanceof ConsoleCommandSender) {
-                            $sender->sendMessage("§cPlease provide a player.");
+                            $sender->sendMessage(TextFormat::RED . "Please provide a player.");
                             return false;
                         }
-                        $sender->sendMessage("§cInvalid player.");
+                        $sender->sendMessage(TextFormat::RED . "Invalid player.");
                         return false;
                     }
                     $target->getInventory()->setItemInHand($plugin->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $sender->hasPermission("piggycustomenchants.overridecheck") ? false : true, $sender));
                     break;
                 default:
-                    $sender->sendMessage("/customenchant <enchant|list>");
+                    $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <enchant|list>");
                     break;
             }
             return true;
