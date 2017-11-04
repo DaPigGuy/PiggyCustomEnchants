@@ -142,11 +142,6 @@ class EventListener implements Listener
     {
         $player = $event->getEntity();
         $this->checkGlobalEnchants($player, null, $event);
-        foreach ($this->plugin->getServer()->getDefaultLevel()->getEntities() as $entity){
-            if(!$entity instanceof Player){
-                $entity->close();
-            }
-        }
     }
 
     /**
