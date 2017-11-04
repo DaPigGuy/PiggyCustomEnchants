@@ -66,25 +66,29 @@ class Main extends PluginBase
         "WHITE" => TextFormat::WHITE
     ];
 
-    public $vampirecd;
-    public $cloakingcd;
     public $berserkercd;
+    public $bountyhuntercd;   
+    public $cloakingcd;
     public $endershiftcd;
-    public $bountyhuntercd;
-    public $shrinkcd;
     public $growcd;
-    public $jetpackcd;
-    public $breaking;
-    public $mined;
-    public $blockface;
-    public $nofall;
-    public $hallucination;
-    public $shrunk;
-    public $grew;
-    public $shrinkremaining;
+    public $jetpackcd;   
+    public $shrinkcd;
+    public $vampirecd;    
+    
     public $growremaining;
+    public $jetpackdisabled; 
+    public $shrinkremaining;
+
+    public $blockface;
+    public $breaking;       
+    public $grew;
     public $flying;
     public $flyremaining;
+    public $hallucination;
+    public $mined;
+    public $nofall;    
+    public $shrunk;
+
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -152,7 +156,11 @@ class Main extends PluginBase
     {
         if (!$this->isSpoon()) {
             $this->initCustomEnchants();
-            $this->saveDefaultConfig();
+            $this->saveDefaultConfig();     
+            $this->jetpackdisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
+            if (count($this->jetpackdisabled) > 0){
+                $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackdisabled) . ".");
+            }
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
@@ -161,6 +169,7 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+
             $this->getLogger()->info(TextFormat::GREEN . "Enabled.");
         }
     }
