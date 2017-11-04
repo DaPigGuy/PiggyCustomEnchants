@@ -122,6 +122,9 @@ class EventListener implements Listener
 
     /**
      * @param EntityShootBowEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onShoot(EntityShootBowEvent $event)
     {
