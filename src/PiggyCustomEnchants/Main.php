@@ -85,6 +85,7 @@ class Main extends PluginBase
     public $growremaining;
     public $flying;
     public $flyremaining;
+    public $jetpackdisabled;
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -161,6 +162,10 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+            $this->jetpackdisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
+            if (count($this->jetpackdisabled) > 0){
+                $this->getLogger()->info("§aJetPack is disabled in " . implode(", ", $this->jetpackdisabled));
+            }
             $this->getLogger()->info("§aEnabled.");
         }
     }

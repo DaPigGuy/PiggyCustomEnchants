@@ -1023,7 +1023,7 @@ class EventListener implements Listener
                         } else {
                             $entity->sendTip(TextFormat::RED . "It is unsafe to disable your jetpack in the air.");
                         }
-                    } else {
+                    } elseif (count($this->plugin->jetpackdisabled) === 0 or !in_array($event->getPlayer()->getLevel()->getName(), $this->plugin->jetpackdisabled)) {
                         if (!isset($this->plugin->jetpackcd[strtolower($entity->getName())]) || $this->plugin->jetpackcd[strtolower($entity->getName())] <= time()) {
                             $this->plugin->flying[strtolower($entity->getName())] = isset($this->plugin->flyremaining[strtolower($entity->getName())]) ? time() + $this->plugin->flyremaining[strtolower($entity->getName())] : time() + 300;
                             $this->plugin->jetpackcd[strtolower($entity->getName())] = isset($this->plugin->flyremaining[strtolower($entity->getName())]) ? time() + (360 - (300 - $this->plugin->flyremaining[strtolower($entity->getName())])) : time() + 360;
