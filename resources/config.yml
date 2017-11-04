@@ -14,7 +14,7 @@
 #  `---`     ---`-'   \   \  /   \   \  /     \  ' ; `---`    `----'
 #                      `--`-'     `--`-'       `--`
 
-# Enchant Rarity Color
+# The color of an enchant depending on rarity
 # List of available colors:
 # black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, and white.
 color:
@@ -22,6 +22,6 @@ color:
   uncommon: blue
   rare: gold
   mythical: light_purple
-# Leave empty to allow JetPack anywhere, or add worlds where JetPack is disabled: ["PvPArena", "AnotherWorld"]
+# Leave empty to allow jetpacks anywhere, or add worlds where jetpacks will be disabled: ["PvPArena", "AnotherWorld"]
 jetpack:
   disabled: []

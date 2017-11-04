@@ -67,26 +67,26 @@ class Main extends PluginBase
     ];
 
     public $berserkercd;
-    public $bountyhuntercd;   
+    public $bountyhuntercd;
     public $cloakingcd;
     public $endershiftcd;
     public $growcd;
-    public $jetpackcd;   
+    public $jetpackcd;
     public $shrinkcd;
-    public $vampirecd;    
-    
+    public $vampirecd;
+
     public $growremaining;
-    public $jetpackdisabled; 
+    public $jetpackDisabled;
     public $shrinkremaining;
 
     public $blockface;
-    public $breaking;       
+    public $breaking;
     public $grew;
     public $flying;
     public $flyremaining;
     public $hallucination;
     public $mined;
-    public $nofall;    
+    public $nofall;
     public $shrunk;
 
 
@@ -156,10 +156,10 @@ class Main extends PluginBase
     {
         if (!$this->isSpoon()) {
             $this->initCustomEnchants();
-            $this->saveDefaultConfig();     
-            $this->jetpackdisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
-            if (count($this->jetpackdisabled) > 0){
-                $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackdisabled) . ".");
+            $this->saveDefaultConfig();
+            $this->jetpackDisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
+            if (count($this->jetpackDisabled) > 0) {
+                $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackDisabled) . ".");
             }
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
