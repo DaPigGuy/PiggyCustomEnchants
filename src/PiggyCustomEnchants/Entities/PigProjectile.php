@@ -17,13 +17,15 @@ use pocketmine\Player;
 class PigProjectile extends Projectile
 {
     private $porklevel = 1;
+    private $zombie = false;
 
-    public $width = 0.5;
-    public $height = 0.5;
+    public $width = 0.9;
+    public $height = 0.9;
+
     protected $gravity = 0.05;
     protected $drag = 0.01;
+
     protected $damage = 1.5;
-    private $zombie = false;
 
     const NETWORK_ID = 12;
 
@@ -72,12 +74,16 @@ class PigProjectile extends Projectile
     }
 
     /**
-     * @param $currentTick
+     * @param int $tickDiff
      * @return bool
+     * @internal param $currentTick
      */
-    public function onUpdate(int $currentTick) : bool
+    public function entityBaseTick(int $tickDiff = 1): bool
     {
-        $hasUpdate = parent::onUpdate($currentTick);
+        if ($this->closed) {
+            return false;
+        }
+        $hasUpdate = parent::entityBaseTick($tickDiff);
         if (!$this->hadCollision) {
             switch ($this->porklevel) {
                 case 2:
@@ -110,8 +116,8 @@ class PigProjectile extends Projectile
             $pk->type = PigProjectile::NETWORK_ID;
         }
         $pk->entityRuntimeId = $this->getId();
-		$pk->position = $this->asVector3();
-		$pk->motion = $this->getMotion();
+        $pk->position = $this->asVector3();
+        $pk->motion = $this->getMotion();
         $pk->metadata = $this->dataProperties;
         $player->dataPacket($pk);
 

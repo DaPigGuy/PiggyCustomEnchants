@@ -21,7 +21,7 @@ use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityEvent;
-use pocketmine\event\entity\EntitySpawnEvent;
+use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Event;
 use pocketmine\event\Listener;
@@ -121,19 +121,17 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntitySpawnEvent $event
+     * @param EntityShootBowEvent $event
      *
      * @priority HIGHEST
      * @ignoreCancelled true
      */
-    public function onSpawn(EntitySpawnEvent $event)
+    public function onShoot(EntityShootBowEvent $event)
     {
-        $entity = $event->getEntity();
-        $shooter = $entity->getOwningEntity();
-        if ($entity instanceof Projectile && $shooter instanceof Player) {
-            if (!isset($entity->namedtag["Volley"])) {
-                $this->checkBowEnchants($shooter, $entity, $event);
-            }
+        $shooter = $event->getEntity();
+        $entity = $event->getProjectile();
+        if ($shooter instanceof Player) {
+            $this->checkBowEnchants($shooter, $entity, $event);
         }
     }
 
@@ -628,19 +626,21 @@ class EventListener implements Listener
                 $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 1); //Delayed due to knockback interfering
             }
         }
-        if ($event instanceof EntitySpawnEvent) {
+        if ($event instanceof EntityShootBowEvent) {
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLAZE);
             if ($enchantment !== null && $entity instanceof Fireball !== true) {
-                $fireball = Entity::createEntity("Fireball", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $entity->yaw), new FloatTag("", $entity->pitch)])]), $damager);
-                $fireball->setMotion($entity->getMotion());
+                $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
+                $fireball = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager);
+                $fireball->setMotion($fireball->getMotion()->multiply($event->getForce()));
                 $fireball->spawnToAll();
                 $entity->close();
                 $entity = $fireball;
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PORKIFIED);
             if ($enchantment !== null && $entity instanceof PigProjectile !== true) {
-                $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $entity->yaw), new FloatTag("", $entity->pitch)])]), $damager, $enchantment->getLevel());
-                $pig->setMotion($entity->getMotion());
+                $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
+                $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, $enchantment->getLevel());
+                $pig->setMotion($pig->getMotion()->multiply($event->getForce()));
                 $pig->spawnToAll();
                 $entity->close();
                 $entity = $pig;
@@ -658,15 +658,18 @@ class EventListener implements Listener
                     $newDir = new Vector3($nX, $sZ, $nY);
                     $projectile = null;
                     if ($entity instanceof Arrow) {
-                        $projectile = Entity::createEntity("Arrow", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $damager->x), new DoubleTag("", $damager->y + $damager->getEyeHeight()), new DoubleTag("", $damager->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $damager->yaw), new FloatTag("", $damager->pitch)]), "Volley" => new ByteTag("Volley", 1)]), $damager);
+                        $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
+                        $projectile = Entity::createEntity("Arrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical());
                     }
                     if ($entity instanceof Fireball) {
-                        $projectile = Entity::createEntity("Fireball", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $damager->x), new DoubleTag("", $damager->y + $damager->getEyeHeight()), new DoubleTag("", $damager->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $damager->yaw), new FloatTag("", $damager->pitch)]), "Volley" => new ByteTag("Volley", 1)]), $damager);
+                        $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
+                        $projectile = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager);
                     }
                     if ($entity instanceof PigProjectile) {
-                        $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $damager->x), new DoubleTag("", $damager->y + $damager->getEyeHeight()), new DoubleTag("", $damager->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", $damager->yaw), new FloatTag("", $damager->pitch)]), "Volley" => new ByteTag("Volley", 1)]), $damager, $entity->getPorkLevel());
+                        $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
+                        $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, $entity->getPorkLevel());
                     }
-                    $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->length()));
+                    $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->multiply($event->getForce())->length()));
                     $projectile->setOnFire($entity->fireTicks * 20);
                     $projectile->spawnToAll();
                 }

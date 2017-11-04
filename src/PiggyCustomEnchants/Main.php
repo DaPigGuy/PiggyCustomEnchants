@@ -66,26 +66,29 @@ class Main extends PluginBase
         "WHITE" => TextFormat::WHITE
     ];
 
-    public $vampirecd;
-    public $cloakingcd;
     public $berserkercd;
+    public $bountyhuntercd;   
+    public $cloakingcd;
     public $endershiftcd;
-    public $bountyhuntercd;
-    public $shrinkcd;
     public $growcd;
-    public $jetpackcd;
-    public $breaking;
-    public $mined;
-    public $blockface;
-    public $nofall;
-    public $hallucination;
-    public $shrunk;
-    public $grew;
-    public $shrinkremaining;
+    public $jetpackcd;   
+    public $shrinkcd;
+    public $vampirecd;    
+    
     public $growremaining;
+    public $jetpackdisabled; 
+    public $shrinkremaining;
+
+    public $blockface;
+    public $breaking;       
+    public $grew;
     public $flying;
     public $flyremaining;
-    public $jetpackdisabled;
+    public $hallucination;
+    public $mined;
+    public $nofall;    
+    public $shrunk;
+
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
@@ -153,7 +156,11 @@ class Main extends PluginBase
     {
         if (!$this->isSpoon()) {
             $this->initCustomEnchants();
-            $this->saveDefaultConfig();
+            $this->saveDefaultConfig();     
+            $this->jetpackdisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
+            if (count($this->jetpackdisabled) > 0){
+                $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackdisabled) . ".");
+            }
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
@@ -162,11 +169,8 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-            $this->jetpackdisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
-            if (count($this->jetpackdisabled) > 0){
-                $this->getLogger()->info("§aJetPack is disabled in " . implode(", ", $this->jetpackdisabled));
-            }
-            $this->getLogger()->info("§aEnabled.");
+
+            $this->getLogger()->info(TextFormat::GREEN . "Enabled.");
         }
     }
 
@@ -340,7 +344,7 @@ class Main extends PluginBase
             }
             if ($enchant == null) {
                 if ($sender !== null) {
-                    $sender->sendMessage("§cInvalid enchantment.");
+                    $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
                 }
                 continue;
             }
@@ -379,19 +383,19 @@ class Main extends PluginBase
                     $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $level);
                 }
                 if ($sender !== null) {
-                    $sender->sendMessage("§aEnchanting succeeded.");
+                    $sender->sendMessage(TextFormat::GREEN . "Enchanting succeeded.");
                 }
                 continue;
             }
             if ($sender !== null) {
                 if ($result == self::NOT_COMPATIBLE) {
-                    $sender->sendMessage("§cThe item is not compatible with this enchant.");
+                    $sender->sendMessage(TextFormat::RED . "The item is not compatible with this enchant.");
                 }
                 if ($result == self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT) {
-                    $sender->sendMessage("§cThe enchant is not compatible with another enchant.");
+                    $sender->sendMessage(TextFormat::RED . "The enchant is not compatible with another enchant.");
                 }
                 if ($result == self::MAX_LEVEL) {
-                    $sender->sendMessage("§cThe max level is " . $this->getEnchantMaxLevel($enchant) . ".");
+                    $sender->sendMessage(TextFormat::RED . "The max level is " . $this->getEnchantMaxLevel($enchant) . ".");
                 }
             }
             continue;
