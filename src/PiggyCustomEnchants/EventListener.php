@@ -332,10 +332,14 @@ class EventListener implements Listener
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMING);
             if ($enchantment !== null) {
                 if ($entity instanceof Player) {
-                    $item = $entity->getInventory()->getItemInHand();
-                    $entity->getInventory()->removeItem($item);
-                    $motion = $entity->getDirectionVector()->multiply(0.4);
-                    $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                    $chance = 10 * $enchantment->getLevel();
+                    $random = mt_rand(0, 100);
+                    if($random <= $chance) {
+                        $item = $entity->getInventory()->getItemInHand();
+                        $entity->getInventory()->removeItem($item);
+                        $motion = $entity->getDirectionVector()->multiply(0.4);
+                        $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                    }
                 }
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HALLUCINATION);
@@ -947,7 +951,7 @@ class EventListener implements Listener
                         $radius = $enchantment->getLevel() + 2;
                         for ($x = -$radius; $x <= $radius; $x++) {
                             for ($z = -$radius; $z <= $radius; $z++) {
-                                $b = $entity->getLevel()->getBlock(new Vector3($entity->x + $x, $entity->y - 1, $entity->z + $z));
+                                $b = $entity->getLevel()->getBlock($entity->add($x, -1, $z));
                                 if ($b->getId() == Block::LAVA || $b->getId() == Block::STILL_LAVA) {
                                     if ($entity->getLevel()->getBlock($b->floor()->add(0, 1))->getId() !== Block::LAVA && $entity->getLevel()->getBlock($b->floor()->add(0, 1))->getId() !== Block::STILL_LAVA) {
                                         $entity->getLevel()->setBlock($b, Block::get(Block::OBSIDIAN));

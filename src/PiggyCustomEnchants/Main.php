@@ -105,7 +105,7 @@ class Main extends PluginBase
         CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CURSED => ["Cursed", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::DEATHBRINGER => ["Deathbringer", "Weapons", "Damage", "Rare", 5],
-        CustomEnchants::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 1],
+        CustomEnchants::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::DRILLER => ["Driller", "Tools", "Break", "Uncommon", 5],
         CustomEnchants::DRUNK => ["Drunk", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::ENDERSHIFT => ["Endershift", "Armor", "Damaged", "Rare", 5],
