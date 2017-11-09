@@ -2,6 +2,7 @@
 
 namespace PiggyCustomEnchants;
 
+use PiggyCustomEnchants\Blocks\PiggyObsidian;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
@@ -194,7 +195,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $from = $event->getFrom();
         if (isset($this->plugin->nofall[strtolower($player->getName())])) {
-            if ($player->getLevel()->getBlock($player->subtract(0, 1))->getId() !== Block::AIR && $this->plugin->nofall[strtolower($player->getName())] < time()) {
+            if ($this->plugin->checkBlocks($player, 0, 1) !== true && $this->plugin->nofall[strtolower($player->getName())] < time()) {
                 unset($this->plugin->nofall[strtolower($player->getName())]);
             } else {
                 $this->plugin->nofall[strtolower($player->getName())]++;
@@ -952,9 +953,9 @@ class EventListener implements Listener
                         for ($x = -$radius; $x <= $radius; $x++) {
                             for ($z = -$radius; $z <= $radius; $z++) {
                                 $b = $entity->getLevel()->getBlock($entity->add($x, -1, $z));
-                                if ($b->getId() == Block::LAVA || $b->getId() == Block::STILL_LAVA) {
-                                    if ($entity->getLevel()->getBlock($b->floor()->add(0, 1))->getId() !== Block::LAVA && $entity->getLevel()->getBlock($b->floor()->add(0, 1))->getId() !== Block::STILL_LAVA) {
-                                        $entity->getLevel()->setBlock($b, Block::get(Block::OBSIDIAN));
+                                if ($this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA], 0)) {
+                                    if (!$this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA], -1)) {
+                                        $entity->getLevel()->setBlock($b, Block::get(Block::OBSIDIAN, 15));
                                     }
                                 }
                             }

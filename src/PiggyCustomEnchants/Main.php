@@ -2,18 +2,22 @@
 
 namespace PiggyCustomEnchants;
 
+use PiggyCustomEnchants\Blocks\PiggyObsidian;
 use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\JetpackTask;
+use PiggyCustomEnchants\Tasks\ParachuteTask;
 use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
+use pocketmine\block\BlockFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
+use pocketmine\level\Position;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
@@ -130,6 +134,7 @@ class Main extends PluginBase
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5],
+        CustomEnchants::PARACHUTE => ["Parachute", "Chestplate", "Equip", "Uncommon", 1],
         CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5],
         CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
@@ -163,9 +168,11 @@ class Main extends PluginBase
             }
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
+            BlockFactory::registerBlock(new PiggyObsidian(), true);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 3.90);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
@@ -654,5 +661,28 @@ class Main extends PluginBase
                 break;
         }
         return self::NOT_COMPATIBLE;
+    }
+
+    /**
+     * @param Position $pos
+     * @param $ids
+     * @param $deep
+     * @return bool
+     * @internal param $id
+     */
+    public function checkBlocks(Position $pos, $ids, $deep)
+    {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+        foreach ($ids as $id) {
+            for ($i = 0; $deep < 0 ? $i >= $deep : $i <= $deep; $deep < 0 ? $i-- : $i++) {
+                $block = $pos->getLevel()->getBlock($pos->subtract(0, $i));
+                if ($block->getId() !== $id) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
