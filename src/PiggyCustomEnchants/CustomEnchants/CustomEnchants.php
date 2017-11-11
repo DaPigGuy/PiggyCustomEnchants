@@ -78,13 +78,18 @@ class CustomEnchants extends Enchantment
     const SHRINK = 414;
     const GROW = 415;
     const CACTUS = 416;
+    const ANTIKNOCKBACK = 417;
+    const FORCEFIELD = 418;
 
     //HELMET
     //const IMPLANTS = 600;
     const GLOWING = 601;
+    const MEDITATION = 602;
 
     //CHESTPLATE
     const PARACHUTE = 800;
+    const CHICKEN = 801;
+    const PROWL = 802;
 
     //BOOTS
     const GEARS = 500;

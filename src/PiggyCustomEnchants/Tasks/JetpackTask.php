@@ -38,6 +38,11 @@ class JetpackTask extends PluginTask
                 if (isset($this->plugin->flying[strtolower($player->getName())]) && $this->plugin->flying[strtolower($player->getName())] > time()) {
                     if ($this->plugin->flying[strtolower($player->getName())] - 30 <= time()) {
                         $player->sendTip(TextFormat::RED . "Low on power. " . floor($this->plugin->flying[strtolower($player->getName())] - time()) . " seconds of power remaining.");
+                    } else {
+                        $time = ($this->plugin->flying[strtolower($player->getName())] - time());
+                        $time = is_float($time / 15) ? floor($time / 15) + 1 : $time / 15;
+                        $color = $time > 10 ? TextFormat::GREEN : $time > 5 ? TextFormat::YELLOW : TextFormat::RED;
+                        $player->sendTip($color . "Power: " . str_repeat("▌", $time));
                     }
                     $this->fly($player, $enchantment->getLevel());
                     continue;
@@ -50,6 +55,17 @@ class JetpackTask extends PluginTask
                 }
                 unset($this->plugin->flying[strtolower($player->getName())]);
                 $player->sendTip(TextFormat::RED . "Jetpack disabled.");
+            }
+            if (isset($this->plugin->flyremaining[strtolower($player->getName())])) {
+                if ($this->plugin->flyremaining[strtolower($player->getName())] < 300) {
+                    if (!isset($this->plugin->jetpackChargeTick[strtolower($player->getName())])) {
+                        $this->plugin->jetpackChargeTick[strtolower($player->getName())] = 0;
+                    }
+                    $this->plugin->jetpackChargeTick[strtolower($player->getName())]++;
+                    if ($this->plugin->jetpackChargeTick[strtolower($player->getName())] >= 30) {
+                        $this->plugin->flyremaining[strtolower($player->getName())]++;
+                    }
+                }
             }
         }
     }

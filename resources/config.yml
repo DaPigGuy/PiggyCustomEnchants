@@ -25,3 +25,6 @@ color:
 # Leave empty to allow jetpacks anywhere, or add worlds where jetpacks will be disabled: ["PvPArena", "AnotherWorld"]
 jetpack:
   disabled: []
+# Rare Drop(s) from Chicken enchant ("id:meta:amount"), if multiple, will randomly chose a drop
+chicken:
+  rare-drop: ["266:0:1"]

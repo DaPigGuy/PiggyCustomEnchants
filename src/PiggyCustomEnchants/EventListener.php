@@ -335,7 +335,7 @@ class EventListener implements Listener
                 if ($entity instanceof Player) {
                     $chance = 10 * $enchantment->getLevel();
                     $random = mt_rand(0, 100);
-                    if($random <= $chance) {
+                    if ($random <= $chance) {
                         $item = $entity->getInventory()->getItemInHand();
                         $entity->getInventory()->removeItem($item);
                         $motion = $entity->getDirectionVector()->multiply(0.4);
@@ -786,6 +786,7 @@ class EventListener implements Listener
             if ($event instanceof EntityDamageEvent) {
                 $damage = $event->getDamage();
                 $cause = $event->getCause();
+                $antikb = 4;
                 if ($cause == EntityDamageEvent::CAUSE_FALL) {
                     $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::STOMP);
                     if ($enchantment !== null) {
@@ -857,8 +858,10 @@ class EventListener implements Listener
                             //TODO: Side effect
                         }
                     }
-                    if ($event instanceof EntityDamageByEntityEvent) {
-                        $damager = $event->getDamager();
+                }
+                if ($event instanceof EntityDamageByEntityEvent) {
+                    $damager = $event->getDamager();
+                    foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
                         $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::MOLTEN);
                         if ($enchantment !== null) {
                             $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
@@ -941,6 +944,11 @@ class EventListener implements Listener
                                 $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
                             }
                         }
+                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ANTIKNOCKBACK);
+                        if ($enchantment !== null) {
+                            $event->setKnockBack($event->getKnockBack() - ($event->getKnockBack() / $antikb));
+                            $antikb--;
+                        }
                     }
                 }
             }
@@ -960,6 +968,12 @@ class EventListener implements Listener
                                 }
                             }
                         }
+                    }
+                }
+                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::MEDITATION);
+                if ($enchantment !== null) {
+                    if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
+                        $this->plugin->meditationTick[strtolower($entity->getName())] = 0;
                     }
                 }
             }
@@ -1041,7 +1055,7 @@ class EventListener implements Listener
                                     unset($this->plugin->flyremaining[strtolower($entity->getName())]);
                                 }
                             }
-                        }else{
+                        } else {
                             $entity->sendTip(TextFormat::RED . "Jetpacks are disabled in this world.");
                         }
                     }

@@ -8,8 +8,12 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\CactusTask;
+use PiggyCustomEnchants\Tasks\ChickenTask;
+use PiggyCustomEnchants\Tasks\ForcefieldTask;
 use PiggyCustomEnchants\Tasks\JetpackTask;
+use PiggyCustomEnchants\Tasks\MeditationTask;
 use PiggyCustomEnchants\Tasks\ParachuteTask;
+use PiggyCustomEnchants\Tasks\ProwlTask;
 use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
 use pocketmine\block\BlockFactory;
@@ -85,12 +89,17 @@ class Main extends PluginBase
 
     public $blockface;
     public $breaking;
+    public $chickenTick;
     public $grew;
     public $flying;
     public $flyremaining;
+    public $forcefieldParticleTick;
     public $hallucination;
+    public $jetpackChargeTick;
+    public $meditationTick;
     public $mined;
     public $nofall;
+    public $prowl;
     public $shrunk;
 
 
@@ -105,6 +114,7 @@ class Main extends PluginBase
         CustomEnchants::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::CACTUS => ["Cactus", "Armor", "Equip", "Rare", 1],
         CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5],
+        CustomEnchants::CHICKEN => ["Chicken", "Chestplate", "Equip", "Uncommon", 5],
         CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5],
         CustomEnchants::CURSED => ["Cursed", "Armor", "Damaged", "Uncommon", 5],
@@ -116,6 +126,7 @@ class Main extends PluginBase
         CustomEnchants::ENERGIZING => ["Energizing", "Tools", "Break", "Uncommon", 5],
         CustomEnchants::ENLIGHTED => ["Enlighted", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::EXPLOSIVE => ["Explosive", "Tools", "Break", "Rare", 5],
+        CustomEnchants::FORCEFIELD => ["Forcefield", "Armor", "Equip", "Mythic", 1],
         CustomEnchants::FROZEN => ["Frozen", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::GEARS => ["Gears", "Boots", "Equip", "Uncommon", 5],
         CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1],
@@ -130,6 +141,7 @@ class Main extends PluginBase
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
         CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "Uncommon", 2],
+        CustomEnchants::MEDITATION => ["Meditation", "Helmet", "Equip", "Uncommon", 5],
         CustomEnchants::MISSILE => ["Missile", "Bow", "Projectile_Hit", "Rare", 5],
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5],
@@ -137,9 +149,11 @@ class Main extends PluginBase
         CustomEnchants::PARACHUTE => ["Parachute", "Chestplate", "Equip", "Uncommon", 1],
         CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5],
         CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5],
+        CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1],
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
+        CustomEnchants::PROWL => ["Prowl", "Chestplate", "Equip", "Rare", 1],
         CustomEnchants::QUICKENING => ["Quickening", "Tools", "Break", "Uncommon", 5],
         CustomEnchants::RADAR => ["Radar", "Compass", "Inventory", "Rare", 5],
         CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "Rare", 5],
@@ -171,8 +185,12 @@ class Main extends PluginBase
             BlockFactory::registerBlock(new PiggyObsidian(), true);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ForcefieldTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 3.90);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 3.9);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ProwlTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
