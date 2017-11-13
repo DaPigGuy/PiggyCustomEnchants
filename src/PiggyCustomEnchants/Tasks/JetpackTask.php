@@ -41,7 +41,7 @@ class JetpackTask extends PluginTask
                     } else {
                         $time = ($this->plugin->flying[strtolower($player->getName())] - time());
                         $time = is_float($time / 15) ? floor($time / 15) + 1 : $time / 15;
-                        $color = $time > 10 ? TextFormat::GREEN : $time > 5 ? TextFormat::YELLOW : TextFormat::RED;
+                        $color = $time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED);
                         $player->sendTip($color . "Power: " . str_repeat("▌", $time));
                     }
                     $this->fly($player, $enchantment->getLevel());

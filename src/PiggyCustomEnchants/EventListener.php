@@ -26,6 +26,7 @@ use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Event;
 use pocketmine\event\Listener;
+use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerKickEvent;
@@ -146,6 +147,22 @@ class EventListener implements Listener
     {
         $player = $event->getEntity();
         $this->checkGlobalEnchants($player, null, $event);
+    }
+
+    /**
+     * Disable movement being reverted when flying with a Jetpack
+     *
+     * @param PlayerIllegalMoveEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onIllegalMove(PlayerIllegalMoveEvent $event)
+    {
+        $player = $event->getPlayer();
+        if (isset($this->plugin->flying[strtolower($player->getName())])) {
+            $event->setCancelled();
+        }
     }
 
     /**
