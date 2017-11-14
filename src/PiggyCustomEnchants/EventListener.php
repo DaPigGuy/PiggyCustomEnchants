@@ -973,14 +973,17 @@ class EventListener implements Listener
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::MAGMAWALKER);
                 if ($enchantment !== null) {
                     $block = $entity->getLevel()->getBlock($entity);
-                    if ($block->getId() !== Block::LAVA && $block->getId() !== Block::STILL_LAVA) {
+                    if (!$this->plugin->checkBlocks($block, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA], 0)) {
                         $radius = $enchantment->getLevel() + 2;
                         for ($x = -$radius; $x <= $radius; $x++) {
                             for ($z = -$radius; $z <= $radius; $z++) {
                                 $b = $entity->getLevel()->getBlock($entity->add($x, -1, $z));
-                                if ($this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA], 0)) {
-                                    if (!$this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA], -1)) {
-                                        $entity->getLevel()->setBlock($b, Block::get(Block::OBSIDIAN, 15));
+                                if ($this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA], 0)) {
+                                    if ($this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA], -1) !== true) {
+                                        if (!($b->getId() == Block::FLOWING_LAVA && $b->getDamage() > 0)) { //In vanilla, Frostwalker doesn't change non source blocks to ice
+                                            $block = Block::get(Block::OBSIDIAN, 15);
+                                            $entity->getLevel()->setBlock($b, $block);
+                                        }
                                     }
                                 }
                             }

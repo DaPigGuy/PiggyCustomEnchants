@@ -88,6 +88,6 @@ class PiggyObsidian extends Obsidian
      */
     public function getDrops(Item $item): array
     {
-        return $this->isMagmaWalker() ? [] : $item->isPickaxe() >= Tool::TIER_DIAMOND ? parent::getDrops($item) : [];
+        return $this->isMagmaWalker() ? [] : ($item->isPickaxe() >= Tool::TIER_DIAMOND ? parent::getDrops($item) : []);
     }
 }

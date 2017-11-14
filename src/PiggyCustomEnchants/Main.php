@@ -540,6 +540,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Returns the color of a rarity
+     *
      * @param $rarity
      * @return string
      */
@@ -564,6 +566,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Translates color name to TextFormat constant
+     *
      * @param $color
      * @return bool|mixed
      */
@@ -682,6 +686,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Checks for a certain block under a position
+     *
      * @param Position $pos
      * @param $ids
      * @param $deep
@@ -693,10 +699,15 @@ class Main extends PluginBase
         if (!is_array($ids)) {
             $ids = [$ids];
         }
-        foreach ($ids as $id) {
+        if ($deep == 0) {
+            $block = $pos->getLevel()->getBlock($pos);
+            if (!in_array($block->getId(), $ids)) {
+                return false;
+            }
+        } else {
             for ($i = 0; $deep < 0 ? $i >= $deep : $i <= $deep; $deep < 0 ? $i-- : $i++) {
                 $block = $pos->getLevel()->getBlock($pos->subtract(0, $i));
-                if ($block->getId() !== $id) {
+                if (!in_array($block->getId(), $ids)) {
                     return false;
                 }
             }
