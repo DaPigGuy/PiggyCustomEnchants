@@ -39,7 +39,7 @@ class ChickenTask extends PluginTask
                     $this->plugin->chickenTick[strtolower($player->getName())] = 0;
                 }
                 $this->plugin->chickenTick[strtolower($player->getName())]++;
-                if ($this->plugin->chickenTick[strtolower($player->getName())] >= 0.1 * 1200) {
+                if ($this->plugin->chickenTick[strtolower($player->getName())] >= 5 * 1200) {
                     $random = mt_rand(0, 100);
                     if ($random <= 5 * $enchantment->getLevel()) {
                         $drops = $this->plugin->getConfig()->getNested("chicken.rare-drop");
