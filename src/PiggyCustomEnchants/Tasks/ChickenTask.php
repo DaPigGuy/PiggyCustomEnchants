@@ -39,7 +39,7 @@ class ChickenTask extends PluginTask
                     $this->plugin->chickenTick[strtolower($player->getName())] = 0;
                 }
                 $this->plugin->chickenTick[strtolower($player->getName())]++;
-                if ($this->plugin->chickenTick[strtolower($player->getName())] >= 5 * 1200) {
+                if ($this->plugin->chickenTick[strtolower($player->getName())] >= 0.1 * 1200) {
                     $random = mt_rand(0, 100);
                     if ($random <= 5 * $enchantment->getLevel()) {
                         $drops = $this->plugin->getConfig()->getNested("chicken.rare-drop");
@@ -49,8 +49,9 @@ class ChickenTask extends PluginTask
                         $drop = array_rand($drops, 1);
                         $drop = explode(":", $drops[$drop]);
                         $item = count($drop) < 3 ? Item::get(Item::GOLD_INGOT, 0, 1) : Item::get($drop[0], $drop[1], $drop[2]);
+                        $vowels = ["a", "e", "i", "o", "u"];
                         $player->getLevel()->dropItem($player, $item, $player->getDirectionVector()->multiply(-0.4));
-                        $player->sendTip(TextFormat::GREEN . "You have layed a " . $item->getName() . "...");
+                        $player->sendTip(TextFormat::GREEN . "You have layed a" . (in_array(strtolower($item->getName()[0]), $vowels) ? "n " : " ") . $item->getName() . "...");
                     } else {
                         $player->getLevel()->dropItem($player, Item::get(Item::EGG, 0, 1), $player->getDirectionVector()->multiply(-0.4));
                         $player->sendTip(TextFormat::GREEN . "You have layed an egg.");

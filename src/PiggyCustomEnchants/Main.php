@@ -141,7 +141,7 @@ class Main extends PluginBase
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
         CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "Uncommon", 2],
-        CustomEnchants::MEDITATION => ["Meditation", "Helmet", "Equip", "Uncommon", 5],
+        CustomEnchants::MEDITATION => ["Meditation", "Helmets", "Equip", "Uncommon", 5],
         CustomEnchants::MISSILE => ["Missile", "Bow", "Projectile_Hit", "Rare", 5],
         CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5],
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5],
