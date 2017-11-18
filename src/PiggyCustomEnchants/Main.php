@@ -80,6 +80,7 @@ class Main extends PluginBase
     public $cloakingcd;
     public $endershiftcd;
     public $growcd;
+    public $implantscd;
     public $jetpackcd;
     public $shrinkcd;
     public $vampirecd;
@@ -96,6 +97,7 @@ class Main extends PluginBase
     public $flyremaining;
     public $forcefieldParticleTick;
     public $hallucination;
+    public $implants;
     public $jetpackChargeTick;
     public $meditationTick;
     public $mined;
@@ -140,6 +142,7 @@ class Main extends PluginBase
         CustomEnchants::HASTE => ["Haste", "Tools", "Held", "Uncommon", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
+        CustomEnchants::IMPLANTS => ["Implants", "Helmet", "Move", "Rare", 5],
         CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],

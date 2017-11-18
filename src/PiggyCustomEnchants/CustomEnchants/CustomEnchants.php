@@ -83,7 +83,7 @@ class CustomEnchants extends Enchantment
     const FORCEFIELD = 418;
 
     //HELMET
-    //const IMPLANTS = 600;
+    const IMPLANTS = 600;
     const GLOWING = 601;
     const MEDITATION = 602;
 

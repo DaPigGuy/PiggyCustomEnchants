@@ -9,6 +9,7 @@ use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
+use PiggyCustomEnchants\Tasks\ImplantsTask;
 use PiggyCustomEnchants\Tasks\MoltenTask;
 use pocketmine\block\Block;
 use pocketmine\entity\projectile\Arrow;
@@ -994,6 +995,23 @@ class EventListener implements Listener
                 if ($enchantment !== null) {
                     if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
                         $this->plugin->meditationTick[strtolower($entity->getName())] = 0;
+                    }
+                }
+                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::IMPLANTS);
+                if ($enchantment !== null) {
+                    if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
+                        if (!isset($this->plugin->implantscd[strtolower($entity->getName())]) || $this->plugin->implantscd[strtolower($entity->getName())] < time()) {
+                            if ($entity->getFood() < 20) {
+                                $entity->setFood($entity->getFood() + $enchantment->getLevel() > 20 ? 20 : $entity->getFood() + $enchantment->getLevel());
+                            }
+                            if ($entity->getAirSupplyTicks() < $entity->getMaxAirSupplyTicks() && isset($this->plugin->implants[strtolower($entity->getName())]) !== true)  {
+                                $this->plugin->implants[strtolower($entity->getName())] = true;
+                                $task = new ImplantsTask($this->plugin, $entity);
+                                $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedRepeatingTask($task, 20, 60);
+                                $task->setHandler($handler);
+                            }
+                            $this->plugin->implantscd[strtolower($entity->getName())] = time() + 1;
+                        }
                     }
                 }
             }
