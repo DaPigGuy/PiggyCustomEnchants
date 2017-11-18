@@ -9,17 +9,31 @@ use pocketmine\level\Position;
 use pocketmine\Player;
 use pocketmine\Server;
 
+/**
+ * Class PiggyExplosion
+ * @package PiggyCustomEnchants
+ */
 class PiggyExplosion extends Explosion
 {
     protected $what;
     private $plugin;
 
+    /**
+     * PiggyExplosion constructor.
+     * @param Position $center
+     * @param $size
+     * @param null $what
+     * @param Main $plugin
+     */
     public function __construct(Position $center, $size, $what = null, Main $plugin)
     {
         $this->plugin = $plugin;
         parent::__construct($center, $size, $what);
     }
 
+    /**
+     * @return bool
+     */
     public function explodeB(): bool
     {
         foreach ($this->affectedBlocks as $index => $block) {
