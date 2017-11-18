@@ -435,6 +435,61 @@ class EventListener implements Listener
                 $explosion->explodeA();
                 $explosion->explodeB();
             }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::LUMBERJACK);
+            if ($enchantment !== null) {
+                if ($player->isSneaking()) {
+                    if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
+                        if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
+                            $this->plugin->mined[strtolower($player->getName())] = 0;
+                            $this->breakTree($block, $player);
+                        }
+                    }
+                }
+            }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::DRILLER);
+            if ($enchantment !== null) {
+                if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
+                    if (isset($this->plugin->blockface[strtolower($player->getName())])) {
+                        $side = $this->plugin->blockface[strtolower($player->getName())];
+                        $sides = [];
+                        $sides2 = [];
+                        switch ($side) {
+                            case Vector3::SIDE_NORTH:
+                            case Vector3::SIDE_SOUTH:
+                                $sides = [Vector3::SIDE_WEST, Vector3::SIDE_EAST, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
+                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_EAST, Vector3::SIDE_WEST];
+                                break;
+                            case Vector3::SIDE_WEST:
+                            case Vector3::SIDE_EAST:
+                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
+                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
+                                break;
+                            case Vector3::SIDE_UP:
+                            case Vector3::SIDE_DOWN:
+                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST, Vector3::SIDE_EAST];
+                                $sides2 = [Vector3::SIDE_EAST, Vector3::SIDE_WEST, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
+                                break;
+                        }
+                        $item = $player->getInventory()->getItemInHand();
+                        for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
+                            $b = $block->getSide($side ^ 0x01, $i);
+                            $combined = array_combine($sides, $sides2);
+                            $this->plugin->breaking[strtolower($player->getName())] = time() + 1;
+                            $player->getLevel()->useBreakOn($b, $item, $player);
+                            foreach ($sides as $s) {
+                                $b2 = $b->getSide($s, 1);
+                                $b3 = $b2->getSide($combined[$s], 1);
+                                $b4 = $b2->getSide($combined[$s] ^ 0x01, 1);
+                                $player->getLevel()->useBreakOn($b2, $item, $player);
+                                $player->getLevel()->useBreakOn($b3, $item, $player);
+                                $player->getLevel()->useBreakOn($b4, $item, $player);
+
+                            }
+                        }
+                        unset($this->plugin->blockface[strtolower($player->getName())]);
+                    }
+                }
+            }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::SMELTING);
             if ($enchantment !== null) {
                 $finaldrop = array();
@@ -481,7 +536,7 @@ class EventListener implements Listener
                             break;
                     }
                 }
-                $event->setDrops(array_merge($finaldrop, $otherdrops));
+                $event->setDrops($drops = array_merge($finaldrop, $otherdrops));
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::ENERGIZING);
             if ($enchantment !== null) {
@@ -499,67 +554,12 @@ class EventListener implements Listener
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::LUMBERJACK);
-            if ($enchantment !== null) {
-                if ($player->isSneaking()) {
-                    if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
-                        if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
-                            $this->plugin->mined[strtolower($player->getName())] = 0;
-                            $this->breakTree($block, $player);
-                        }
-                    }
-                }
-            }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::TELEPATHY);
             if ($enchantment !== null) {
                 foreach ($drops as $drop) {
                     $player->getInventory()->addItem($drop);
                 }
                 $event->setDrops([]);
-            }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::DRILLER);
-            if ($enchantment !== null) {
-                if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
-                    if (isset($this->plugin->blockface[strtolower($player->getName())])) {
-                        $side = $this->plugin->blockface[strtolower($player->getName())];
-                        $sides = [];
-                        $sides2 = [];
-                        switch ($side) {
-                            case Vector3::SIDE_NORTH:
-                            case Vector3::SIDE_SOUTH:
-                                $sides = [Vector3::SIDE_WEST, Vector3::SIDE_EAST, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
-                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_EAST, Vector3::SIDE_WEST];
-                                break;
-                            case Vector3::SIDE_WEST:
-                            case Vector3::SIDE_EAST:
-                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
-                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
-                                break;
-                            case Vector3::SIDE_UP:
-                            case Vector3::SIDE_DOWN:
-                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST, Vector3::SIDE_EAST];
-                                $sides2 = [Vector3::SIDE_EAST, Vector3::SIDE_WEST, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
-                                break;
-                        }
-                        $item = $player->getInventory()->getItemInHand();
-                        for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
-                            $b = $block->getSide($side ^ 0x01, $i);
-                            $combined = array_combine($sides, $sides2);
-                            $this->plugin->breaking[strtolower($player->getName())] = time() + 1;
-                            $player->getLevel()->useBreakOn($b, $item, $player);
-                            foreach ($sides as $s) {
-                                $b2 = $b->getSide($s, 1);
-                                $b3 = $b2->getSide($combined[$s], 1);
-                                $b4 = $b2->getSide($combined[$s] ^ 0x01, 1);
-                                $player->getLevel()->useBreakOn($b2, $item, $player);
-                                $player->getLevel()->useBreakOn($b3, $item, $player);
-                                $player->getLevel()->useBreakOn($b4, $item, $player);
-
-                            }
-                        }
-                        unset($this->plugin->blockface[strtolower($player->getName())]);
-                    }
-                }
             }
         }
     }

@@ -41,6 +41,7 @@ class CustomEnchants extends Enchantment
     const LUMBERJACK = 204;
     const TELEPATHY = 205;
     const DRILLER = 206;
+    const HASTE = 207;
 
     //BOWS
     /*const BOMBARDMENT = 300;

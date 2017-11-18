@@ -10,6 +10,7 @@ use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\ChickenTask;
 use PiggyCustomEnchants\Tasks\ForcefieldTask;
+use PiggyCustomEnchants\Tasks\HasteTask;
 use PiggyCustomEnchants\Tasks\JetpackTask;
 use PiggyCustomEnchants\Tasks\MeditationTask;
 use PiggyCustomEnchants\Tasks\ParachuteTask;
@@ -105,6 +106,7 @@ class Main extends PluginBase
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
+        CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1],
         CustomEnchants::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5],
         CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5],
         CustomEnchants::BERSERKER => ["Berserker", "Armor", "Damaged", "Rare", 5],
@@ -135,6 +137,7 @@ class Main extends PluginBase
         CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "Uncommon", 5],
         CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5],
         CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "Uncommon", 5],
+        CustomEnchants::HASTE => ["Haste", "Tools", "Held", "Uncommon", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3],
@@ -149,7 +152,6 @@ class Main extends PluginBase
         CustomEnchants::PARACHUTE => ["Parachute", "Chestplate", "Equip", "Uncommon", 1],
         CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5],
         CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5],
-        CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1],
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
@@ -187,6 +189,7 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ForcefieldTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new HasteTask($this), 5);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 3.9);
