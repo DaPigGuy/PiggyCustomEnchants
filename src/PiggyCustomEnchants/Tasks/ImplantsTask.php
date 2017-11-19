@@ -42,7 +42,7 @@ class ImplantsTask extends PluginTask
                 return false;
             }
             if ($player->getAirSupplyTicks() < $player->getMaxAirSupplyTicks()) {
-                $player->setAirSupplyTicks($player->getAirSupplyTicks() + ($enchantment->getLevel() * 20) > $player->getMaxAirSupplyTicks() ? $player->getMaxAirSupplyTicks() : $player->getAirSupplyTicks() + ($enchantment->getLevel() * 20));
+                $player->setAirSupplyTicks($player->getAirSupplyTicks() + ($enchantment->getLevel() * 40) > $player->getMaxAirSupplyTicks() ? $player->getMaxAirSupplyTicks() : $player->getAirSupplyTicks() + ($enchantment->getLevel() * 40));
             } else {
                 $this->cancel();
                 return false;
