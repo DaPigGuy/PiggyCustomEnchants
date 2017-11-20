@@ -29,10 +29,10 @@ use pocketmine\event\Event;
 use pocketmine\event\Listener;
 use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
 use pocketmine\event\player\PlayerDeathEvent;
-use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
 use pocketmine\math\Vector3;
@@ -42,6 +42,7 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\ListTag;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\Player;
 use pocketmine\utils\Random;
 use pocketmine\utils\TextFormat;
@@ -167,22 +168,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerInteractEvent $event
-     *
-     * @priority HIGHEST
-     * @ignoreCancelled true
-     */
-    public function onInteract(PlayerInteractEvent $event)
-    {
-        $player = $event->getPlayer();
-        $action = $event->getAction();
-        $face = $event->getFace();
-        if ($action == PlayerInteractEvent::LEFT_CLICK_BLOCK) {
-            $this->plugin->blockface[strtolower($player->getName())] = $face;
-        }
-    }
-
-    /**
      * Disable kicking for flying when using jetpacks
      *
      * @param PlayerKickEvent $event
@@ -253,6 +238,26 @@ class EventListener implements Listener
         $shooter = $entity->getOwningEntity();
         if ($shooter instanceof Player) {
             $this->checkBowEnchants($shooter, $entity, $event);
+        }
+    }
+
+    /**
+     * @param DataPacketReceiveEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onDataPacketReceive(DataPacketReceiveEvent $event)
+    {
+        $player = $event->getPlayer();
+        $packet = $event->getPacket();
+        if ($packet instanceof PlayerActionPacket) {
+            $action = $packet->action;
+            switch ($action){
+                case 18:
+                    $this->plugin->blockface[strtolower($player->getName())] = $packet->face;
+                    break;
+            }
         }
     }
 
@@ -446,6 +451,7 @@ class EventListener implements Listener
                         }
                     }
                 }
+                $event->setInstaBreak(true);
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::DRILLER);
             if ($enchantment !== null) {
@@ -490,6 +496,7 @@ class EventListener implements Listener
                         unset($this->plugin->blockface[strtolower($player->getName())]);
                     }
                 }
+                $event->setInstaBreak(true);
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::SMELTING);
             if ($enchantment !== null) {
