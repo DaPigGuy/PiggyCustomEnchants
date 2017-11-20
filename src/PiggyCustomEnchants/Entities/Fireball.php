@@ -4,15 +4,7 @@ namespace PiggyCustomEnchants\Entities;
 
 use pocketmine\block\Block;
 use pocketmine\entity\projectile\Projectile;
-use pocketmine\event\entity\EntityCombustByEntityEvent;
-use pocketmine\event\entity\EntityDamageByChildEntityEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
-use pocketmine\level\MovingObjectPosition;
-use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\AddEntityPacket;
-use pocketmine\Player;
 
 /**
  * Class Fireball

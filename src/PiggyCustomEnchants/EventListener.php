@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants;
 
-use PiggyCustomEnchants\Blocks\PiggyObsidian;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
