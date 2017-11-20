@@ -161,7 +161,7 @@ class EventListener implements Listener
     public function onIllegalMove(PlayerIllegalMoveEvent $event)
     {
         $player = $event->getPlayer();
-        if (isset($this->plugin->flying[strtolower($player->getName())])) {
+        if (isset($this->plugin->flying[strtolower($player->getName())]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
             $event->setCancelled();
         }
     }
@@ -195,7 +195,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $reason = $event->getReason();
         if ($reason == "Flying is not enabled on this server") {
-            if (isset($this->plugin->flying[strtolower($player->getName())])) {
+            if (isset($this->plugin->flying[strtolower($player->getName())]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
                 $event->setCancelled();
             }
         }
