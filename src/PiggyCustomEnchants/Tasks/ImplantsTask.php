@@ -32,6 +32,7 @@ class ImplantsTask extends PluginTask
 
     /**
      * @param int $currentTick
+     * @return bool
      */
     public function onRun(int $currentTick)
     {

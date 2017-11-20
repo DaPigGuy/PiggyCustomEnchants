@@ -91,6 +91,7 @@ class CustomEnchants extends Enchantment
     const PARACHUTE = 800;
     const CHICKEN = 801;
     const PROWL = 802;
+    const SPIDER = 803;
 
     //BOOTS
     const GEARS = 500;

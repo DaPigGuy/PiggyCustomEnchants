@@ -17,6 +17,7 @@ use PiggyCustomEnchants\Tasks\ParachuteTask;
 use PiggyCustomEnchants\Tasks\ProwlTask;
 use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
+use PiggyCustomEnchants\Tasks\SpiderTask;
 use pocketmine\block\BlockFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
@@ -142,7 +143,7 @@ class Main extends PluginBase
         CustomEnchants::HASTE => ["Haste", "Tools", "Held", "Uncommon", 5],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
-        CustomEnchants::IMPLANTS => ["Implants", "Helmet", "Move", "Rare", 5],
+        CustomEnchants::IMPLANTS => ["Implants", "Helmets", "Move", "Rare", 5],
         CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1],
@@ -168,6 +169,7 @@ class Main extends PluginBase
         CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1],
         CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1],
         CustomEnchants::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1],
+        CustomEnchants::SPIDER => ["Spider", "Chestplate", "Equip", "Rare", 1],
         CustomEnchants::SPRINGS => ["Springs", "Boots", "Equip", "Uncommon", 5],
         CustomEnchants::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5],
         CustomEnchants::TELEPATHY => ["Telepathy", "Tools", "Break", "Rare", 1],
@@ -199,6 +201,7 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ProwlTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SpiderTask($this), 1);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 
             $this->getLogger()->info(TextFormat::GREEN . "Enabled.");

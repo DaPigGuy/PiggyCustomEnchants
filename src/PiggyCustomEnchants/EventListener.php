@@ -1004,7 +1004,7 @@ class EventListener implements Listener
                             if ($entity->getFood() < 20) {
                                 $entity->setFood($entity->getFood() + $enchantment->getLevel() > 20 ? 20 : $entity->getFood() + $enchantment->getLevel());
                             }
-                            if ($entity->getAirSupplyTicks() < $entity->getMaxAirSupplyTicks() && isset($this->plugin->implants[strtolower($entity->getName())]) !== true)  {
+                            if ($entity->getAirSupplyTicks() < $entity->getMaxAirSupplyTicks() && isset($this->plugin->implants[strtolower($entity->getName())]) !== true) {
                                 $this->plugin->implants[strtolower($entity->getName())] = true;
                                 $task = new ImplantsTask($this->plugin, $entity);
                                 $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedRepeatingTask($task, 20, 60);
