@@ -253,7 +253,10 @@ class EventListener implements Listener
         $packet = $event->getPacket();
         if ($packet instanceof PlayerActionPacket) {
             $action = $packet->action;
-            switch ($action){
+            switch ($action) {
+                case 8:
+                    $this->checkArmorEnchants($player, $event);
+                    break;
                 case 18:
                     $this->plugin->blockface[strtolower($player->getName())] = $packet->face;
                     break;
@@ -780,18 +783,6 @@ class EventListener implements Listener
                     if ($enchantment !== null) {
                         $entity->removeEffect(Effect::SPEED);
                     }
-                    $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::SPRINGS);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::JUMP);
-                        $effect->setAmplifier(3);
-                        $effect->setDuration(2147483647); //Effect wont show up for PHP_INT_MAX or it's value for 64 bit (I'm on 64 bit system), highest value i can use
-                        $effect->setVisible(false);
-                        $entity->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($olditem, CustomEnchants::SPRINGS);
-                    if ($enchantment !== null) {
-                        $entity->removeEffect(Effect::JUMP);
-                    }
                 }
                 if ($slot == $entity->getInventory()->getSize()) { //Helmet slot
                     $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::GLOWING);
@@ -1103,6 +1094,21 @@ class EventListener implements Listener
                         } else {
                             $entity->sendTip(TextFormat::RED . "Jetpacks are disabled in this world.");
                         }
+                    }
+                }
+            }
+            if ($event instanceof DataPacketReceiveEvent) {
+                $packet = $event->getPacket();
+                if ($packet instanceof PlayerActionPacket) {
+                    $action = $packet->action;
+                    switch ($action) {
+                        case 8:
+                            $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::SPRINGS);
+                            if ($enchantment !== null) {
+                                $entity->setMotion(new Vector3(0, $entity->getJumpVelocity() + 0.4));
+                                $this->plugin->nofall[strtolower($entity->getName())] = time() + 1;
+                            }
+                            break;
                     }
                 }
             }
