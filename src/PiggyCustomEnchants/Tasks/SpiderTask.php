@@ -46,6 +46,7 @@ class SpiderTask extends PluginTask
                     if(!$player->getGenericFlag(Entity::DATA_FLAG_WALLCLIMBING)){
                         $player->setGenericFlag(Entity::DATA_FLAG_WALLCLIMBING, true);
                     }
+                    $player->resetFallDistance();
                 }else{
                     if($player->getGenericFlag(Entity::DATA_FLAG_WALLCLIMBING)){
                         $player->setGenericFlag(Entity::DATA_FLAG_WALLCLIMBING, false);
