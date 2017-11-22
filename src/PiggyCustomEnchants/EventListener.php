@@ -753,61 +753,6 @@ class EventListener implements Listener
     {
         if ($entity instanceof Player) {
             $random = new Random();
-            if ($event instanceof EntityArmorChangeEvent) {
-                $olditem = $event->getOldItem();
-                $newitem = $event->getNewItem();
-                $slot = $event->getSlot();
-                $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::OBSIDIANSHIELD);
-                if ($enchantment !== null) {
-                    $effect = Effect::getEffect(Effect::FIRE_RESISTANCE);
-                    $effect->setAmplifier(0);
-                    $effect->setDuration(2147483647); //Effect wont show up for PHP_INT_MAX or it's value for 64 bit (I'm on 64 bit system), highest value i can use
-                    $effect->setVisible(false);
-                    $entity->addEffect($effect);
-                }
-                $enchantment = $this->plugin->getEnchantment($olditem, CustomEnchants::OBSIDIANSHIELD);
-                if ($enchantment !== null) {
-                    $entity->removeEffect(Effect::FIRE_RESISTANCE);
-                }
-                $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::OVERLOAD);
-                if($enchantment !== null){
-                    $entity->setMaxHealth($entity->getMaxHealth() + (2 * $enchantment->getLevel()));
-                    $entity->setHealth($entity->getHealth() + (2 * $enchantment->getLevel()) < $entity->getMaxHealth() ? $entity->getHealth() + (2 * $enchantment->getLevel()) : $entity->getMaxHealth());
-                }
-                $enchantment = $this->plugin->getEnchantment($olditem, CustomEnchants::OVERLOAD);
-                if($enchantment !== null){
-                    $entity->setMaxHealth($entity->getMaxHealth() - (2 * $enchantment->getLevel()));
-                    $entity->setHealth($entity->getHealth() - (2 * $enchantment->getLevel()) < $entity->getMaxHealth() ? ($entity->getHealth() - (2 * $enchantment->getLevel()) <= 0 ? 1 : $entity->getHealth() - (2 * $enchantment->getLevel())) : $entity->getMaxHealth());
-                }
-                if ($slot == $entity->getInventory()->getSize() + 3) { //Boot slot
-                    $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::GEARS);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::SPEED);
-                        $effect->setAmplifier(0);
-                        $effect->setDuration(2147483647); //Effect wont show up for PHP_INT_MAX or it's value for 64 bit (I'm on 64 bit system), highest value i can use
-                        $effect->setVisible(false);
-                        $entity->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($olditem, CustomEnchants::GEARS);
-                    if ($enchantment !== null) {
-                        $entity->removeEffect(Effect::SPEED);
-                    }
-                }
-                if ($slot == $entity->getInventory()->getSize()) { //Helmet slot
-                    $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::GLOWING);
-                    if ($enchantment !== null) {
-                        $effect = Effect::getEffect(Effect::NIGHT_VISION);
-                        $effect->setAmplifier(0);
-                        $effect->setDuration(2147483647); //Effect wont show up for PHP_INT_MAX or it's value for 64 bit (I'm on 64 bit system), highest value i can use
-                        $effect->setVisible(false);
-                        $entity->addEffect($effect);
-                    }
-                    $enchantment = $this->plugin->getEnchantment($olditem, CustomEnchants::GLOWING);
-                    if ($enchantment !== null) {
-                        $entity->removeEffect(Effect::NIGHT_VISION);
-                    }
-                }
-            }
             if ($event instanceof EntityDamageEvent) {
                 $damage = $event->getDamage();
                 $cause = $event->getCause();

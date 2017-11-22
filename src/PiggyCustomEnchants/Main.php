@@ -10,7 +10,7 @@ use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\ChickenTask;
 use PiggyCustomEnchants\Tasks\ForcefieldTask;
-use PiggyCustomEnchants\Tasks\HasteTask;
+use PiggyCustomEnchants\Tasks\EffectTask;
 use PiggyCustomEnchants\Tasks\JetpackTask;
 use PiggyCustomEnchants\Tasks\MeditationTask;
 use PiggyCustomEnchants\Tasks\ParachuteTask;
@@ -103,6 +103,7 @@ class Main extends PluginBase
     public $meditationTick;
     public $mined;
     public $nofall;
+    public $overload;
     public $prowl;
     public $shrunk;
 
@@ -195,7 +196,7 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ForcefieldTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new HasteTask($this), 5);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new EffectTask($this), 5);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 3.9);
