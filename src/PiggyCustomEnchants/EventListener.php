@@ -769,6 +769,16 @@ class EventListener implements Listener
                 if ($enchantment !== null) {
                     $entity->removeEffect(Effect::FIRE_RESISTANCE);
                 }
+                $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::OVERLOAD);
+                if($enchantment !== null){
+                    $entity->setMaxHealth($entity->getMaxHealth() + (2 * $enchantment->getLevel()));
+                    $entity->setHealth($entity->getHealth() + (2 * $enchantment->getLevel()) < $entity->getMaxHealth() ? $entity->getHealth() + (2 * $enchantment->getLevel()) : $entity->getMaxHealth());
+                }
+                $enchantment = $this->plugin->getEnchantment($olditem, CustomEnchants::OVERLOAD);
+                if($enchantment !== null){
+                    $entity->setMaxHealth($entity->getMaxHealth() - (2 * $enchantment->getLevel()));
+                    $entity->setHealth($entity->getHealth() - (2 * $enchantment->getLevel()) < $entity->getMaxHealth() ? ($entity->getHealth() - (2 * $enchantment->getLevel()) <= 0 ? 1 : $entity->getHealth() - (2 * $enchantment->getLevel())) : $entity->getMaxHealth());
+                }
                 if ($slot == $entity->getInventory()->getSize() + 3) { //Boot slot
                     $enchantment = $this->plugin->getEnchantment($newitem, CustomEnchants::GEARS);
                     if ($enchantment !== null) {

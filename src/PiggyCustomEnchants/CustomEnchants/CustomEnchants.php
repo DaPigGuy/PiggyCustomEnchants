@@ -81,6 +81,7 @@ class CustomEnchants extends Enchantment
     const CACTUS = 416;
     const ANTIKNOCKBACK = 417;
     const FORCEFIELD = 418;
+    const OVERLOAD = 419;
 
     //HELMET
     const IMPLANTS = 600;
