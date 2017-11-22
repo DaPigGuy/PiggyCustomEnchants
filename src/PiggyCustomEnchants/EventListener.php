@@ -253,10 +253,10 @@ class EventListener implements Listener
         if ($packet instanceof PlayerActionPacket) {
             $action = $packet->action;
             switch ($action) {
-                case 8:
+                case PlayerActionPacket::ACTION_JUMP:
                     $this->checkArmorEnchants($player, $event);
                     break;
-                case 18:
+                case PlayerActionPacket::ACTION_CONTINUE_BREAK:
                     $this->plugin->blockface[strtolower($player->getName())] = $packet->face;
                     break;
             }
