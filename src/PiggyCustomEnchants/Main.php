@@ -89,18 +89,20 @@ class Main extends PluginBase
     public $growremaining;
     public $jetpackDisabled;
     public $shrinkremaining;
-
-    public $blockface;
-    public $breaking;
-    public $chickenTick;
-    public $grew;
-    public $flying;
     public $flyremaining;
+
+    public $chickenTick;
     public $forcefieldParticleTick;
-    public $hallucination;
-    public $implants;
     public $jetpackChargeTick;
     public $meditationTick;
+
+    public $blockface;
+
+    public $breaking;
+    public $grew;
+    public $flying;
+    public $hallucination;
+    public $implants;
     public $mined;
     public $nofall;
     public $overload;

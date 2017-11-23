@@ -30,6 +30,7 @@ use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerMoveEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\item\Item;
@@ -211,6 +212,48 @@ class EventListener implements Listener
         return true;
     }
 
+    public function onQuit(PlayerQuitEvent $event)
+    {
+        $player = $event->getPlayer();
+        $name = strtolower($player->getName());
+        if (isset($this->plugin->blockface[$name])) {
+            unset($this->plugin->blockface[$name]);
+        }
+        if (isset($this->plugin->breaking[$name])) {
+            unset($this->plugin->breaking[$name]);
+        }
+        if (isset($this->plugin->grew[$name])) {
+            unset($this->plugin->grew[$name]);
+        }
+        if (isset($this->plugin->flying[$name])) {
+            unset($this->plugin->flying[$name]);
+        }
+        if (isset($this->plugin->hallucination[$name])) {
+            unset($this->plugin->hallucination[$name]);
+        }
+        if (isset($this->plugin->implants[$name])) {
+            unset($this->plugin->implants[$name]);
+        }
+        if (isset($this->plugin->mined[$name])) {
+            unset($this->plugin->mined[$name]);
+        }
+        if (isset($this->plugin->nofall[$name])) {
+            unset($this->plugin->nofall[$name]);
+        }
+        for($i = 0; $i <= 3; $i++){
+            echo $i;
+            if (isset($this->plugin->overload[$name . "||" . $i])) {
+                unset($this->plugin->overload[$name . "||" . $i]);
+            }
+        }
+        if (isset($this->plugin->prowl[$name])) {
+            unset($this->plugin->prowl[$name]);
+        }
+        if (isset($this->plugin->shrunk[$name])) {
+            unset($this->plugin->shrunk[$name]);
+        }
+    }
+
     /**
      * @param PlayerToggleSneakEvent $event
      *
@@ -384,8 +427,8 @@ class EventListener implements Listener
                 $chance = 15 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
                 if ($random <= $chance) {
-                    foreach ($damager->getEffects() as $effect){
-                        if($effect->isBad()){
+                    foreach ($damager->getEffects() as $effect) {
+                        if ($effect->isBad()) {
                             $damager->removeEffect($effect->getId());
                         }
                     }
