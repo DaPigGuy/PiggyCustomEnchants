@@ -241,7 +241,6 @@ class EventListener implements Listener
             unset($this->plugin->nofall[$name]);
         }
         for($i = 0; $i <= 3; $i++){
-            echo $i;
             if (isset($this->plugin->overload[$name . "||" . $i])) {
                 unset($this->plugin->overload[$name . "||" . $i]);
             }
