@@ -379,6 +379,18 @@ class EventListener implements Listener
                     $task->setHandler($handler);
                 }
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLESSED);
+            if ($enchantment !== null) {
+                $chance = 15 * $enchantment->getLevel();
+                $random = mt_rand(0, 100);
+                if ($random <= $chance) {
+                    foreach ($damager->getEffects() as $effect){
+                        if($effect->isBad()){
+                            $damager->removeEffect($effect->getId());
+                        }
+                    }
+                }
+            }
         }
         if ($event instanceof PlayerDeathEvent) {
             $drops = $event->getDrops();
