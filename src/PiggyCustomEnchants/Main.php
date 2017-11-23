@@ -99,6 +99,7 @@ class Main extends PluginBase
     public $blockface;
 
     public $breaking;
+    public $glowing;
     public $grew;
     public $flying;
     public $hallucination;

@@ -222,6 +222,9 @@ class EventListener implements Listener
         if (isset($this->plugin->breaking[$name])) {
             unset($this->plugin->breaking[$name]);
         }
+        if (isset($this->plugin->glowing[$name])) {
+            unset($this->plugin->glowing[$name]);
+        }
         if (isset($this->plugin->grew[$name])) {
             unset($this->plugin->grew[$name]);
         }

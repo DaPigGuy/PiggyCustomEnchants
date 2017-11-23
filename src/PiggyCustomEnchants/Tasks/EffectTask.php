@@ -43,9 +43,15 @@ class EffectTask extends PluginTask
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::NIGHT_VISION);
                 $effect->setAmplifier(0);
-                $effect->setDuration(10);
+                $effect->setDuration(220);
                 $effect->setVisible(false);
                 $player->addEffect($effect);
+                $this->plugin->glowing[strtolower($player->getName())] = true;
+            }else{
+                if(isset($this->plugin->glowing[strtolower($player->getName())])){
+                    $player->removeEffect(Effect::NIGHT_VISION);
+                    unset($this->plugin->glowing[strtolower($player->getName())]);
+                }
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getBoots(), CustomEnchants::GEARS);
             if ($enchantment !== null) {
