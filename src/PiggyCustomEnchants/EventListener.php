@@ -25,6 +25,7 @@ use pocketmine\event\entity\EntityEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Event;
+use pocketmine\event\inventory\InventoryPickupArrowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -139,6 +140,20 @@ class EventListener implements Listener
         }
     }
 
+    /***
+     * @param InventoryPickupArrowEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onPickupArrow(InventoryPickupArrowEvent $event)
+    {
+        $arrow = $event->getArrow();
+        if ($arrow->namedtag->hasTag("Volley")) {
+            $event->setCancelled();
+        }
+    }
+
     /**
      * @param PlayerDeathEvent $event
      *
@@ -243,7 +258,7 @@ class EventListener implements Listener
         if (isset($this->plugin->nofall[$name])) {
             unset($this->plugin->nofall[$name]);
         }
-        for($i = 0; $i <= 3; $i++){
+        for ($i = 0; $i <= 3; $i++) {
             if (isset($this->plugin->overload[$name . "||" . $i])) {
                 unset($this->plugin->overload[$name . "||" . $i]);
             }
@@ -748,6 +763,7 @@ class EventListener implements Listener
                     $projectile = null;
                     if ($entity instanceof Arrow) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
+                        $nbt->setTag(new ByteTag("Volley", 1));
                         $projectile = Entity::createEntity("Arrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical());
                     }
                     if ($entity instanceof Fireball) {
@@ -759,7 +775,9 @@ class EventListener implements Listener
                         $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, $entity->getPorkLevel());
                     }
                     $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->multiply($event->getForce())->length()));
-                    $projectile->setOnFire($entity->fireTicks * 20);
+                    if ($projectile->isOnFire()) {
+                        $projectile->setOnFire($entity->fireTicks * 20);
+                    }
                     $projectile->spawnToAll();
                 }
                 $entity->close();
