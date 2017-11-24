@@ -137,6 +137,7 @@ class Main extends PluginBase
         CustomEnchants::ENLIGHTED => ["Enlighted", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::ENRAGED => ["Enraged", "Chestplate", "Equip", "Rare", 5],
         CustomEnchants::EXPLOSIVE => ["Explosive", "Tools", "Break", "Rare", 5],
+        CustomEnchants::FARMER => ["Farmer", "Hoe", "Break", "Uncommon", 1],
         CustomEnchants::FERTILIZER => ["Fertilizer", "Hoe", "Interact", "Uncommon", 3],
         CustomEnchants::FORCEFIELD => ["Forcefield", "Armor", "Equip", "Mythic", 1],
         CustomEnchants::FROZEN => ["Frozen", "Armor", "Damaged", "Rare", 5],

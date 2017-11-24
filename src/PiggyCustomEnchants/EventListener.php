@@ -10,6 +10,7 @@ use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
 use PiggyCustomEnchants\Tasks\ImplantsTask;
 use PiggyCustomEnchants\Tasks\MoltenTask;
+use PiggyCustomEnchants\Tasks\PlaceTask;
 use pocketmine\block\Block;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\Effect;
@@ -658,6 +659,29 @@ class EventListener implements Listener
                     $player->getInventory()->addItem($drop);
                 }
                 $event->setDrops([]);
+            }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::FARMER);
+            if ($enchantment !== null) {
+                $seed = null;
+                switch ($block->getId()) {
+                    case Block::WHEAT_BLOCK:
+                        $seed = Item::SEEDS;
+                        break;
+                    case Block::POTATO_BLOCK:
+                        $seed = Item::POTATO;
+                        break;
+                    case Block::CARROT_BLOCK:
+                        $seed = Item::CARROT;
+                        break;
+                    case Block::BEETROOT_BLOCK:
+                        $seed = Item::BEETROOT_SEEDS;
+                        break;
+                }
+                if ($seed !== null) {
+                    $seed = Item::get($seed, 0, 1);
+                    $pos = $block->subtract(0, 1);
+                    $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new PlaceTask($this->plugin, $pos, $block->getLevel(), $seed, $player), 1);
+                }
             }
         }
         if ($event instanceof PlayerInteractEvent) {
