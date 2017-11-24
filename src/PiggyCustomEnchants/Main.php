@@ -686,6 +686,7 @@ class Main extends PluginBase
                     case Item::IRON_CHESTPLATE:
                     case Item::GOLD_CHESTPLATE:
                     case Item::DIAMOND_CHESTPLATE:
+                    case Item::ELYTRA:
                         return true;
                 }
                 break;
