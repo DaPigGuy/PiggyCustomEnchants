@@ -95,6 +95,7 @@ class CustomEnchants extends Enchantment
     const CHICKEN = 801;
     const PROWL = 802;
     const SPIDER = 803;
+    const ENRAGED = 804;
 
     //BOOTS
     const GEARS = 500;

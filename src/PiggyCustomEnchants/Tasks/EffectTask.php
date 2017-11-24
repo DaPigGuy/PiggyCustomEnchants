@@ -53,6 +53,14 @@ class EffectTask extends PluginTask
                     unset($this->plugin->glowing[strtolower($player->getName())]);
                 }
             }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::ENRAGED);
+            if ($enchantment !== null) {
+                $effect = Effect::getEffect(Effect::STRENGTH);
+                $effect->setAmplifier($enchantment->getLevel() - 1);
+                $effect->setDuration(10);
+                $effect->setVisible(false);
+                $player->addEffect($effect);
+            }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getBoots(), CustomEnchants::GEARS);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::SPEED);
