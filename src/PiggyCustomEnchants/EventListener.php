@@ -16,7 +16,6 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\block\BlockEvent;
 use pocketmine\event\entity\EntityArmorChangeEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -29,6 +28,7 @@ use pocketmine\event\inventory\InventoryPickupArrowEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -36,6 +36,7 @@ use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
+use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
 use pocketmine\nbt\tag\CompoundTag;
@@ -183,6 +184,18 @@ class EventListener implements Listener
     }
 
     /**
+     * @param PlayerInteractEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onInteract(PlayerInteractEvent $event)
+    {
+        $player = $event->getPlayer();
+        $this->checkToolEnchants($player, $event);
+    }
+
+    /**
      * Disable kicking for flying when using jetpacks
      *
      * @param PlayerKickEvent $event
@@ -227,6 +240,9 @@ class EventListener implements Listener
         return true;
     }
 
+    /**
+     * @param PlayerQuitEvent $event
+     */
     public function onQuit(PlayerQuitEvent $event)
     {
         $player = $event->getPlayer();
@@ -502,9 +518,9 @@ class EventListener implements Listener
 
     /**
      * @param Player $player
-     * @param BlockEvent $event
+     * @param Event $event
      */
-    public function checkToolEnchants(Player $player, BlockEvent $event)
+    public function checkToolEnchants(Player $player, Event $event)
     {
         if ($event instanceof BlockBreakEvent) {
             $block = $event->getBlock();
@@ -642,6 +658,23 @@ class EventListener implements Listener
                     $player->getInventory()->addItem($drop);
                 }
                 $event->setDrops([]);
+            }
+        }
+        if ($event instanceof PlayerInteractEvent) {
+            $block = $event->getBlock();
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::FERTILIZER);
+            if ($enchantment !== null) {
+                if ($this->plugin->checkBlocks($block, [Block::DIRT, Block::GRASS])) {
+                    $radius = $enchantment->getLevel();
+                    for ($x = -$radius; $x <= $radius; $x++) {
+                        for ($z = -$radius; $z <= $radius; $z++) {
+                            $pos = $block->add($x, 0, $z);
+                            if ($this->plugin->checkBlocks(Position::fromObject($pos, $block->getLevel()), [Block::DIRT, Block::GRASS])) {
+                                $block->getLevel()->setBlock($pos, Block::get(Block::FARMLAND));
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -815,6 +848,7 @@ class EventListener implements Listener
                 for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
                     $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
                     $tnt->spawnToAll();
+                    $entity->close();
                 }
             }
         }
@@ -1001,12 +1035,12 @@ class EventListener implements Listener
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::MAGMAWALKER);
                 if ($enchantment !== null) {
                     $block = $entity->getLevel()->getBlock($entity);
-                    if (!$this->plugin->checkBlocks($block, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA], 0)) {
+                    if (!$this->plugin->checkBlocks($block, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA])) {
                         $radius = $enchantment->getLevel() + 2;
                         for ($x = -$radius; $x <= $radius; $x++) {
                             for ($z = -$radius; $z <= $radius; $z++) {
                                 $b = $entity->getLevel()->getBlock($entity->add($x, -1, $z));
-                                if ($this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA], 0)) {
+                                if ($this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA])) {
                                     if ($this->plugin->checkBlocks($b, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA], -1) !== true) {
                                         if (!($b->getId() == Block::FLOWING_LAVA && $b->getDamage() > 0)) { //In vanilla, Frostwalker doesn't change non source blocks to ice
                                             $block = Block::get(Block::OBSIDIAN, 15);

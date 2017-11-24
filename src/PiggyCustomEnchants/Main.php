@@ -162,6 +162,7 @@ class Main extends PluginBase
         CustomEnchants::PARACHUTE => ["Parachute", "Chestplate", "Equip", "Uncommon", 1],
         CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5],
         CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5],
+        CustomEnchants::FERTILIZER => ["Fertilizer", "Hoe", "Interact", "Uncommon", 3],
         CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5],
         CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3],
@@ -287,6 +288,12 @@ class Main extends PluginBase
                 break;
             case "Axe":
                 $slot = CustomEnchants::SLOT_AXE;
+                break;
+            case "Shovel":
+                $slot = CustomEnchants::SLOT_SHOVEL;
+                break;
+            case "Hoe":
+                $slot = CustomEnchants::SLOT_HOE;
                 break;
             case "Armor":
                 $slot = CustomEnchants::SLOT_ARMOR;
@@ -646,6 +653,16 @@ class Main extends PluginBase
                     return true;
                 }
                 break;
+            case "Shovel":
+                if ($item->isShovel()) {
+                    return true;
+                }
+                break;
+            case "Hoe":
+                if ($item->isHoe()) {
+                    return true;
+                }
+                break;
             case "Armor":
                 if ($item instanceof Armor) {
                     return true;
@@ -709,7 +726,7 @@ class Main extends PluginBase
      * @return bool
      * @internal param $id
      */
-    public function checkBlocks(Position $pos, $ids, $deep)
+    public function checkBlocks(Position $pos, $ids, $deep = 0)
     {
         if (!is_array($ids)) {
             $ids = [$ids];
