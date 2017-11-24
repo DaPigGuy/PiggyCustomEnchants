@@ -47,8 +47,8 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
                 $this->plugin->glowing[strtolower($player->getName())] = true;
-            }else{
-                if(isset($this->plugin->glowing[strtolower($player->getName())])){
+            } else {
+                if (isset($this->plugin->glowing[strtolower($player->getName())])) {
                     $player->removeEffect(Effect::NIGHT_VISION);
                     unset($this->plugin->glowing[strtolower($player->getName())]);
                 }
@@ -89,7 +89,9 @@ class EffectTask extends PluginTask
                     if (isset($this->plugin->overload[strtolower($player->getName()) . "||" . $slot])) {
                         $level = $this->plugin->overload[strtolower($player->getName()) . "||" . $slot];
                         $player->setMaxHealth($player->getMaxHealth() - (2 * $level));
-                        $player->setHealth($player->getHealth() - (2 * $level) < $player->getMaxHealth() ? ($player->getHealth() - (2 * $level) <= 0 ? 1 : $player->getHealth() - (2 * $level)) : $player->getMaxHealth());
+                        if ($player->isAlive()) {
+                            $player->setHealth($player->getHealth() - (2 * $level) < $player->getMaxHealth() ? ($player->getHealth() - (2 * $level) <= 0 ? 1 : $player->getHealth() - (2 * $level)) : $player->getMaxHealth());
+                        }
                         unset($this->plugin->overload[strtolower($player->getName()) . "||" . $slot]);
                     }
                 }
