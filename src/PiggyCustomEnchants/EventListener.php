@@ -250,9 +250,6 @@ class EventListener implements Listener
         if (isset($this->plugin->blockface[$name])) {
             unset($this->plugin->blockface[$name]);
         }
-        if (isset($this->plugin->breaking[$name])) {
-            unset($this->plugin->breaking[$name]);
-        }
         if (isset($this->plugin->glowing[$name])) {
             unset($this->plugin->glowing[$name]);
         }
@@ -281,6 +278,9 @@ class EventListener implements Listener
         }
         if (isset($this->plugin->prowl[$name])) {
             unset($this->plugin->prowl[$name]);
+        }
+        if (isset($this->plugin->using[$name])) {
+            unset($this->plugin->using[$name]);
         }
         if (isset($this->plugin->shrunk[$name])) {
             unset($this->plugin->shrunk[$name]);
@@ -535,7 +535,7 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 if ($player->isSneaking()) {
                     if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
-                        if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
+                        if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
                             $this->plugin->mined[strtolower($player->getName())] = 0;
                             $this->breakTree($block, $player);
                         }
@@ -545,7 +545,7 @@ class EventListener implements Listener
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::DRILLER);
             if ($enchantment !== null) {
-                if (!isset($this->plugin->breaking[strtolower($player->getName())]) || $this->plugin->breaking[strtolower($player->getName())] < time()) {
+                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
                     if (isset($this->plugin->blockface[strtolower($player->getName())])) {
                         $side = $this->plugin->blockface[strtolower($player->getName())];
                         $sides = [];
@@ -571,7 +571,7 @@ class EventListener implements Listener
                         for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
                             $b = $block->getSide($side ^ 0x01, $i);
                             $combined = array_combine($sides, $sides2);
-                            $this->plugin->breaking[strtolower($player->getName())] = time() + 1;
+                            $this->plugin->using[strtolower($player->getName())] = time() + 1;
                             $player->getLevel()->useBreakOn($b, $item, $player);
                             foreach ($sides as $s) {
                                 $b2 = $b->getSide($s, 1);
@@ -664,13 +664,17 @@ class EventListener implements Listener
             $block = $event->getBlock();
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::FERTILIZER);
             if ($enchantment !== null) {
-                if ($this->plugin->checkBlocks($block, [Block::DIRT, Block::GRASS])) {
-                    $radius = $enchantment->getLevel();
-                    for ($x = -$radius; $x <= $radius; $x++) {
-                        for ($z = -$radius; $z <= $radius; $z++) {
-                            $pos = $block->add($x, 0, $z);
-                            if ($this->plugin->checkBlocks(Position::fromObject($pos, $block->getLevel()), [Block::DIRT, Block::GRASS])) {
-                                $block->getLevel()->setBlock($pos, Block::get(Block::FARMLAND));
+                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
+                    if ($this->plugin->checkBlocks($block, [Block::DIRT, Block::GRASS])) {
+                        $radius = $enchantment->getLevel();
+                        for ($x = -$radius; $x <= $radius; $x++) {
+                            for ($z = -$radius; $z <= $radius; $z++) {
+                                $pos = $block->add($x, 0, $z);
+                                if ($this->plugin->checkBlocks(Position::fromObject($pos, $block->getLevel()), [Block::DIRT, Block::GRASS])) {
+                                    $this->plugin->using[strtolower($player->getName())] = time() + 1;
+                                    $item = $player->getInventory()->getItemInHand();
+                                    $block->getLevel()->useItemOn($pos, $item, 0, $pos, $player);
+                                }
                             }
                         }
                     }
@@ -1190,7 +1194,7 @@ class EventListener implements Listener
             if ($this->plugin->mined[strtolower($player->getName())] > 800) {
                 break;
             }
-            $this->plugin->breaking[strtolower($player->getName())] = time() + 1;
+            $this->plugin->using[strtolower($player->getName())] = time() + 1;
             $side = $block->getSide($i);
             if ($oldblock !== null) {
                 if ($side->equals($oldblock)) {

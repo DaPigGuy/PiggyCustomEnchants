@@ -98,7 +98,6 @@ class Main extends PluginBase
 
     public $blockface;
 
-    public $breaking;
     public $glowing;
     public $grew;
     public $flying;
@@ -108,6 +107,7 @@ class Main extends PluginBase
     public $nofall;
     public $overload;
     public $prowl;
+    public $using;
     public $shrunk;
 
 
