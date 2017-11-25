@@ -12,6 +12,7 @@ use PiggyCustomEnchants\Tasks\ImplantsTask;
 use PiggyCustomEnchants\Tasks\MoltenTask;
 use PiggyCustomEnchants\Tasks\PlaceTask;
 use pocketmine\block\Block;
+use pocketmine\block\Crops;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
@@ -681,6 +682,24 @@ class EventListener implements Listener
                     $seed = Item::get($seed, 0, 1);
                     $pos = $block->subtract(0, 1);
                     $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new PlaceTask($this->plugin, $pos, $block->getLevel(), $seed, $player), 1);
+                }
+            }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::HARVEST);
+            if ($enchantment !== null) {
+                $radius = $enchantment->getLevel();
+                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
+                    if ($block instanceof Crops) {
+                        for ($x = -$radius; $x <= $radius; $x++) {
+                            for ($z = -$radius; $z <= $radius; $z++) {
+                                $pos = $block->add($x, 0, $z);
+                                if ($block->getLevel()->getBlock($pos) instanceof Crops) {
+                                    $this->plugin->using[strtolower($player->getName())] = time() + 1;
+                                    $item = $player->getInventory()->getItemInHand();
+                                    $block->getLevel()->useBreakOn($pos, $item, $player);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

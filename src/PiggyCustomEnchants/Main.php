@@ -149,6 +149,7 @@ class Main extends PluginBase
         CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5],
         CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "Uncommon", 5],
         CustomEnchants::HASTE => ["Haste", "Tools", "Held", "Uncommon", 5],
+        CustomEnchants::HARVEST => ["Harvest", "Hoe", "Break", "Uncommon", 3],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
         CustomEnchants::IMPLANTS => ["Implants", "Helmets", "Move", "Rare", 5],

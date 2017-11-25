@@ -45,6 +45,7 @@ class CustomEnchants extends Enchantment
     const HASTE = 207;
     const FERTILIZER = 208;
     const FARMER = 209;
+    const HARVEST = 210;
 
     //BOWS
     /*const BOMBARDMENT = 300;
