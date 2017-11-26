@@ -40,6 +40,7 @@ class Main extends PluginBase
     const MAX_LEVEL = 0;
     const NOT_COMPATIBLE = 1;
     const NOT_COMPATIBLE_WITH_OTHER_ENCHANT = 2;
+    const MORE_THAN_ONE = 3;
 
     const ROMAN_CONVERSION_TABLE = [
         'M' => 1000,
@@ -451,6 +452,9 @@ class Main extends PluginBase
                 if ($result == self::MAX_LEVEL) {
                     $sender->sendMessage(TextFormat::RED . "The max level is " . $this->getEnchantMaxLevel($enchant) . ".");
                 }
+                if ($result == self::MORE_THAN_ONE) {
+                    $sender->sendMessage(TextFormat::RED . "You can only enchant one item at a time.");
+                }
             }
             continue;
         }
@@ -626,6 +630,9 @@ class Main extends PluginBase
         }
         if (($enchant->getId() == CustomEnchants::PORKIFIED && $this->getEnchantment($item, CustomEnchants::BLAZE) !== null) || ($enchant->getId() == CustomEnchants::BLAZE && $this->getEnchantment($item, CustomEnchants::PORKIFIED) !== null) || ($enchant->getId() == CustomEnchants::SHRINK && $this->getEnchantment($item, CustomEnchants::GROW)) || ($enchant->getId() == CustomEnchants::GROW && $this->getEnchantment($item, CustomEnchants::SHRINK))) {
             return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
+        }
+        if ($item->getCount() > 1) {
+            return self::MORE_THAN_ONE;
         }
         switch ($type) {
             case "Global":
