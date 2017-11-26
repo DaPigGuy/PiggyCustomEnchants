@@ -1,6 +1,6 @@
 name: PiggyCustomEnchants
 main: PiggyCustomEnchants\Main
-version: 1.0.6
+version: 1.0.7
 api: 3.0.0-ALPHA9
 load: POSTWORLD
 author: DaPigGuy
@@ -16,6 +16,19 @@ permissions:
           piggycustomenchants.command.ce:
             default: op
             description: "Use /customenchant"
+            children:
+              piggycustomenchants.command.ce.about:
+                default: true
+                description: "Use /customenchant about"
+              piggycustomenchants.command.ce.enchant:
+                default: op
+                description: "Use /customenchant enchant"
+              piggycustomenchants.command.ce.help:
+                default: true
+                description: "Use /customenchant help"
+              piggycustomenchants.command.ce.list:
+                default: true
+                description: "Use /customenchant list"
       piggycustomenchants.overridecheck:
         default: false
         description: "Override the check and enchant any item with any enchant"
