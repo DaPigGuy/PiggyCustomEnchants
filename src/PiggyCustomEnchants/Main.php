@@ -115,6 +115,7 @@ class Main extends PluginBase
         //id => ["name", "slot", "trigger", "rarity", maxlevel"]
         CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1],
         CustomEnchants::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5],
+        CustomEnchants::ARMORED => ["Armored", "Armor", "Damage", "Rare", 5],
         CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5],
         CustomEnchants::BERSERKER => ["Berserker", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::BLESSED => ["Blessed", "Weapons", "Damage", "Uncommon", 3],
@@ -152,6 +153,7 @@ class Main extends PluginBase
         CustomEnchants::HARVEST => ["Harvest", "Hoe", "Break", "Uncommon", 3],
         CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5],
         CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5],
+        CustomEnchants::HEAVY => ["Heavy", "Armor", "Damage", "Rare", 5],
         CustomEnchants::IMPLANTS => ["Implants", "Helmets", "Move", "Rare", 5],
         CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5],
@@ -182,6 +184,7 @@ class Main extends PluginBase
         CustomEnchants::SPIDER => ["Spider", "Chestplate", "Equip", "Rare", 1],
         CustomEnchants::SPRINGS => ["Springs", "Boots", "Equip", "Uncommon", 5],
         CustomEnchants::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5],
+        CustomEnchants::TANK => ["Tank", "Armor", "Damage", "Uncommon", 5],
         CustomEnchants::TELEPATHY => ["Telepathy", "Tools", "Break", "Rare", 1],
         CustomEnchants::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1],
         CustomEnchants::VOLLEY => ["Volley", "Bow", "Shoot", "Uncommon", 5],

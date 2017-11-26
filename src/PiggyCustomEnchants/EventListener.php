@@ -1075,6 +1075,26 @@ class EventListener implements Listener
                             $event->setKnockBack($event->getKnockBack() - ($event->getKnockBack() / $antikb));
                             $antikb--;
                         }
+                        if ($damager instanceof Player) {
+                            $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ARMORED);
+                            if ($enchantment !== null) {
+                                if ($damager->getInventory()->getItemInHand()->isSword()) {
+                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                }
+                            }
+                            $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::TANK);
+                            if ($enchantment !== null) {
+                                if ($damager->getInventory()->getItemInHand()->isAxe()) {
+                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                }
+                            }
+                            $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::HEAVY);
+                            if ($enchantment !== null) {
+                                if($damager->getInventory()->getItemInHand()->getId() == Item::BOW){
+                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -86,6 +86,9 @@ class CustomEnchants extends Enchantment
     const ANTIKNOCKBACK = 417;
     const FORCEFIELD = 418;
     const OVERLOAD = 419;
+    const ARMORED = 420;
+    const TANK = 421;
+    const HEAVY = 422;
 
     //HELMET
     const IMPLANTS = 600;
