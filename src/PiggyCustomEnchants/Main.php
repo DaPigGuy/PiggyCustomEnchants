@@ -165,6 +165,7 @@ class Main extends PluginBase
         CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5],
         CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5],
         CustomEnchants::OVERLOAD => ["Overload", "Armor", "Equip", "Mythic", 3],
+        CustomEnchants::OXYGENATE => ["Oxygenate", "Tools", "Break", "Uncommon", 1],
         CustomEnchants::PARACHUTE => ["Parachute", "Chestplate", "Equip", "Uncommon", 1],
         CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5],
         CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5],

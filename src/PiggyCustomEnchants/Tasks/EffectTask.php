@@ -39,6 +39,14 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::OXYGENATE);
+            if ($enchantment !== null) {
+                $effect = Effect::getEffect(Effect::WATER_BREATHING);
+                $effect->setAmplifier(0);
+                $effect->setDuration(10);
+                $effect->setVisible(false);
+                $player->addEffect($effect);
+            }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getHelmet(), CustomEnchants::GLOWING);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::NIGHT_VISION);

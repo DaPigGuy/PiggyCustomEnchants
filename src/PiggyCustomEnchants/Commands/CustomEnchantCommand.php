@@ -35,7 +35,7 @@ class CustomEnchantCommand extends PluginCommand
      * @param array $args
      * @return bool
      */
-    public function execute(CommandSender $sender, string $commandLabel, array $args) : bool
+    public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         if (!$this->testPermission($sender)) {
             return true;
@@ -47,22 +47,13 @@ class CustomEnchantCommand extends PluginCommand
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
             switch ($args[0]) {
-                case "list":
-                    $sorted = $plugin->sortEnchants();
-                    $list = "";
-                    foreach ($sorted as $type => $enchants) {
-                        $list .= "\n" . TextFormat::GREEN . TextFormat::BOLD . $type . "\n" . TextFormat::RESET;
-                        $list .= implode(", ", $enchants);
-                    }
-                    $sender->sendMessage($list);
-                    break;
                 case "enchant":
                     if (count($args) < 2) {
                         $sender->sendMessage(TextFormat::RED . "Usage: /customenchant enchant <enchant> [level] [player]");
                         return false;
                     }
                     $target = $sender;
-                    if (!isset($args[2])) {
+                    if (!isset($args[2]) || !is_numeric($args[2])) {
                         $args[2] = 1;
                     }
                     if (isset($args[3])) {
@@ -77,6 +68,15 @@ class CustomEnchantCommand extends PluginCommand
                         return false;
                     }
                     $target->getInventory()->setItemInHand($plugin->addEnchantment($target->getInventory()->getItemInHand(), $args[1], $args[2], $sender->hasPermission("piggycustomenchants.overridecheck") ? false : true, $sender));
+                    break;
+                case "list":
+                    $sorted = $plugin->sortEnchants();
+                    $list = "";
+                    foreach ($sorted as $type => $enchants) {
+                        $list .= "\n" . TextFormat::GREEN . TextFormat::BOLD . $type . "\n" . TextFormat::RESET;
+                        $list .= implode(", ", $enchants);
+                    }
+                    $sender->sendMessage($list);
                     break;
                 default:
                     $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <enchant|list>");
