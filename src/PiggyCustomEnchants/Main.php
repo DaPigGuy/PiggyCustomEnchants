@@ -18,6 +18,7 @@ use PiggyCustomEnchants\Tasks\ProwlTask;
 use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
 use PiggyCustomEnchants\Tasks\SpiderTask;
+use PiggyCustomEnchants\Tasks\VacuumTask;
 use pocketmine\block\BlockFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
@@ -188,6 +189,7 @@ class Main extends PluginBase
         CustomEnchants::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5],
         CustomEnchants::TANK => ["Tank", "Armor", "Damage", "Uncommon", 5],
         CustomEnchants::TELEPATHY => ["Telepathy", "Tools", "Break", "Rare", 1],
+        CustomEnchants::VACUUM => ["Vacuum", "Chestplate", "Equip", "Rare", 3],
         CustomEnchants::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1],
         CustomEnchants::VOLLEY => ["Volley", "Bow", "Shoot", "Uncommon", 5],
         CustomEnchants::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5]
@@ -207,16 +209,17 @@ class Main extends PluginBase
             BlockFactory::registerBlock(new PiggyObsidian(), true);
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ForcefieldTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new EffectTask($this), 5);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 3.9);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ProwlTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SpiderTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new VacuumTask($this), 1);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 
             $this->getLogger()->info(TextFormat::GREEN . "Enabled.");

@@ -102,6 +102,7 @@ class CustomEnchants extends Enchantment
     const PROWL = 802;
     const SPIDER = 803;
     const ENRAGED = 804;
+    const VACUUM = 805;
 
     //BOOTS
     const GEARS = 500;
