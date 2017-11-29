@@ -29,6 +29,9 @@ permissions:
               piggycustomenchants.command.ce.list:
                 default: true
                 description: "Use /customenchant list"
+              piggycustomenchants.command.ce.info:
+                default: true
+                description: "Use /customenchant info"
       piggycustomenchants.overridecheck:
         default: false
         description: "Override the check and enchant any item with any enchant"
