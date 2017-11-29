@@ -24,7 +24,7 @@ class CustomEnchantCommand extends PluginCommand
     {
         parent::__construct($name, $plugin);
         $this->setDescription("Enchant with custom enchants");
-        $this->setUsage("/customenchant <about|enchant|help|list>");
+        $this->setUsage("/customenchant <about|enchant|help|info|list>");
         $this->setAliases(["ce"]);
         $this->setPermission("piggycustomenchants.command.ce");
     }
@@ -38,7 +38,7 @@ class CustomEnchantCommand extends PluginCommand
     public function execute(CommandSender $sender, string $commandLabel, array $args): bool
     {
         if (count($args) < 1) {
-            $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|list>");
+            $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|info|list>");
             return false;
         }
         $plugin = $this->getPlugin();
@@ -86,7 +86,7 @@ class CustomEnchantCommand extends PluginCommand
                         $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
                         return false;
                     }
-                    $sender->sendMessage(TextFormat::GREEN . "---PiggyCE Help---\n" . TextFormat::RESET . "/ce about: Information about this plugin\n/ce enchant: Enchant an item\n/ce help: Show the help page\n/ce list: List of enchants");
+                    $sender->sendMessage(TextFormat::GREEN . "---PiggyCE Help---\n" . TextFormat::RESET . "/ce about: Information about this plugin\n/ce enchant: Enchant an item\n/ce help: Show the help page\n/ce list: List of enchants\n/ce info: Info About An Enchant");
                     break;
                 case "list":
                     if(!$sender->hasPermission("piggycustomenchants.command.ce.list")){
@@ -101,8 +101,23 @@ class CustomEnchantCommand extends PluginCommand
                     }
                     $sender->sendMessage($list);
                     break;
+                case "info":
+                    if(!$sender->hasPermission("piggycustomenchants.command.ce.info")){
+                        $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
+                        return false;
+                    }
+                    if (count($args) < 2) {
+                        $sender->sendMessage(TextFormat::RED . "Usage: /customenchant info <enchant>");
+                        return false;
+                    }
+                    switch($args[1]){
+                   	    case "antiknockback":
+                            $sender->sendMessage(TextFormat::GREEN . "AntiKnockBack\n" . TextFormat::WHITE . "Description: Reduces knockback by 25% per armor piece\nType: Armor\nMax Level: 1\nRarity: Rare");
+                        break;
+                    } 
+                    break;
                 default:
-                    $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|list>");
+                    $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|info|list>");
                     break;
             }
             return true;
