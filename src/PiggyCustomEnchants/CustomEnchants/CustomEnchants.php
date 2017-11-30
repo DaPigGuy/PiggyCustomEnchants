@@ -145,7 +145,7 @@ class CustomEnchants extends Enchantment
      * @param $name
      * @return null|CustomEnchants
      */
-    public static function getEnchantByName(string $name)
+    public static function getEnchantmentByName(string $name)
     {
         if (defined(CustomEnchants::class . "::" . strtoupper($name))) {
             return self::getEnchantment(constant(CustomEnchants::class . "::" . strtoupper($name)));

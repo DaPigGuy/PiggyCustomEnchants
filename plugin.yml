@@ -26,6 +26,9 @@ permissions:
               piggycustomenchants.command.ce.help:
                 default: true
                 description: "Use /customenchant help"
+              piggycustomenchants.command.ce.info:
+                default: true
+                description: "Use /customenchant info"
               piggycustomenchants.command.ce.list:
                 default: true
                 description: "Use /customenchant list"

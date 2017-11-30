@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Kevin
- * Date: 11/24/2017
- * Time: 1:23 PM
- */
 
 namespace PiggyCustomEnchants\Tasks;
 
