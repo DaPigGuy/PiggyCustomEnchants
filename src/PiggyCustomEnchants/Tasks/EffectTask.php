@@ -65,7 +65,7 @@ class EffectTask extends PluginTask
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::STRENGTH);
                 $effect->setAmplifier($enchantment->getLevel() - 1);
-                $effect->setDuration(10);
+                $effect->setDuration(8);
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
