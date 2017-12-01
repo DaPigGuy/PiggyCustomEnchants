@@ -133,6 +133,7 @@ class Main extends PluginBase
         CustomEnchants::CURSED => ["Cursed", "Armor", "Damaged", "Uncommon", 5, "Gives wither to enemy when hit"],
         CustomEnchants::DEATHBRINGER => ["Deathbringer", "Weapons", "Damage", "Rare", 5, "Increases damage"],
         CustomEnchants::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 5, "Disarms enemy"],
+        CustomEnchants::DISARMOR => ["Disarmor", "Weapons", "Damage", "Uncommon", 5, "Disarmors enemy"],
         CustomEnchants::DRILLER => ["Driller", "Tools", "Break", "Uncommon", 5, "Breaks a 3 by 3 by 1 + level"],
         CustomEnchants::DRUNK => ["Drunk", "Armor", "Damaged", "Rare", 5, "Gives slowness, mining fatigue, and nausea to enemy when hit"],
         CustomEnchants::ENDERSHIFT => ["Endershift", "Armor", "Damaged", "Rare", 5, "Gives speed and extra health when low on health"],
@@ -387,7 +388,7 @@ class Main extends PluginBase
         }
         if (count($enchants) > count($levels)) {
             for ($i = 0; $i <= count($enchants) - count($levels); $i++) {
-                array_push($levels, 1);
+                $levels[] = 1;
             }
         }
         $combined = array_combine($enchants, $levels);

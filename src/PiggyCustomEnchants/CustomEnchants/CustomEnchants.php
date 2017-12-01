@@ -33,6 +33,7 @@ class CustomEnchants extends Enchantment
     const SOULBOUND = 118;
     const HALLUCINATION = 119;
     const BLESSED = 120;
+    const DISARMOR = 121;
 
     //TOOLS
     const EXPLOSIVE = 200; //Not accurate

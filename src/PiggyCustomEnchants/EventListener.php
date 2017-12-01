@@ -36,6 +36,7 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\Explosion;
 use pocketmine\level\Position;
@@ -469,6 +470,25 @@ class EventListener implements Listener
                     }
                 }
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMOR);
+            if ($enchantment !== null) {
+                if ($entity instanceof Player) {
+                    $chance = 10 * $enchantment->getLevel();
+                    $random = mt_rand(0, 100);
+                    if ($random <= $chance) {
+                        $armoredslots = [];
+                        for ($i = 0; $i <= 3; $i++) {
+                            if ($entity->getInventory()->getArmorItem($i) instanceof Armor) {
+                                $armoredslots[] = $i;
+                            }
+                        }
+                        $item = $entity->getInventory()->getArmorItem($armoredslots[array_rand($armoredslots)]);
+                        $entity->getInventory()->remove($item); //BasicInventory::removeItem() doesn't seem to work with armor slots
+                        $motion = $entity->getDirectionVector()->multiply(0.4);
+                        $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                    }
+                }
+            }
         }
         if ($event instanceof PlayerDeathEvent) {
             $drops = $event->getDrops();
@@ -597,42 +617,42 @@ class EventListener implements Listener
                 foreach ($drops as $drop) {
                     switch ($drop->getId()) {
                         case Item::COBBLESTONE:
-                            array_push($finaldrop, Item::get(Item::STONE, 0, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::STONE, 0, $drop->getCount());
                             break;
                         case Item::IRON_ORE:
-                            array_push($finaldrop, Item::get(Item::IRON_INGOT, 0, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::IRON_INGOT, 0, $drop->getCount());
                             break;
                         case Item::GOLD_ORE:
-                            array_push($finaldrop, Item::get(Item::GOLD_INGOT, 0, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::GOLD_INGOT, 0, $drop->getCount());
                             break;
                         case Item::SAND:
-                            array_push($finaldrop, Item::get(Item::GLASS, 0, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::GLASS, 0, $drop->getCount());
                             break;
                         case Item::CLAY:
-                            array_push($finaldrop, Item::get(Item::BRICK, 0, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::BRICK, 0, $drop->getCount());
                             break;
                         case Item::NETHERRACK:
-                            array_push($finaldrop, Item::get(Item::NETHER_BRICK, 0, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::NETHER_BRICK, 0, $drop->getCount());
                             break;
                         case Item::STONE_BRICK:
                             if ($drop->getDamage() == 0) {
-                                array_push($finaldrop, Item::get(Item::STONE_BRICK, 2, $drop->getCount()));
+                                $finaldrop[] = Item::get(Item::STONE_BRICK, 2, $drop->getCount());
                             }
                             break;
                         case Item::CACTUS:
-                            array_push($finaldrop, Item::get(Item::DYE, 2, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::DYE, 2, $drop->getCount());
                             break;
                         case Item::WOOD:
                         case Item::WOOD2:
-                            array_push($finaldrop, Item::get(Item::COAL, 1, $drop->getCount()));
+                            $finaldrop[] = Item::get(Item::COAL, 1, $drop->getCount());
                             break;
                         case Item::SPONGE:
                             if ($drop->getDamage() == 1) {
-                                array_push($finaldrop, Item::get(Item::SPONGE, 0, $drop->getCount()));
+                                $finaldrop[] = Item::get(Item::SPONGE, 0, $drop->getCount());
                             }
                             break;
                         default:
-                            array_push($otherdrops, $drop);
+                            $finaldrop[] = $drop;
                             break;
                     }
                 }
