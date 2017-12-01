@@ -13,9 +13,9 @@ use PiggyCustomEnchants\Tasks\MoltenTask;
 use PiggyCustomEnchants\Tasks\PlaceTask;
 use pocketmine\block\Block;
 use pocketmine\block\Crops;
-use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
+use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityArmorChangeEvent;
@@ -1090,7 +1090,7 @@ class EventListener implements Listener
                             }
                             $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::HEAVY);
                             if ($enchantment !== null) {
-                                if($damager->getInventory()->getItemInHand()->getId() == Item::BOW){
+                                if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) {
                                     $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
                                 }
                             }
