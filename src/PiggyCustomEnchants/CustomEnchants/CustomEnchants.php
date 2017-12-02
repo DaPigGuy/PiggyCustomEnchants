@@ -34,6 +34,7 @@ class CustomEnchants extends Enchantment
     const HALLUCINATION = 119;
     const BLESSED = 120;
     const DISARMOR = 121;
+    const BACKSTAB = 122;
 
     //TOOLS
     const EXPLOSIVE = 200; //Not accurate

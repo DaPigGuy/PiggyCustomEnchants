@@ -482,11 +482,19 @@ class EventListener implements Listener
                                 $armoredslots[] = $i;
                             }
                         }
-                        $item = $entity->getInventory()->getArmorItem($armoredslots[array_rand($armoredslots)]);
-                        $entity->getInventory()->remove($item); //BasicInventory::removeItem() doesn't seem to work with armor slots
-                        $motion = $entity->getDirectionVector()->multiply(0.4);
-                        $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                        if (count($armoredslots) > 0) {
+                            $item = $entity->getInventory()->getArmorItem($armoredslots[array_rand($armoredslots)]);
+                            $entity->getInventory()->remove($item); //BasicInventory::removeItem() doesn't seem to work with armor slots
+                            $motion = $entity->getDirectionVector()->multiply(0.4);
+                            $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                        }
                     }
+                }
+            }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BACKSTAB);
+            if ($enchantment !== null) {
+                if ($damager->getDirectionVector()->dot($entity->getDirectionVector()) > 0) {
+                    $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
             }
         }

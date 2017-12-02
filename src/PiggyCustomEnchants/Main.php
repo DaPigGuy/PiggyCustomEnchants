@@ -119,6 +119,7 @@ class Main extends PluginBase
         CustomEnchants::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5, "Increases damage in air"],
         CustomEnchants::ARMORED => ["Armored", "Armor", "Damage", "Rare", 5, "Decreases sword damage by 20l%"],
         CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5, "Automatically repairs items when moving"],
+        CustomEnchants::BACKSTAB => ["Backstab", "Weapons", "Damage", "Uncommon", 5, "When hitting from behind, you deal more damage."],
         CustomEnchants::BERSERKER => ["Berserker", "Armor", "Damaged", "Rare", 5, "Gives strength on low health"],
         CustomEnchants::BLESSED => ["Blessed", "Weapons", "Damage", "Uncommon", 3, "15l% (l = level) chance to remove bad effects"],
         CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1, "Shoots fireballs"],
