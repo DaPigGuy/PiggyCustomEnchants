@@ -24,9 +24,10 @@ class PiggyExplosion extends Explosion
      * @param null $what
      * @param Main $plugin
      */
-    public function __construct(Position $center, $size, $what = null, Main $plugin)
+    public function __construct(Position $center, $size, Player $what = null, Main $plugin)
     {
         $this->plugin = $plugin;
+        $this->what = $what;
         parent::__construct($center, $size, $what);
     }
 
@@ -35,15 +36,18 @@ class PiggyExplosion extends Explosion
      */
     public function explodeB(): bool
     {
+        $result = parent::explodeB();
         foreach ($this->affectedBlocks as $index => $block) {
-            if ($this->what instanceof Player) {
-                $ev = new BlockBreakEvent($this->what, $block, $this->what->getInventory()->getItemInHand());
-                $this->plugin->getServer()->getPluginManager()->callEvent($ev);
-                if($ev->isCancelled()){
-                    unset($this->affectedBlocks[$index]);
+            $ev = new BlockBreakEvent($this->what, $block, $this->what->getInventory()->getItemInHand());
+            $this->plugin->getServer()->getPluginManager()->callEvent($ev);
+            if ($ev->isCancelled()) {
+                unset($this->affectedBlocks[$index]);
+            } else {
+                foreach ($ev->getDrops() as $drop) {
+                    $this->level->dropItem($block->add(0.5, 0.5, 0.5), $drop);
                 }
             }
         }
-        return parent::explodeB();
+        return $result;
     }
 }

@@ -38,7 +38,6 @@ use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
-use pocketmine\level\Explosion;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
@@ -557,9 +556,12 @@ class EventListener implements Listener
             $drops = $event->getDrops();
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::EXPLOSIVE);
             if ($enchantment !== null) {
-                $explosion = new Explosion($block, $enchantment->getLevel() * 5, $player);
-                $explosion->explodeA();
-                $explosion->explodeB();
+                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
+                    $this->plugin->using[strtolower($player->getName())] = time() + 1;
+                    $explosion = new PiggyExplosion($block, $enchantment->getLevel() * 5, $player, $this->plugin);
+                    $explosion->explodeA();
+                    $explosion->explodeB();
+                }
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::LUMBERJACK);
             if ($enchantment !== null) {
