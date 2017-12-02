@@ -87,7 +87,7 @@ class HallucinationTask extends PluginTask
             }
         }
         if ($this->time >= 20 * 60) {
-            unset($this->plugin->hallucination[strtolower($this->player->getName())]);
+            unset($this->plugin->hallucination[$this->player->getLowerCaseName()]);
             $this->plugin->getServer()->getScheduler()->cancelTask($this->getHandler()->getTaskId());
         }
     }

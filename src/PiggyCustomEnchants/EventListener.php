@@ -22,6 +22,7 @@ use pocketmine\event\entity\EntityArmorChangeEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\event\entity\EntityEffectAddEvent;
 use pocketmine\event\entity\EntityEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
@@ -104,8 +105,8 @@ class EventListener implements Listener
         $entity = $event->getEntity();
         $cause = $event->getCause();
         $this->checkArmorEnchants($entity, $event);
-        if ($cause == EntityDamageEvent::CAUSE_FALL && $entity instanceof Player && (isset($this->plugin->nofall[strtolower($entity->getName())]) || isset($this->plugin->flying[strtolower($entity->getName())]))) {
-            unset($this->plugin->nofall[strtolower($entity->getName())]);
+        if ($cause == EntityDamageEvent::CAUSE_FALL && $entity instanceof Player && (isset($this->plugin->nofall[$entity->getLowerCaseName()]) || isset($this->plugin->flying[$entity->getLowerCaseName()]))) {
+            unset($this->plugin->nofall[$entity->getLowerCaseName()]);
             $event->setCancelled();
         }
         if ($event instanceof EntityDamageByChildEntityEvent) {
@@ -126,6 +127,20 @@ class EventListener implements Listener
             }
         }
         return true;
+    }
+
+    /**
+     * @param EntityEffectAddEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onEffect(EntityEffectAddEvent $event)
+    {
+        $entity = $event->getEntity();
+        if ($entity instanceof Player) {
+            $this->checkArmorEnchants($entity, $event);
+        }
     }
 
     /**
@@ -180,7 +195,7 @@ class EventListener implements Listener
     public function onIllegalMove(PlayerIllegalMoveEvent $event)
     {
         $player = $event->getPlayer();
-        if (isset($this->plugin->flying[strtolower($player->getName())]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
+        if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
             $event->setCancelled();
         }
     }
@@ -210,7 +225,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $reason = $event->getReason();
         if ($reason == "Flying is not enabled on this server") {
-            if (isset($this->plugin->flying[strtolower($player->getName())]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
+            if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
                 $event->setCancelled();
             }
         }
@@ -227,11 +242,11 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         $from = $event->getFrom();
-        if (isset($this->plugin->nofall[strtolower($player->getName())])) {
-            if ($this->plugin->checkBlocks($player, 0, 1) !== true && $this->plugin->nofall[strtolower($player->getName())] < time()) {
-                unset($this->plugin->nofall[strtolower($player->getName())]);
+        if (isset($this->plugin->nofall[$player->getLowerCaseName()])) {
+            if ($this->plugin->checkBlocks($player, 0, 1) !== true && $this->plugin->nofall[$player->getLowerCaseName()] < time()) {
+                unset($this->plugin->nofall[$player->getLowerCaseName()]);
             } else {
-                $this->plugin->nofall[strtolower($player->getName())]++;
+                $this->plugin->nofall[$player->getLowerCaseName()]++;
             }
         }
         if ($from->getFloorX() == $player->getFloorX() && $from->getFloorY() == $player->getFloorY() && $from->getFloorZ() == $player->getFloorZ()) {
@@ -248,7 +263,7 @@ class EventListener implements Listener
     public function onQuit(PlayerQuitEvent $event)
     {
         $player = $event->getPlayer();
-        $name = strtolower($player->getName());
+        $name = $player->getLowerCaseName();
         if (isset($this->plugin->blockface[$name])) {
             unset($this->plugin->blockface[$name]);
         }
@@ -335,7 +350,7 @@ class EventListener implements Listener
                     $this->checkArmorEnchants($player, $event);
                     break;
                 case PlayerActionPacket::ACTION_CONTINUE_BREAK:
-                    $this->plugin->blockface[strtolower($player->getName())] = $packet->face;
+                    $this->plugin->blockface[$player->getLowerCaseName()] = $packet->face;
                     break;
             }
         }
@@ -399,8 +414,8 @@ class EventListener implements Listener
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::VAMPIRE);
             if ($enchantment !== null) {
-                if (!isset($this->plugin->vampirecd[strtolower($damager->getName())]) || time() > $this->plugin->vampirecd[strtolower($damager->getName())]) {
-                    $this->plugin->vampirecd[strtolower($damager->getName())] = time() + 5;
+                if (!isset($this->plugin->vampirecd[$damager->getLowerCaseName()]) || time() > $this->plugin->vampirecd[$damager->getLowerCaseName()]) {
+                    $this->plugin->vampirecd[$damager->getLowerCaseName()] = time() + 5;
                     if ($damager->getHealth() + ($event->getDamage() / 2) <= $damager->getMaxHealth()) {
                         $damager->setHealth($damager->getHealth() + ($event->getDamage() / 2));
                     } else {
@@ -450,8 +465,8 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 $chance = 5 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
-                if ($random <= $chance && isset($this->plugin->hallucination[strtolower($entity->getName())]) !== true && $entity instanceof Player) {
-                    $this->plugin->hallucination[strtolower($entity->getName())] = true;
+                if ($random <= $chance && isset($this->plugin->hallucination[$entity->getLowerCaseName()]) !== true && $entity instanceof Player) {
+                    $this->plugin->hallucination[$entity->getLowerCaseName()] = true;
                     $task = new HallucinationTask($this->plugin, $entity, $entity->getPosition());
                     $handler = $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask($task, 1);
                     $task->setHandler($handler);
@@ -556,8 +571,8 @@ class EventListener implements Listener
             $drops = $event->getDrops();
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::EXPLOSIVE);
             if ($enchantment !== null) {
-                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
-                    $this->plugin->using[strtolower($player->getName())] = time() + 1;
+                if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
+                    $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
                     $explosion = new PiggyExplosion($block, $enchantment->getLevel() * 5, $player, $this->plugin);
                     $explosion->explodeA();
                     $explosion->explodeB();
@@ -567,8 +582,8 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 if ($player->isSneaking()) {
                     if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
-                        if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
-                            $this->plugin->mined[strtolower($player->getName())] = 0;
+                        if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
+                            $this->plugin->mined[$player->getLowerCaseName()] = 0;
                             $this->breakTree($block, $player);
                         }
                     }
@@ -577,9 +592,9 @@ class EventListener implements Listener
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::DRILLER);
             if ($enchantment !== null) {
-                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
-                    if (isset($this->plugin->blockface[strtolower($player->getName())])) {
-                        $side = $this->plugin->blockface[strtolower($player->getName())];
+                if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
+                    if (isset($this->plugin->blockface[$player->getLowerCaseName()])) {
+                        $side = $this->plugin->blockface[$player->getLowerCaseName()];
                         $sides = [];
                         $sides2 = [];
                         switch ($side) {
@@ -603,7 +618,7 @@ class EventListener implements Listener
                         for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
                             $b = $block->getSide($side ^ 0x01, $i);
                             $combined = array_combine($sides, $sides2);
-                            $this->plugin->using[strtolower($player->getName())] = time() + 1;
+                            $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
                             $player->getLevel()->useBreakOn($b, $item, $player);
                             foreach ($sides as $s) {
                                 $b2 = $b->getSide($s, 1);
@@ -615,7 +630,7 @@ class EventListener implements Listener
 
                             }
                         }
-                        unset($this->plugin->blockface[strtolower($player->getName())]);
+                        unset($this->plugin->blockface[$player->getLowerCaseName()]);
                     }
                 }
                 $event->setInstaBreak(true);
@@ -717,13 +732,13 @@ class EventListener implements Listener
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::HARVEST);
             if ($enchantment !== null) {
                 $radius = $enchantment->getLevel();
-                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
+                if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
                     if ($block instanceof Crops) {
                         for ($x = -$radius; $x <= $radius; $x++) {
                             for ($z = -$radius; $z <= $radius; $z++) {
                                 $pos = $block->add($x, 0, $z);
                                 if ($block->getLevel()->getBlock($pos) instanceof Crops) {
-                                    $this->plugin->using[strtolower($player->getName())] = time() + 1;
+                                    $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
                                     $item = $player->getInventory()->getItemInHand();
                                     $block->getLevel()->useBreakOn($pos, $item, $player);
                                 }
@@ -737,14 +752,14 @@ class EventListener implements Listener
             $block = $event->getBlock();
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::FERTILIZER);
             if ($enchantment !== null) {
-                if (!isset($this->plugin->using[strtolower($player->getName())]) || $this->plugin->using[strtolower($player->getName())] < time()) {
+                if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
                     if ($this->plugin->checkBlocks($block, [Block::DIRT, Block::GRASS])) {
                         $radius = $enchantment->getLevel();
                         for ($x = -$radius; $x <= $radius; $x++) {
                             for ($z = -$radius; $z <= $radius; $z++) {
                                 $pos = $block->add($x, 0, $z);
                                 if ($this->plugin->checkBlocks(Position::fromObject($pos, $block->getLevel()), [Block::DIRT, Block::GRASS])) {
-                                    $this->plugin->using[strtolower($player->getName())] = time() + 1;
+                                    $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
                                     $item = $player->getInventory()->getItemInHand();
                                     $block->getLevel()->useItemOn($pos, $item, 0, $pos, $player);
                                 }
@@ -812,10 +827,10 @@ class EventListener implements Listener
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BOUNTYHUNTER);
             if ($enchantment !== null) {
-                if (!isset($this->plugin->bountyhuntercd[strtolower($damager->getName())]) || time() > $this->plugin->bountyhuntercd[strtolower($damager->getName())]) {
+                if (!isset($this->plugin->bountyhuntercd[$damager->getLowerCaseName()]) || time() > $this->plugin->bountyhuntercd[$damager->getLowerCaseName()]) {
                     $bountydrop = $this->getBounty();
                     $damager->getInventory()->addItem(Item::get($bountydrop, 0, mt_rand(0, 8 + $enchantment->getLevel()) + 1));
-                    $this->plugin->bountyhuntercd[strtolower($damager->getName())] = time() + 30;
+                    $this->plugin->bountyhuntercd[$damager->getLowerCaseName()] = time() + 30;
                 }
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HEALING);
@@ -917,7 +932,7 @@ class EventListener implements Listener
                         $v->setComponents($v_x, $v_y, $v_z);
                         $damager->setMotion($v);
                     }
-                    $this->plugin->nofall[strtolower($damager->getName())] = time() + 1;
+                    $this->plugin->nofall[$damager->getLowerCaseName()] = time() + 1;
                 }
             }
             $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::MISSILE);
@@ -973,8 +988,8 @@ class EventListener implements Listener
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENDERSHIFT);
                     if ($enchantment !== null) {
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
-                            if (!isset($this->plugin->endershiftcd[strtolower($entity->getName())]) || time() > $this->plugin->endershiftcd[strtolower($entity->getName())]) {
-                                $this->plugin->endershiftcd[strtolower($entity->getName())] = time() + 300;
+                            if (!isset($this->plugin->endershiftcd[$entity->getLowerCaseName()]) || time() > $this->plugin->endershiftcd[$entity->getLowerCaseName()]) {
+                                $this->plugin->endershiftcd[$entity->getLowerCaseName()] = time() + 300;
                                 $effect = Effect::getEffect(Effect::SPEED);
                                 $effect->setAmplifier($enchantment->getLevel() + 3);
                                 $effect->setDuration(200 * $enchantment->getLevel());
@@ -992,8 +1007,8 @@ class EventListener implements Listener
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::BERSERKER);
                     if ($enchantment !== null) {
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
-                            if (!isset($this->plugin->berserkercd[strtolower($entity->getName())]) || time() > $this->plugin->berserkercd[strtolower($entity->getName())]) {
-                                $this->plugin->berserkercd[strtolower($entity->getName())] = time() + 300;
+                            if (!isset($this->plugin->berserkercd[$entity->getLowerCaseName()]) || time() > $this->plugin->berserkercd[$entity->getLowerCaseName()]) {
+                                $this->plugin->berserkercd[$entity->getLowerCaseName()] = time() + 300;
                                 $effect = Effect::getEffect(Effect::STRENGTH);
                                 $effect->setAmplifier(3 + $enchantment->getLevel());
                                 $effect->setDuration(200 * $enchantment->getLevel());
@@ -1090,8 +1105,8 @@ class EventListener implements Listener
                         }
                         $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CLOAKING);
                         if ($enchantment !== null) {
-                            if (!isset($this->plugin->cloakingcd[strtolower($entity->getName())]) || time() > $this->plugin->cloakingcd[strtolower($entity->getName())]) {
-                                $this->plugin->cloakingcd[strtolower($entity->getName())] = time() + 10;
+                            if (!isset($this->plugin->cloakingcd[$entity->getLowerCaseName()]) || time() > $this->plugin->cloakingcd[$entity->getLowerCaseName()]) {
+                                $this->plugin->cloakingcd[$entity->getLowerCaseName()] = time() + 10;
                                 $effect = Effect::getEffect(Effect::INVISIBILITY);
                                 $effect->setAmplifier(0);
                                 $effect->setDuration(60 * $enchantment->getLevel());
@@ -1128,6 +1143,23 @@ class EventListener implements Listener
                     }
                 }
             }
+            if ($event instanceof EntityEffectAddEvent) {
+                $effect = $event->getEffect();
+                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::FOCUSED);
+                if ($enchantment !== null) {
+                    if (!isset($this->plugin->using[$entity->getLowerCaseName()]) || $this->plugin->using[$entity->getLowerCaseName()] < time()) {
+                        if ($effect->getId() == Effect::NAUSEA) {
+                            if ($effect->getEffectLevel() - ($enchantment->getLevel() * 2) <= 0) {
+                                $event->setCancelled();
+                            } else {
+                                $event->setCancelled();
+                                $this->plugin->using[$entity->getLowerCaseName()] = time() + 1;
+                                $entity->addEffect($effect->setAmplifier($effect->getEffectLevel() - (1 + ($enchantment->getLevel() * 2))));
+                            }
+                        }
+                    }
+                }
+            }
             if ($event instanceof PlayerMoveEvent) {
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::MAGMAWALKER);
                 if ($enchantment !== null) {
@@ -1152,23 +1184,23 @@ class EventListener implements Listener
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::MEDITATION);
                 if ($enchantment !== null) {
                     if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
-                        $this->plugin->meditationTick[strtolower($entity->getName())] = 0;
+                        $this->plugin->meditationTick[$entity->getLowerCaseName()] = 0;
                     }
                 }
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::IMPLANTS);
                 if ($enchantment !== null) {
                     if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
-                        if (!isset($this->plugin->implantscd[strtolower($entity->getName())]) || $this->plugin->implantscd[strtolower($entity->getName())] < time()) {
+                        if (!isset($this->plugin->implantscd[$entity->getLowerCaseName()]) || $this->plugin->implantscd[$entity->getLowerCaseName()] < time()) {
                             if ($entity->getFood() < 20) {
                                 $entity->setFood($entity->getFood() + $enchantment->getLevel() > 20 ? 20 : $entity->getFood() + $enchantment->getLevel());
                             }
-                            if ($entity->getAirSupplyTicks() < $entity->getMaxAirSupplyTicks() && isset($this->plugin->implants[strtolower($entity->getName())]) !== true) {
-                                $this->plugin->implants[strtolower($entity->getName())] = true;
+                            if ($entity->getAirSupplyTicks() < $entity->getMaxAirSupplyTicks() && isset($this->plugin->implants[$entity->getLowerCaseName()]) !== true) {
+                                $this->plugin->implants[$entity->getLowerCaseName()] = true;
                                 $task = new ImplantsTask($this->plugin, $entity);
                                 $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedRepeatingTask($task, 20, 60);
                                 $task->setHandler($handler);
                             }
-                            $this->plugin->implantscd[strtolower($entity->getName())] = time() + 1;
+                            $this->plugin->implantscd[$entity->getLowerCaseName()] = time() + 1;
                         }
                     }
                 }
@@ -1191,64 +1223,64 @@ class EventListener implements Listener
                     }
                 }
                 if ($shrinkpoints >= 4) {
-                    if (isset($this->plugin->shrunk[strtolower($entity->getName())]) && $this->plugin->shrunk[strtolower($entity->getName())] > time()) {
-                        $this->plugin->shrinkremaining[strtolower($entity->getName())] = $this->plugin->shrunk[strtolower($entity->getName())] - time();
-                        unset($this->plugin->shrinkcd[strtolower($entity->getName())]);
-                        unset($this->plugin->shrunk[strtolower($entity->getName())]);
+                    if (isset($this->plugin->shrunk[$entity->getLowerCaseName()]) && $this->plugin->shrunk[$entity->getLowerCaseName()] > time()) {
+                        $this->plugin->shrinkremaining[$entity->getLowerCaseName()] = $this->plugin->shrunk[$entity->getLowerCaseName()] - time();
+                        unset($this->plugin->shrinkcd[$entity->getLowerCaseName()]);
+                        unset($this->plugin->shrunk[$entity->getLowerCaseName()]);
                         $entity->setScale(1);
                         $entity->sendTip(TextFormat::RED . "You have grown back to normal size.");
                     } else {
-                        if (!isset($this->plugin->shrinkcd[strtolower($entity->getName())]) || $this->plugin->shrinkcd[strtolower($entity->getName())] <= time()) {
+                        if (!isset($this->plugin->shrinkcd[$entity->getLowerCaseName()]) || $this->plugin->shrinkcd[$entity->getLowerCaseName()] <= time()) {
                             $scale = $entity->getScale() - 0.70 - (($shrinklevel / 4) * 0.05);
                             $entity->setScale($scale);
-                            $this->plugin->shrunk[strtolower($entity->getName())] = isset($this->plugin->shrinkremaining[strtolower($entity->getName())]) ? time() + $this->plugin->shrinkremaining[strtolower($entity->getName())] : time() + 60;
-                            $this->plugin->shrinkcd[strtolower($entity->getName())] = isset($this->plugin->shrinkremaining[strtolower($entity->getName())]) ? time() + (75 - (60 - $this->plugin->shrinkremaining[strtolower($entity->getName())])) : time() + 75;
+                            $this->plugin->shrunk[$entity->getLowerCaseName()] = isset($this->plugin->shrinkremaining[$entity->getLowerCaseName()]) ? time() + $this->plugin->shrinkremaining[$entity->getLowerCaseName()] : time() + 60;
+                            $this->plugin->shrinkcd[$entity->getLowerCaseName()] = isset($this->plugin->shrinkremaining[$entity->getLowerCaseName()]) ? time() + (75 - (60 - $this->plugin->shrinkremaining[$entity->getLowerCaseName()])) : time() + 75;
                             $entity->sendTip(TextFormat::GREEN . "You have shrunk. Sneak again to grow back to normal size.");
-                            if (isset($this->plugin->shrinkremaining[strtolower($entity->getName())])) {
-                                unset($this->plugin->shrinkremaining[strtolower($entity->getName())]);
+                            if (isset($this->plugin->shrinkremaining[$entity->getLowerCaseName()])) {
+                                unset($this->plugin->shrinkremaining[$entity->getLowerCaseName()]);
                             }
                         }
                     }
                 }
                 if ($growpoints >= 4) {
-                    if (isset($this->plugin->grew[strtolower($entity->getName())]) && $this->plugin->grew[strtolower($entity->getName())] > time()) {
-                        $this->plugin->growremaining[strtolower($entity->getName())] = $this->plugin->grew[strtolower($entity->getName())] - time();
-                        unset($this->plugin->growcd[strtolower($entity->getName())]);
-                        unset($this->plugin->grew[strtolower($entity->getName())]);
+                    if (isset($this->plugin->grew[$entity->getLowerCaseName()]) && $this->plugin->grew[$entity->getLowerCaseName()] > time()) {
+                        $this->plugin->growremaining[$entity->getLowerCaseName()] = $this->plugin->grew[$entity->getLowerCaseName()] - time();
+                        unset($this->plugin->growcd[$entity->getLowerCaseName()]);
+                        unset($this->plugin->grew[$entity->getLowerCaseName()]);
                         $entity->setScale(1);
                         $entity->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
                     } else {
-                        if (!isset($this->plugin->growcd[strtolower($entity->getName())]) || $this->plugin->growcd[strtolower($entity->getName())] <= time()) {
+                        if (!isset($this->plugin->growcd[$entity->getLowerCaseName()]) || $this->plugin->growcd[$entity->getLowerCaseName()] <= time()) {
                             $scale = $entity->getScale() + 0.30 + (($growlevel / 4) * 0.05);
                             $entity->setScale($scale);
-                            $this->plugin->grew[strtolower($entity->getName())] = isset($this->plugin->growremaining[strtolower($entity->getName())]) ? time() + $this->plugin->growremaining[strtolower($entity->getName())] : time() + 60;
-                            $this->plugin->growcd[strtolower($entity->getName())] = isset($this->plugin->growremaining[strtolower($entity->getName())]) ? time() + (75 - (60 - $this->plugin->growremaining[strtolower($entity->getName())])) : time() + 75;
+                            $this->plugin->grew[$entity->getLowerCaseName()] = isset($this->plugin->growremaining[$entity->getLowerCaseName()]) ? time() + $this->plugin->growremaining[$entity->getLowerCaseName()] : time() + 60;
+                            $this->plugin->growcd[$entity->getLowerCaseName()] = isset($this->plugin->growremaining[$entity->getLowerCaseName()]) ? time() + (75 - (60 - $this->plugin->growremaining[$entity->getLowerCaseName()])) : time() + 75;
                             $entity->sendTip(TextFormat::GREEN . "You have grown. Sneak again to shrink back to normal size.");
-                            if (isset($this->plugin->growremaining[strtolower($entity->getName())])) {
-                                unset($this->plugin->growremaining[strtolower($entity->getName())]);
+                            if (isset($this->plugin->growremaining[$entity->getLowerCaseName()])) {
+                                unset($this->plugin->growremaining[$entity->getLowerCaseName()]);
                             }
                         }
                     }
                 }
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::JETPACK);
                 if ($enchantment !== null) {
-                    if (isset($this->plugin->flying[strtolower($entity->getName())]) && $this->plugin->flying[strtolower($entity->getName())] > time()) {
+                    if (isset($this->plugin->flying[$entity->getLowerCaseName()]) && $this->plugin->flying[$entity->getLowerCaseName()] > time()) {
                         if ($entity->isOnGround()) {
-                            $this->plugin->flyremaining[strtolower($entity->getName())] = $this->plugin->flying[strtolower($entity->getName())] - time();
-                            unset($this->plugin->jetpackcd[strtolower($entity->getName())]);
-                            unset($this->plugin->flying[strtolower($entity->getName())]);
+                            $this->plugin->flyremaining[$entity->getLowerCaseName()] = $this->plugin->flying[$entity->getLowerCaseName()] - time();
+                            unset($this->plugin->jetpackcd[$entity->getLowerCaseName()]);
+                            unset($this->plugin->flying[$entity->getLowerCaseName()]);
                             $entity->sendTip(TextFormat::RED . "Jetpack disabled.");
                         } else {
                             $entity->sendTip(TextFormat::RED . "It is unsafe to disable your jetpack in the air.");
                         }
                     } else {
                         if (!in_array($event->getPlayer()->getLevel()->getName(), $this->plugin->jetpackDisabled)) {
-                            if (!isset($this->plugin->jetpackcd[strtolower($entity->getName())]) || $this->plugin->jetpackcd[strtolower($entity->getName())] <= time()) {
-                                $this->plugin->flying[strtolower($entity->getName())] = isset($this->plugin->flyremaining[strtolower($entity->getName())]) ? time() + $this->plugin->flyremaining[strtolower($entity->getName())] : time() + 300;
-                                $this->plugin->jetpackcd[strtolower($entity->getName())] = isset($this->plugin->flyremaining[strtolower($entity->getName())]) ? time() + (360 - (300 - $this->plugin->flyremaining[strtolower($entity->getName())])) : time() + 360;
+                            if (!isset($this->plugin->jetpackcd[$entity->getLowerCaseName()]) || $this->plugin->jetpackcd[$entity->getLowerCaseName()] <= time()) {
+                                $this->plugin->flying[$entity->getLowerCaseName()] = isset($this->plugin->flyremaining[$entity->getLowerCaseName()]) ? time() + $this->plugin->flyremaining[$entity->getLowerCaseName()] : time() + 300;
+                                $this->plugin->jetpackcd[$entity->getLowerCaseName()] = isset($this->plugin->flyremaining[$entity->getLowerCaseName()]) ? time() + (360 - (300 - $this->plugin->flyremaining[$entity->getLowerCaseName()])) : time() + 360;
                                 $entity->sendTip(TextFormat::GREEN . "Jetpack enabled. Sneak again to turn off your jetpack.");
-                                if (isset($this->plugin->flyremaining[strtolower($entity->getName())])) {
-                                    unset($this->plugin->flyremaining[strtolower($entity->getName())]);
+                                if (isset($this->plugin->flyremaining[$entity->getLowerCaseName()])) {
+                                    unset($this->plugin->flyremaining[$entity->getLowerCaseName()]);
                                 }
                             }
                         } else {
@@ -1266,7 +1298,7 @@ class EventListener implements Listener
                             $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::SPRINGS);
                             if ($enchantment !== null) {
                                 $entity->setMotion(new Vector3(0, $entity->getJumpVelocity() + 0.4));
-                                $this->plugin->nofall[strtolower($entity->getName())] = time() + 1;
+                                $this->plugin->nofall[$entity->getLowerCaseName()] = time() + 1;
                             }
                             break;
                     }
@@ -1284,10 +1316,10 @@ class EventListener implements Listener
     {
         $item = $player->getInventory()->getItemInHand();
         for ($i = 0; $i <= 5; $i++) {
-            if ($this->plugin->mined[strtolower($player->getName())] > 800) {
+            if ($this->plugin->mined[$player->getLowerCaseName()] > 800) {
                 break;
             }
-            $this->plugin->using[strtolower($player->getName())] = time() + 1;
+            $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
             $side = $block->getSide($i);
             if ($oldblock !== null) {
                 if ($side->equals($oldblock)) {
@@ -1298,7 +1330,7 @@ class EventListener implements Listener
                 continue;
             }
             $player->getLevel()->useBreakOn($side, $item, $player);
-            $this->plugin->mined[strtolower($player->getName())]++;
+            $this->plugin->mined[$player->getLowerCaseName()]++;
             $this->breakTree($side, $player, $block);
         }
     }

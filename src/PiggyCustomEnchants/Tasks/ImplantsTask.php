@@ -57,7 +57,7 @@ class ImplantsTask extends PluginTask
 
     public function cancel()
     {
-        unset($this->plugin->implants[strtolower($this->player->getName())]);
+        unset($this->plugin->implants[$this->player->getLowerCaseName()]);
         $this->plugin->getServer()->getScheduler()->cancelTask($this->getHandler()->getTaskId());
     }
 }

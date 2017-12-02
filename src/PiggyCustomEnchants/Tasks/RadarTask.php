@@ -45,7 +45,7 @@ class RadarTask extends PluginTask
                         if ($player !== $p) {
                             $d = $player->distance($p);
                             if ($d <= $enchantment->getLevel() * 50) {
-                                $distance[strtolower($p->getName())] = $d;
+                                $distance[$p->getLowerCaseName()] = $d;
                             }
                         }
                     }
@@ -63,7 +63,7 @@ class RadarTask extends PluginTask
                                 $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
                                 $player->dataPacket($pk);
                                 $radar = true;
-                                $this->radars[strtolower($player->getName())] = true;
+                                $this->radars[$player->getLowerCaseName()] = true;
                                 $player->sendTip(TextFormat::GREEN . "Nearest player " . $minimum . " blocks away.");
                                 break;
                             }
@@ -72,7 +72,7 @@ class RadarTask extends PluginTask
                 }
             }
             if (!$radar) {
-                if (isset($this->radars[strtolower($player->getName())])) {
+                if (isset($this->radars[$player->getLowerCaseName()])) {
                     $pk = new SetSpawnPositionPacket();
                     $pk->x = (int) $player->x;
                     $pk->y = (int) $player->y;
@@ -80,7 +80,7 @@ class RadarTask extends PluginTask
                     $pk->spawnForced = true;
                     $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
                     $player->dataPacket($pk);
-                    unset($this->radars[strtolower($player->getName())]);
+                    unset($this->radars[$player->getLowerCaseName()]);
                 }
                 if ($hasradar) {
                     $player->sendTip(TextFormat::RED . "No players found.");

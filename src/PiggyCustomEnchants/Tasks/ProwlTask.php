@@ -44,9 +44,9 @@ class ProwlTask extends PluginTask
                 $effect->setVisible(false);
                 $player->setGenericFlag(Entity::DATA_FLAG_INVISIBLE, true);
                 $player->addEffect($effect);
-                $this->plugin->prowl[strtolower($player->getName())] = true;
+                $this->plugin->prowl[$player->getLowerCaseName()] = true;
             } else {
-                if (isset($this->plugin->prowl[strtolower($player->getName())])) {
+                if (isset($this->plugin->prowl[$player->getLowerCaseName()])) {
                     foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                         $p->showPlayer($player);
                         $p->removeEffect(Effect::SLOWNESS);

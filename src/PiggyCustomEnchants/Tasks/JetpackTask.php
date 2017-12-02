@@ -35,11 +35,11 @@ class JetpackTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getBoots(), CustomEnchants::JETPACK);
             if ($enchantment !== null) {
-                if (isset($this->plugin->flying[strtolower($player->getName())]) && $this->plugin->flying[strtolower($player->getName())] > time()) {
-                    if ($this->plugin->flying[strtolower($player->getName())] - 30 <= time()) {
-                        $player->sendTip(TextFormat::RED . "Low on power. " . floor($this->plugin->flying[strtolower($player->getName())] - time()) . " seconds of power remaining.");
+                if (isset($this->plugin->flying[$player->getLowerCaseName()]) && $this->plugin->flying[$player->getLowerCaseName()] > time()) {
+                    if ($this->plugin->flying[$player->getLowerCaseName()] - 30 <= time()) {
+                        $player->sendTip(TextFormat::RED . "Low on power. " . floor($this->plugin->flying[$player->getLowerCaseName()] - time()) . " seconds of power remaining.");
                     } else {
-                        $time = ($this->plugin->flying[strtolower($player->getName())] - time());
+                        $time = ($this->plugin->flying[$player->getLowerCaseName()] - time());
                         $time = is_float($time / 15) ? floor($time / 15) + 1 : $time / 15;
                         $color = $time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED);
                         $player->sendTip($color . "Power: " . str_repeat("▌", $time));
@@ -48,22 +48,22 @@ class JetpackTask extends PluginTask
                     continue;
                 }
             }
-            if (isset($this->plugin->flying[strtolower($player->getName())])) {
-                if ($this->plugin->flying[strtolower($player->getName())] > time()) {
-                    $this->plugin->flyremaining[strtolower($player->getName())] = $this->plugin->flying[strtolower($player->getName())] - time();
-                    unset($this->plugin->jetpackcd[strtolower($player->getName())]);
+            if (isset($this->plugin->flying[$player->getLowerCaseName()])) {
+                if ($this->plugin->flying[$player->getLowerCaseName()] > time()) {
+                    $this->plugin->flyremaining[$player->getLowerCaseName()] = $this->plugin->flying[$player->getLowerCaseName()] - time();
+                    unset($this->plugin->jetpackcd[$player->getLowerCaseName()]);
                 }
-                unset($this->plugin->flying[strtolower($player->getName())]);
+                unset($this->plugin->flying[$player->getLowerCaseName()]);
                 $player->sendTip(TextFormat::RED . "Jetpack disabled.");
             }
-            if (isset($this->plugin->flyremaining[strtolower($player->getName())])) {
-                if ($this->plugin->flyremaining[strtolower($player->getName())] < 300) {
-                    if (!isset($this->plugin->jetpackChargeTick[strtolower($player->getName())])) {
-                        $this->plugin->jetpackChargeTick[strtolower($player->getName())] = 0;
+            if (isset($this->plugin->flyremaining[$player->getLowerCaseName()])) {
+                if ($this->plugin->flyremaining[$player->getLowerCaseName()] < 300) {
+                    if (!isset($this->plugin->jetpackChargeTick[$player->getLowerCaseName()])) {
+                        $this->plugin->jetpackChargeTick[$player->getLowerCaseName()] = 0;
                     }
-                    $this->plugin->jetpackChargeTick[strtolower($player->getName())]++;
-                    if ($this->plugin->jetpackChargeTick[strtolower($player->getName())] >= 30) {
-                        $this->plugin->flyremaining[strtolower($player->getName())]++;
+                    $this->plugin->jetpackChargeTick[$player->getLowerCaseName()]++;
+                    if ($this->plugin->jetpackChargeTick[$player->getLowerCaseName()] >= 30) {
+                        $this->plugin->flyremaining[$player->getLowerCaseName()]++;
                     }
                 }
             }

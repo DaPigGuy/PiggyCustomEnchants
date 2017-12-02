@@ -54,11 +54,11 @@ class ForcefieldTask extends PluginTask
                         }
                     }
                 }
-                if (!isset($this->plugin->forcefieldParticleTick[strtolower($player->getName())])) {
-                    $this->plugin->forcefieldParticleTick[strtolower($player->getName())] = 0;
+                if (!isset($this->plugin->forcefieldParticleTick[$player->getLowerCaseName()])) {
+                    $this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] = 0;
                 }
-                $this->plugin->forcefieldParticleTick[strtolower($player->getName())]++;
-                if ($this->plugin->forcefieldParticleTick[strtolower($player->getName())] >= 5) {
+                $this->plugin->forcefieldParticleTick[$player->getLowerCaseName()]++;
+                if ($this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] >= 5) {
                     $radius = $forcefields * 0.75;
                     $diff = 5;
                     for ($theta = 0; $theta <= 360; $theta += $diff) {
@@ -68,7 +68,7 @@ class ForcefieldTask extends PluginTask
                         $pos = $player->add($x, $y, $z);
                         $player->getLevel()->addParticle(new FlameParticle($pos));
                     }
-                    $this->plugin->forcefieldParticleTick[strtolower($player->getName())] = 0;
+                    $this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] = 0;
                 }
             }
         }

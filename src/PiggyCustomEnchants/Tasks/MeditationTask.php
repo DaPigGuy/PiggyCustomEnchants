@@ -35,14 +35,14 @@ class MeditationTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getHelmet(), CustomEnchants::MEDITATION);
             if ($enchantment !== null) {
-                if (!isset($this->plugin->meditationTick[strtolower($player->getName())])) {
-                    $this->plugin->meditationTick[strtolower($player->getName())] = 0;
+                if (!isset($this->plugin->meditationTick[$player->getLowerCaseName()])) {
+                    $this->plugin->meditationTick[$player->getLowerCaseName()] = 0;
                 }
-                $this->plugin->meditationTick[strtolower($player->getName())]++;
-                $time = $this->plugin->meditationTick[strtolower($player->getName())] / 40;
+                $this->plugin->meditationTick[$player->getLowerCaseName()]++;
+                $time = $this->plugin->meditationTick[$player->getLowerCaseName()] / 40;
                 $player->sendTip(TextFormat::DARK_GREEN . "Meditating...\n " . TextFormat::GREEN . str_repeat("▌", $time));
-                if ($this->plugin->meditationTick[strtolower($player->getName())] >= 20 * 20) {
-                    $this->plugin->meditationTick[strtolower($player->getName())] = 0;
+                if ($this->plugin->meditationTick[$player->getLowerCaseName()] >= 20 * 20) {
+                    $this->plugin->meditationTick[$player->getLowerCaseName()] = 0;
                     $event = new EntityRegainHealthEvent($player, $enchantment->getLevel(), EntityRegainHealthEvent::CAUSE_MAGIC);
                     if (!$event->isCancelled()) {
                         $player->heal($event);

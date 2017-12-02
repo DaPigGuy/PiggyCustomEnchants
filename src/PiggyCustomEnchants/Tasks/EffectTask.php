@@ -54,11 +54,11 @@ class EffectTask extends PluginTask
                 $effect->setDuration(220);
                 $effect->setVisible(false);
                 $player->addEffect($effect);
-                $this->plugin->glowing[strtolower($player->getName())] = true;
+                $this->plugin->glowing[$player->getLowerCaseName()] = true;
             } else {
-                if (isset($this->plugin->glowing[strtolower($player->getName())])) {
+                if (isset($this->plugin->glowing[$player->getLowerCaseName()])) {
                     $player->removeEffect(Effect::NIGHT_VISION);
-                    unset($this->plugin->glowing[strtolower($player->getName())]);
+                    unset($this->plugin->glowing[$player->getLowerCaseName()]);
                 }
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::ENRAGED);
@@ -88,19 +88,19 @@ class EffectTask extends PluginTask
                 }
                 $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::OVERLOAD);
                 if ($enchantment !== null) {
-                    if (!isset($this->plugin->overload[strtolower($player->getName()) . "||" . $slot])) {
+                    if (!isset($this->plugin->overload[$player->getLowerCaseName() . "||" . $slot])) {
                         $player->setMaxHealth($player->getMaxHealth() + (2 * $enchantment->getLevel()));
                         $player->setHealth($player->getHealth() + (2 * $enchantment->getLevel()) < $player->getMaxHealth() ? $player->getHealth() + (2 * $enchantment->getLevel()) : $player->getMaxHealth());
-                        $this->plugin->overload[strtolower($player->getName()) . "||" . $slot] = $enchantment->getLevel();
+                        $this->plugin->overload[$player->getLowerCaseName() . "||" . $slot] = $enchantment->getLevel();
                     }
                 } else {
-                    if (isset($this->plugin->overload[strtolower($player->getName()) . "||" . $slot])) {
-                        $level = $this->plugin->overload[strtolower($player->getName()) . "||" . $slot];
+                    if (isset($this->plugin->overload[$player->getLowerCaseName() . "||" . $slot])) {
+                        $level = $this->plugin->overload[$player->getLowerCaseName() . "||" . $slot];
                         $player->setMaxHealth($player->getMaxHealth() - (2 * $level));
                         if ($player->isAlive()) {
                             $player->setHealth($player->getHealth() - (2 * $level) < $player->getMaxHealth() ? ($player->getHealth() - (2 * $level) <= 0 ? 1 : $player->getHealth() - (2 * $level)) : $player->getMaxHealth());
                         }
-                        unset($this->plugin->overload[strtolower($player->getName()) . "||" . $slot]);
+                        unset($this->plugin->overload[$player->getLowerCaseName() . "||" . $slot]);
                     }
                 }
             }

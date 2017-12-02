@@ -97,6 +97,7 @@ class CustomEnchants extends Enchantment
     const IMPLANTS = 600;
     const GLOWING = 601;
     const MEDITATION = 602;
+    const FOCUSED = 603;
 
     //CHESTPLATE
     const PARACHUTE = 800;

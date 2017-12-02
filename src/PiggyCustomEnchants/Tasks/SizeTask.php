@@ -39,12 +39,12 @@ class SizeTask extends PluginTask
                     $shrinkpoints++;
                 }
             }
-            if (isset($this->plugin->shrunk[strtolower($player->getName())]) && ($this->plugin->shrunk[strtolower($player->getName())] <= time() || $shrinkpoints < 4)) {
-                if ($this->plugin->shrunk[strtolower($player->getName())] > time()) {
-                    $this->plugin->shrinkremaining[strtolower($player->getName())] = $this->plugin->shrunk[strtolower($player->getName())] - time();
-                    unset($this->plugin->shrinkcd[strtolower($player->getName())]);
+            if (isset($this->plugin->shrunk[$player->getLowerCaseName()]) && ($this->plugin->shrunk[$player->getLowerCaseName()] <= time() || $shrinkpoints < 4)) {
+                if ($this->plugin->shrunk[$player->getLowerCaseName()] > time()) {
+                    $this->plugin->shrinkremaining[$player->getLowerCaseName()] = $this->plugin->shrunk[$player->getLowerCaseName()] - time();
+                    unset($this->plugin->shrinkcd[$player->getLowerCaseName()]);
                 }
-                unset($this->plugin->shrunk[strtolower($player->getName())]);
+                unset($this->plugin->shrunk[$player->getLowerCaseName()]);
                 $player->setScale(1);
                 $player->sendTip(TextFormat::RED . "You have grown back to normal size.");
             }
@@ -54,12 +54,12 @@ class SizeTask extends PluginTask
                     $growpoints++;
                 }
             }
-            if (isset($this->plugin->grew[strtolower($player->getName())]) && ($this->plugin->grew[strtolower($player->getName())] <= time() || $growpoints < 4)) {
-                if ($this->plugin->grew[strtolower($player->getName())] > time()) {
-                    $this->plugin->growremaining[strtolower($player->getName())] = $this->plugin->grew[strtolower($player->getName())] - time();
-                    unset($this->plugin->growcd[strtolower($player->getName())]);
+            if (isset($this->plugin->grew[$player->getLowerCaseName()]) && ($this->plugin->grew[$player->getLowerCaseName()] <= time() || $growpoints < 4)) {
+                if ($this->plugin->grew[$player->getLowerCaseName()] > time()) {
+                    $this->plugin->growremaining[$player->getLowerCaseName()] = $this->plugin->grew[$player->getLowerCaseName()] - time();
+                    unset($this->plugin->growcd[$player->getLowerCaseName()]);
                 }
-                unset($this->plugin->grew[strtolower($player->getName())]);
+                unset($this->plugin->grew[$player->getLowerCaseName()]);
                 $player->setScale(1);
                 $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
             }

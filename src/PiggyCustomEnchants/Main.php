@@ -144,6 +144,7 @@ class Main extends PluginBase
         CustomEnchants::EXPLOSIVE => ["Explosive", "Tools", "Break", "Rare", 5, "Cause an explosion when block is broken"],
         CustomEnchants::FARMER => ["Farmer", "Hoe", "Break", "Uncommon", 1, "Automatically regrows crops when harvested"],
         CustomEnchants::FERTILIZER => ["Fertilizer", "Hoe", "Interact", "Uncommon", 3, "Creates farmland in a level radius around the block"],
+        CustomEnchants::FOCUSED => ["Focused", "Helmets", "Effect", "Uncommon", 5, "Nausea will affect you less"],
         CustomEnchants::FORCEFIELD => ["Forcefield", "Armor", "Equip", "Mythic", 1, "Deflects projectiles and living entities in a 0.75x (x = # of armor pieces)"],
         CustomEnchants::FROZEN => ["Frozen", "Armor", "Damaged", "Rare", 5, "Gives slowness to enemy when hit"],
         CustomEnchants::GEARS => ["Gears", "Boots", "Equip", "Uncommon", 5, "Gives speed"],
