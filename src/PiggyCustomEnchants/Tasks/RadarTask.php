@@ -35,12 +35,10 @@ class RadarTask extends PluginTask
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $radar = false;
-            $hasradar = false;
             foreach ($player->getInventory()->getContents() as $item) {
                 $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::RADAR);
                 if ($enchantment !== null) {
                     $distance = [];
-                    $hasradar = true;
                     foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                         if ($player !== $p) {
                             $d = $player->distance($p);
@@ -56,17 +54,23 @@ class RadarTask extends PluginTask
                             $detected = $this->plugin->getServer()->getPlayerExact($key);
                             if ($detected instanceof Player) {
                                 $pk = new SetSpawnPositionPacket();
-                                $pk->x = (int) $detected->x;
-                                $pk->y = (int) $detected->y;
-                                $pk->z = (int) $detected->z;
+                                $pk->x = (int)$detected->x;
+                                $pk->y = (int)$detected->y;
+                                $pk->z = (int)$detected->z;
                                 $pk->spawnForced = true;
                                 $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
                                 $player->dataPacket($pk);
                                 $radar = true;
                                 $this->radars[$player->getLowerCaseName()] = true;
-                                $player->sendTip(TextFormat::GREEN . "Nearest player " . $minimum . " blocks away.");
+                                if ($item->equalsExact($player->getInventory()->getItemInHand())) {
+                                    $player->sendTip(TextFormat::GREEN . "Nearest player " . $minimum . " blocks away.");
+                                }
                                 break;
                             }
+                        }
+                    } else {
+                        if ($item->equalsExact($player->getInventory()->getItemInHand())) {
+                            $player->sendTip(TextFormat::RED . "No players found.");
                         }
                     }
                 }
@@ -74,16 +78,13 @@ class RadarTask extends PluginTask
             if (!$radar) {
                 if (isset($this->radars[$player->getLowerCaseName()])) {
                     $pk = new SetSpawnPositionPacket();
-                    $pk->x = (int) $player->x;
-                    $pk->y = (int) $player->y;
-                    $pk->z = (int) $player->z;
+                    $pk->x = (int)$player->x;
+                    $pk->y = (int)$player->y;
+                    $pk->z = (int)$player->z;
                     $pk->spawnForced = true;
                     $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
                     $player->dataPacket($pk);
                     unset($this->radars[$player->getLowerCaseName()]);
-                }
-                if ($hasradar) {
-                    $player->sendTip(TextFormat::RED . "No players found.");
                 }
             }
         }

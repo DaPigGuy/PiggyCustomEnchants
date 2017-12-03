@@ -37,7 +37,7 @@ class ParachuteTask extends PluginTask
             if ($enchantment !== null) {
                 $motion = $player->getMotion();
                 if ($this->plugin->checkBlocks($player, 0, 3)) {
-                    $player->setMotion(new Vector3(0, $motion->y * 0.5, 0));
+                    $player->setMotion(new Vector3(0, $motion->y * 0.75, 0));
                     $player->resetFallDistance();
                 }
             }

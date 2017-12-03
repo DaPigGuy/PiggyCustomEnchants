@@ -217,9 +217,9 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new EffectTask($this), 5);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 20);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 3.9);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 2);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ProwlTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 20);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SpiderTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new VacuumTask($this), 1);
