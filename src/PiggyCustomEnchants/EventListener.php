@@ -595,40 +595,28 @@ class EventListener implements Listener
                 if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
                     if (isset($this->plugin->blockface[$player->getLowerCaseName()])) {
                         $side = $this->plugin->blockface[$player->getLowerCaseName()];
-                        $sides = [];
-                        $sides2 = [];
-                        switch ($side) {
-                            case Vector3::SIDE_NORTH:
-                            case Vector3::SIDE_SOUTH:
-                                $sides = [Vector3::SIDE_WEST, Vector3::SIDE_EAST, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
-                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_EAST, Vector3::SIDE_WEST];
-                                break;
-                            case Vector3::SIDE_WEST:
-                            case Vector3::SIDE_EAST:
-                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_UP, Vector3::SIDE_DOWN];
-                                $sides2 = [Vector3::SIDE_DOWN, Vector3::SIDE_UP, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
-                                break;
-                            case Vector3::SIDE_UP:
-                            case Vector3::SIDE_DOWN:
-                                $sides = [Vector3::SIDE_NORTH, Vector3::SIDE_SOUTH, Vector3::SIDE_WEST, Vector3::SIDE_EAST];
-                                $sides2 = [Vector3::SIDE_EAST, Vector3::SIDE_WEST, Vector3::SIDE_SOUTH, Vector3::SIDE_NORTH];
-                                break;
-                        }
+                        $sides = [$side <= 1 ? $side + 2 : $side - 2, $side > 1 && $side < 4 ? $side + 2 : ($side >= 4 ? $side - 4 : $side + 4)];
                         $item = $player->getInventory()->getItemInHand();
+                        $blocks = [];
                         for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
                             $b = $block->getSide($side ^ 0x01, $i);
-                            $combined = array_combine($sides, $sides2);
-                            $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
-                            $player->getLevel()->useBreakOn($b, $item, $player);
-                            foreach ($sides as $s) {
-                                $b2 = $b->getSide($s, 1);
-                                $b3 = $b2->getSide($combined[$s], 1);
-                                $b4 = $b2->getSide($combined[$s] ^ 0x01, 1);
-                                $player->getLevel()->useBreakOn($b2, $item, $player);
-                                $player->getLevel()->useBreakOn($b3, $item, $player);
-                                $player->getLevel()->useBreakOn($b4, $item, $player);
-
+                            $b1 = $b->getSide($sides[0]);
+                            $b2 = $b->getSide($sides[0] ^ 0x01);
+                            $blocks[] = $b->getSide($sides[1]);
+                            $blocks[] = $b->getSide($sides[1] ^ 0x01);
+                            $blocks[] = $b1;
+                            $blocks[] = $b2;
+                            $blocks[] = $b1->getSide($sides[1] ^ 0x01);
+                            $blocks[] = $b2->getSide($sides[1] ^ 0x01);
+                            $blocks[] = $b1->getSide($sides[1]);
+                            $blocks[] = $b2->getSide($sides[1]);
+                            if($b !== $block){
+                                $blocks[] = $b;
                             }
+                        }
+                        $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
+                        foreach ($blocks as $b) {
+                            $block->getLevel()->useBreakOn($b, $item, $player);
                         }
                         unset($this->plugin->blockface[$player->getLowerCaseName()]);
                     }

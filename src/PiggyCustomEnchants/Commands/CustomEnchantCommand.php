@@ -50,7 +50,7 @@ class CustomEnchantCommand extends PluginCommand
                         $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
                         return false;
                     }
-                    $sender->sendMessage(TextFormat::GREEN . "PiggyCustomEnchants v" . $this->getPlugin()->getDescription()->getVersion() . " is a custom enchants plugin made by DaPigGuy (IGN: MCPEPIG) & Aericio.\nYou can find it at https://github.com/DaPigGuy/PiggyCustomEnchants.");
+                    $sender->sendMessage(TextFormat::GREEN . "PiggyCustomEnchants v" . $this->getPlugin()->getDescription()->getVersion() . " is a custom enchants plugin made by DaPigGuy (IGN: MCPEPIG) & Aericio.\n" . TextFormat::RESET . "You can find it at https://github.com/DaPigGuy/PiggyCustomEnchants.");
                     break;
                 case "enchant":
                     if (!$sender->hasPermission("piggycustomenchants.command.ce.enchant")) {
@@ -99,7 +99,7 @@ class CustomEnchantCommand extends PluginCommand
                         return false;
                     }
                     if ((is_numeric($args[1]) && ($enchant = CustomEnchants::getEnchantment($args[1])) !== null) || ($enchant = CustomEnchants::getEnchantmentByName($args[1])) !== null) {
-                        $sender->sendMessage(TextFormat::GREEN . $enchant->getName() . "\nDescription: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
+                        $sender->sendMessage(TextFormat::GREEN . $enchant->getName() . "\n" . TextFormat::RESET . "Description: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
                     } else {
                         $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
                     }
