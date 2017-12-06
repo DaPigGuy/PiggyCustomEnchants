@@ -465,7 +465,7 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 $chance = 5 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
-                if ($random <= $chance && isset($this->plugin->hallucination[$entity->getLowerCaseName()]) !== true && $entity instanceof Player) {
+                if ($random <= $chance && $entity instanceof Player && isset($this->plugin->hallucination[$entity->getLowerCaseName()]) !== true) {
                     $this->plugin->hallucination[$entity->getLowerCaseName()] = true;
                     $task = new HallucinationTask($this->plugin, $entity, $entity->getPosition());
                     $handler = $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask($task, 1);
