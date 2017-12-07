@@ -36,16 +36,18 @@ class JetpackTask extends PluginTask
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getBoots(), CustomEnchants::JETPACK);
             if ($enchantment !== null) {
                 if (isset($this->plugin->flying[$player->getLowerCaseName()]) && $this->plugin->flying[$player->getLowerCaseName()] > time()) {
-                    if ($this->plugin->flying[$player->getLowerCaseName()] - 30 <= time()) {
-                        $player->sendTip(TextFormat::RED . "Low on power. " . floor($this->plugin->flying[$player->getLowerCaseName()] - time()) . " seconds of power remaining.");
-                    } else {
-                        $time = ($this->plugin->flying[$player->getLowerCaseName()] - time());
-                        $time = is_float($time / 15) ? floor($time / 15) + 1 : $time / 15;
-                        $color = $time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED);
-                        $player->sendTip($color . "Power: " . str_repeat("▌", $time));
+                    if (!in_array($player->getLevel()->getName(), $this->plugin->jetpackDisabled)) {
+                        if ($this->plugin->flying[$player->getLowerCaseName()] - 30 <= time()) {
+                            $player->sendTip(TextFormat::RED . "Low on power. " . floor($this->plugin->flying[$player->getLowerCaseName()] - time()) . " seconds of power remaining.");
+                        } else {
+                            $time = ($this->plugin->flying[$player->getLowerCaseName()] - time());
+                            $time = is_float($time / 15) ? floor($time / 15) + 1 : $time / 15;
+                            $color = $time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED);
+                            $player->sendTip($color . "Power: " . str_repeat("▌", $time));
+                        }
+                        $this->fly($player, $enchantment->getLevel());
+                        continue;
                     }
-                    $this->fly($player, $enchantment->getLevel());
-                    continue;
                 }
             }
             if (isset($this->plugin->flying[$player->getLowerCaseName()])) {
