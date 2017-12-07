@@ -161,6 +161,7 @@ class Main extends PluginBase
         CustomEnchants::HEAVY => ["Heavy", "Armor", "Damage", "Rare", 5, "Decreases damage from axes by 20l%"],
         CustomEnchants::IMPLANTS => ["Implants", "Helmets", "Move", "Rare", 5, "Replenishes hunger and air"],
         CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3, "Enable flying (you fly where you look) when you sneak."],
+        CustomEnchants::JACKPOT => ["Jackpot", "Tools", "Break", "Mythic", 10, "10l% chance to increase the ore tier"],
         CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5, "Heals when damaging enemies"],
         CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1, "Mines all logs connected to log when broken"],
         CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "Uncommon", 2, "Turns lava into obsidian around you"],

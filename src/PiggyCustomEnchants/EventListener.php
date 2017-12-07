@@ -58,6 +58,13 @@ use pocketmine\utils\TextFormat;
  */
 class EventListener implements Listener
 {
+    const ORE_TIER = [
+        Block::COAL_ORE => 1,
+        Block::IRON_ORE => 2,
+        Block::GOLD_ORE => 3,
+        Block::DIAMOND_ORE => 4,
+        Block::EMERALD_ORE => 5
+    ];
     private $plugin;
 
     /**
@@ -610,7 +617,7 @@ class EventListener implements Listener
                             $blocks[] = $b2->getSide($sides[1] ^ 0x01);
                             $blocks[] = $b1->getSide($sides[1]);
                             $blocks[] = $b2->getSide($sides[1]);
-                            if($b !== $block){
+                            if ($b !== $block) {
                                 $blocks[] = $b;
                             }
                         }
@@ -622,6 +629,30 @@ class EventListener implements Listener
                     }
                 }
                 $event->setInstaBreak(true);
+            }
+            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::JACKPOT);
+            if ($enchantment !== null) {
+                $chance = 10 * $enchantment->getLevel();
+                $random = mt_rand(0, 100);
+                if ($random <= $chance) {
+                    if (isset(self::ORE_TIER[$block->getId()])) {
+                        $tier = self::ORE_TIER[$block->getId()];
+                        if (($tierkey = array_search($tier + 1, self::ORE_TIER)) !== false) {
+                            foreach ($drops as $key => $drop) {
+                                foreach ($block->getDrops($player->getInventory()->getItemInHand()) as $originaldrop) {
+                                    if ($drop->equals($originaldrop)) {
+                                        unset($drops[$key]);
+                                        foreach (Block::get($tierkey, $originaldrop->getDamage())->getDrops(Item::get(Item::DIAMOND_PICKAXE)) as $newdrop) { //Diamond Pickaxe to make sure the item drops
+                                            $drops[] = $newdrop;
+                                        }
+                                        $event->setDrops($drops);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
             $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::SMELTING);
             if ($enchantment !== null) {
