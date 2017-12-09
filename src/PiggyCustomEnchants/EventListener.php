@@ -1051,7 +1051,6 @@ class EventListener implements Listener
                             }
                         }
                     }
-
                 }
                 if ($event instanceof EntityDamageByEntityEvent) {
                     $damager = $event->getDamager();
@@ -1183,8 +1182,8 @@ class EventListener implements Listener
                     }
                 }
                 $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::ANTITOXIN);
-                if($enchantment !== null){
-                    if($effect->getId() == Effect::POISON){
+                if ($enchantment !== null) {
+                    if ($effect->getId() == Effect::POISON) {
                         $event->setCancelled();
                     }
                 }
