@@ -65,6 +65,7 @@ class EventListener implements Listener
         Block::DIAMOND_ORE => 4,
         Block::EMERALD_ORE => 5
     ];
+
     private $plugin;
 
     /**
@@ -995,6 +996,19 @@ class EventListener implements Listener
                     }
                 }
                 foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
+                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVIVE);
+                    if ($enchantment !== null) {
+                        if ($event->getDamage() >= $entity->getHealth()) {
+                            $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
+                            $entity->removeAllEffects();
+                            $entity->setHealth($entity->getMaxHealth());
+                            $entity->setFood($entity->getMaxFood());
+                            $entity->setXpLevel(0);
+                            $entity->setXpProgress(0);
+                            $event->setDamage(0);
+                            //TODO: Side effect
+                        }
+                    }
                     $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SELFDESTRUCT);
                     if ($enchantment !== null) {
                         if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
@@ -1037,17 +1051,7 @@ class EventListener implements Listener
                             }
                         }
                     }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVIVE);
-                    if ($enchantment !== null) {
-                        if ($event->getDamage() >= $entity->getHealth()) {
-                            $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
-                            $entity->removeAllEffects();
-                            $entity->setHealth($entity->getMaxHealth());
-                            $entity->setFood($entity->getMaxFood());
-                            $event->setDamage(0);
-                            //TODO: Side effect
-                        }
-                    }
+
                 }
                 if ($event instanceof EntityDamageByEntityEvent) {
                     $damager = $event->getDamager();
@@ -1176,6 +1180,12 @@ class EventListener implements Listener
                                 $entity->addEffect($effect->setAmplifier($effect->getEffectLevel() - (1 + ($enchantment->getLevel() * 2))));
                             }
                         }
+                    }
+                }
+                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::ANTITOXIN);
+                if($enchantment !== null){
+                    if($effect->getId() == Effect::POISON){
+                        $event->setCancelled();
                     }
                 }
             }

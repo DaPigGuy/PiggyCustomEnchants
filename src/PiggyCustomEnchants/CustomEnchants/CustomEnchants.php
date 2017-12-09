@@ -99,6 +99,7 @@ class CustomEnchants extends Enchantment
     const GLOWING = 601;
     const MEDITATION = 602;
     const FOCUSED = 603;
+    const ANTITOXIN = 604;
 
     //CHESTPLATE
     const PARACHUTE = 800;

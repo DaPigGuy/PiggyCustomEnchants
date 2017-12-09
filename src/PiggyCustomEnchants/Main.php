@@ -112,10 +112,10 @@ class Main extends PluginBase
     public $using;
     public $shrunk;
 
-
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel", "description"]
         CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1, "Reduces knockback by 25% per armor piece"],
+        CustomEnchants::ANTITOXIN => ["Antitoxin", "Helmets", "Effect", "Mythic", 1, "Immunity to poison"],
         CustomEnchants::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5, "Increases damage in air"],
         CustomEnchants::ARMORED => ["Armored", "Armor", "Damage", "Rare", 5, "Decreases sword damage by 20l%"],
         CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5, "Automatically repairs items when moving"],
