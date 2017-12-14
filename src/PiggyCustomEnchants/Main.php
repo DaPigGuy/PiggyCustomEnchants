@@ -112,9 +112,6 @@ class Main extends PluginBase
     public $using;
     public $shrunk;
 
-    public $transactionitem;
-    public $transactionenchant;
-
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel", "description"]
         CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1, "Reduces knockback by 25% per armor piece"],
