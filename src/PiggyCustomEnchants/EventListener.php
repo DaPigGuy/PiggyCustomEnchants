@@ -11,6 +11,7 @@ use PiggyCustomEnchants\Tasks\HallucinationTask;
 use PiggyCustomEnchants\Tasks\ImplantsTask;
 use PiggyCustomEnchants\Tasks\MoltenTask;
 use PiggyCustomEnchants\Tasks\PlaceTask;
+use PiggyCustomEnchants\Tasks\UseEnchantedBookTask;
 use pocketmine\block\Block;
 use pocketmine\block\Crops;
 use pocketmine\entity\Effect;
@@ -28,6 +29,7 @@ use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Event;
 use pocketmine\event\inventory\InventoryPickupArrowEvent;
+use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
 use pocketmine\event\player\PlayerDeathEvent;
@@ -37,6 +39,7 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
@@ -177,6 +180,26 @@ class EventListener implements Listener
         $arrow = $event->getArrow();
         if ($arrow->namedtag->hasTag("Volley")) {
             $event->setCancelled();
+        }
+    }
+
+    /**
+     * @param InventoryTransactionEvent $event
+     *
+     * @priority HIGHEST
+     * @ignoreCancelled true
+     */
+    public function onTransaction(InventoryTransactionEvent $event)
+    {
+        $transaction = $event->getTransaction();
+        foreach ($transaction->getActions() as $action) {
+            if ($action instanceof SlotChangeAction) {
+                $target = $action->getTargetItem();
+                $source = $action->getSourceItem();
+                if ($source->getId() == Item::ENCHANTED_BOOK && $target->getId() !== Item::AIR) {
+                    $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new UseEnchantedBookTask($this->plugin, $transaction->getSource(), $action), 1);
+                }
+            }
         }
     }
 

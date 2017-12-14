@@ -21,7 +21,7 @@ class PiggyExplosion extends Explosion
      * PiggyExplosion constructor.
      * @param Position $center
      * @param $size
-     * @param null $what
+     * @param Player $what
      * @param Main $plugin
      */
     public function __construct(Position $center, $size, Player $what = null, Main $plugin)
