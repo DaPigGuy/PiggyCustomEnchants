@@ -45,7 +45,7 @@ class UseEnchantedBookTask extends PluginTask
                 if ($this->player->getCursorInventory()->contains($target)) { //W10 UI
                     $this->player->getCursorInventory()->removeItem($target);
                     $target = $this->plugin->addEnchantment($target, $enchant->getId(), $enchant->getLevel());
-                    $this->player->getInventory()->addItem($target);
+                    $this->player->getCursorInventory()->addItem($target);
                 } else {
                     $target = $this->plugin->addEnchantment($target, $enchant->getId(), $enchant->getLevel());
                     $this->player->getInventory()->setItem($this->action->getSlot(), $target);
