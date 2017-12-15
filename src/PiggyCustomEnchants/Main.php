@@ -24,6 +24,7 @@ use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\level\Position;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
@@ -211,6 +212,7 @@ class Main extends PluginBase
             BlockFactory::registerBlock(new PiggyObsidian(), true);
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(PigProjectile::class);
+            ItemFactory::registerItem(new Item(Item::ENCHANTED_BOOK, 0, "Enchanted Book")); //This is a temporary fix for name being Unknown when given due to no implementation in PMMP. Will remove when implemented in PMMP
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 20);
@@ -370,6 +372,8 @@ class Main extends PluginBase
     }
 
     /**
+     * Get enchantments on an item
+     *
      * @param Item $item
      * @return array
      */
