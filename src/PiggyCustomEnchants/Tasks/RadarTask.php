@@ -63,7 +63,7 @@ class RadarTask extends PluginTask
                                 $radar = true;
                                 $this->radars[$player->getLowerCaseName()] = true;
                                 if ($item->equalsExact($player->getInventory()->getItemInHand())) {
-                                    $player->sendTip(TextFormat::GREEN . "Nearest player " . $minimum . " blocks away.");
+                                    $player->sendTip(TextFormat::GREEN . "Nearest player " . round($minimum, 1) . " blocks away.");
                                 }
                                 break;
                             }
