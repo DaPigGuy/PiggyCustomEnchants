@@ -42,15 +42,21 @@ class UseEnchantedBookTask extends PluginTask
         $target = $this->action->getTargetItem();
         foreach ($this->plugin->getEnchantments($source) as $enchant) {
             if ($this->plugin->canBeEnchanted($target, $enchant, $enchant->getLevel())) {//TODO: Check XP
-                $target = $this->plugin->addEnchantment($target, $enchant->getId(), $enchant->getLevel());
-                $this->player->getInventory()->setItem($this->action->getSlot(), $target);
+                if ($this->player->getCursorInventory()->contains($target)) { //W10 UI
+                    $this->player->getCursorInventory()->removeItem($target);
+                    $target = $this->plugin->addEnchantment($target, $enchant->getId(), $enchant->getLevel());
+                    $this->player->getInventory()->addItem($target);
+                }else{
+                    $target = $this->plugin->addEnchantment($target, $enchant->getId(), $enchant->getLevel());
+                    $this->player->getInventory()->setItem($this->action->getSlot(), $target);
+                }
                 if ($this->player->getCursorInventory()->contains($source)) { //W10 UI
                     $this->player->getCursorInventory()->removeItem($source);
                 } else {
                     $this->player->getInventory()->removeItem($source);
                 }
                 $this->player->sendTip(TextFormat::GREEN . "Enchanting succeeded.");
-            }else{
+            } else {
                 $this->player->sendTip(TextFormat::RED . "The item is not compatible with this enchant.");
             }
         }
