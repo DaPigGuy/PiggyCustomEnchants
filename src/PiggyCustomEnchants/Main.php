@@ -373,8 +373,9 @@ class Main extends PluginBase
      * @param Item $item
      * @return array
      */
-    public function getEnchantments(Item $item){
-        if(!$item->hasEnchantments()){
+    public function getEnchantments(Item $item)
+    {
+        if (!$item->hasEnchantments()) {
             return [];
         }
         $enchants = [];
@@ -426,7 +427,7 @@ class Main extends PluginBase
             }
             $result = $this->canBeEnchanted($item, $enchant, $level);
             if ($result === true || $check !== true) {
-                if($item->getId() == Item::BOOK){
+                if ($item->getId() == Item::BOOK) {
                     $item = Item::get(Item::ENCHANTED_BOOK, $level);
                 }
                 $enchant->setLevel($level);
@@ -674,7 +675,7 @@ class Main extends PluginBase
         if ($item->getCount() > 1) {
             return self::MORE_THAN_ONE;
         }
-        if($item->getId() == Item::BOOK){
+        if ($item->getId() == Item::BOOK) {
             return true;
         }
         switch ($type) {
