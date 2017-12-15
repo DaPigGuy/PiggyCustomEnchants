@@ -21,7 +21,7 @@ color:
   common: yellow
   uncommon: blue
   rare: gold
-  mythical: light_purple
+  mythic: light_purple
 # Leave empty to allow jetpacks anywhere, or add worlds where jetpacks will be disabled: ["PvPArena", "AnotherWorld"]
 jetpack:
   disabled: []
