@@ -268,23 +268,25 @@ class CustomEnchantCommand extends PluginCommand
                     $this->errorForm($player, TextFormat::RED . "Invalid player.");
                     return false;
                 }
-                $result = $plugin->canBeEnchanted($target->getInventory()->getItemInHand(), $enchant, $data[1]);
-                if ($result !== true) {
-                    switch ($result) {
-                        case Main::NOT_COMPATIBLE:
-                            $this->errorForm($player, TextFormat::RED . "The item is not compatible with this enchant.");
-                            break;
-                        case Main::NOT_COMPATIBLE_WITH_OTHER_ENCHANT:
-                            $this->errorForm($player, TextFormat::RED . "The enchant is not compatible with another enchant.");
-                            break;
-                        case Main::MAX_LEVEL:
-                            $this->errorForm($player, TextFormat::RED . "The max level is " . $plugin->getEnchantMaxLevel($enchant) . ".");
-                            break;
-                        case Main::MORE_THAN_ONE:
-                            $this->errorForm($player, TextFormat::RED . "You can only enchant one item at a time.");
-                            break;
+                if (!$player->hasPermission("piggycustomenchants.overridecheck")) {
+                    $result = $plugin->canBeEnchanted($target->getInventory()->getItemInHand(), $enchant, $data[1]);
+                    if ($result !== true) {
+                        switch ($result) {
+                            case Main::NOT_COMPATIBLE:
+                                $this->errorForm($player, TextFormat::RED . "The item is not compatible with this enchant.");
+                                break;
+                            case Main::NOT_COMPATIBLE_WITH_OTHER_ENCHANT:
+                                $this->errorForm($player, TextFormat::RED . "The enchant is not compatible with another enchant.");
+                                break;
+                            case Main::MAX_LEVEL:
+                                $this->errorForm($player, TextFormat::RED . "The max level is " . $plugin->getEnchantMaxLevel($enchant) . ".");
+                                break;
+                            case Main::MORE_THAN_ONE:
+                                $this->errorForm($player, TextFormat::RED . "You can only enchant one item at a time.");
+                                break;
+                        }
+                        return false;
                     }
-                    return false;
                 }
                 $this->enchant($player, $data[0], $data[1], $data[2]);
                 return true;
