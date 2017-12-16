@@ -113,6 +113,8 @@ class Main extends PluginBase
     public $using;
     public $shrunk;
 
+    public $formsEnabled = false;
+
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel", "description"]
         CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1, "Reduces knockback by 25% per armor piece"],
@@ -208,6 +210,13 @@ class Main extends PluginBase
             $this->jetpackDisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
             if (count($this->jetpackDisabled) > 0) {
                 $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackDisabled) . ".");
+            }
+            if ($this->getConfig()->getNested("forms.enabled")) {
+                if ($this->getServer()->getPluginManager()->getPlugin("FormAPI") !== null) {
+                    $this->formsEnabled = true;
+                } else {
+                    $this->getLogger()->error("Forms are enabled but FormAPI is not found.");
+                }
             }
             BlockFactory::registerBlock(new PiggyObsidian(), true);
             Entity::registerEntity(Fireball::class);
@@ -472,17 +481,20 @@ class Main extends PluginBase
                 continue;
             }
             if ($sender !== null) {
-                if ($result == self::NOT_COMPATIBLE) {
-                    $sender->sendMessage(TextFormat::RED . "The item is not compatible with this enchant.");
-                }
-                if ($result == self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT) {
-                    $sender->sendMessage(TextFormat::RED . "The enchant is not compatible with another enchant.");
-                }
-                if ($result == self::MAX_LEVEL) {
-                    $sender->sendMessage(TextFormat::RED . "The max level is " . $this->getEnchantMaxLevel($enchant) . ".");
-                }
-                if ($result == self::MORE_THAN_ONE) {
-                    $sender->sendMessage(TextFormat::RED . "You can only enchant one item at a time.");
+                switch ($result) {
+                    case self::NOT_COMPATIBLE:
+                        $sender->sendMessage(TextFormat::RED . "The item is not compatible with this enchant.");
+                        break;
+                    case self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT:
+                        $sender->sendMessage(TextFormat::RED . "The enchant is not compatible with another enchant.");
+                        break;
+                    case self::MAX_LEVEL:
+                        $sender->sendMessage(TextFormat::RED . "The max level is " . $this->getEnchantMaxLevel($enchant) . ".");
+                        break;
+
+                    case self::MORE_THAN_ONE:
+                        $sender->sendMessage(TextFormat::RED . "You can only enchant one item at a time.");
+                        break;
                 }
             }
             continue;

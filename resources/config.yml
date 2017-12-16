@@ -22,6 +22,9 @@ color:
   uncommon: blue
   rare: gold
   mythic: light_purple
+# If forms are enabled or disabled. REQUIRES FormAPI by Jojoe77777
+forms:
+  enabled: false
 # Leave empty to allow jetpacks anywhere, or add worlds where jetpacks will be disabled: ["PvPArena", "AnotherWorld"]
 jetpack:
   disabled: []
