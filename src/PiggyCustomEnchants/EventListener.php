@@ -542,6 +542,16 @@ class EventListener implements Listener
                     $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
             }
+            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::LIGHTNING);
+            if ($enchantment !== null) {
+                $chance = 10 * $enchantment->getLevel();
+                $random = mt_rand(0, 100);
+                if ($random <= $chance) {
+                    $lightning = Entity::createEntity("Lightning", $entity->getLevel(), Entity::createBaseNBT($entity));
+                    $lightning->setOwningEntity($damager);
+                    $lightning->spawnToAll();
+                }
+            }
         }
         if ($event instanceof PlayerDeathEvent) {
             $drops = $event->getDrops();

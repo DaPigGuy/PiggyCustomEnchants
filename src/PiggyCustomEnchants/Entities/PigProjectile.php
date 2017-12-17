@@ -29,6 +29,16 @@ class PigProjectile extends Projectile
 
     const NETWORK_ID = 12;
 
+    const PORKLEVELS = [
+        //level => [damage, dinnerbone, zombie, drop id, drop name]
+        1 => [1, false, false, Item::AIR, ""],
+        2 => [2, false, false, Item::RAW_PORKCHOP, "Mysterious Raw Pork"],
+        3 => [2, false, false, Item::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
+        4 => [3, true, false, Item::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
+        5 => [5, false, true, Item::ROTTEN_FLESH, "Mysterious Rotten Pork"],
+        6 => [6, true, true, Item::ROTTEN_FLESH, "Mysterious Rotten Pork"]
+    ];
+
     /**
      * PigProjectile constructor.
      * @param Level $level
@@ -36,41 +46,22 @@ class PigProjectile extends Projectile
      * @param Entity|null $shootingEntity
      * @param int $porklevel
      */
-    public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, $porklevel = 1)
+    public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porklevel = 1)
     {
-        parent::__construct($level, $nbt, $shootingEntity);
         if ($porklevel < 1) {
             $porklevel = 1;
         }
         if ($porklevel > 6) {
             $porklevel = 6;
         }
-        switch ($porklevel) {
-            case 1:
-                $this->damage = 1.5;
-                break;
-            case 2:
-                $this->damage = 2;
-                break;
-            case 3:
-                $this->damage = 3;
-                break;
-            case 4: //Secret
-                $this->damage = 3;
-                $this->setNameTag("Dinnerbone");
-                break;
-            case 5: //Secret
-                $this->damage = 5;
-                $this->zombie = true;
-                break;
-            case 6: //Secret
-                $this->damage = 5;
-
-                $this->setNameTag("Dinnerbone");
-                $this->zombie = true;
-                break;
+        $values = self::PORKLEVELS[$porklevel];
+        $this->damage = $values[0];
+        if ($values[1]) {
+            $this->setNameTag("Dinnerbone");
         }
+        $this->zombie = $values[2];
         $this->porklevel = $porklevel;
+        parent::__construct($level, $nbt, $shootingEntity);
     }
 
     /**
@@ -84,22 +75,13 @@ class PigProjectile extends Projectile
             return false;
         }
         $hasUpdate = parent::entityBaseTick($tickDiff);
-        if (!$this->hadCollision) {
-            switch ($this->porklevel) {
-                case 2:
-                    $this->getLevel()->dropItem($this, Item::get(Item::RAW_PORKCHOP, 0, 1)->setCustomName("Mysterious Raw Pork"));
-                    break;
-                case 3:
-                case 4:
-                    $this->getLevel()->dropItem($this, Item::get(Item::COOKED_PORKCHOP, 0, 1)->setCustomName("Mysterious Cooked Pork"));
-                    break;
-                case 5:
-                case 6:
-                    $this->getLevel()->dropItem($this, Item::get(Item::ROTTEN_FLESH, 0, 1)->setCustomName("Mysterious Rotten Pork"));
-                    break;
+        if (!$this->isCollided) {
+            foreach ($this->getDrops() as $drop) {
+                $this->getLevel()->dropItem($this, $drop);
             }
         } else {
-            $this->close();
+            $this->flagForDespawn();
+            $hasUpdate = true;
         }
         return $hasUpdate;
     }
@@ -107,21 +89,26 @@ class PigProjectile extends Projectile
     /**
      * @param Player $player
      */
-    public function spawnTo(Player $player)
+    protected function sendSpawnPacket(Player $player): void
     {
         $pk = new AddEntityPacket();
-        if ($this->zombie) {
-            $pk->type = 36;
-        } else {
-            $pk->type = PigProjectile::NETWORK_ID;
-        }
+        $pk->type = $this->isZombie() ? Entity::ZOMBIE_PIGMAN : PigProjectile::NETWORK_ID;
         $pk->entityRuntimeId = $this->getId();
         $pk->position = $this->asVector3();
         $pk->motion = $this->getMotion();
         $pk->metadata = $this->dataProperties;
         $player->dataPacket($pk);
+    }
 
-        parent::spawnTo($player);
+    /**
+     * @return array
+     */
+    public function getDrops(): array
+    {
+        $values = self::PORKLEVELS[$this->getPorkLevel()];
+        return [
+            Item::get($values[3], 0, 1)->setCustomName($values[4])
+        ];
     }
 
     /**
@@ -130,5 +117,13 @@ class PigProjectile extends Projectile
     public function getPorkLevel()
     {
         return $this->porklevel;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isZombie()
+    {
+        return $this->zombie;
     }
 }

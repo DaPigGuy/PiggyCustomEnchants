@@ -3,7 +3,9 @@
 namespace PiggyCustomEnchants\Entities;
 
 use pocketmine\block\Block;
+use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
+use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 
 /**
@@ -14,6 +16,21 @@ class Fireball extends Projectile
 {
     const NETWORK_ID = 94;
 
+    protected $damage = 5;
+
+    /**
+     * @param Entity $entity
+     */
+    public function onCollideWithEntity(Entity $entity)
+    {
+        $ev = new EntityCombustByEntityEvent($this, $entity, 5);
+        $this->server->getPluginManager()->callEvent($ev);
+        if (!$ev->isCancelled()) {
+            $entity->setOnFire($ev->getDuration());
+        }
+        parent::onCollideWithEntity($entity);
+    }
+
     /**
      * @param int $tickDiff
      * @return bool
@@ -23,7 +40,7 @@ class Fireball extends Projectile
         if ($this->closed) {
             return false;
         }
-        if ($this->isAlive()) {
+        if (!$this->isFlaggedForDespawn()) {
             if ($this->isCollided) {
                 if (!$this->hadCollision) {
                     $this->hadCollision = true;
@@ -37,7 +54,7 @@ class Fireball extends Projectile
                         }
                     }
                 } else {
-                    $this->close();
+                    $this->flagForDespawn();
                 }
             }
         }

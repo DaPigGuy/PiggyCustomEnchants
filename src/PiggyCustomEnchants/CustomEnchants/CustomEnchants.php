@@ -35,6 +35,7 @@ class CustomEnchants extends Enchantment
     const BLESSED = 120;
     const DISARMOR = 121;
     const BACKSTAB = 122;
+    const LIGHTNING = 123;
 
     //TOOLS
     const EXPLOSIVE = 200; //Not accurate
