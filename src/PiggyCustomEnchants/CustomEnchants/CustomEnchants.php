@@ -54,7 +54,7 @@ class CustomEnchants extends Enchantment
 
     //BOWS
     /*const BOMBARDMENT = 300;
-    const LIGHTNING = 301;
+    TODO: Put a bow enchant as 301
     const FIREWORK = 302;*/
     const PARALYZE = 303;
     const MOLOTOV = 304; //Falling sand fire doesn't appear
