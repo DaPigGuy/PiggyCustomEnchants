@@ -116,6 +116,9 @@ class Main extends PluginBase
 
     public $formsEnabled = false;
 
+    public static $lightningFlames = false;
+    public static $blazeFlames = false;
+
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel", "description"]
         CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1, "Reduces knockback by 25% per armor piece"],
@@ -209,16 +212,22 @@ class Main extends PluginBase
         if (!$this->isSpoon()) {
             $this->initCustomEnchants();
             $this->saveDefaultConfig();
-            $this->jetpackDisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
-            if (count($this->jetpackDisabled) > 0) {
-                $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackDisabled) . ".");
-            }
             if ($this->getConfig()->getNested("forms.enabled")) {
                 if ($this->getServer()->getPluginManager()->getPlugin("FormAPI") !== null) {
                     $this->formsEnabled = true;
                 } else {
                     $this->getLogger()->error("Forms are enabled but FormAPI is not found.");
                 }
+            }
+            if ($this->getConfig()->getNested("blaze.flames")) {
+                self::$blazeFlames = true;
+            }
+            if ($this->getConfig()->getNested("lightning.flames")) {
+                self::$lightningFlames = true;
+            }
+            $this->jetpackDisabled = $this->getConfig()->getNested("jetpack.disabled") ?? [];
+            if (count($this->jetpackDisabled) > 0) {
+                $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackDisabled) . ".");
             }
             BlockFactory::registerBlock(new PiggyObsidian(), true);
             Entity::registerEntity(Fireball::class);

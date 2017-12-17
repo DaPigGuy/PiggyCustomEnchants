@@ -2,6 +2,7 @@
 
 namespace PiggyCustomEnchants\Entities;
 
+use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
@@ -45,7 +46,7 @@ class Lightning extends Entity
                 }
             }
         }
-        if ($this->getLevel()->getBlock($this)->canBeFlowedInto()) {
+        if ($this->getLevel()->getBlock($this)->canBeFlowedInto() && Main::$lightningFlames) {
             $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
         }
         if ($this->age > 20) {

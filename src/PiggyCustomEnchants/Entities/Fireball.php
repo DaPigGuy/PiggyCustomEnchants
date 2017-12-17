@@ -2,6 +2,7 @@
 
 namespace PiggyCustomEnchants\Entities;
 
+use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
@@ -48,10 +49,8 @@ class Fireball extends Projectile
                     $this->motionY = 0;
                     $this->motionZ = 0;
                     $this->server->getPluginManager()->callEvent(new ProjectileHitEvent($this));
-                    if ($this->isCollidedHorizontally || $this->isCollidedVertically) {
-                        if ($this->getLevel()->getBlock($this)->canBeFlowedInto()) {
-                            $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
-                        }
+                    if (($this->isCollidedHorizontally || $this->isCollidedVertically) && $this->getLevel()->getBlock($this)->canBeFlowedInto() && Main::$blazeFlames) {
+                        $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
                     }
                 } else {
                     $this->flagForDespawn();
