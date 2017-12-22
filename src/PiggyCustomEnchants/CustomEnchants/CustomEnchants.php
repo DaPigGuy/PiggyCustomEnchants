@@ -141,10 +141,7 @@ class CustomEnchants extends Enchantment
      */
     public static function getEnchantment(int $id)
     {
-        if (isset(self::$enchantments[$id])) {
-            return clone self::$enchantments[$id];
-        }
-        return null;
+        return self::$enchantments[$id] ?? null;
     }
 
     /**
@@ -153,8 +150,9 @@ class CustomEnchants extends Enchantment
      */
     public static function getEnchantmentByName(string $name)
     {
-        if (defined(CustomEnchants::class . "::" . strtoupper($name))) {
-            return self::getEnchantment(constant(CustomEnchants::class . "::" . strtoupper($name)));
+        $const = CustomEnchants::class . "::" . strtoupper($name);
+        if (defined($const)) {
+            return self::getEnchantment(constant($const));
         }
         return null;
     }

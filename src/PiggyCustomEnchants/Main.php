@@ -24,6 +24,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use pocketmine\item\Armor;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\level\Position;
@@ -367,7 +368,7 @@ class Main extends PluginBase
                 $rarity = CustomEnchants::RARITY_MYTHIC;
                 break;
         }
-        $ce = new CustomEnchants($id, $data[0], $rarity, CustomEnchants::ACTIVATION_SELF, $slot);
+        $ce = new CustomEnchants($id, $data[0], $rarity, $slot, $data[4]);
         return $ce;
     }
 
@@ -376,7 +377,7 @@ class Main extends PluginBase
      *
      * @param Item $item
      * @param $id
-     * @return null|CustomEnchants
+     * @return null|EnchantmentInstance
      */
     public function getEnchantment(Item $item, $id)
     {
@@ -385,8 +386,7 @@ class Main extends PluginBase
         }
         foreach ($item->getNamedTag()->ench as $entry) {
             if ($entry["id"] === $id) {
-                $e = CustomEnchants::getEnchantment($entry["id"])->setLevel($entry["lvl"]);
-                return $e;
+                return new EnchantmentInstance(CustomEnchants::getEnchantment($entry["id"]), $entry["lvl"]);
             }
         }
         return null;
@@ -405,7 +405,7 @@ class Main extends PluginBase
         }
         $enchants = [];
         foreach ($item->getNamedTag()->ench as $entry) {
-            $enchants[] = CustomEnchants::getEnchantment($entry["id"])->setLevel($entry["lvl"]);
+            $enchants[] = new EnchantmentInstance(CustomEnchants::getEnchantment($entry["id"]), $entry["lvl"]);
         }
         return $enchants;
     }
@@ -455,7 +455,6 @@ class Main extends PluginBase
                 if ($item->getId() == Item::BOOK) {
                     $item = Item::get(Item::ENCHANTED_BOOK, $level);
                 }
-                $enchant->setLevel($level);
                 if (!$item->hasCompoundTag()) {
                     $tag = new CompoundTag("", []);
                 } else {
@@ -470,10 +469,10 @@ class Main extends PluginBase
                     if ($entry["id"] === $enchant->getId()) {
                         $tag->ench->{$k} = new CompoundTag("", [
                             "id" => new ShortTag("id", $enchant->getId()),
-                            "lvl" => new ShortTag("lvl", $enchant->getLevel())
+                            "lvl" => new ShortTag("lvl", $level)
                         ]);
                         $item->setNamedTag($tag);
-                        $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($enchant->getLevel()), $item->getName()));
+                        $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level), $item->getName()));
                         $found = true;
                         break;
                     }
@@ -481,11 +480,10 @@ class Main extends PluginBase
                 if (!$found) {
                     $tag->ench->{count($tag->ench->getValue()) + 1} = new CompoundTag($enchant->getName(), [
                         "id" => new ShortTag("id", $enchant->getId()),
-                        "lvl" => new ShortTag("lvl", $enchant->getLevel())
+                        "lvl" => new ShortTag("lvl", $level)
                     ]);
-                    $level = $this->getRomanNumber($enchant->getLevel());
                     $item->setNamedTag($tag);
-                    $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $level);
+                    $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level));
                 }
                 if ($sender !== null) {
                     $sender->sendMessage(TextFormat::GREEN . "Enchanting succeeded.");
