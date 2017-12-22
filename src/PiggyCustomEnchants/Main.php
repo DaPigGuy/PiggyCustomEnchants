@@ -516,14 +516,17 @@ class Main extends PluginBase
      * Removes enchantment from item
      *
      * @param Item $item
-     * @param CustomEnchants $enchant
+     * @param $enchant
      * @param int $level
      * @return bool|Item
      */
-    public function removeEnchantment(Item $item, CustomEnchants $enchant, $level = -1)
+    public function removeEnchantment(Item $item, $enchant, $level = -1)
     {
         if (!$item->hasEnchantments()) {
             return false;
+        }
+        if ($enchant instanceof EnchantmentInstance) {
+            $enchant = $enchant->getType();
         }
         $tag = $item->getNamedTag();
         $item = Item::get($item->getId(), $item->getDamage(), $item->getCount());
