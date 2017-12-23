@@ -688,13 +688,18 @@ class Main extends PluginBase
      * Checks if an item can be enchanted with a specific enchantment and level
      *
      * @param Item $item
-     * @param EnchantmentInstance $enchantinstance
+     * @param $enchant
      * @param $level
      * @return bool
      */
-    public function canBeEnchanted(Item $item, EnchantmentInstance $enchantinstance, $level)
+    public function canBeEnchanted(Item $item, $enchant, $level)
     {
-        $enchant = $enchantinstance->getType();
+        if ($enchant instanceof EnchantmentInstance) {
+            $enchant = $enchant->getType();
+        } elseif ($enchant instanceof CustomEnchants !== true) {
+            $this->getLogger()->error("Argument '$enchant' must be an instance EnchantmentInstance or CustomEnchants.");
+            return false;
+        }
         $type = $this->getEnchantType($enchant);
         if ($this->getEnchantMaxLevel($enchant) < $level) {
             return self::MAX_LEVEL;
