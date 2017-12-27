@@ -1,15 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Kevin
- * Date: 12/27/2017
- * Time: 12:45 PM
- */
 
 namespace PiggyCustomEnchants\CustomEnchants;
 
 use pocketmine\item\enchantment\Enchantment;
 
+/**
+ * Class CustomEnchants
+ * @package PiggyCustomEnchants\CustomEnchants
+ */
 class CustomEnchants extends Enchantment
 {
     public static function init()
