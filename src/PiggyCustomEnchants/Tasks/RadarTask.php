@@ -2,7 +2,7 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\Player;
@@ -36,7 +36,7 @@ class RadarTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $radar = false;
             foreach ($player->getInventory()->getContents() as $item) {
-                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::RADAR);
+                $enchantment = $item->getEnchantment(CustomEnchantsIds::RADAR);
                 if ($enchantment !== null) {
                     $distance = [];
                     foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {

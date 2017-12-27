@@ -2,7 +2,7 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Effect;
 use pocketmine\scheduler\PluginTask;
@@ -31,7 +31,7 @@ class EffectTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::HASTE);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HASTE);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::HASTE);
                 $effect->setAmplifier($enchantment->getLevel() - 1);
@@ -39,7 +39,7 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::OXYGENATE);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::OXYGENATE);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::WATER_BREATHING);
                 $effect->setAmplifier(0);
@@ -47,7 +47,7 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getHelmet(), CustomEnchants::GLOWING);
+            $enchantment = $player->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::GLOWING);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::NIGHT_VISION);
                 $effect->setAmplifier(0);
@@ -61,7 +61,7 @@ class EffectTask extends PluginTask
                     unset($this->plugin->glowing[$player->getLowerCaseName()]);
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::ENRAGED);
+            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::ENRAGED);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::STRENGTH);
                 $effect->setAmplifier($enchantment->getLevel() - 1);
@@ -69,7 +69,7 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getBoots(), CustomEnchants::GEARS);
+            $enchantment = $player->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::GEARS);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::SPEED);
                 $effect->setAmplifier(0);
@@ -78,7 +78,7 @@ class EffectTask extends PluginTask
                 $player->addEffect($effect);
             }
             foreach ($player->getInventory()->getArmorContents() as $slot => $armor) {
-                $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::OBSIDIANSHIELD);
+                $enchantment = $armor->getEnchantment(CustomEnchantsIds::OBSIDIANSHIELD);
                 if ($enchantment !== null) {
                     $effect = Effect::getEffect(Effect::FIRE_RESISTANCE);
                     $effect->setAmplifier(0);
@@ -86,7 +86,7 @@ class EffectTask extends PluginTask
                     $effect->setVisible(false);
                     $player->addEffect($effect);
                 }
-                $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::OVERLOAD);
+                $enchantment = $armor->getEnchantment(CustomEnchantsIds::OVERLOAD);
                 if ($enchantment !== null) {
                     if (!isset($this->plugin->overload[$player->getLowerCaseName() . "||" . $slot])) {
                         $player->setMaxHealth($player->getMaxHealth() + (2 * $enchantment->getLevel()));

@@ -2,8 +2,7 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
@@ -33,7 +32,7 @@ class SpiderTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER);
+            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER);
             if($enchantment !== null){
                 $blocks = $player->getLevel()->getBlock($player)->getHorizontalSides(); //getBlocksAround() returns an empty array...
                 $nonair = 0;

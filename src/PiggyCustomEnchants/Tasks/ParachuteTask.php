@@ -3,7 +3,7 @@
 namespace PiggyCustomEnchants\Tasks;
 
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\math\Vector3;
 use pocketmine\scheduler\PluginTask;
@@ -33,7 +33,7 @@ class ParachuteTask extends PluginTask
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $chestplate = $player->getInventory()->getChestplate();
-            $enchantment = $this->plugin->getEnchantment($chestplate, CustomEnchants::PARACHUTE);
+            $enchantment = $chestplate->getEnchantment(CustomEnchantsIds::PARACHUTE);
             if ($enchantment !== null) {
                 $motion = $player->getMotion();
                 if ($this->plugin->checkBlocks($player, 0, 3)) {

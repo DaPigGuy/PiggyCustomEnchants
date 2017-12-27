@@ -2,7 +2,7 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\level\particle\FlameParticle;
 use pocketmine\Player;
@@ -33,7 +33,7 @@ class JetpackTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getBoots(), CustomEnchants::JETPACK);
+            $enchantment = $player->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::JETPACK);
             if ($enchantment !== null) {
                 if (isset($this->plugin->flying[$player->getLowerCaseName()]) && $this->plugin->flying[$player->getLowerCaseName()] > time()) {
                     if (!in_array($player->getLevel()->getName(), $this->plugin->jetpackDisabled)) {

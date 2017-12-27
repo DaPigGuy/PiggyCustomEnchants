@@ -3,7 +3,7 @@
 namespace PiggyCustomEnchants\Tasks;
 
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
@@ -33,7 +33,7 @@ class ProwlTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::PROWL);
+            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::PROWL);
             if ($enchantment !== null && $player->isSneaking()) {
                 foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                     $p->hidePlayer($player);

@@ -2,7 +2,7 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Item;
 use pocketmine\entity\projectile\Projectile;
@@ -36,7 +36,7 @@ class ForcefieldTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $forcefields = 0;
             foreach ($player->getInventory()->getArmorContents() as $armor) {
-                $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::FORCEFIELD);
+                $enchantment = $armor->getEnchantment(CustomEnchantsIds::FORCEFIELD);
                 if ($enchantment !== null) {
                     $forcefields++;
                 }

@@ -5,6 +5,7 @@ namespace PiggyCustomEnchants;
 use PiggyCustomEnchants\Blocks\PiggyObsidian;
 use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\Lightning;
 use PiggyCustomEnchants\Entities\PigProjectile;
@@ -122,90 +123,90 @@ class Main extends PluginBase
 
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel", "description"]
-        CustomEnchants::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1, "Reduces knockback by 25% per armor piece"],
-        CustomEnchants::ANTITOXIN => ["Antitoxin", "Helmets", "Effect", "Mythic", 1, "Immunity to poison"],
-        CustomEnchants::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5, "Increases damage in air"],
-        CustomEnchants::ARMORED => ["Armored", "Armor", "Damage", "Rare", 5, "Decreases sword damage by 20l%"],
-        CustomEnchants::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5, "Automatically repairs items when moving"],
-        CustomEnchants::BACKSTAB => ["Backstab", "Weapons", "Damage", "Uncommon", 5, "When hitting from behind, you deal more damage."],
-        CustomEnchants::BERSERKER => ["Berserker", "Armor", "Damaged", "Rare", 5, "Gives strength on low health"],
-        CustomEnchants::BLESSED => ["Blessed", "Weapons", "Damage", "Uncommon", 3, "15l% (l = level) chance to remove bad effects"],
-        CustomEnchants::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1, "Shoots fireballs"],
-        CustomEnchants::BLIND => ["Blind", "Weapons", "Damage", "Common", 5, "Gives enemies blindness"],
-        CustomEnchants::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "Uncommon", 5, "Collect bounties (items) when hitting enemies."],
-        CustomEnchants::CACTUS => ["Cactus", "Armor", "Equip", "Rare", 1, "Poke people around you", "Poke people around you"],
-        CustomEnchants::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5, "Increases damage when sprinting"],
-        CustomEnchants::CHICKEN => ["Chicken", "Chestplate", "Equip", "Uncommon", 5, "Lays egg every 5 minutes, 5l% (l = level) chance of rare drop"],
-        CustomEnchants::CLOAKING => ["Cloaking", "Armor", "Damaged", "Uncommon", 5, "Becomes invisible when hit"],
-        CustomEnchants::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5, "Gives enemies nausea and slowness"],
-        CustomEnchants::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5, "Gives enemies nausea and slowness"],
-        CustomEnchants::CURSED => ["Cursed", "Armor", "Damaged", "Uncommon", 5, "Gives wither to enemy when hit"],
-        CustomEnchants::DEATHBRINGER => ["Deathbringer", "Weapons", "Damage", "Rare", 5, "Increases damage"],
-        CustomEnchants::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 5, "10l% chance to disarm enemy"],
-        CustomEnchants::DISARMOR => ["Disarmor", "Weapons", "Damage", "Uncommon", 5, "10l% chance to disarmor enemy"],
-        CustomEnchants::DRILLER => ["Driller", "Tools", "Break", "Uncommon", 5, "Breaks a 3 by 3 by 1 + level"],
-        CustomEnchants::DRUNK => ["Drunk", "Armor", "Damaged", "Rare", 5, "Gives slowness, mining fatigue, and nausea to enemy when hit"],
-        CustomEnchants::ENDERSHIFT => ["Endershift", "Armor", "Damaged", "Rare", 5, "Gives speed and extra health when low on health"],
-        CustomEnchants::ENERGIZING => ["Energizing", "Tools", "Break", "Uncommon", 5, "Gives haste when block is broken"],
-        CustomEnchants::ENLIGHTED => ["Enlighted", "Armor", "Damaged", "Uncommon", 5, "Gives regeneration when hit"],
-        CustomEnchants::ENRAGED => ["Enraged", "Chestplate", "Equip", "Rare", 5, "Strength per level"],
-        CustomEnchants::EXPLOSIVE => ["Explosive", "Tools", "Break", "Rare", 5, "Cause an explosion when block is broken"],
-        CustomEnchants::FARMER => ["Farmer", "Hoe", "Break", "Uncommon", 1, "Automatically regrows crops when harvested"],
-        CustomEnchants::FERTILIZER => ["Fertilizer", "Hoe", "Interact", "Uncommon", 3, "Creates farmland in a level radius around the block"],
-        CustomEnchants::FOCUSED => ["Focused", "Helmets", "Effect", "Uncommon", 5, "Nausea will affect you less"],
-        CustomEnchants::FORCEFIELD => ["Forcefield", "Armor", "Equip", "Mythic", 1, "Deflects projectiles and living entities in a 0.75x (x = # of armor pieces)"],
-        CustomEnchants::FROZEN => ["Frozen", "Armor", "Damaged", "Rare", 5, "Gives slowness to enemy when hit"],
-        CustomEnchants::GEARS => ["Gears", "Boots", "Equip", "Uncommon", 5, "Gives speed"],
-        CustomEnchants::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1, "Gives night vision"],
-        CustomEnchants::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5, "Flings enemy into the air"],
-        CustomEnchants::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1, "Pulls you to location of arrow. If enemy is hit, the enemy will be pulled to you."],
-        CustomEnchants::GROW => ["Grow", "Armor", "Sneak", "Uncommon", 5, "Increases size on sneak (Must be wearing full set of Grow armor)"],
-        CustomEnchants::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5, "5l% (l = level) chance of trapping enemies in a fake prison"],
-        CustomEnchants::HARDENED => ["Hardened", "Armor", "Damaged", "Uncommon", 5, "Gives weakness to enemy when hit"],
-        CustomEnchants::HASTE => ["Haste", "Tools", "Held", "Uncommon", 5, "Gives haste when held"],
-        CustomEnchants::HARVEST => ["Harvest", "Hoe", "Break", "Uncommon", 3, "Harvest crops in a level radius around the block"],
-        CustomEnchants::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5, "Increases damage if enemy is shot in the head"],
-        CustomEnchants::HEALING => ["Healing", "Bow", "Damage", "Rare", 5, "Heals target when shot"],
-        CustomEnchants::HEAVY => ["Heavy", "Armor", "Damage", "Rare", 5, "Decreases damage from axes by 20l%"],
-        CustomEnchants::IMPLANTS => ["Implants", "Helmets", "Move", "Rare", 5, "Replenishes hunger and air"],
-        CustomEnchants::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3, "Enable flying (you fly where you look) when you sneak."],
-        CustomEnchants::JACKPOT => ["Jackpot", "Tools", "Break", "Mythic", 10, "10l% chance to increase the ore tier"],
-        CustomEnchants::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5, "Heals when damaging enemies"],
-        CustomEnchants::LIGHTNING => ["Lightning", "Weapons", "Damage", "Rare", 5, "10l% chance to strike enemies with lightning"],
-        CustomEnchants::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1, "Mines all logs connected to log when broken"],
-        CustomEnchants::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "Uncommon", 2, "Turns lava into obsidian around you"],
-        CustomEnchants::MEDITATION => ["Meditation", "Helmets", "Equip", "Uncommon", 5, "Replenish health and hunger every 20 seconds (half a hunger bar/heart per level)"],
-        CustomEnchants::MISSILE => ["Missile", "Bow", "Projectile_Hit", "Rare", 5, "Spawns tnt on hit"],
-        CustomEnchants::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5, "Starts fire around target"],
-        CustomEnchants::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5, "Sets enemy on fire when hit"],
-        CustomEnchants::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5, "Gives fire resistance while worn"],
-        CustomEnchants::OVERLOAD => ["Overload", "Armor", "Equip", "Mythic", 3, "Gives 1 extra heart per level per armor piece"],
-        CustomEnchants::OXYGENATE => ["Oxygenate", "Tools", "Break", "Uncommon", 1, "Breathe underwater when held"],
-        CustomEnchants::PARACHUTE => ["Parachute", "Chestplate", "Equip", "Uncommon", 1, "Slows your fall (above 3 blocks)s"],
-        CustomEnchants::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5, "Gives slowness, blindness, and weakness"],
-        CustomEnchants::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5, "Ignores armor when dealing damage"],
-        CustomEnchants::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5, "Poisons enemies"],
-        CustomEnchants::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5, "Poisons enemy when hit"],
-        CustomEnchants::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3, "Shoot pigs"],
-        CustomEnchants::PROWL => ["Prowl", "Chestplate", "Equip", "Rare", 1, "Goes invisible when sneaking, gives slowness"],
-        CustomEnchants::QUICKENING => ["Quickening", "Tools", "Break", "Uncommon", 5, "Gives speed when block is broken"],
-        CustomEnchants::RADAR => ["Radar", "Compass", "Inventory", "Rare", 5, "Points to nearest player in a 50l (l = level) range."],
-        CustomEnchants::REVIVE => ["Revive", "Armor", "Death", "Rare", 5, "Will revive you when you die. (will remove enchantment)"],
-        CustomEnchants::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5, "Gives nausea to enemy when hit"],
-        CustomEnchants::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5, "Spawn TNT when you die."],
-        CustomEnchants::SHRINK => ["Shrink", "Armor", "Sneak", "Uncommon", 2, "Decreases size on sneak (Must be wearing full set of Shrink armor)"],
-        CustomEnchants::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1, "Switches position with target"],
-        CustomEnchants::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1, "Automatically smelts drops when broken"],
-        CustomEnchants::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1, "Keeps item after death (will remove enchantment)"],
-        CustomEnchants::SPIDER => ["Spider", "Chestplate", "Equip", "Rare", 1, "Climb walls"],
-        CustomEnchants::SPRINGS => ["Springs", "Boots", "Equip", "Uncommon", 5, "Gives a jump boost"],
-        CustomEnchants::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5, "Deal part of fall damage to enemy when taking fall damage"],
-        CustomEnchants::TANK => ["Tank", "Armor", "Damage", "Uncommon", 5, "Spawn TNT when you die."],
-        CustomEnchants::TELEPATHY => ["Telepathy", "Tools", "Break", "Rare", 1, "Automatically puts drops in inventory."],
-        CustomEnchants::VACUUM => ["Vacuum", "Chestplate", "Equip", "Rare", 3, "Suck up items in a 3l radius"],
-        CustomEnchants::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1, "Heals by part of damage dealt"],
-        CustomEnchants::VOLLEY => ["Volley", "Bow", "Shoot", "Uncommon", 5, "Shoot multiple arrows in a cone"],
-        CustomEnchants::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5, "Gives enemies wither"]
+        CustomEnchantsIds::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1, "Reduces knockback by 25% per armor piece"],
+        CustomEnchantsIds::ANTITOXIN => ["Antitoxin", "Helmets", "Effect", "Mythic", 1, "Immunity to poison"],
+        CustomEnchantsIds::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5, "Increases damage in air"],
+        CustomEnchantsIds::ARMORED => ["Armored", "Armor", "Damage", "Rare", 5, "Decreases sword damage by 20l%"],
+        CustomEnchantsIds::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5, "Automatically repairs items when moving"],
+        CustomEnchantsIds::BACKSTAB => ["Backstab", "Weapons", "Damage", "Uncommon", 5, "When hitting from behind, you deal more damage."],
+        CustomEnchantsIds::BERSERKER => ["Berserker", "Armor", "Damaged", "Rare", 5, "Gives strength on low health"],
+        CustomEnchantsIds::BLESSED => ["Blessed", "Weapons", "Damage", "Uncommon", 3, "15l% (l = level) chance to remove bad effects"],
+        CustomEnchantsIds::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1, "Shoots fireballs"],
+        CustomEnchantsIds::BLIND => ["Blind", "Weapons", "Damage", "Common", 5, "Gives enemies blindness"],
+        CustomEnchantsIds::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "Uncommon", 5, "Collect bounties (items) when hitting enemies."],
+        CustomEnchantsIds::CACTUS => ["Cactus", "Armor", "Equip", "Rare", 1, "Poke people around you", "Poke people around you"],
+        CustomEnchantsIds::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5, "Increases damage when sprinting"],
+        CustomEnchantsIds::CHICKEN => ["Chicken", "Chestplate", "Equip", "Uncommon", 5, "Lays egg every 5 minutes, 5l% (l = level) chance of rare drop"],
+        CustomEnchantsIds::CLOAKING => ["Cloaking", "Armor", "Damaged", "Uncommon", 5, "Becomes invisible when hit"],
+        CustomEnchantsIds::CRIPPLINGSTRIKE => ["Cripple", "Weapons", "Damage", "Common", 5, "Gives enemies nausea and slowness"],
+        CustomEnchantsIds::CRIPPLE => ["Cripple", "Weapons", "Damage", "Common", 5, "Gives enemies nausea and slowness"],
+        CustomEnchantsIds::CURSED => ["Cursed", "Armor", "Damaged", "Uncommon", 5, "Gives wither to enemy when hit"],
+        CustomEnchantsIds::DEATHBRINGER => ["Deathbringer", "Weapons", "Damage", "Rare", 5, "Increases damage"],
+        CustomEnchantsIds::DISARMING => ["Disarming", "Weapons", "Damage", "Uncommon", 5, "10l% chance to disarm enemy"],
+        CustomEnchantsIds::DISARMOR => ["Disarmor", "Weapons", "Damage", "Uncommon", 5, "10l% chance to disarmor enemy"],
+        CustomEnchantsIds::DRILLER => ["Driller", "Tools", "Break", "Uncommon", 5, "Breaks a 3 by 3 by 1 + level"],
+        CustomEnchantsIds::DRUNK => ["Drunk", "Armor", "Damaged", "Rare", 5, "Gives slowness, mining fatigue, and nausea to enemy when hit"],
+        CustomEnchantsIds::ENDERSHIFT => ["Endershift", "Armor", "Damaged", "Rare", 5, "Gives speed and extra health when low on health"],
+        CustomEnchantsIds::ENERGIZING => ["Energizing", "Tools", "Break", "Uncommon", 5, "Gives haste when block is broken"],
+        CustomEnchantsIds::ENLIGHTED => ["Enlighted", "Armor", "Damaged", "Uncommon", 5, "Gives regeneration when hit"],
+        CustomEnchantsIds::ENRAGED => ["Enraged", "Chestplate", "Equip", "Rare", 5, "Strength per level"],
+        CustomEnchantsIds::EXPLOSIVE => ["Explosive", "Tools", "Break", "Rare", 5, "Cause an explosion when block is broken"],
+        CustomEnchantsIds::FARMER => ["Farmer", "Hoe", "Break", "Uncommon", 1, "Automatically regrows crops when harvested"],
+        CustomEnchantsIds::FERTILIZER => ["Fertilizer", "Hoe", "Interact", "Uncommon", 3, "Creates farmland in a level radius around the block"],
+        CustomEnchantsIds::FOCUSED => ["Focused", "Helmets", "Effect", "Uncommon", 5, "Nausea will affect you less"],
+        CustomEnchantsIds::FORCEFIELD => ["Forcefield", "Armor", "Equip", "Mythic", 1, "Deflects projectiles and living entities in a 0.75x (x = # of armor pieces)"],
+        CustomEnchantsIds::FROZEN => ["Frozen", "Armor", "Damaged", "Rare", 5, "Gives slowness to enemy when hit"],
+        CustomEnchantsIds::GEARS => ["Gears", "Boots", "Equip", "Uncommon", 5, "Gives speed"],
+        CustomEnchantsIds::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1, "Gives night vision"],
+        CustomEnchantsIds::GOOEY => ["Gooey", "Weapons", "Damage", "Uncommon", 5, "Flings enemy into the air"],
+        CustomEnchantsIds::GRAPPLING => ["Grappling", "Bow", "Projectile_Hit", "Rare", 1, "Pulls you to location of arrow. If enemy is hit, the enemy will be pulled to you."],
+        CustomEnchantsIds::GROW => ["Grow", "Armor", "Sneak", "Uncommon", 5, "Increases size on sneak (Must be wearing full set of Grow armor)"],
+        CustomEnchantsIds::HALLUCINATION => ["Hallucination", "Weapons", "Damage", "Mythic", 5, "5l% (l = level) chance of trapping enemies in a fake prison"],
+        CustomEnchantsIds::HARDENED => ["Hardened", "Armor", "Damaged", "Uncommon", 5, "Gives weakness to enemy when hit"],
+        CustomEnchantsIds::HASTE => ["Haste", "Tools", "Held", "Uncommon", 5, "Gives haste when held"],
+        CustomEnchantsIds::HARVEST => ["Harvest", "Hoe", "Break", "Uncommon", 3, "Harvest crops in a level radius around the block"],
+        CustomEnchantsIds::HEADHUNTER => ["Headhunter", "Bow", "Damage", "Uncommon", 5, "Increases damage if enemy is shot in the head"],
+        CustomEnchantsIds::HEALING => ["Healing", "Bow", "Damage", "Rare", 5, "Heals target when shot"],
+        CustomEnchantsIds::HEAVY => ["Heavy", "Armor", "Damage", "Rare", 5, "Decreases damage from axes by 20l%"],
+        CustomEnchantsIds::IMPLANTS => ["Implants", "Helmets", "Move", "Rare", 5, "Replenishes hunger and air"],
+        CustomEnchantsIds::JETPACK => ["Jetpack", "Boots", "Sneak", "Rare", 3, "Enable flying (you fly where you look) when you sneak."],
+        CustomEnchantsIds::JACKPOT => ["Jackpot", "Tools", "Break", "Mythic", 10, "10l% chance to increase the ore tier"],
+        CustomEnchantsIds::LIFESTEAL => ["Lifesteal", "Weapons", "Damage", "Common", 5, "Heals when damaging enemies"],
+        CustomEnchantsIds::LIGHTNING => ["Lightning", "Weapons", "Damage", "Rare", 5, "10l% chance to strike enemies with lightning"],
+        CustomEnchantsIds::LUMBERJACK => ["Lumberjack", "Axe", "Break", "Rare", 1, "Mines all logs connected to log when broken"],
+        CustomEnchantsIds::MAGMAWALKER => ["Magma Walker", "Boots", "Move", "Uncommon", 2, "Turns lava into obsidian around you"],
+        CustomEnchantsIds::MEDITATION => ["Meditation", "Helmets", "Equip", "Uncommon", 5, "Replenish health and hunger every 20 seconds (half a hunger bar/heart per level)"],
+        CustomEnchantsIds::MISSILE => ["Missile", "Bow", "Projectile_Hit", "Rare", 5, "Spawns tnt on hit"],
+        CustomEnchantsIds::MOLOTOV => ["Molotov", "Bow", "Projectile_Hit", "Uncommon", 5, "Starts fire around target"],
+        CustomEnchantsIds::MOLTEN => ["Molten", "Armor", "Damaged", "Rare", 5, "Sets enemy on fire when hit"],
+        CustomEnchantsIds::OBSIDIANSHIELD => ["Obsidian Shield", "Armor", "Equip", "Common", 5, "Gives fire resistance while worn"],
+        CustomEnchantsIds::OVERLOAD => ["Overload", "Armor", "Equip", "Mythic", 3, "Gives 1 extra heart per level per armor piece"],
+        CustomEnchantsIds::OXYGENATE => ["Oxygenate", "Tools", "Break", "Uncommon", 1, "Breathe underwater when held"],
+        CustomEnchantsIds::PARACHUTE => ["Parachute", "Chestplate", "Equip", "Uncommon", 1, "Slows your fall (above 3 blocks)s"],
+        CustomEnchantsIds::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5, "Gives slowness, blindness, and weakness"],
+        CustomEnchantsIds::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5, "Ignores armor when dealing damage"],
+        CustomEnchantsIds::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5, "Poisons enemies"],
+        CustomEnchantsIds::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5, "Poisons enemy when hit"],
+        CustomEnchantsIds::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3, "Shoot pigs"],
+        CustomEnchantsIds::PROWL => ["Prowl", "Chestplate", "Equip", "Rare", 1, "Goes invisible when sneaking, gives slowness"],
+        CustomEnchantsIds::QUICKENING => ["Quickening", "Tools", "Break", "Uncommon", 5, "Gives speed when block is broken"],
+        CustomEnchantsIds::RADAR => ["Radar", "Compass", "Inventory", "Rare", 5, "Points to nearest player in a 50l (l = level) range."],
+        CustomEnchantsIds::REVIVE => ["Revive", "Armor", "Death", "Rare", 5, "Will revive you when you die. (will remove enchantment)"],
+        CustomEnchantsIds::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5, "Gives nausea to enemy when hit"],
+        CustomEnchantsIds::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5, "Spawn TNT when you die."],
+        CustomEnchantsIds::SHRINK => ["Shrink", "Armor", "Sneak", "Uncommon", 2, "Decreases size on sneak (Must be wearing full set of Shrink armor)"],
+        CustomEnchantsIds::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1, "Switches position with target"],
+        CustomEnchantsIds::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1, "Automatically smelts drops when broken"],
+        CustomEnchantsIds::SOULBOUND => ["Soulbound", "Global", "Death", "Mythic", 1, "Keeps item after death (will remove enchantment)"],
+        CustomEnchantsIds::SPIDER => ["Spider", "Chestplate", "Equip", "Rare", 1, "Climb walls"],
+        CustomEnchantsIds::SPRINGS => ["Springs", "Boots", "Equip", "Uncommon", 5, "Gives a jump boost"],
+        CustomEnchantsIds::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5, "Deal part of fall damage to enemy when taking fall damage"],
+        CustomEnchantsIds::TANK => ["Tank", "Armor", "Damage", "Uncommon", 5, "Spawn TNT when you die."],
+        CustomEnchantsIds::TELEPATHY => ["Telepathy", "Tools", "Break", "Rare", 1, "Automatically puts drops in inventory."],
+        CustomEnchantsIds::VACUUM => ["Vacuum", "Chestplate", "Equip", "Rare", 3, "Suck up items in a 3l radius"],
+        CustomEnchantsIds::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1, "Heals by part of damage dealt"],
+        CustomEnchantsIds::VOLLEY => ["Volley", "Bow", "Shoot", "Uncommon", 5, "Shoot multiple arrows in a cone"],
+        CustomEnchantsIds::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5, "Gives enemies wither"]
     ];
 
     public function onEnable()
@@ -279,7 +280,7 @@ class Main extends PluginBase
         CustomEnchants::init();
         foreach ($this->enchants as $id => $data) {
             $ce = $this->translateDataToCE($id, $data);
-            CustomEnchants::registerEnchants($id, $ce);
+            CustomEnchants::registerEnchantment($ce);
         }
     }
 
@@ -298,7 +299,7 @@ class Main extends PluginBase
         $data = [$name, $type, $trigger, $rarity, $maxlevel];
         $this->enchants[$id] = $data;
         $ce = $this->translateDataToCE($id, $data);
-        CustomEnchants::registerEnchants($id, $ce);
+        CustomEnchants::registerEnchantment($ce);
     }
 
     /**
@@ -352,7 +353,7 @@ class Main extends PluginBase
                 $slot = CustomEnchants::SLOT_FEET;
                 break;
             case "Compass":
-                $slot = CustomEnchants::SLOT_COMPASS;
+                $slot = 0b10000000000000;
                 break;
         }
         $rarity = CustomEnchants::RARITY_COMMON;
@@ -372,44 +373,6 @@ class Main extends PluginBase
         }
         $ce = new CustomEnchants($id, $data[0], $rarity, $slot, $data[4]);
         return $ce;
-    }
-
-    /**
-     * Get enchantment on an item with specific id. Returns null if not found.
-     *
-     * @param Item $item
-     * @param $id
-     * @return null|EnchantmentInstance
-     */
-    public function getEnchantment(Item $item, $id)
-    {
-        if (!$item->hasEnchantments()) {
-            return null;
-        }
-        foreach ($item->getNamedTag()->ench as $entry) {
-            if ($entry["id"] === $id) {
-                return new EnchantmentInstance(CustomEnchants::getEnchantment($entry["id"]), $entry["lvl"]);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Get enchantments on an item
-     *
-     * @param Item $item
-     * @return array
-     */
-    public function getEnchantments(Item $item)
-    {
-        if (!$item->hasEnchantments()) {
-            return [];
-        }
-        $enchants = [];
-        foreach ($item->getNamedTag()->ench as $entry) {
-            $enchants[] = new EnchantmentInstance(CustomEnchants::getEnchantment($entry["id"]), $entry["lvl"]);
-        }
-        return $enchants;
     }
 
     /**
@@ -706,7 +669,7 @@ class Main extends PluginBase
         if ($this->getEnchantMaxLevel($enchant) < $level) {
             return self::MAX_LEVEL;
         }
-        if (($enchant->getId() == CustomEnchants::PORKIFIED && $this->getEnchantment($item, CustomEnchants::BLAZE) !== null) || ($enchant->getId() == CustomEnchants::BLAZE && $this->getEnchantment($item, CustomEnchants::PORKIFIED) !== null) || ($enchant->getId() == CustomEnchants::SHRINK && $this->getEnchantment($item, CustomEnchants::GROW)) || ($enchant->getId() == CustomEnchants::GROW && $this->getEnchantment($item, CustomEnchants::SHRINK))) {
+        if (($enchant->getId() == CustomEnchantsIds::PORKIFIED && $item->getEnchantment(CustomEnchantsIds::BLAZE) !== null) || ($enchant->getId() == CustomEnchantsIds::BLAZE && $item->getEnchantment(CustomEnchantsIds::PORKIFIED) !== null) || ($enchant->getId() == CustomEnchantsIds::SHRINK && $item->getEnchantment(CustomEnchantsIds::GROW)) || ($enchant->getId() == CustomEnchantsIds::GROW && $item->getEnchantment(CustomEnchantsIds::SHRINK))) {
             return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
         }
         if ($item->getCount() > 1) {

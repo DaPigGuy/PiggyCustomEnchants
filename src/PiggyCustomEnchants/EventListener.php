@@ -2,7 +2,7 @@
 
 namespace PiggyCustomEnchants;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
@@ -226,7 +226,7 @@ class EventListener implements Listener
     public function onIllegalMove(PlayerIllegalMoveEvent $event)
     {
         $player = $event->getPlayer();
-        if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
+        if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER) !== null) {
             $event->setCancelled();
         }
     }
@@ -256,7 +256,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $reason = $event->getReason();
         if ($reason == "Flying is not enabled on this server") {
-            if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::SPIDER) !== null) {
+            if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER) !== null) {
                 $event->setCancelled();
             }
         }
@@ -396,7 +396,7 @@ class EventListener implements Listener
     {
         //TODO: Check to make sure you can use enchant with item
         if ($event instanceof EntityDamageEvent) {
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::LIFESTEAL);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LIFESTEAL);
             if ($enchantment !== null) {
                 if ($damager->getHealth() + 2 + $enchantment->getLevel() <= $damager->getMaxHealth()) {
                     $damager->setHealth($damager->getHealth() + 2 + $enchantment->getLevel());
@@ -404,7 +404,7 @@ class EventListener implements Listener
                     $damager->setHealth($damager->getMaxHealth());
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLIND);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLIND);
             if ($enchantment !== null && $entity->hasEffect(Effect::BLINDNESS) !== true) {
                 $effect = Effect::getEffect(Effect::BLINDNESS);
                 $effect->setAmplifier(0);
@@ -412,17 +412,17 @@ class EventListener implements Listener
                 $effect->setVisible(false);
                 $entity->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DEATHBRINGER);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DEATHBRINGER);
             if ($enchantment !== null) {
                 $damage = 2 + ($enchantment->getLevel() / 10);
                 $event->setDamage($event->getDamage() + $damage);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::GOOEY);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GOOEY);
             if ($enchantment !== null) {
                 $task = new GoeyTask($this->plugin, $entity, $enchantment->getLevel());
                 $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 1);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::POISON);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::POISON);
             if ($enchantment !== null && $entity->hasEffect(Effect::POISON) !== true) {
                 $effect = Effect::getEffect(Effect::POISON);
                 $effect->setAmplifier($enchantment->getLevel());
@@ -430,7 +430,7 @@ class EventListener implements Listener
                 $effect->setVisible(false);
                 $entity->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CRIPPLINGSTRIKE);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::CRIPPLINGSTRIKE);
             if ($enchantment !== null) {
                 if (!$entity->hasEffect(Effect::NAUSEA)) {
                     $effect = Effect::getEffect(Effect::NAUSEA);
@@ -447,7 +447,7 @@ class EventListener implements Listener
                     $entity->addEffect($effect);
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::VAMPIRE);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::VAMPIRE);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->vampirecd[$damager->getLowerCaseName()]) || time() > $this->plugin->vampirecd[$damager->getLowerCaseName()]) {
                     $this->plugin->vampirecd[$damager->getLowerCaseName()] = time() + 5;
@@ -463,19 +463,19 @@ class EventListener implements Listener
                     }
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::CHARGE);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::CHARGE);
             if ($enchantment !== null) {
                 if ($damager->isSprinting()) {
                     $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::AERIAL);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::AERIAL);
             if ($enchantment !== null) {
                 if (!$damager->isOnGround()) {
                     $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::WITHER);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHER);
             if ($enchantment !== null && $entity->hasEffect(Effect::WITHER) !== true) {
                 $effect = Effect::getEffect(Effect::WITHER);
                 $effect->setAmplifier($enchantment->getLevel());
@@ -483,7 +483,7 @@ class EventListener implements Listener
                 $effect->setVisible(false);
                 $entity->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMING);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DISARMING);
             if ($enchantment !== null) {
                 if ($entity instanceof Player) {
                     $chance = 10 * $enchantment->getLevel();
@@ -496,7 +496,7 @@ class EventListener implements Listener
                     }
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HALLUCINATION);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HALLUCINATION);
             if ($enchantment !== null) {
                 $chance = 5 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
@@ -507,7 +507,7 @@ class EventListener implements Listener
                     $task->setHandler($handler);
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLESSED);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLESSED);
             if ($enchantment !== null) {
                 $chance = 15 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
@@ -519,7 +519,7 @@ class EventListener implements Listener
                     }
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::DISARMOR);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DISARMOR);
             if ($enchantment !== null) {
                 if ($entity instanceof Player) {
                     $chance = 10 * $enchantment->getLevel();
@@ -540,13 +540,13 @@ class EventListener implements Listener
                     }
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BACKSTAB);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BACKSTAB);
             if ($enchantment !== null) {
                 if ($damager->getDirectionVector()->dot($entity->getDirectionVector()) > 0) {
                     $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::LIGHTNING);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LIGHTNING);
             if ($enchantment !== null) {
                 $chance = 10 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
@@ -562,7 +562,7 @@ class EventListener implements Listener
             $soulbounded = [];
             $soulboundedarmor = [];
             foreach ($damager->getInventory()->getContents() as $k => $item) {
-                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::SOULBOUND);
+                $enchantment = $item->getEnchantment(CustomEnchantsIds::SOULBOUND);
                 if ($enchantment !== null) {
                     $index = array_search($item, $drops);
                     if ($index !== false) {
@@ -572,7 +572,7 @@ class EventListener implements Listener
                 }
             }
             foreach ($damager->getInventory()->getArmorContents() as $k => $item) {
-                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::SOULBOUND);
+                $enchantment = $item->getEnchantment(CustomEnchantsIds::SOULBOUND);
                 if ($enchantment !== null) {
                     $index = array_search($item, $drops);
                     if ($index !== false) {
@@ -591,7 +591,7 @@ class EventListener implements Listener
         }
         if ($event instanceof PlayerMoveEvent) {
             foreach ($damager->getInventory()->getContents() as $slot => $item) {
-                $enchantment = $this->plugin->getEnchantment($item, CustomEnchants::AUTOREPAIR);
+                $enchantment = $item->getEnchantment(CustomEnchantsIds::AUTOREPAIR);
                 if ($enchantment !== null) {
                     $newDir = $item->getDamage() - (1 + (1 * $enchantment->getLevel()));
                     if ($newDir < 0) {
@@ -614,7 +614,7 @@ class EventListener implements Listener
         if ($event instanceof BlockBreakEvent) {
             $block = $event->getBlock();
             $drops = $event->getDrops();
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::EXPLOSIVE);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::EXPLOSIVE);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
                     $this->plugin->using[$player->getLowerCaseName()] = time() + 1;
@@ -623,7 +623,7 @@ class EventListener implements Listener
                     $explosion->explodeB();
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::LUMBERJACK);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LUMBERJACK);
             if ($enchantment !== null) {
                 if ($player->isSneaking()) {
                     if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
@@ -635,7 +635,7 @@ class EventListener implements Listener
                 }
                 $event->setInstaBreak(true);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::DRILLER);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DRILLER);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
                     if (isset($this->plugin->blockface[$player->getLowerCaseName()])) {
@@ -668,7 +668,7 @@ class EventListener implements Listener
                 }
                 $event->setInstaBreak(true);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::JACKPOT);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::JACKPOT);
             if ($enchantment !== null) {
                 $chance = 10 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
@@ -692,7 +692,7 @@ class EventListener implements Listener
                     }
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::SMELTING);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::SMELTING);
             if ($enchantment !== null) {
                 $finaldrop = array();
                 $otherdrops = array();
@@ -740,7 +740,7 @@ class EventListener implements Listener
                 }
                 $event->setDrops($drops = array_merge($finaldrop, $otherdrops));
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::ENERGIZING);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::ENERGIZING);
             if ($enchantment !== null && $player->hasEffect(Effect::HASTE) !== true) {
                 $effect = Effect::getEffect(Effect::HASTE);
                 $effect->setAmplifier(1 + $enchantment->getLevel() - 2);
@@ -748,7 +748,7 @@ class EventListener implements Listener
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::QUICKENING);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::QUICKENING);
             if ($enchantment !== null && $player->hasEffect(Effect::SPEED) !== true) {
                 $effect = Effect::getEffect(Effect::SPEED);
                 $effect->setAmplifier(3 + $enchantment->getLevel() - 2);
@@ -756,14 +756,14 @@ class EventListener implements Listener
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::TELEPATHY);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::TELEPATHY);
             if ($enchantment !== null) {
                 foreach ($drops as $drop) {
                     $player->getInventory()->addItem($drop);
                 }
                 $event->setDrops([]);
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::FARMER);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::FARMER);
             if ($enchantment !== null) {
                 $seed = null;
                 switch ($block->getId()) {
@@ -786,7 +786,7 @@ class EventListener implements Listener
                     $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new PlaceTask($this->plugin, $pos, $block->getLevel(), $seed, $player), 1);
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::HARVEST);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HARVEST);
             if ($enchantment !== null) {
                 $radius = $enchantment->getLevel();
                 if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
@@ -807,7 +807,7 @@ class EventListener implements Listener
         }
         if ($event instanceof PlayerInteractEvent) {
             $block = $event->getBlock();
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getItemInHand(), CustomEnchants::FERTILIZER);
+            $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::FERTILIZER);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->using[$player->getLowerCaseName()]) || $this->plugin->using[$player->getLowerCaseName()] < time()) {
                     if ($this->plugin->checkBlocks($block, [Block::DIRT, Block::GRASS])) {
@@ -836,7 +836,7 @@ class EventListener implements Listener
     public function checkBowEnchants(Player $damager, Entity $entity, EntityEvent $event)
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::MOLOTOV);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::MOLOTOV);
             if ($enchantment !== null) {
                 $boundaries = 0.1 * $enchantment->getLevel();
                 for ($x = $boundaries; $x >= -$boundaries; $x -= 0.1) {
@@ -847,7 +847,7 @@ class EventListener implements Listener
                     }
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PARALYZE);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PARALYZE);
             if ($enchantment !== null) {
                 if (!$entity->hasEffect(Effect::SLOWNESS)) {
                     $effect = Effect::getEffect(Effect::SLOWNESS);
@@ -871,11 +871,11 @@ class EventListener implements Listener
                     $entity->addEffect($effect);
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PIERCING);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PIERCING);
             if ($enchantment !== null) {
                 $event->setDamage(0, EntityDamageEvent::MODIFIER_ARMOR);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::SHUFFLE);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::SHUFFLE);
             if ($enchantment !== null) {
                 $pos1 = clone $damager->getPosition();
                 $pos2 = clone $entity->getPosition();
@@ -888,7 +888,7 @@ class EventListener implements Listener
                 }
                 $damager->sendMessage(TextFormat::DARK_PURPLE . "You have switched positions with " . $name);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BOUNTYHUNTER);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BOUNTYHUNTER);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->bountyhuntercd[$damager->getLowerCaseName()]) || time() > $this->plugin->bountyhuntercd[$damager->getLowerCaseName()]) {
                     $bountydrop = $this->getBounty();
@@ -896,7 +896,7 @@ class EventListener implements Listener
                     $this->plugin->bountyhuntercd[$damager->getLowerCaseName()] = time() + 30;
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HEALING);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HEALING);
             if ($enchantment !== null) {
                 if ($entity->getHealth() + $event->getDamage() + $enchantment->getLevel() <= $entity->getMaxHealth()) {
                     $entity->setHealth($entity->getHealth() + $event->getDamage() + $enchantment->getLevel());
@@ -905,21 +905,21 @@ class EventListener implements Listener
                 }
                 $event->setDamage(0);
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::HEADHUNTER);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HEADHUNTER);
             if ($enchantment !== null) {
                 $projectile = $event->getChild();
                 if ($projectile->y > $entity->getPosition()->y + $entity->getEyeHeight()) {
                     $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::GRAPPLING);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
             if ($enchantment !== null) {
                 $task = new GrapplingTask($this->plugin, $damager->getPosition(), $entity);
                 $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 1); //Delayed due to knockback interfering
             }
         }
         if ($event instanceof EntityShootBowEvent) {
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::BLAZE);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLAZE);
             if ($enchantment !== null && $entity instanceof Fireball !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
                 $fireball = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager);
@@ -928,7 +928,7 @@ class EventListener implements Listener
                 $entity->close();
                 $entity = $fireball;
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::PORKIFIED);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PORKIFIED);
             if ($enchantment !== null && $entity instanceof PigProjectile !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
                 $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, $enchantment->getLevel());
@@ -937,7 +937,7 @@ class EventListener implements Listener
                 $entity->close();
                 $entity = $pig;
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::VOLLEY);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::VOLLEY);
             if ($enchantment !== null) {
                 $amount = 1 + 2 * $enchantment->getLevel();
                 $anglesbetweenarrows = (45 / ($amount - 1)) * M_PI / 180;
@@ -973,7 +973,7 @@ class EventListener implements Listener
         }
         if ($event instanceof ProjectileHitEvent && $entity instanceof Projectile) {
             if ($entity->hadCollision) {
-                $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::GRAPPLING);
+                $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
                 if ($enchantment !== null) {
                     $location = $entity->getPosition();
                     $damagerloc = $damager->getPosition();
@@ -998,7 +998,7 @@ class EventListener implements Listener
                     $this->plugin->nofall[$damager->getLowerCaseName()] = time() + 1;
                 }
             }
-            $enchantment = $this->plugin->getEnchantment($damager->getInventory()->getItemInHand(), CustomEnchants::MISSILE);
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::MISSILE);
             if ($enchantment !== null) {
                 for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
                     $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
@@ -1022,7 +1022,7 @@ class EventListener implements Listener
                 $cause = $event->getCause();
                 $antikb = 4;
                 if ($cause == EntityDamageEvent::CAUSE_FALL) {
-                    $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::STOMP);
+                    $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::STOMP);
                     if ($enchantment !== null) {
                         $entities = $entity->getLevel()->getNearbyEntities($entity->getBoundingBox());
                         foreach ($entities as $e) {
@@ -1039,7 +1039,7 @@ class EventListener implements Listener
                     }
                 }
                 foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVIVE);
+                    $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVIVE);
                     if ($enchantment !== null) {
                         if ($event->getDamage() >= $entity->getHealth()) {
                             $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
@@ -1052,7 +1052,7 @@ class EventListener implements Listener
                             //TODO: Side effect
                         }
                     }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SELFDESTRUCT);
+                    $enchantment = $armor->getEnchantment(CustomEnchantsIds::SELFDESTRUCT);
                     if ($enchantment !== null) {
                         if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
                             for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
@@ -1061,7 +1061,7 @@ class EventListener implements Listener
                             }
                         }
                     }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENDERSHIFT);
+                    $enchantment = $armor->getEnchantment(CustomEnchantsIds::ENDERSHIFT);
                     if ($enchantment !== null) {
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
                             if (!isset($this->plugin->endershiftcd[$entity->getLowerCaseName()]) || time() > $this->plugin->endershiftcd[$entity->getLowerCaseName()]) {
@@ -1084,7 +1084,7 @@ class EventListener implements Listener
                             }
                         }
                     }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::BERSERKER);
+                    $enchantment = $armor->getEnchantment(CustomEnchantsIds::BERSERKER);
                     if ($enchantment !== null) {
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
                             if ((!isset($this->plugin->berserkercd[$entity->getLowerCaseName()]) || time() > $this->plugin->berserkercd[$entity->getLowerCaseName()]) && $entity->hasEffect(Effect::STRENGTH) !== true) {
@@ -1102,11 +1102,11 @@ class EventListener implements Listener
                 if ($event instanceof EntityDamageByEntityEvent) {
                     $damager = $event->getDamager();
                     foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::MOLTEN);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::MOLTEN);
                         if ($enchantment !== null) {
                             $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ENLIGHTED);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::ENLIGHTED);
                         if ($enchantment !== null && $entity->hasEffect(Effect::REGENERATION) !== true) {
                             $effect = Effect::getEffect(Effect::REGENERATION);
                             $effect->setAmplifier($enchantment->getLevel());
@@ -1114,7 +1114,7 @@ class EventListener implements Listener
                             $effect->setVisible(false);
                             $entity->addEffect($effect);
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::HARDENED);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::HARDENED);
                         if ($enchantment !== null && $damager->hasEffect(Effect::WEAKNESS) !== true) {
                             $effect = Effect::getEffect(Effect::WEAKNESS);
                             $effect->setAmplifier($enchantment->getLevel());
@@ -1122,7 +1122,7 @@ class EventListener implements Listener
                             $effect->setVisible(false);
                             $damager->addEffect($effect);
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::POISONED);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::POISONED);
                         if ($enchantment !== null && $damager->hasEffect(Effect::POISON) !== true) {
                             $effect = Effect::getEffect(Effect::POISON);
                             $effect->setAmplifier($enchantment->getLevel());
@@ -1130,7 +1130,7 @@ class EventListener implements Listener
                             $effect->setVisible(false);
                             $damager->addEffect($effect);
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::FROZEN);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::FROZEN);
                         if ($enchantment !== null && $damager->hasEffect(Effect::SLOWNESS) !== true) {
                             $effect = Effect::getEffect(Effect::SLOWNESS);
                             $effect->setAmplifier($enchantment->getLevel());
@@ -1138,7 +1138,7 @@ class EventListener implements Listener
                             $effect->setVisible(false);
                             $damager->addEffect($effect);
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::REVULSION);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVULSION);
                         if ($enchantment !== null && $damager->hasEffect(Effect::NAUSEA) !== true) {
                             $effect = Effect::getEffect(Effect::NAUSEA);
                             $effect->setAmplifier(0);
@@ -1146,7 +1146,7 @@ class EventListener implements Listener
                             $effect->setVisible(false);
                             $damager->addEffect($effect);
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CURSED);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::CURSED);
                         if ($enchantment !== null && $damager->hasEffect(Effect::WITHER) !== true) {
                             $effect = Effect::getEffect(Effect::WITHER);
                             $effect->setAmplifier($enchantment->getLevel());
@@ -1154,7 +1154,7 @@ class EventListener implements Listener
                             $effect->setVisible(false);
                             $damager->addEffect($effect);
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::DRUNK);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::DRUNK);
                         if ($enchantment !== null) {
                             if (!$damager->hasEffect(Effect::SLOWNESS)) {
                                 $effect = Effect::getEffect(Effect::SLOWNESS);
@@ -1178,7 +1178,7 @@ class EventListener implements Listener
                                 $damager->addEffect($effect);
                             }
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::CLOAKING);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::CLOAKING);
                         if ($enchantment !== null) {
                             if ((!isset($this->plugin->cloakingcd[$entity->getLowerCaseName()]) || time() > $this->plugin->cloakingcd[$entity->getLowerCaseName()]) && $entity->hasEffect(Effect::INVISIBILITY)) {
                                 $this->plugin->cloakingcd[$entity->getLowerCaseName()] = time() + 10;
@@ -1190,25 +1190,25 @@ class EventListener implements Listener
                                 $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
                             }
                         }
-                        $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ANTIKNOCKBACK);
+                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::ANTIKNOCKBACK);
                         if ($enchantment !== null) {
                             $event->setKnockBack($event->getKnockBack() - ($event->getKnockBack() / $antikb));
                             $antikb--;
                         }
                         if ($damager instanceof Player) {
-                            $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::ARMORED);
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::ARMORED);
                             if ($enchantment !== null) {
                                 if ($damager->getInventory()->getItemInHand()->isSword()) {
                                     $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
                                 }
                             }
-                            $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::TANK);
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::TANK);
                             if ($enchantment !== null) {
                                 if ($damager->getInventory()->getItemInHand()->isAxe()) {
                                     $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
                                 }
                             }
-                            $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::HEAVY);
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::HEAVY);
                             if ($enchantment !== null) {
                                 if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) {
                                     $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
@@ -1220,7 +1220,7 @@ class EventListener implements Listener
             }
             if ($event instanceof EntityEffectAddEvent) {
                 $effect = $event->getEffect();
-                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::FOCUSED);
+                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::FOCUSED);
                 if ($enchantment !== null) {
                     if (!isset($this->plugin->using[$entity->getLowerCaseName()]) || $this->plugin->using[$entity->getLowerCaseName()] < time()) {
                         if ($effect->getId() == Effect::NAUSEA) {
@@ -1234,7 +1234,7 @@ class EventListener implements Listener
                         }
                     }
                 }
-                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::ANTITOXIN);
+                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::ANTITOXIN);
                 if ($enchantment !== null) {
                     if ($effect->getId() == Effect::POISON) {
                         $event->setCancelled();
@@ -1242,7 +1242,7 @@ class EventListener implements Listener
                 }
             }
             if ($event instanceof PlayerMoveEvent) {
-                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::MAGMAWALKER);
+                $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::MAGMAWALKER);
                 if ($enchantment !== null) {
                     $block = $entity->getLevel()->getBlock($entity);
                     if (!$this->plugin->checkBlocks($block, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA])) {
@@ -1262,13 +1262,13 @@ class EventListener implements Listener
                         }
                     }
                 }
-                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::MEDITATION);
+                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::MEDITATION);
                 if ($enchantment !== null) {
                     if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
                         $this->plugin->meditationTick[$entity->getLowerCaseName()] = 0;
                     }
                 }
-                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getHelmet(), CustomEnchants::IMPLANTS);
+                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::IMPLANTS);
                 if ($enchantment !== null) {
                     if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
                         if (!isset($this->plugin->implantscd[$entity->getLowerCaseName()]) || $this->plugin->implantscd[$entity->getLowerCaseName()] < time()) {
@@ -1292,12 +1292,12 @@ class EventListener implements Listener
                 $shrinklevel = 0;
                 $growlevel = 0;
                 foreach ($entity->getInventory()->getArmorContents() as $armor) {
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SHRINK);
+                    $enchantment = $armor->getEnchantment(CustomEnchantsIds::SHRINK);
                     if ($enchantment !== null) {
                         $shrinklevel += $enchantment->getLevel();
                         $shrinkpoints++;
                     }
-                    $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::GROW);
+                    $enchantment = $armor->getEnchantment(CustomEnchantsIds::GROW);
                     if ($enchantment !== null) {
                         $growlevel += $enchantment->getLevel();
                         $growpoints++;
@@ -1343,7 +1343,7 @@ class EventListener implements Listener
                         }
                     }
                 }
-                $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::JETPACK);
+                $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::JETPACK);
                 if ($enchantment !== null) {
                     if (isset($this->plugin->flying[$entity->getLowerCaseName()]) && $this->plugin->flying[$entity->getLowerCaseName()] > time()) {
                         if ($entity->isOnGround()) {
@@ -1376,7 +1376,7 @@ class EventListener implements Listener
                     $action = $packet->action;
                     switch ($action) {
                         case 8:
-                            $enchantment = $this->plugin->getEnchantment($entity->getInventory()->getBoots(), CustomEnchants::SPRINGS);
+                            $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::SPRINGS);
                             if ($enchantment !== null) {
                                 $entity->setMotion(new Vector3(0, $entity->getJumpVelocity() + 0.4));
                                 $this->plugin->nofall[$entity->getLowerCaseName()] = time() + 1;

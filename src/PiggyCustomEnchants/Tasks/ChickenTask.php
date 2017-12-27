@@ -3,7 +3,7 @@
 namespace PiggyCustomEnchants\Tasks;
 
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\item\Item;
 use pocketmine\scheduler\PluginTask;
@@ -33,7 +33,7 @@ class ChickenTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $this->plugin->getEnchantment($player->getInventory()->getChestplate(), CustomEnchants::CHICKEN);
+            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::CHICKEN);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->chickenTick[$player->getLowerCaseName()])) {
                     $this->plugin->chickenTick[$player->getLowerCaseName()] = 0;

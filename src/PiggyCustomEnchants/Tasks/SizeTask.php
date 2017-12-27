@@ -2,7 +2,7 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
+use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\scheduler\PluginTask;
 use pocketmine\utils\TextFormat;
@@ -34,7 +34,7 @@ class SizeTask extends PluginTask
             $shrinkpoints = 0;
             $growpoints = 0;
             foreach ($player->getInventory()->getArmorContents() as $armor) {
-                $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::SHRINK);
+                $enchantment = $armor->getEnchantment(CustomEnchantsIds::SHRINK);
                 if ($enchantment !== null) {
                     $shrinkpoints++;
                 }
@@ -49,7 +49,7 @@ class SizeTask extends PluginTask
                 $player->sendTip(TextFormat::RED . "You have grown back to normal size.");
             }
             foreach ($player->getInventory()->getArmorContents() as $armor) {
-                $enchantment = $this->plugin->getEnchantment($armor, CustomEnchants::GROW);
+                $enchantment = $armor->getEnchantment(CustomEnchantsIds::GROW);
                 if ($enchantment !== null) {
                     $growpoints++;
                 }

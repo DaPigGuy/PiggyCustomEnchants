@@ -40,7 +40,7 @@ class UseEnchantedBookTask extends PluginTask
     {
         $source = $this->action->getSourceItem();
         $target = $this->action->getTargetItem();
-        foreach ($this->plugin->getEnchantments($source) as $enchant) {
+        foreach ($source->getEnchantments() as $enchant) {
             if ($this->plugin->canBeEnchanted($target, $enchant, $enchant->getLevel())) {//TODO: Check XP
                 if ($this->player->getCursorInventory()->contains($target)) { //W10 UI
                     $this->player->getCursorInventory()->removeItem($target);
