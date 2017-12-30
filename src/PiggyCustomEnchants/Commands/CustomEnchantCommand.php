@@ -40,68 +40,100 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($sender instanceof Player && $plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $this->formMenu($sender);
-            } else {
-                if (count($args) < 1) {
-                    $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|info|list>");
-                    return false;
+            $forms = $sender instanceof Player && $plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled();
+            if (count($args) < 1) {
+                if ($forms) {
+                    $this->formMenu($sender);
+                    return true;
                 }
-                switch ($args[0]) {
-                    case "about":
-                        if (!$sender->hasPermission("piggycustomenchants.command.ce.about")) {
-                            $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
-                            return false;
-                        }
-                        $sender->sendMessage(TextFormat::GREEN . "PiggyCustomEnchants v" . $this->getPlugin()->getDescription()->getVersion() . " is a custom enchants plugin made by DaPigGuy (IGN: MCPEPIG) & Aericio.\n" . TextFormat::GREEN . "You can find it at https://github.com/DaPigGuy/PiggyCustomEnchants.");
-                        break;
-                    case "enchant":
-                        if (!$sender->hasPermission("piggycustomenchants.command.ce.enchant")) {
-                            $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
-                            return false;
-                        }
-                        if (count($args) < 2) {
-                            $sender->sendMessage(TextFormat::RED . "Usage: /customenchant enchant <enchant> [level] [player]");
-                            return false;
-                        }
-                        $this->enchant($sender, $args[1], isset($args[2]) ? $args[2] : 1, isset($args[3]) ? $args[3] : $sender->getName());
-                        break;
-                    case "help":
-                        if (!$sender->hasPermission("piggycustomenchants.command.ce.help")) {
-                            $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
-                            return false;
-                        }
-                        $sender->sendMessage(TextFormat::GREEN . "---PiggyCE Help---\n" . TextFormat::RESET . "/ce about: Information about this plugin\n/ce enchant: Enchant an item\n/ce help: Show the help page\n/ce info: Get description of enchant\n/ce list: List of enchants");
-                        break;
-                    case "info":
-                        if (!$sender->hasPermission("piggycustomenchants.command.ce.info")) {
-                            $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
-                            return false;
-                        }
-                        if (count($args) < 2) {
-                            $sender->sendMessage(TextFormat::RED . "Usage: /customenchant info <enchant>");
-                            return false;
-                        }
-                        if ((is_numeric($args[1]) && ($enchant = CustomEnchants::getEnchantment($args[1])) !== null) || ($enchant = CustomEnchants::getEnchantmentByName($args[1])) !== null) {
-                            $sender->sendMessage(TextFormat::GREEN . $enchant->getName() . "\n" . TextFormat::RESET . "Description: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
-                        } else {
-                            $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
-                        }
-                        break;
-                    case "list":
-                        if (!$sender->hasPermission("piggycustomenchants.command.ce.list")) {
-                            $sender->sendMessage(TextFormat::RED . "You do not have permission to do this.");
-                            return false;
-                        }
-                        $sender->sendMessage($this->list());
-                        break;
-                    default:
-                        $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|info|list>");
-                        break;
-                }
-                return true;
+                $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|info|list>");
+                return false;
             }
-            return false;
+            switch ($args[0]) {
+                case "about":
+                    if (!$sender->hasPermission("piggycustomenchants.command.ce.about")) {
+                        $this->error($sender, TextFormat::RED . "You do not have permission to do this.");
+                        return false;
+                    }
+                    if ($forms) {
+                        $this->aboutForm($sender);
+                        return true;
+                    }
+                    $sender->sendMessage(TextFormat::GREEN . "PiggyCustomEnchants v" . $this->getPlugin()->getDescription()->getVersion() . " is a custom enchants plugin made by DaPigGuy (IGN: MCPEPIG) & Aericio.\n" . TextFormat::GREEN . "You can find it at https://github.com/DaPigGuy/PiggyCustomEnchants.");
+                    break;
+                case "enchant":
+                    if (!$sender->hasPermission("piggycustomenchants.command.ce.enchant")) {
+                        $this->error($sender, TextFormat::RED . "You do not have permission to do this.");
+                        return false;
+                    }
+                    if (count($args) < 2) {
+                        if ($forms) {
+                            $this->enchantForm($sender);
+                            return true;
+                        }
+                        $sender->sendMessage(TextFormat::RED . "Usage: /customenchant enchant <enchant> [level] [player]");
+                        return false;
+                    }
+                    if ($forms) {
+                        $this->checkEnchantForm($sender, [$args[1], isset($args[2]) ? $args[2] : 1, isset($args[3]) ? $args[3] : $sender->getName()]);
+                        return true;
+                    }
+                    $this->enchant($sender, $args[1], isset($args[2]) ? $args[2] : 1, isset($args[3]) ? $args[3] : $sender->getName());
+                    break;
+                case "help":
+                    if (!$sender->hasPermission("piggycustomenchants.command.ce.help")) {
+                        $this->error($sender, TextFormat::RED . "You do not have permission to do this.");
+                        return false;
+                    }
+                    if ($forms) {
+                        $this->helpForm($sender);
+                        return true;
+                    }
+                    $sender->sendMessage(TextFormat::GREEN . "---PiggyCE Help---\n" . TextFormat::RESET . "/ce about: Information about this plugin\n/ce enchant: Enchant an item\n/ce help: Show the help page\n/ce info: Get description of enchant\n/ce list: List of enchants");
+                    break;
+                case "info":
+                    if (!$sender->hasPermission("piggycustomenchants.command.ce.info")) {
+                        $this->error($sender, TextFormat::RED . "You do not have permission to do this.");
+                        return false;
+                    }
+                    if (count($args) < 2) {
+                        if($forms){
+                            $this->infoForm($sender);
+                            return true;
+                        }
+                        $sender->sendMessage(TextFormat::RED . "Usage: /customenchant info <enchant>");
+                        return false;
+                    }
+                    if($forms){
+                        $this->sendInfo($sender, $args[1]);
+                        return true;
+                    }
+                    if ((is_numeric($args[1]) && ($enchant = CustomEnchants::getEnchantment($args[1])) !== null) || ($enchant = CustomEnchants::getEnchantmentByName($args[1])) !== null) {
+                        $sender->sendMessage(TextFormat::GREEN . $enchant->getName() . "\n" . TextFormat::RESET . "Description: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
+                    } else {
+                        $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
+                    }
+                    break;
+                case "list":
+                    if (!$sender->hasPermission("piggycustomenchants.command.ce.list")) {
+                        $this->error($sender, TextFormat::RED . "You do not have permission to do this.");
+                        return false;
+                    }
+                    if($forms){
+                        $this->listForm($sender);
+                        return true;
+                    }
+                    $sender->sendMessage($this->list());
+                    break;
+                default:
+                    if($forms){
+                        $this->formMenu($sender);
+                        return true;
+                    }
+                    $sender->sendMessage(TextFormat::RED . "Usage: /customenchant <about|enchant|help|info|list>");
+                    break;
+            }
+            return true;
         }
         return false;
     }
@@ -169,8 +201,25 @@ class CustomEnchantCommand extends PluginCommand
     }
 
     /**
+     * @param CommandSender $sender
+     * @param $error
+     * @return bool
+     */
+    public function error(CommandSender $sender, $error)
+    {
+        if($sender instanceof Player){
+            if($this->errorForm($sender, $error)){
+                return true;
+            }
+        }
+        $sender->sendMessage($error);
+        return true;
+    }
+
+    /**
      * @param Player $player
      * @param $error
+     * @return bool
      */
     public function errorForm(Player $player, $error)
     {
@@ -188,8 +237,11 @@ class CustomEnchantCommand extends PluginCommand
                 $form->setContent($error);
                 $form->addButton(TextFormat::BOLD . "Back");
                 $form->sendToPlayer($player);
+                return true;
             }
+            return false;
         }
+        return false;
     }
 
     /**
