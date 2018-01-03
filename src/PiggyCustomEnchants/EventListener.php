@@ -69,6 +69,19 @@ class EventListener implements Listener
         Block::EMERALD_ORE => 5
     ];
 
+    const SMELTED_ITEM = [
+        Item::COBBLESTONE => [Item::STONE, 0],
+        Item::IRON_ORE => [Item::IRON_INGOT, 0],
+        Item::GOLD_ORE => [Item::GOLD_INGOT, 0],
+        Item::SAND => [Item::GLASS, 0],
+        Item::CLAY => [Item::BRICK, 0],
+        Item::NETHERRACK => [Item::NETHER_BRICK, 0],
+        Item::STONE_BRICK => [Item::STONE_BRICK, 2],
+        Item::CACTUS => [Item::DYE, 2],
+        Item::WOOD => [Item::COAL, 1],
+        Item::WOOD2 => [Item::COAL, 1],
+    ];
+
     private $plugin;
 
     /**
@@ -697,46 +710,16 @@ class EventListener implements Listener
                 $finaldrop = array();
                 $otherdrops = array();
                 foreach ($drops as $drop) {
-                    switch ($drop->getId()) {
-                        case Item::COBBLESTONE:
-                            $finaldrop[] = Item::get(Item::STONE, 0, $drop->getCount());
-                            break;
-                        case Item::IRON_ORE:
-                            $finaldrop[] = Item::get(Item::IRON_INGOT, 0, $drop->getCount());
-                            break;
-                        case Item::GOLD_ORE:
-                            $finaldrop[] = Item::get(Item::GOLD_INGOT, 0, $drop->getCount());
-                            break;
-                        case Item::SAND:
-                            $finaldrop[] = Item::get(Item::GLASS, 0, $drop->getCount());
-                            break;
-                        case Item::CLAY:
-                            $finaldrop[] = Item::get(Item::BRICK, 0, $drop->getCount());
-                            break;
-                        case Item::NETHERRACK:
-                            $finaldrop[] = Item::get(Item::NETHER_BRICK, 0, $drop->getCount());
-                            break;
-                        case Item::STONE_BRICK:
-                            if ($drop->getDamage() == 0) {
-                                $finaldrop[] = Item::get(Item::STONE_BRICK, 2, $drop->getCount());
-                            }
-                            break;
-                        case Item::CACTUS:
-                            $finaldrop[] = Item::get(Item::DYE, 2, $drop->getCount());
-                            break;
-                        case Item::WOOD:
-                        case Item::WOOD2:
-                            $finaldrop[] = Item::get(Item::COAL, 1, $drop->getCount());
-                            break;
-                        case Item::SPONGE:
-                            if ($drop->getDamage() == 1) {
-                                $finaldrop[] = Item::get(Item::SPONGE, 0, $drop->getCount());
-                            }
-                            break;
-                        default:
-                            $finaldrop[] = $drop;
-                            break;
+                    if (isset(self::SMELTED_ITEM[$drop->getId()])) {
+                        $finaldrop[] = Item::get(self::SMELTED_ITEM[$drop->getId()][0], self::SMELTED_ITEM[$drop->getId()][1], $drop->getCount());
+                        continue;
                     }
+                    if($drop->getId() == Item::SPONGE && $drop->getDamage() == 1){
+                        $finaldrop[] = Item::get(Item::SPONGE, 0, $drop->getCount());
+                        continue;
+                    }
+                    $finaldrop[] = $drop;
+
                 }
                 $event->setDrops($drops = array_merge($finaldrop, $otherdrops));
             }
