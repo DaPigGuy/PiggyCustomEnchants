@@ -92,6 +92,7 @@ class CustomEnchantsIds
     const ARMORED = 420;
     const TANK = 421;
     const HEAVY = 422;
+    const SHIELDED = 423;
 
     //HELMET
     const IMPLANTS = 600;

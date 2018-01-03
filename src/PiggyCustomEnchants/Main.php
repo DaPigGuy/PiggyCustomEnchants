@@ -194,6 +194,7 @@ class Main extends PluginBase
         CustomEnchantsIds::REVIVE => ["Revive", "Armor", "Death", "Rare", 5, "Will revive you when you die. (will remove enchantment)"],
         CustomEnchantsIds::REVULSION => ["Revulsion", "Armor", "Damaged", "Uncommon", 5, "Gives nausea to enemy when hit"],
         CustomEnchantsIds::SELFDESTRUCT => ["Self Destruct", "Armor", "Damaged", "Rare", 5, "Spawn TNT when you die."],
+        CustomEnchantsIds::SHIELDED => ["Shielded", "Armor", "Equip", "Rare", 3, "Gives resistance per level per piece of armor"],
         CustomEnchantsIds::SHRINK => ["Shrink", "Armor", "Sneak", "Uncommon", 2, "Decreases size on sneak (Must be wearing full set of Shrink armor)"],
         CustomEnchantsIds::SHUFFLE => ["Shuffle", "Bow", "Damage", "Rare", 1, "Switches position with target"],
         CustomEnchantsIds::SMELTING => ["Smelting", "Tools", "Break", "Uncommon", 1, "Automatically smelts drops when broken"],

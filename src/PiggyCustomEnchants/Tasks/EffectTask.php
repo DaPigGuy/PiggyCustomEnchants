@@ -77,6 +77,7 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
+            $shielded = 0;
             foreach ($player->getInventory()->getArmorContents() as $slot => $armor) {
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::OBSIDIANSHIELD);
                 if ($enchantment !== null) {
@@ -102,6 +103,15 @@ class EffectTask extends PluginTask
                         }
                         unset($this->plugin->overload[$player->getLowerCaseName() . "||" . $slot]);
                     }
+                }
+                $enchantment = $armor->getEnchantment(CustomEnchantsIds::SHIELDED);
+                if ($enchantment !== null) {
+                    $shielded += $enchantment->getLevel();
+                    $effect = Effect::getEffect(Effect::RESISTANCE);
+                    $effect->setAmplifier($shielded - 1);
+                    $effect->setDuration(10);
+                    $effect->setVisible(false);
+                    $player->addEffect($effect);
                 }
             }
         }
