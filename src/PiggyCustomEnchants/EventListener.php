@@ -42,6 +42,7 @@ use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Armor;
 use pocketmine\item\Item;
+use pocketmine\level\particle\FlameParticle;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\ByteTag;
@@ -714,7 +715,7 @@ class EventListener implements Listener
                         $finaldrop[] = Item::get(self::SMELTED_ITEM[$drop->getId()][0], self::SMELTED_ITEM[$drop->getId()][1], $drop->getCount());
                         continue;
                     }
-                    if($drop->getId() == Item::SPONGE && $drop->getDamage() == 1){
+                    if ($drop->getId() == Item::SPONGE && $drop->getDamage() == 1) {
                         $finaldrop[] = Item::get(Item::SPONGE, 0, $drop->getCount());
                         continue;
                     }
@@ -1025,14 +1026,31 @@ class EventListener implements Listener
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVIVE);
                     if ($enchantment !== null) {
                         if ($event->getDamage() >= $entity->getHealth()) {
-                            $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
+                            if ($enchantment->getLevel() > 1) {
+                                $entity->getInventory()->setArmorItem($slot, $this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
+                            } else {
+                                $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
+                            }
                             $entity->removeAllEffects();
                             $entity->setHealth($entity->getMaxHealth());
                             $entity->setFood($entity->getMaxFood());
                             $entity->setXpLevel(0);
                             $entity->setXpProgress(0);
+                            $effect = Effect::getEffect(Effect::NAUSEA);
+                            $effect->setAmplifier(0);
+                            $effect->setDuration(600);
+                            $effect->setVisible(false);
+                            $entity->addEffect($effect);
+                            $effect = Effect::getEffect(Effect::SLOWNESS);
+                            $effect->setAmplifier(0);
+                            $effect->setDuration(600);
+                            $effect->setVisible(false);
+                            $entity->addEffect($effect);
+                            for ($i = $entity->y; $i <= 256; $i += 0.25) {
+                                $entity->getLevel()->addParticle(new FlameParticle(new Vector3($entity->x, $i, $entity->z)));
+                            }
+                            $entity->sendTip(TextFormat::GREEN . "You were revived.");
                             $event->setDamage(0);
-                            //TODO: Side effect
                         }
                     }
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::SELFDESTRUCT);

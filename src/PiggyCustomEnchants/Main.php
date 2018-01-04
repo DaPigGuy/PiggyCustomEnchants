@@ -389,7 +389,6 @@ class Main extends PluginBase
      */
     public function addEnchantment(Item $item, $enchants, $levels, $check = true, CommandSender $sender = null)
     {
-        //TODO: Check if item can get enchant
         if (!is_array($enchants)) {
             $enchants = [$enchants];
         }
