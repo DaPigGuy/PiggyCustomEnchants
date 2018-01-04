@@ -210,6 +210,11 @@ class Main extends PluginBase
         CustomEnchantsIds::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5, "Gives enemies wither"]
     ];
 
+    public $incompatibilities = [
+        CustomEnchantsIds::PORKIFIED => [CustomEnchantsIds::BLAZE],
+        CustomEnchantsIds::GROW => [CustomEnchantsIds::SHRINK]
+    ];
+
     public function onEnable()
     {
         if (!$this->isSpoon()) {
@@ -302,6 +307,38 @@ class Main extends PluginBase
         $this->enchants[$id] = $data;
         $ce = $this->translateDataToCE($id, $data);
         CustomEnchants::registerEnchantment($ce);
+    }
+
+    /**
+     * Unregisters enchantment by id
+     *
+     * @param $id
+     * @return bool
+     */
+    public function unregisterEnchantment($id)
+    {
+        if (isset($this->enchants[$id]) && CustomEnchants::getEnchantment($id) !== null) {
+            unset($this->enchants[$id]);
+            CustomEnchants::unregisterEnchantment($id);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Add an enchant incompatibility
+     *
+     * @param int $id
+     * @param array $incompatibilities
+     * @return bool
+     */
+    public function addIncompatibility(int $id, array $incompatibilities)
+    {
+        if (!isset($this->incompatibilities[$id])) {
+            $this->incompatibilities = $incompatibilities;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -670,8 +707,20 @@ class Main extends PluginBase
         if ($this->getEnchantMaxLevel($enchant) < $level) {
             return self::MAX_LEVEL;
         }
-        if (($enchant->getId() == CustomEnchantsIds::PORKIFIED && $item->getEnchantment(CustomEnchantsIds::BLAZE) !== null) || ($enchant->getId() == CustomEnchantsIds::BLAZE && $item->getEnchantment(CustomEnchantsIds::PORKIFIED) !== null) || ($enchant->getId() == CustomEnchantsIds::SHRINK && $item->getEnchantment(CustomEnchantsIds::GROW)) || ($enchant->getId() == CustomEnchantsIds::GROW && $item->getEnchantment(CustomEnchantsIds::SHRINK))) {
-            return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
+        foreach ($this->incompatibilities as $enchantment => $incompatibilities) {
+            if ($item->getEnchantment($enchantment) !== null) {
+                if (in_array($enchant->getId(), $incompatibilities)) {
+                    return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
+                }
+            } else {
+                foreach ($incompatibilities as $incompatibility) {
+                    if ($item->getEnchantment($incompatibility) !== null) {
+                        if ($enchantment == $enchant->getId()) {
+                            return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
+                        }
+                    }
+                }
+            }
         }
         if ($item->getCount() > 1) {
             return self::MORE_THAN_ONE;

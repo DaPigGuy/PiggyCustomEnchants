@@ -31,4 +31,16 @@ class CustomEnchants extends Enchantment
         }
         return null;
     }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    public static function unregisterEnchantment($id){
+        if(isset(parent::$enchantments[$id])){
+            unset(parent::$enchantments[$id]);
+            return true;
+        }
+        return false;
+    }
 }
