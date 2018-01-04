@@ -502,8 +502,7 @@ class EventListener implements Listener
                     if ($random <= $chance) {
                         $item = $entity->getInventory()->getItemInHand();
                         $entity->getInventory()->removeItem($item);
-                        $motion = $entity->getDirectionVector()->multiply(0.4);
-                        $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                        $entity->dropItem($item);
                     }
                 }
             }
@@ -545,8 +544,7 @@ class EventListener implements Listener
                         if (count($armoredslots) > 0) {
                             $item = $entity->getInventory()->getArmorItem($armoredslots[array_rand($armoredslots)]);
                             $entity->getInventory()->remove($item); //BasicInventory::removeItem() doesn't seem to work with armor slots
-                            $motion = $entity->getDirectionVector()->multiply(0.4);
-                            $entity->getLevel()->dropItem($entity->add(0, 1.3, 0), $item, $motion, 40);
+                            $entity->dropItem($item);
                         }
                     }
                 }

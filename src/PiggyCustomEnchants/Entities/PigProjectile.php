@@ -77,7 +77,8 @@ class PigProjectile extends Projectile
         $hasUpdate = parent::entityBaseTick($tickDiff);
         if (!$this->isCollided) {
             foreach ($this->getDrops() as $drop) {
-                $this->getLevel()->dropItem($this, $drop);
+                $droppeditem = $this->getLevel()->dropItem($this, $drop);
+                $droppeditem->age = 5700; //300 ticks (15 seconds) til despawns
             }
         } else {
             $this->flagForDespawn();
