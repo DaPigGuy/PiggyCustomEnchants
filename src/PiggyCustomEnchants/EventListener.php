@@ -123,13 +123,11 @@ class EventListener implements Listener
      *
      * @priority HIGHEST
      * @ignoreCancelled true
-     * @return bool
      */
     public function onDamage(EntityDamageEvent $event)
     {
         $entity = $event->getEntity();
         $cause = $event->getCause();
-        $this->checkArmorEnchants($entity, $event);
         if ($cause == EntityDamageEvent::CAUSE_FALL && $entity instanceof Player && (isset($this->plugin->nofall[$entity->getLowerCaseName()]) || isset($this->plugin->flying[$entity->getLowerCaseName()]))) {
             unset($this->plugin->nofall[$entity->getLowerCaseName()]);
             $event->setCancelled();
@@ -145,13 +143,12 @@ class EventListener implements Listener
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
             if ($damager instanceof Player) {
-                if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) { //TODO: Move to canUse() function
-                    return false;
+                if ($damager->getInventory()->getItemInHand()->getId() !== Item::BOW) { //TODO: Move to canUse() function
+                    $this->checkGlobalEnchants($damager, $entity, $event);
                 }
-                $this->checkGlobalEnchants($damager, $entity, $event);
             }
         }
-        return true;
+        $this->checkArmorEnchants($entity, $event);
     }
 
     /**
