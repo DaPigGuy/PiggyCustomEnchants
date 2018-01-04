@@ -335,7 +335,7 @@ class Main extends PluginBase
     public function addIncompatibility(int $id, array $incompatibilities)
     {
         if (!isset($this->incompatibilities[$id])) {
-            $this->incompatibilities = $incompatibilities;
+            $this->incompatibilities[$id] = $incompatibilities;
             return true;
         }
         return false;
