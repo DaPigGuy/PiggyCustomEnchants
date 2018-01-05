@@ -22,8 +22,8 @@ class PigProjectile extends Projectile
     public $width = 0.9;
     public $height = 0.9;
 
-    protected $gravity = 0.05;
     protected $drag = 0.01;
+    protected $gravity = 0.05;
 
     protected $damage = 1.5;
 
@@ -76,9 +76,11 @@ class PigProjectile extends Projectile
         }
         $hasUpdate = parent::entityBaseTick($tickDiff);
         if (!$this->isCollided) {
-            foreach ($this->getDrops() as $drop) {
-                $droppeditem = $this->getLevel()->dropItem($this, $drop);
-                $droppeditem->age = 5700; //300 ticks (15 seconds) til despawns
+            if ($this->getPorkLevel() > 1) {
+                foreach ($this->getDrops() as $drop) {
+                    $droppeditem = $this->getLevel()->dropItem($this, $drop);
+                    $droppeditem->age = 5700; //300 ticks (15 seconds) til despawns}
+                }
             }
         } else {
             $this->flagForDespawn();
