@@ -2,35 +2,41 @@
 
 namespace PiggyCustomEnchants\Entities;
 
-use PiggyCustomEnchants\Main;
-use pocketmine\block\Block;
+
+use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Projectile;
-use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
+use pocketmine\level\Explosion;
 
 /**
- * Class Fireball
+ * Class WitherSkull
  * @package PiggyCustomEnchants\Entities
  */
-class Fireball extends Projectile
+class WitherSkull extends Projectile
 {
+    public $width = 0.5;
+    public $length = 0.5;
+    public $height = 0.5;
+
     protected $drag = 0.01;
     protected $gravity = 0.05;
 
-    protected $damage = 5;
+    protected $damage = 0;
 
-    const NETWORK_ID = 94;
+    const NETWORK_ID = 89;
 
     /**
      * @param Entity $entity
      */
     public function onCollideWithEntity(Entity $entity)
     {
-        $ev = new EntityCombustByEntityEvent($this, $entity, 5);
-        $this->server->getPluginManager()->callEvent($ev);
-        if (!$ev->isCancelled()) {
-            $entity->setOnFire($ev->getDuration());
+        if ($entity instanceof Living) {
+            $effect = Effect::getEffect(Effect::WITHER);
+            $effect->setAmplifier(1);
+            $effect->setDuration(800);
+            $entity->addEffect($effect);
         }
         parent::onCollideWithEntity($entity);
     }
@@ -51,10 +57,8 @@ class Fireball extends Projectile
                     $this->motionX = 0;
                     $this->motionY = 0;
                     $this->motionZ = 0;
-                    $this->server->getPluginManager()->callEvent(new ProjectileHitEvent($this));
-                    if (($this->isCollidedHorizontally || $this->isCollidedVertically) && $this->getLevel()->getBlock($this)->canBeFlowedInto() && Main::$blazeFlames) {
-                        $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
-                    }
+                    $this->server->getPluginManager()->callEvent($ev = new ProjectileHitEvent($this));
+                    //TODO: Add explosion
                 } else {
                     $this->flagForDespawn();
                 }

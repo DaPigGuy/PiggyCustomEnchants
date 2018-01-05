@@ -5,6 +5,7 @@ namespace PiggyCustomEnchants;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\PigProjectile;
+use PiggyCustomEnchants\Entities\WitherSkull;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
@@ -916,6 +917,15 @@ class EventListener implements Listener
                 $entity->close();
                 $entity = $pig;
             }
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHERSKULL);
+            if ($enchantment !== null && $entity instanceof WitherSkull !== true) {
+                $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
+                $skull = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager, $enchantment->getLevel());
+                $skull->setMotion($skull->getMotion()->multiply($event->getForce()));
+                $skull->spawnToAll();
+                $entity->close();
+                $entity = $skull;
+            }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::VOLLEY);
             if ($enchantment !== null) {
                 $amount = 1 + 2 * $enchantment->getLevel();
@@ -940,6 +950,10 @@ class EventListener implements Listener
                     if ($entity instanceof PigProjectile) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
                         $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, $entity->getPorkLevel());
+                    }
+                    if ($entity instanceof WitherSkull) {
+                        $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
+                        $projectile = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager);
                     }
                     $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->multiply($event->getForce())->length()));
                     if ($projectile->isOnFire()) {

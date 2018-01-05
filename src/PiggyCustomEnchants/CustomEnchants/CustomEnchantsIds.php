@@ -51,9 +51,9 @@ class CustomEnchantsIds
     const JACKPOT = 212;
 
     //BOWS
-    /*const BOMBARDMENT = 300;
-    TODO: Put a bow enchant as 301
-    const FIREWORK = 302;*/
+    //const BOMBARDMENT = 300;
+    const WITHERSKULL = 301;
+    //const FIREWORK = 302;
     const PARALYZE = 303;
     const MOLOTOV = 304; //Falling sand fire doesn't appear
     const VOLLEY = 305;
