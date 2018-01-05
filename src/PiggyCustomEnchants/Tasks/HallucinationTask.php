@@ -74,7 +74,7 @@ class HallucinationTask extends PluginTask
                                 $pk->x = (int) $pos->x;
                                 $pk->y = (int) $pos->y;
                                 $pk->z = (int) $pos->z;
-                                $pk->namedtag = $nbt->write(true);
+                                $pk->namedtag = $nbt->write();
                                 $this->player->dataPacket($pk);
                             }
                         } else {
