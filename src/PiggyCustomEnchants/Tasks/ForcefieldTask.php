@@ -58,7 +58,7 @@ class ForcefieldTask extends PluginTask
                     $this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] = 0;
                 }
                 $this->plugin->forcefieldParticleTick[$player->getLowerCaseName()]++;
-                if ($this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] >= 5) {
+                if ($this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] >= 10) {
                     $radius = $forcefields * 0.75;
                     $diff = 5;
                     for ($theta = 0; $theta <= 360; $theta += $diff) {

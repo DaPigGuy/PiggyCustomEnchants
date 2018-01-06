@@ -55,9 +55,9 @@ class Fireball extends Projectile
                     if (($this->isCollidedHorizontally || $this->isCollidedVertically) && $this->getLevel()->getBlock($this)->canBeFlowedInto() && Main::$blazeFlames) {
                         $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
                     }
-                } else {
-                    $this->flagForDespawn();
                 }
+                $this->flagForDespawn();
+
             }
         }
         $hasUpdate = parent::entityBaseTick($tickDiff);

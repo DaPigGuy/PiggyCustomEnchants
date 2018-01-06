@@ -8,7 +8,6 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\ProjectileHitEvent;
-use pocketmine\level\Explosion;
 
 /**
  * Class WitherSkull
@@ -59,9 +58,8 @@ class WitherSkull extends Projectile
                     $this->motionZ = 0;
                     $this->server->getPluginManager()->callEvent($ev = new ProjectileHitEvent($this));
                     //TODO: Add explosion
-                } else {
-                    $this->flagForDespawn();
                 }
+                $this->flagForDespawn();
             }
         }
         $hasUpdate = parent::entityBaseTick($tickDiff);
