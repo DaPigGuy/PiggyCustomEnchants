@@ -213,7 +213,7 @@ class Main extends PluginBase
     ];
 
     public $incompatibilities = [
-        CustomEnchantsIds::PORKIFIED => [CustomEnchantsIds::BLAZE],
+        CustomEnchantsIds::PORKIFIED => [CustomEnchantsIds::BLAZE, CustomEnchantsIds::WITHERSKULL],
         CustomEnchantsIds::GROW => [CustomEnchantsIds::SHRINK]
     ];
 
@@ -718,7 +718,7 @@ class Main extends PluginBase
             } else {
                 foreach ($incompatibilities as $incompatibility) {
                     if ($item->getEnchantment($incompatibility) !== null) {
-                        if ($enchantment == $enchant->getId()) {
+                        if ($enchantment == $enchant->getId() || in_array($enchant->getId(), $incompatibilities)) {
                             return self::NOT_COMPATIBLE_WITH_OTHER_ENCHANT;
                         }
                     }
