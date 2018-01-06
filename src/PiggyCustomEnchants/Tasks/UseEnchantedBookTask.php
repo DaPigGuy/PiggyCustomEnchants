@@ -3,6 +3,7 @@
 namespace PiggyCustomEnchants\Tasks;
 
 
+use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\Main;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\Player;
@@ -41,20 +42,25 @@ class UseEnchantedBookTask extends PluginTask
         $source = $this->action->getSourceItem();
         $target = $this->action->getTargetItem();
         foreach ($source->getEnchantments() as $enchant) {
-            if ($this->plugin->canBeEnchanted($target, $enchant, $enchant->getLevel())) {//TODO: Check XP
+            if (!$enchant->getType() instanceof CustomEnchants || $this->plugin->canBeEnchanted($target, $enchant, $enchant->getLevel())) {//TODO: Check XP
+                $item = clone $target;
+                if($enchant->getType() instanceof CustomEnchants){
+                    $item = $this->plugin->addEnchantment($item, $enchant->getId(), $enchant->getLevel());
+                }else{
+                    $item->addEnchantment($enchant);
+                }
                 if ($this->player->getCursorInventory()->contains($target)) { //W10 UI
                     $this->player->getCursorInventory()->removeItem($target);
-                    $target = $this->plugin->addEnchantment($target, $enchant->getId(), $enchant->getLevel());
-                    $this->player->getCursorInventory()->addItem($target);
+                    $this->player->getCursorInventory()->addItem($item);
                 } else {
-                    $target = $this->plugin->addEnchantment($target, $enchant->getId(), $enchant->getLevel());
-                    $this->player->getInventory()->setItem($this->action->getSlot(), $target);
+                    $this->player->getInventory()->setItem($this->action->getSlot(), $item);
                 }
                 if ($this->player->getCursorInventory()->contains($source)) { //W10 UI
                     $this->player->getCursorInventory()->removeItem($source);
                 } else {
                     $this->player->getInventory()->removeItem($source);
                 }
+                $target = $item;
                 $this->player->sendTip(TextFormat::GREEN . "Enchanting succeeded.");
             } else {
                 $this->player->sendTip(TextFormat::RED . "The item is not compatible with this enchant.");
