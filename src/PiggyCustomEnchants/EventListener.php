@@ -29,7 +29,6 @@ use pocketmine\event\entity\EntityEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\Event;
-use pocketmine\event\inventory\InventoryPickupArrowEvent;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
@@ -178,20 +177,6 @@ class EventListener implements Listener
         $entity = $event->getProjectile();
         if ($shooter instanceof Player) {
             $this->checkBowEnchants($shooter, $entity, $event);
-        }
-    }
-
-    /***
-     * @param InventoryPickupArrowEvent $event
-     *
-     * @priority HIGHEST
-     * @ignoreCancelled true
-     */
-    public function onPickupArrow(InventoryPickupArrowEvent $event)
-    {
-        $arrow = $event->getArrow();
-        if ($arrow->namedtag->hasTag("Volley")) {
-            $event->setCancelled();
         }
     }
 
@@ -934,8 +919,7 @@ class EventListener implements Listener
                     $projectile = null;
                     if ($entity instanceof Arrow) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $nbt->setTag(new ByteTag("Volley", 1));
-                        $projectile = Entity::createEntity("Arrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical());
+                        $projectile = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), true);
                     }
                     if ($entity instanceof Fireball) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
