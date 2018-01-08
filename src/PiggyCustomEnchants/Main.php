@@ -9,6 +9,7 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\Fireball;
 use PiggyCustomEnchants\Entities\Lightning;
 use PiggyCustomEnchants\Entities\PigProjectile;
+use PiggyCustomEnchants\Entities\VolleyArrow;
 use PiggyCustomEnchants\Entities\WitherSkull;
 use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\ChickenTask;
@@ -243,6 +244,7 @@ class Main extends PluginBase
             Entity::registerEntity(Fireball::class);
             Entity::registerEntity(Lightning::class);
             Entity::registerEntity(PigProjectile::class);
+            Entity::registerEntity(VolleyArrow::class, true);
             Entity::registerEntity(WitherSkull::class);
             if (!ItemFactory::isRegistered(Item::ENCHANTED_BOOK)) { //Check if it isn't already registered by another plugin
                 ItemFactory::registerItem(new Item(Item::ENCHANTED_BOOK, 0, "Enchanted Book")); //This is a temporary fix for name being Unknown when given due to no implementation in PMMP. Will remove when implemented in PMMP
