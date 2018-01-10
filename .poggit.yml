@@ -4,5 +4,5 @@ branches:
 projects:
   PiggyCustomEnchants:
     path: ""
-    icon: "resources/PCE_Icon.jpg"
+    icon: "resources/PCE_Icon.png"
 ...

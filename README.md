@@ -1,4 +1,4 @@
-![PiggyCustomEnchants Banner by @Aericio](https://github.com/DaPigGuy/PiggyCustomEnchants/blob/master/resources/PCE_Icon.jpg)
+![PiggyCustomEnchants Banner by @Aericio](https://github.com/DaPigGuy/PiggyCustomEnchants/blob/master/resources/PCE_Icon.png)
 # PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/ci.badge/DaPigGuy/PiggyCustomEnchants/PiggyCustomEnchants/master)](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants)
 PiggyCustomEnchants is an open-sourced custom enchants plugin for PMMP.
 
