@@ -40,7 +40,7 @@ class RadarTask extends PluginTask
                 if ($enchantment !== null) {
                     $distance = [];
                     foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
-                        if ($player !== $p && $player->isAlive() && $player->isClosed() !== true && $player->isFlaggedForDespawn() !== true) {
+                        if ($player !== $p && $p->isAlive() && $p->isClosed() !== true && $p->isFlaggedForDespawn() !== true) {
                             $d = $player->distance($p);
                             if ($d <= $enchantment->getLevel() * 50) {
                                 $distance[$p->getLowerCaseName()] = $d;
