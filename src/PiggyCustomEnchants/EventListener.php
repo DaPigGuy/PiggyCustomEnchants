@@ -223,7 +223,7 @@ class EventListener implements Listener
     public function onIllegalMove(PlayerIllegalMoveEvent $event)
     {
         $player = $event->getPlayer();
-        if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER) !== null) {
+        if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER) !== null) {
             $event->setCancelled();
         }
     }
@@ -253,7 +253,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $reason = $event->getReason();
         if ($reason == "Flying is not enabled on this server") {
-            if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER) !== null) {
+            if (isset($this->plugin->flying[$player->getLowerCaseName()]) || $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER) !== null) {
                 $event->setCancelled();
             }
         }
@@ -278,8 +278,10 @@ class EventListener implements Listener
             }
         }
         if ($from->getFloorX() == $player->getFloorX() && $from->getFloorY() == $player->getFloorY() && $from->getFloorZ() == $player->getFloorZ()) {
+            $this->plugin->moved[$player->getLowerCaseName()] = 10;
             return false;
         }
+        $this->plugin->moved[$player->getLowerCaseName()] = 0;
         $this->checkGlobalEnchants($player, null, $event);
         $this->checkArmorEnchants($player, $event);
         return true;
@@ -521,15 +523,9 @@ class EventListener implements Listener
                     $chance = 10 * $enchantment->getLevel();
                     $random = mt_rand(0, 100);
                     if ($random <= $chance) {
-                        $armoredslots = [];
-                        for ($i = 0; $i <= 3; $i++) {
-                            if ($entity->getInventory()->getArmorItem($i) instanceof Armor) {
-                                $armoredslots[] = $i;
-                            }
-                        }
-                        if (count($armoredslots) > 0) {
-                            $item = $entity->getInventory()->getArmorItem($armoredslots[array_rand($armoredslots)]);
-                            $entity->getInventory()->remove($item); //BasicInventory::removeItem() doesn't seem to work with armor slots
+                        if (count($armor = $entity->getArmorInventory()->getContents(false)) > 0) {
+                            $item = $armor[array_rand($armor)];
+                            $entity->getArmorInventory()->removeItem($item);
                             $entity->dropItem($item);
                         }
                     }
@@ -575,7 +571,7 @@ class EventListener implements Listener
             foreach ($drops as $drop) {
                 $damager->getLevel()->dropItem($damager, $drop);
             }
-            $damager->getInventory()->setArmorContents($soulboundedarmor);
+            $damager->getArmorInventory()->setContents($soulboundedarmor);
             $damager->getInventory()->setContents($soulbounded);
         }
         if ($event instanceof PlayerMoveEvent) {
@@ -878,10 +874,19 @@ class EventListener implements Listener
             }
         }
         if ($event instanceof EntityShootBowEvent) {
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PLACEHOLDER);
+            if ($enchantment !== null) {
+                $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
+                $newentity = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), true, false);
+                $newentity->setMotion($newentity->getMotion()->multiply($event->getForce()));
+                $newentity->spawnToAll();
+                $entity->close();
+                $entity = $newentity;
+            }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLAZE);
             if ($enchantment !== null && $entity instanceof Fireball !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $fireball = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager);
+                $fireball = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false);
                 $fireball->setMotion($fireball->getMotion()->multiply($event->getForce()));
                 $fireball->spawnToAll();
                 $entity->close();
@@ -890,7 +895,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PORKIFIED);
             if ($enchantment !== null && $entity instanceof PigProjectile !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, $enchantment->getLevel());
+                $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel());
                 $pig->setMotion($pig->getMotion()->multiply($event->getForce()));
                 $pig->spawnToAll();
                 $entity->close();
@@ -899,7 +904,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHERSKULL);
             if ($enchantment !== null && $entity instanceof WitherSkull !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $skull = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager, $enchantment->getLevel());
+                $skull = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel() > 1 ? true : false);
                 $skull->setMotion($skull->getMotion()->multiply($event->getForce()));
                 $skull->spawnToAll();
                 $entity->close();
@@ -919,7 +924,7 @@ class EventListener implements Listener
                     $projectile = null;
                     if ($entity instanceof Arrow) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), true);
+                        $projectile = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), false, true);
                     }
                     if ($entity instanceof Fireball) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
@@ -927,11 +932,11 @@ class EventListener implements Listener
                     }
                     if ($entity instanceof PigProjectile) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, $entity->getPorkLevel());
+                        $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, false, $entity->getPorkLevel());
                     }
                     if ($entity instanceof WitherSkull) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager);
+                        $projectile = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager, false, $entity->isDangerous());
                     }
                     $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->multiply($event->getForce())->length()));
                     if ($projectile->isOnFire()) {
@@ -993,7 +998,7 @@ class EventListener implements Listener
                 $cause = $event->getCause();
                 $antikb = 4;
                 if ($cause == EntityDamageEvent::CAUSE_FALL) {
-                    $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::STOMP);
+                    $enchantment = $entity->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantsIds::STOMP);
                     if ($enchantment !== null) {
                         $entities = $entity->getLevel()->getNearbyEntities($entity->getBoundingBox());
                         foreach ($entities as $e) {
@@ -1009,7 +1014,7 @@ class EventListener implements Listener
                         }
                     }
                 }
-                foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
+                foreach ($entity->getArmorInventory()->getContents() as $slot => $armor) {
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVIVE);
                     if ($enchantment !== null) {
                         if ($event->getDamage() >= $entity->getHealth()) {
@@ -1089,7 +1094,7 @@ class EventListener implements Listener
                 }
                 if ($event instanceof EntityDamageByEntityEvent) {
                     $damager = $event->getDamager();
-                    foreach ($entity->getInventory()->getArmorContents() as $slot => $armor) {
+                    foreach ($entity->getArmorInventory()->getContents() as $slot => $armor) {
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::MOLTEN);
                         if ($enchantment !== null) {
                             $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
@@ -1208,7 +1213,7 @@ class EventListener implements Listener
             }
             if ($event instanceof EntityEffectAddEvent) {
                 $effect = $event->getEffect();
-                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::FOCUSED);
+                $enchantment = $entity->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::FOCUSED);
                 if ($enchantment !== null) {
                     if (!isset($this->plugin->using[$entity->getLowerCaseName()]) || $this->plugin->using[$entity->getLowerCaseName()] < time()) {
                         if ($effect->getId() == Effect::NAUSEA) {
@@ -1222,7 +1227,7 @@ class EventListener implements Listener
                         }
                     }
                 }
-                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::ANTITOXIN);
+                $enchantment = $entity->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::ANTITOXIN);
                 if ($enchantment !== null) {
                     if ($effect->getId() == Effect::POISON) {
                         $event->setCancelled();
@@ -1230,7 +1235,7 @@ class EventListener implements Listener
                 }
             }
             if ($event instanceof PlayerMoveEvent) {
-                $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::MAGMAWALKER);
+                $enchantment = $entity->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantsIds::MAGMAWALKER);
                 if ($enchantment !== null) {
                     $block = $entity->getLevel()->getBlock($entity);
                     if (!$this->plugin->checkBlocks($block, [Block::STILL_LAVA, Block::LAVA, Block::FLOWING_LAVA])) {
@@ -1250,13 +1255,13 @@ class EventListener implements Listener
                         }
                     }
                 }
-                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::MEDITATION);
+                $enchantment = $entity->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::MEDITATION);
                 if ($enchantment !== null) {
                     if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
                         $this->plugin->meditationTick[$entity->getLowerCaseName()] = 0;
                     }
                 }
-                $enchantment = $entity->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::IMPLANTS);
+                $enchantment = $entity->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::IMPLANTS);
                 if ($enchantment !== null) {
                     if ($event->getFrom()->floor() !== $event->getTo()->floor()) {
                         if (!isset($this->plugin->implantscd[$entity->getLowerCaseName()]) || $this->plugin->implantscd[$entity->getLowerCaseName()] < time()) {
@@ -1279,7 +1284,7 @@ class EventListener implements Listener
                 $growpoints = 0;
                 $shrinklevel = 0;
                 $growlevel = 0;
-                foreach ($entity->getInventory()->getArmorContents() as $armor) {
+                foreach ($entity->getArmorInventory()->getContents() as $armor) {
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::SHRINK);
                     if ($enchantment !== null) {
                         $shrinklevel += $enchantment->getLevel();
@@ -1331,7 +1336,7 @@ class EventListener implements Listener
                         }
                     }
                 }
-                $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::JETPACK);
+                $enchantment = $entity->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantsIds::JETPACK);
                 if ($enchantment !== null) {
                     if (isset($this->plugin->flying[$entity->getLowerCaseName()]) && $this->plugin->flying[$entity->getLowerCaseName()] > time()) {
                         if ($entity->isOnGround()) {
@@ -1364,7 +1369,7 @@ class EventListener implements Listener
                     $action = $packet->action;
                     switch ($action) {
                         case 8:
-                            $enchantment = $entity->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::SPRINGS);
+                            $enchantment = $entity->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantsIds::SPRINGS);
                             if ($enchantment !== null) {
                                 $entity->setMotion(new Vector3(0, $entity->getJumpVelocity() + 0.4));
                                 $this->plugin->nofall[$entity->getLowerCaseName()] = time() + 1;

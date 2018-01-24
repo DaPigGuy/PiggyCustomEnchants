@@ -11,6 +11,7 @@ use PiggyCustomEnchants\Entities\Lightning;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Entities\VolleyArrow;
 use PiggyCustomEnchants\Entities\WitherSkull;
+use PiggyCustomEnchants\Tasks\AutoAimTask;
 use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\ChickenTask;
 use PiggyCustomEnchants\Tasks\EffectTask;
@@ -18,6 +19,7 @@ use PiggyCustomEnchants\Tasks\ForcefieldTask;
 use PiggyCustomEnchants\Tasks\JetpackTask;
 use PiggyCustomEnchants\Tasks\MeditationTask;
 use PiggyCustomEnchants\Tasks\ParachuteTask;
+use PiggyCustomEnchants\Tasks\PoisonousGasTask;
 use PiggyCustomEnchants\Tasks\ProwlTask;
 use PiggyCustomEnchants\Tasks\RadarTask;
 use PiggyCustomEnchants\Tasks\SizeTask;
@@ -35,6 +37,7 @@ use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
 use pocketmine\nbt\tag\ShortTag;
+use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\TextFormat;
 
@@ -101,6 +104,7 @@ class Main extends PluginBase
 
     public $chickenTick;
     public $forcefieldParticleTick;
+    public $gasParticleTick;
     public $jetpackChargeTick;
     public $meditationTick;
 
@@ -112,6 +116,7 @@ class Main extends PluginBase
     public $hallucination;
     public $implants;
     public $mined;
+    public $moved;
     public $nofall;
     public $overload;
     public $prowl;
@@ -129,6 +134,7 @@ class Main extends PluginBase
         CustomEnchantsIds::ANTITOXIN => ["Antitoxin", "Helmets", "Effect", "Mythic", 1, "Immunity to poison"],
         CustomEnchantsIds::AERIAL => ["Aerial", "Weapons", "Damage", "Common", 5, "Increases damage in air"],
         CustomEnchantsIds::ARMORED => ["Armored", "Armor", "Damage", "Rare", 5, "Decreases sword damage by 20l%"],
+        CustomEnchantsIds::AUTOAIM => ["Auto Aim", "Bow", "Held", "Mythic", 1, "Aim at nearest target"],
         CustomEnchantsIds::AUTOREPAIR => ["Autorepair", "Damageable", "Move", "Uncommon", 5, "Automatically repairs items when moving"],
         CustomEnchantsIds::BACKSTAB => ["Backstab", "Weapons", "Damage", "Uncommon", 5, "When hitting from behind, you deal more damage."],
         CustomEnchantsIds::BERSERKER => ["Berserker", "Armor", "Damaged", "Rare", 5, "Gives strength on low health"],
@@ -156,7 +162,7 @@ class Main extends PluginBase
         CustomEnchantsIds::FARMER => ["Farmer", "Hoe", "Break", "Uncommon", 1, "Automatically regrows crops when harvested"],
         CustomEnchantsIds::FERTILIZER => ["Fertilizer", "Hoe", "Interact", "Uncommon", 3, "Creates farmland in a level radius around the block"],
         CustomEnchantsIds::FOCUSED => ["Focused", "Helmets", "Effect", "Uncommon", 5, "Nausea will affect you less"],
-        CustomEnchantsIds::FORCEFIELD => ["Forcefield", "Armor", "Equip", "Mythic", 1, "Deflects projectiles and living entities in a 0.75x (x = # of armor pieces)"],
+        CustomEnchantsIds::FORCEFIELD => ["Forcefield", "Armor", "Equip", "Mythic", 5, "Deflects projectiles and living entities in a 0.75x (x = # of armor pieces)"],
         CustomEnchantsIds::FROZEN => ["Frozen", "Armor", "Damaged", "Rare", 5, "Gives slowness to enemy when hit"],
         CustomEnchantsIds::GEARS => ["Gears", "Boots", "Equip", "Uncommon", 5, "Gives speed"],
         CustomEnchantsIds::GLOWING => ["Glowing", "Helmets", "Equip", "Common", 1, "Gives night vision"],
@@ -188,6 +194,7 @@ class Main extends PluginBase
         CustomEnchantsIds::PARALYZE => ["Paralyze", "Bow", "Damage", "Rare", 5, "Gives slowness, blindness, and weakness"],
         CustomEnchantsIds::PIERCING => ["Piercing", "Bow", "Damage", "Rare", 5, "Ignores armor when dealing damage"],
         CustomEnchantsIds::POISON => ["Poison", "Weapons", "Damage", "Uncommon", 5, "Poisons enemies"],
+        CustomEnchantsIds::POISONOUSCLOUD => ["Poisonous Cloud", "Armor", "Equip", "Rare", 3, ""],
         CustomEnchantsIds::POISONED => ["Poisoned", "Armor", "Damaged", "Uncommon", 5, "Poisons enemy when hit"],
         CustomEnchantsIds::PORKIFIED => ["Porkified", "Bow", "Shoot", "Mythic", 3, "Shoot pigs"],
         CustomEnchantsIds::PROWL => ["Prowl", "Chestplate", "Equip", "Rare", 1, "Goes invisible when sneaking, gives slowness"],
@@ -210,12 +217,14 @@ class Main extends PluginBase
         CustomEnchantsIds::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1, "Heals by part of damage dealt"],
         CustomEnchantsIds::VOLLEY => ["Volley", "Bow", "Shoot", "Uncommon", 5, "Shoot multiple arrows in a cone"],
         CustomEnchantsIds::WITHER => ["Wither", "Weapons", "Damage", "Uncommon", 5, "Gives enemies wither"],
-        CustomEnchantsIds::WITHERSKULL => ["Wither Skull", "Bow", "Shoot", "Mythic", 1, "Shoots Wither Skull"]
+        CustomEnchantsIds::WITHERSKULL => ["Wither Skull", "Bow", "Shoot", "Mythic", 1, "Shoots Wither Skull"],
+        CustomEnchantsIds::PLACEHOLDER => ["Placeholder", "Bow", "Shoot", "Rare", 1, ""]
     ];
 
     public $incompatibilities = [
+        CustomEnchantsIds::GROW => [CustomEnchantsIds::SHRINK],
         CustomEnchantsIds::PORKIFIED => [CustomEnchantsIds::BLAZE, CustomEnchantsIds::WITHERSKULL],
-        CustomEnchantsIds::GROW => [CustomEnchantsIds::SHRINK]
+        CustomEnchantsIds::VOLLEY => [CustomEnchantsIds::GRAPPLING]
     ];
 
     public function onEnable()
@@ -241,15 +250,16 @@ class Main extends PluginBase
                 $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackDisabled) . ".");
             }
             BlockFactory::registerBlock(new PiggyObsidian(), true);
-            Entity::registerEntity(Fireball::class);
-            Entity::registerEntity(Lightning::class);
-            Entity::registerEntity(PigProjectile::class);
+            Entity::registerEntity(Fireball::class, true);
+            Entity::registerEntity(Lightning::class, true);
+            Entity::registerEntity(PigProjectile::class, true);
             Entity::registerEntity(VolleyArrow::class, true);
-            Entity::registerEntity(WitherSkull::class);
+            Entity::registerEntity(WitherSkull::class, true);
             if (!ItemFactory::isRegistered(Item::ENCHANTED_BOOK)) { //Check if it isn't already registered by another plugin
                 ItemFactory::registerItem(new Item(Item::ENCHANTED_BOOK, 0, "Enchanted Book")); //This is a temporary fix for name being Unknown when given due to no implementation in PMMP. Will remove when implemented in PMMP
             }
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new AutoAimTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new ForcefieldTask($this), 1);
@@ -261,6 +271,7 @@ class Main extends PluginBase
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new SpiderTask($this), 1);
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new PoisonousGasTask($this), 1);
             $this->getServer()->getScheduler()->scheduleRepeatingTask(new VacuumTask($this), 1);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 
@@ -859,5 +870,27 @@ class Main extends PluginBase
             }
         }
         return true;
+    }
+
+    /**
+     * @param Position $position
+     * @param int $range
+     * @param string $type
+     * @param Player|null $player
+     * @return null|Entity
+     */
+    public function findNearestEntity(Position $position, int $range = 50, string $type = Player::class, Player $player = null)
+    {
+        assert(is_a($type, Entity::class, true));
+        $nearestEntity = null;
+        $nearestEntityDistance = $range;
+        foreach ($position->getLevel()->getEntities() as $entity) {
+            $distance = $position->distance($entity);
+            if ($distance <= $range && $distance < $nearestEntityDistance && $entity instanceof $type && $player !== $entity && $entity->isAlive() && $entity->isClosed() !== true && $entity->isFlaggedForDespawn() !== true) {
+                $nearestEntity = $entity;
+                $nearestEntityDistance = $distance;
+            }
+        }
+        return $nearestEntity;
     }
 }

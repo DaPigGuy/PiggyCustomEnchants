@@ -31,7 +31,7 @@ class VacuumTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::VACUUM);
+            $enchantment = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::VACUUM);
             if ($enchantment !== null) {
                 foreach ($player->getLevel()->getEntities() as $entity) {
                     if ($entity instanceof Item) {

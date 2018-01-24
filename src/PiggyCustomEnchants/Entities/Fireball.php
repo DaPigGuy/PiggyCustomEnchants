@@ -5,7 +5,6 @@ namespace PiggyCustomEnchants\Entities;
 use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 
@@ -13,7 +12,7 @@ use pocketmine\event\entity\ProjectileHitEvent;
  * Class Fireball
  * @package PiggyCustomEnchants\Entities
  */
-class Fireball extends Projectile
+class Fireball extends PiggyProjectile
 {
     protected $drag = 0.01;
     protected $gravity = 0.05;

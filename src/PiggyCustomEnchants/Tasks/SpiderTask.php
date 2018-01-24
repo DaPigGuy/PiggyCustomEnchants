@@ -32,7 +32,7 @@ class SpiderTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER);
+            $enchantment = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::SPIDER);
             if($enchantment !== null){
                 $blocks = array_merge($player->getLevel()->getBlock($player)->getHorizontalSides(), $player->getLevel()->getBlock($player->add(0, 1))->getHorizontalSides()); //getBlocksAround() returns an empty array...
                 $solid = 0;

@@ -57,7 +57,7 @@ class CustomEnchantsIds
     const PARALYZE = 303;
     const MOLOTOV = 304; //Falling sand fire doesn't appear
     const VOLLEY = 305;
-    //WITHER SHOULD BE HERE AGAIN... BUT...
+    const AUTOAIM = 306;
     const PIERCING = 307;
     const SHUFFLE = 308;
     const BOUNTYHUNTER = 309; //Not accurate
@@ -67,6 +67,7 @@ class CustomEnchantsIds
     const GRAPPLING = 313;
     const PORKIFIED = 314;
     const MISSILE = 315;
+    const PLACEHOLDER = 316;
 
     //ARMOR
     const MOLTEN = 400;
@@ -93,6 +94,7 @@ class CustomEnchantsIds
     const TANK = 421;
     const HEAVY = 422;
     const SHIELDED = 423;
+    const POISONOUSCLOUD = 424;
 
     //HELMET
     const IMPLANTS = 600;

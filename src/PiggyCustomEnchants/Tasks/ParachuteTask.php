@@ -32,7 +32,7 @@ class ParachuteTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $chestplate = $player->getInventory()->getChestplate();
+            $chestplate = $player->getArmorInventory()->getChestplate();
             $enchantment = $chestplate->getEnchantment(CustomEnchantsIds::PARACHUTE);
             if ($enchantment !== null) {
                 $motion = $player->getMotion();

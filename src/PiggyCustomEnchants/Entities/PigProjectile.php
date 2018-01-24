@@ -3,7 +3,6 @@
 namespace PiggyCustomEnchants\Entities;
 
 use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Projectile;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
@@ -14,7 +13,7 @@ use pocketmine\Player;
  * Class PigProjectile
  * @package PiggyCustomEnchants\Entities
  */
-class PigProjectile extends Projectile
+class PigProjectile extends PiggyProjectile
 {
     private $porklevel = 1;
     private $zombie = false;
@@ -44,9 +43,10 @@ class PigProjectile extends Projectile
      * @param Level $level
      * @param CompoundTag $nbt
      * @param Entity|null $shootingEntity
+     * @param bool $placeholder
      * @param int $porklevel
      */
-    public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porklevel = 1)
+    public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, bool $placeholder = false, int $porklevel = 1)
     {
         if ($porklevel < 1) {
             $porklevel = 1;
@@ -61,7 +61,7 @@ class PigProjectile extends Projectile
         }
         $this->zombie = $values[2];
         $this->porklevel = $porklevel;
-        parent::__construct($level, $nbt, $shootingEntity);
+        parent::__construct($level, $nbt, $shootingEntity, $placeholder);
     }
 
     /**

@@ -33,7 +33,7 @@ class ChickenTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::CHICKEN);
+            $enchantment = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::CHICKEN);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->chickenTick[$player->getLowerCaseName()])) {
                     $this->plugin->chickenTick[$player->getLowerCaseName()] = 0;

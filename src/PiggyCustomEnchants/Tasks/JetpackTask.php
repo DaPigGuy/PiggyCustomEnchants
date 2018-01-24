@@ -33,7 +33,7 @@ class JetpackTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $player->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::JETPACK);
+            $enchantment = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantsIds::JETPACK);
             if ($enchantment !== null) {
                 if (isset($this->plugin->flying[$player->getLowerCaseName()]) && $this->plugin->flying[$player->getLowerCaseName()] > time()) {
                     if (!in_array($player->getLevel()->getName(), $this->plugin->jetpackDisabled)) {

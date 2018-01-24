@@ -47,7 +47,7 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $player->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::GLOWING);
+            $enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::GLOWING);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::NIGHT_VISION);
                 $effect->setAmplifier(0);
@@ -61,7 +61,7 @@ class EffectTask extends PluginTask
                     unset($this->plugin->glowing[$player->getLowerCaseName()]);
                 }
             }
-            $enchantment = $player->getInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::ENRAGED);
+            $enchantment = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::ENRAGED);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::STRENGTH);
                 $effect->setAmplifier($enchantment->getLevel() - 1);
@@ -69,7 +69,7 @@ class EffectTask extends PluginTask
                 $effect->setVisible(false);
                 $player->addEffect($effect);
             }
-            $enchantment = $player->getInventory()->getBoots()->getEnchantment(CustomEnchantsIds::GEARS);
+            $enchantment = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantsIds::GEARS);
             if ($enchantment !== null) {
                 $effect = Effect::getEffect(Effect::SPEED);
                 $effect->setAmplifier(0);
@@ -78,7 +78,7 @@ class EffectTask extends PluginTask
                 $player->addEffect($effect);
             }
             $shielded = 0;
-            foreach ($player->getInventory()->getArmorContents() as $slot => $armor) {
+            foreach ($player->getArmorInventory()->getContents() as $slot => $armor) {
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::OBSIDIANSHIELD);
                 if ($enchantment !== null) {
                     $effect = Effect::getEffect(Effect::FIRE_RESISTANCE);

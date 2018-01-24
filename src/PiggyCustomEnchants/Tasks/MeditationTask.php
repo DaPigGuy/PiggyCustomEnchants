@@ -33,7 +33,7 @@ class MeditationTask extends PluginTask
     public function onRun(int $currentTick)
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
-            $enchantment = $player->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::MEDITATION);
+            $enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::MEDITATION);
             if ($enchantment !== null) {
                 if (!isset($this->plugin->meditationTick[$player->getLowerCaseName()])) {
                     $this->plugin->meditationTick[$player->getLowerCaseName()] = 0;

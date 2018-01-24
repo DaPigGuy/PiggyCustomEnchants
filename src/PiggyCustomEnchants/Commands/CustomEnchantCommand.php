@@ -109,7 +109,7 @@ class CustomEnchantCommand extends PluginCommand
                         return true;
                     }
                     if ((is_numeric($args[1]) && ($enchant = CustomEnchants::getEnchantment($args[1])) !== null) || ($enchant = CustomEnchants::getEnchantmentByName($args[1])) !== null) {
-                        $sender->sendMessage(TextFormat::GREEN . $enchant->getName() . "\n" . TextFormat::RESET . "Description: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
+                        $sender->sendMessage(TextFormat::GREEN . $enchant->getName() . "\n" . TextFormat::RESET . "ID: " . $enchant->getId() . "\nDescription: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
                     } else {
                         $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
                     }
@@ -414,7 +414,7 @@ class CustomEnchantCommand extends PluginCommand
                 });
                 if ((is_numeric($enchant) && ($enchant = CustomEnchants::getEnchantment($enchant)) !== null) || ($enchant = CustomEnchants::getEnchantmentByName($enchant)) !== null) {
                     $form->setTitle(TextFormat::GREEN . "Info");
-                    $form->setContent(TextFormat::GREEN . $enchant->getName() . "\n" . TextFormat::RESET . "Description: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
+                    $form->setContent(TextFormat::GREEN . $enchant->getName() . "\n" . TextFormat::RESET . "ID: " . $enchant->getId() . "\nDescription: " . $plugin->getEnchantDescription($enchant) . "\nType: " . $plugin->getEnchantType($enchant) . "\nRarity: " . $plugin->getEnchantRarity($enchant) . "\nMax Level: " . $plugin->getEnchantMaxLevel($enchant));
                 } else {
                     $form->setTitle(TextFormat::RED . "Error");
                     $form->setContent(TextFormat::RED . "Invalid enchantment.");

@@ -33,7 +33,7 @@ class SizeTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $shrinkpoints = 0;
             $growpoints = 0;
-            foreach ($player->getInventory()->getArmorContents() as $armor) {
+            foreach ($player->getArmorInventory()->getContents() as $armor) {
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::SHRINK);
                 if ($enchantment !== null) {
                     $shrinkpoints++;
@@ -48,7 +48,7 @@ class SizeTask extends PluginTask
                 $player->setScale(1);
                 $player->sendTip(TextFormat::RED . "You have grown back to normal size.");
             }
-            foreach ($player->getInventory()->getArmorContents() as $armor) {
+            foreach ($player->getArmorInventory()->getContents() as $armor) {
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::GROW);
                 if ($enchantment !== null) {
                     $growpoints++;

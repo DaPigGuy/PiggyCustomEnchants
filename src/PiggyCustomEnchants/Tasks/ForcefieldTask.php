@@ -35,22 +35,23 @@ class ForcefieldTask extends PluginTask
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $forcefields = 0;
-            foreach ($player->getInventory()->getArmorContents() as $armor) {
+            foreach ($player->getArmorInventory()->getContents() as $armor) {
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::FORCEFIELD);
                 if ($enchantment !== null) {
-                    $forcefields++;
+                    $forcefields += $enchantment->getLevel();
                 }
             }
             if ($forcefields > 0) {
-                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->grow($forcefields * 0.75, $forcefields * 0.75, $forcefields * 0.75), $player);
+                $radius = $forcefields * 0.75;
+                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->grow($radius, $radius, $radius), $player);
                 foreach ($entities as $entity) {
                     if ($entity instanceof Projectile) {
                         if ($entity->getOwningEntity() !== $player) {
                             $entity->setMotion($entity->getMotion()->multiply(-1));
                         }
                     } else {
-                        if (!$entity instanceof Item) {
-                            $entity->setMotion(new Vector3($entity->getDirectionVector()->x * -0.75, 0, $entity->getDirectionVector()->y * -0.75));
+                        if (!$entity instanceof Item && isset($entity->namedtag->SlapperVersion) !== true) {
+                            $entity->setMotion(new Vector3($player->subtract($entity), 0, $player->subtract($entity)->normalize()->multiply(0.75)));
                         }
                     }
                 }
@@ -58,9 +59,8 @@ class ForcefieldTask extends PluginTask
                     $this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] = 0;
                 }
                 $this->plugin->forcefieldParticleTick[$player->getLowerCaseName()]++;
-                if ($this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] >= 10) {
-                    $radius = $forcefields * 0.75;
-                    $diff = 5;
+                if ($this->plugin->forcefieldParticleTick[$player->getLowerCaseName()] >= 7.5) {
+                    $diff = $radius / $forcefields;
                     for ($theta = 0; $theta <= 360; $theta += $diff) {
                         $x = $radius * sin($theta);
                         $y = 0.5;

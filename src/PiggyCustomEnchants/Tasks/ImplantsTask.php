@@ -36,7 +36,7 @@ class ImplantsTask extends PluginTask
     public function onRun(int $currentTick)
     {
         $player = $this->player;
-        if ($player->isOnline() && $player->isAlive() && ($enchantment = $player->getInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::IMPLANTS)) !== null) {
+        if ($player->isOnline() && $player->isAlive() && ($enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::IMPLANTS)) !== null) {
             if (!$this->plugin->checkBlocks($player, [Block::WATER, Block::STILL_WATER, Block::FLOWING_WATER], -1)) {
                 $this->cancel();
                 return false;
