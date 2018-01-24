@@ -51,7 +51,7 @@ class ForcefieldTask extends PluginTask
                         }
                     } else {
                         if (!$entity instanceof Item && isset($entity->namedtag->SlapperVersion) !== true) {
-                            $entity->setMotion(new Vector3($player->subtract($entity), 0, $player->subtract($entity)->normalize()->multiply(0.75)));
+                            $entity->setMotion(new Vector3($player->subtract($entity)->normalize()->multiply(-0.75)->x, 0, $player->subtract($entity)->normalize()->multiply(-0.75)->z));
                         }
                     }
                 }
