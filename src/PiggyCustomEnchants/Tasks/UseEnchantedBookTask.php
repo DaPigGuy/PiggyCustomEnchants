@@ -44,9 +44,9 @@ class UseEnchantedBookTask extends PluginTask
         foreach ($source->getEnchantments() as $enchant) {
             if (!$enchant->getType() instanceof CustomEnchants || $this->plugin->canBeEnchanted($target, $enchant, $enchant->getLevel())) {//TODO: Check XP
                 $item = clone $target;
-                if($enchant->getType() instanceof CustomEnchants){
+                if ($enchant->getType() instanceof CustomEnchants) {
                     $item = $this->plugin->addEnchantment($item, $enchant->getId(), $enchant->getLevel());
-                }else{
+                } else {
                     $item->addEnchantment($enchant);
                 }
                 if ($this->player->getCursorInventory()->contains($target)) { //W10 UI

@@ -40,7 +40,6 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
-use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\particle\FlameParticle;
 use pocketmine\level\Position;
