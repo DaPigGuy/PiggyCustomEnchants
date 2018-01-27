@@ -880,7 +880,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PLACEHOLDER);
             if ($enchantment !== null) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $newentity = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), true, false);
+                $newentity = new VolleyArrow($damager->getLevel(), $nbt, $damager, $entity->isCritical(), true, false);
                 $newentity->setMotion($newentity->getMotion()->multiply($event->getForce()));
                 $newentity->spawnToAll();
                 $entity->close();
