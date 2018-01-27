@@ -97,14 +97,14 @@ class CustomEnchantCommand extends PluginCommand
                         return false;
                     }
                     if (count($args) < 2) {
-                        if($forms){
+                        if ($forms) {
                             $this->infoForm($sender);
                             return true;
                         }
                         $sender->sendMessage(TextFormat::RED . "Usage: /customenchant info <enchant>");
                         return false;
                     }
-                    if($forms){
+                    if ($forms) {
                         $this->sendInfo($sender, $args[1]);
                         return true;
                     }
@@ -119,14 +119,14 @@ class CustomEnchantCommand extends PluginCommand
                         $this->error($sender, TextFormat::RED . "You do not have permission to do this.");
                         return false;
                     }
-                    if($forms){
+                    if ($forms) {
                         $this->listForm($sender);
                         return true;
                     }
                     $sender->sendMessage($this->list());
                     break;
                 default:
-                    if($forms){
+                    if ($forms) {
                         $this->formMenu($sender);
                         return true;
                     }
@@ -207,8 +207,8 @@ class CustomEnchantCommand extends PluginCommand
      */
     public function error(CommandSender $sender, $error)
     {
-        if($sender instanceof Player){
-            if($this->errorForm($sender, $error)){
+        if ($sender instanceof Player) {
+            if ($this->errorForm($sender, $error)) {
                 return true;
             }
         }

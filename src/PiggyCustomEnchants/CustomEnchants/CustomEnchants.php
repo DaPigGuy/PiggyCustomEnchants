@@ -24,9 +24,10 @@ class CustomEnchants extends Enchantment
      *
      * @return Enchantment|null
      */
-    public static function getEnchantmentByName(string $name){
+    public static function getEnchantmentByName(string $name)
+    {
         $const = CustomEnchantsIds::class . "::" . strtoupper($name);
-        if(defined($const)){
+        if (defined($const)) {
             return self::getEnchantment(constant($const));
         }
         return null;
@@ -36,8 +37,9 @@ class CustomEnchants extends Enchantment
      * @param $id
      * @return bool
      */
-    public static function unregisterEnchantment($id){
-        if(isset(parent::$enchantments[$id])){
+    public static function unregisterEnchantment($id)
+    {
+        if (isset(parent::$enchantments[$id])) {
             unset(parent::$enchantments[$id]);
             return true;
         }
