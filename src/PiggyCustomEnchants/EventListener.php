@@ -4,7 +4,9 @@ namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\Fireball;
+use PiggyCustomEnchants\Entities\Lightning;
 use PiggyCustomEnchants\Entities\PigProjectile;
+use PiggyCustomEnchants\Entities\VolleyArrow;
 use PiggyCustomEnchants\Entities\WitherSkull;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
@@ -17,6 +19,7 @@ use pocketmine\block\Block;
 use pocketmine\block\Crops;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\block\BlockBreakEvent;
@@ -39,8 +42,8 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\inventory\ArmorInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
-use pocketmine\item\Armor;
 use pocketmine\item\Item;
 use pocketmine\level\particle\FlameParticle;
 use pocketmine\level\Position;
@@ -394,7 +397,7 @@ class EventListener implements Listener
     public function checkGlobalEnchants(Player $damager, Entity $entity = null, Event $event)
     {
         //TODO: Check to make sure you can use enchant with item
-        if ($event instanceof EntityDamageEvent) {
+        if ($event instanceof EntityDamageEvent and $entity instanceof Living) {
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LIFESTEAL);
             if ($enchantment !== null) {
                 if ($damager->getHealth() + 2 + $enchantment->getLevel() <= $damager->getMaxHealth()) {
@@ -542,7 +545,7 @@ class EventListener implements Listener
                 $chance = 10 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
                 if ($random <= $chance) {
-                    $lightning = Entity::createEntity("Lightning", $entity->getLevel(), Entity::createBaseNBT($entity));
+                    $lightning = new Lightning($entity->getLevel(), Entity::createBaseNBT($entity));
                     $lightning->setOwningEntity($damager);
                     $lightning->spawnToAll();
                 }
@@ -803,7 +806,7 @@ class EventListener implements Listener
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PARALYZE);
-            if ($enchantment !== null) {
+            if ($enchantment !== null and $entity instanceof Living) {
                 if (!$entity->hasEffect(Effect::SLOWNESS)) {
                     $effect = Effect::getEffect(Effect::SLOWNESS);
                     $effect->setAmplifier(5 + $enchantment->getLevel() - 1);
@@ -886,7 +889,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLAZE);
             if ($enchantment !== null && $entity instanceof Fireball !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $fireball = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false);
+                $fireball = new Fireball($damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false);
                 $fireball->setMotion($fireball->getMotion()->multiply($event->getForce()));
                 $fireball->spawnToAll();
                 $entity->close();
@@ -895,7 +898,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PORKIFIED);
             if ($enchantment !== null && $entity instanceof PigProjectile !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel());
+                $pig = new PigProjectile($event->getEntity()->getLevel(), $nbt, $event->getEntity(), isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel());
                 $pig->setMotion($pig->getMotion()->multiply($event->getForce()));
                 $pig->spawnToAll();
                 $entity->close();
@@ -904,7 +907,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHERSKULL);
             if ($enchantment !== null && $entity instanceof WitherSkull !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $skull = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel() > 1 ? true : false);
+                $skull = new WitherSkull($damager->getLevel(), $nbt, $damager);
                 $skull->setMotion($skull->getMotion()->multiply($event->getForce()));
                 $skull->spawnToAll();
                 $entity->close();
@@ -924,19 +927,19 @@ class EventListener implements Listener
                     $projectile = null;
                     if ($entity instanceof Arrow) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), false, true);
+                        $projectile = new VolleyArrow($damager->getLevel(), $nbt, $damager, $entity->isCritical(), false, true);
                     }
                     if ($entity instanceof Fireball) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager);
+                        $projectile = new Fireball($damager->getLevel(), $nbt, $damager);
                     }
                     if ($entity instanceof PigProjectile) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, false, $entity->getPorkLevel());
+                        $projectile = new PigProjectile($damager->getLevel(), $nbt, $damager, false, $entity->getPorkLevel());
                     }
                     if ($entity instanceof WitherSkull) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager, false, $entity->isDangerous());
+                        $projectile = new WitherSkull($damager->getLevel(), $nbt, $damager);
                     }
                     $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->multiply($event->getForce())->length()));
                     if ($projectile->isOnFire()) {
@@ -1019,9 +1022,40 @@ class EventListener implements Listener
                     if ($enchantment !== null) {
                         if ($event->getDamage() >= $entity->getHealth()) {
                             if ($enchantment->getLevel() > 1) {
-                                $entity->getInventory()->setArmorItem($slot, $this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
-                            } else {
-                                $entity->getInventory()->setArmorItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
+                                switch($slot){
+                                    case ArmorInventory::SLOT_CHEST:
+                                        $entity->getArmorInventory()->setChestplate($this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
+                                        break;
+                                    case ArmorInventory::SLOT_FEET:
+                                        $entity->getArmorInventory()->setBoots($this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
+                                        break;
+                                    case ArmorInventory::SLOT_HEAD:
+                                        $entity->getArmorInventory()->setHelmet($this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
+                                        break;
+                                    case ArmorInventory::SLOT_LEGS:
+                                        $entity->getArmorInventory()->setChestplate($this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
+                                        break;
+                                    default:
+                                        $this->plugin->getLogger()->error("CheckArmorEnchants: Slot $slot not found in ArmorInventory");
+                                }
+
+                            }else{
+                                switch($slot){
+                                    case ArmorInventory::SLOT_CHEST:
+                                        $entity->getArmorInventory()->setChestplate($this->plugin->removeEnchantment($armor, $enchantment));
+                                        break;
+                                    case ArmorInventory::SLOT_FEET:
+                                        $entity->getArmorInventory()->setBoots($this->plugin->removeEnchantment($armor, $enchantment));
+                                        break;
+                                    case ArmorInventory::SLOT_HEAD:
+                                        $entity->getArmorInventory()->setHelmet($this->plugin->removeEnchantment($armor, $enchantment));
+                                        break;
+                                    case ArmorInventory::SLOT_LEGS:
+                                        $entity->getArmorInventory()->setChestplate($this->plugin->removeEnchantment($armor, $enchantment));
+                                        break;
+                                    default:
+                                        $this->plugin->getLogger()->error("CheckArmorEnchants: Slot $slot not found in ArmorInventory");
+                                }
                             }
                             $entity->removeAllEffects();
                             $entity->setHealth($entity->getMaxHealth());
@@ -1094,117 +1128,119 @@ class EventListener implements Listener
                 }
                 if ($event instanceof EntityDamageByEntityEvent) {
                     $damager = $event->getDamager();
-                    foreach ($entity->getArmorInventory()->getContents() as $slot => $armor) {
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::MOLTEN);
-                        if ($enchantment !== null) {
-                            $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::ENLIGHTED);
-                        if ($enchantment !== null && $entity->hasEffect(Effect::REGENERATION) !== true) {
-                            $effect = Effect::getEffect(Effect::REGENERATION);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
-                            $entity->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::HARDENED);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::WEAKNESS) !== true) {
-                            $effect = Effect::getEffect(Effect::WEAKNESS);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::POISONED);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::POISON) !== true) {
-                            $effect = Effect::getEffect(Effect::POISON);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::FROZEN);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::SLOWNESS) !== true) {
-                            $effect = Effect::getEffect(Effect::SLOWNESS);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVULSION);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::NAUSEA) !== true) {
-                            $effect = Effect::getEffect(Effect::NAUSEA);
-                            $effect->setAmplifier(0);
-                            $effect->setDuration(20 * $enchantment->getLevel());
-                            $effect->setVisible(false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::CURSED);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::WITHER) !== true) {
-                            $effect = Effect::getEffect(Effect::WITHER);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::DRUNK);
-                        if ($enchantment !== null) {
-                            if (!$damager->hasEffect(Effect::SLOWNESS)) {
+                    if($damager instanceof Living){
+                        foreach($entity->getArmorInventory()->getContents() as $slot => $armor){
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::MOLTEN);
+                            if($enchantment !== null){
+                                $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::ENLIGHTED);
+                            if($enchantment !== null && $entity->hasEffect(Effect::REGENERATION) !== true){
+                                $effect = Effect::getEffect(Effect::REGENERATION);
+                                $effect->setAmplifier($enchantment->getLevel());
+                                $effect->setDuration(60 * $enchantment->getLevel());
+                                $effect->setVisible(false);
+                                $entity->addEffect($effect);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::HARDENED);
+                            if($enchantment !== null && $damager->hasEffect(Effect::WEAKNESS) !== true){
+                                $effect = Effect::getEffect(Effect::WEAKNESS);
+                                $effect->setAmplifier($enchantment->getLevel());
+                                $effect->setDuration(60 * $enchantment->getLevel());
+                                $effect->setVisible(false);
+                                $damager->addEffect($effect);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::POISONED);
+                            if($enchantment !== null && $damager->hasEffect(Effect::POISON) !== true){
+                                $effect = Effect::getEffect(Effect::POISON);
+                                $effect->setAmplifier($enchantment->getLevel());
+                                $effect->setDuration(60 * $enchantment->getLevel());
+                                $effect->setVisible(false);
+                                $damager->addEffect($effect);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::FROZEN);
+                            if($enchantment !== null && $damager->hasEffect(Effect::SLOWNESS) !== true){
                                 $effect = Effect::getEffect(Effect::SLOWNESS);
                                 $effect->setAmplifier($enchantment->getLevel());
                                 $effect->setDuration(60 * $enchantment->getLevel());
                                 $effect->setVisible(false);
                                 $damager->addEffect($effect);
                             }
-                            if (!$damager->hasEffect(Effect::MINING_FATIGUE)) {
-                                $effect = Effect::getEffect(Effect::MINING_FATIGUE);
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVULSION);
+                            if($enchantment !== null && $damager->hasEffect(Effect::NAUSEA) !== true){
+                                $effect = Effect::getEffect(Effect::NAUSEA);
+                                $effect->setAmplifier(0);
+                                $effect->setDuration(20 * $enchantment->getLevel());
+                                $effect->setVisible(false);
+                                $damager->addEffect($effect);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::CURSED);
+                            if($enchantment !== null && $damager->hasEffect(Effect::WITHER) !== true){
+                                $effect = Effect::getEffect(Effect::WITHER);
                                 $effect->setAmplifier($enchantment->getLevel());
                                 $effect->setDuration(60 * $enchantment->getLevel());
                                 $effect->setVisible(false);
                                 $damager->addEffect($effect);
                             }
-                            if (!$damager->hasEffect(Effect::NAUSEA)) {
-                                $effect = Effect::getEffect(Effect::NAUSEA);
-                                $effect->setAmplifier(0);
-                                $effect->setDuration(60 * $enchantment->getLevel());
-                                $effect->setVisible(false);
-                                $damager->addEffect($effect);
-                            }
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::CLOAKING);
-                        if ($enchantment !== null) {
-                            if ((!isset($this->plugin->cloakingcd[$entity->getLowerCaseName()]) || time() > $this->plugin->cloakingcd[$entity->getLowerCaseName()]) && $entity->hasEffect(Effect::INVISIBILITY)) {
-                                $this->plugin->cloakingcd[$entity->getLowerCaseName()] = time() + 10;
-                                $effect = Effect::getEffect(Effect::INVISIBILITY);
-                                $effect->setAmplifier(0);
-                                $effect->setDuration(60 * $enchantment->getLevel());
-                                $effect->setVisible(false);
-                                $entity->addEffect($effect);
-                                $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
-                            }
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::ANTIKNOCKBACK);
-                        if ($enchantment !== null) {
-                            $event->setKnockBack($event->getKnockBack() - ($event->getKnockBack() / $antikb));
-                            $antikb--;
-                        }
-                        if ($damager instanceof Player) {
-                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::ARMORED);
-                            if ($enchantment !== null) {
-                                if ($damager->getInventory()->getItemInHand()->isSword()) {
-                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::DRUNK);
+                            if($enchantment !== null){
+                                if(!$damager->hasEffect(Effect::SLOWNESS)){
+                                    $effect = Effect::getEffect(Effect::SLOWNESS);
+                                    $effect->setAmplifier($enchantment->getLevel());
+                                    $effect->setDuration(60 * $enchantment->getLevel());
+                                    $effect->setVisible(false);
+                                    $damager->addEffect($effect);
+                                }
+                                if(!$damager->hasEffect(Effect::MINING_FATIGUE)){
+                                    $effect = Effect::getEffect(Effect::MINING_FATIGUE);
+                                    $effect->setAmplifier($enchantment->getLevel());
+                                    $effect->setDuration(60 * $enchantment->getLevel());
+                                    $effect->setVisible(false);
+                                    $damager->addEffect($effect);
+                                }
+                                if(!$damager->hasEffect(Effect::NAUSEA)){
+                                    $effect = Effect::getEffect(Effect::NAUSEA);
+                                    $effect->setAmplifier(0);
+                                    $effect->setDuration(60 * $enchantment->getLevel());
+                                    $effect->setVisible(false);
+                                    $damager->addEffect($effect);
                                 }
                             }
-                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::TANK);
-                            if ($enchantment !== null) {
-                                if ($damager->getInventory()->getItemInHand()->isAxe()) {
-                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::CLOAKING);
+                            if($enchantment !== null){
+                                if((!isset($this->plugin->cloakingcd[$entity->getLowerCaseName()]) || time() > $this->plugin->cloakingcd[$entity->getLowerCaseName()]) && $entity->hasEffect(Effect::INVISIBILITY)){
+                                    $this->plugin->cloakingcd[$entity->getLowerCaseName()] = time() + 10;
+                                    $effect = Effect::getEffect(Effect::INVISIBILITY);
+                                    $effect->setAmplifier(0);
+                                    $effect->setDuration(60 * $enchantment->getLevel());
+                                    $effect->setVisible(false);
+                                    $entity->addEffect($effect);
+                                    $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
                                 }
                             }
-                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::HEAVY);
-                            if ($enchantment !== null) {
-                                if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) {
-                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::ANTIKNOCKBACK);
+                            if($enchantment !== null){
+                                $event->setKnockBack($event->getKnockBack() - ($event->getKnockBack() / $antikb));
+                                $antikb--;
+                            }
+                            if($damager instanceof Player){
+                                $enchantment = $armor->getEnchantment(CustomEnchantsIds::ARMORED);
+                                if($enchantment !== null){
+                                    if($damager->getInventory()->getItemInHand()->isSword()){
+                                        $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                    }
+                                }
+                                $enchantment = $armor->getEnchantment(CustomEnchantsIds::TANK);
+                                if($enchantment !== null){
+                                    if($damager->getInventory()->getItemInHand()->isAxe()){
+                                        $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                    }
+                                }
+                                $enchantment = $armor->getEnchantment(CustomEnchantsIds::HEAVY);
+                                if($enchantment !== null){
+                                    if($damager->getInventory()->getItemInHand()->getId() == Item::BOW){
+                                        $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                    }
                                 }
                             }
                         }
