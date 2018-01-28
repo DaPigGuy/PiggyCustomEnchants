@@ -396,7 +396,53 @@ class EventListener implements Listener
     public function checkGlobalEnchants(Player $damager, Entity $entity = null, Event $event)
     {
         //TODO: Check to make sure you can use enchant with item
-        if ($event instanceof EntityDamageEvent and $entity instanceof Living) {
+        if ($event instanceof EntityDamageEvent) {
+            if($entity instanceof Living){
+                $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLIND);
+                if ($enchantment !== null && $entity->hasEffect(Effect::BLINDNESS) !== true) {
+                    $effect = Effect::getEffect(Effect::BLINDNESS);
+                    $effect->setAmplifier(0);
+                    $effect->setDuration(100 + 20 * $enchantment->getLevel());
+                    $effect->setVisible(false);
+                    $entity->addEffect($effect);
+                }
+                $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::POISON);
+                if ($enchantment !== null && $entity->hasEffect(Effect::POISON) !== true) {
+                    $effect = Effect::getEffect(Effect::POISON);
+                    $effect->setAmplifier($enchantment->getLevel());
+                    $effect->setDuration(60 * $enchantment->getLevel());
+                    $effect->setVisible(false);
+                    $entity->addEffect($effect);
+                }
+                $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::CRIPPLINGSTRIKE);
+                if ($enchantment !== null) {
+                    if (!$entity->hasEffect(Effect::NAUSEA)) {
+                        $effect = Effect::getEffect(Effect::NAUSEA);
+                        $effect->setAmplifier(0);
+                        $effect->setDuration(100 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $entity->addEffect($effect);
+                    }
+                    if (!$entity->hasEffect(Effect::SLOWNESS)) {
+                        $effect = Effect::getEffect(Effect::SLOWNESS);
+                        $effect->setAmplifier($enchantment->getLevel());
+                        $effect->setDuration(100 * $enchantment->getLevel());
+                        $effect->setVisible(false);
+                        $entity->addEffect($effect);
+                    }
+                }
+                $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHER);
+                if ($enchantment !== null && $entity->hasEffect(Effect::WITHER) !== true) {
+                    $effect = Effect::getEffect(Effect::WITHER);
+                    $effect->setAmplifier($enchantment->getLevel());
+                    $effect->setDuration(60 * $enchantment->getLevel());
+                    $effect->setVisible(false);
+                    $entity->addEffect($effect);
+                }
+            }
+            /**
+             * @var $entity Entity|null
+             */
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LIFESTEAL);
             if ($enchantment !== null) {
                 if ($damager->getHealth() + 2 + $enchantment->getLevel() <= $damager->getMaxHealth()) {
@@ -404,14 +450,6 @@ class EventListener implements Listener
                 } else {
                     $damager->setHealth($damager->getMaxHealth());
                 }
-            }
-            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLIND);
-            if ($enchantment !== null && $entity->hasEffect(Effect::BLINDNESS) !== true) {
-                $effect = Effect::getEffect(Effect::BLINDNESS);
-                $effect->setAmplifier(0);
-                $effect->setDuration(100 + 20 * $enchantment->getLevel());
-                $effect->setVisible(false);
-                $entity->addEffect($effect);
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DEATHBRINGER);
             if ($enchantment !== null) {
@@ -422,31 +460,6 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 $task = new GoeyTask($this->plugin, $entity, $enchantment->getLevel());
                 $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 1);
-            }
-            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::POISON);
-            if ($enchantment !== null && $entity->hasEffect(Effect::POISON) !== true) {
-                $effect = Effect::getEffect(Effect::POISON);
-                $effect->setAmplifier($enchantment->getLevel());
-                $effect->setDuration(60 * $enchantment->getLevel());
-                $effect->setVisible(false);
-                $entity->addEffect($effect);
-            }
-            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::CRIPPLINGSTRIKE);
-            if ($enchantment !== null) {
-                if (!$entity->hasEffect(Effect::NAUSEA)) {
-                    $effect = Effect::getEffect(Effect::NAUSEA);
-                    $effect->setAmplifier(0);
-                    $effect->setDuration(100 * $enchantment->getLevel());
-                    $effect->setVisible(false);
-                    $entity->addEffect($effect);
-                }
-                if (!$entity->hasEffect(Effect::SLOWNESS)) {
-                    $effect = Effect::getEffect(Effect::SLOWNESS);
-                    $effect->setAmplifier($enchantment->getLevel());
-                    $effect->setDuration(100 * $enchantment->getLevel());
-                    $effect->setVisible(false);
-                    $entity->addEffect($effect);
-                }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::VAMPIRE);
             if ($enchantment !== null) {
@@ -475,14 +488,6 @@ class EventListener implements Listener
                 if (!$damager->isOnGround()) {
                     $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
                 }
-            }
-            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHER);
-            if ($enchantment !== null && $entity->hasEffect(Effect::WITHER) !== true) {
-                $effect = Effect::getEffect(Effect::WITHER);
-                $effect->setAmplifier($enchantment->getLevel());
-                $effect->setDuration(60 * $enchantment->getLevel());
-                $effect->setVisible(false);
-                $entity->addEffect($effect);
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DISARMING);
             if ($enchantment !== null) {
@@ -544,7 +549,7 @@ class EventListener implements Listener
                 $chance = 10 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
                 if ($random <= $chance) {
-                    $lightning = new Lightning($entity->getLevel(), Entity::createBaseNBT($entity));
+                    $lightning = Entity::createEntity("Lightning", $entity->getLevel(), Entity::createBaseNBT($entity));
                     $lightning->setOwningEntity($damager);
                     $lightning->spawnToAll();
                 }
@@ -879,7 +884,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PLACEHOLDER);
             if ($enchantment !== null) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $newentity = new VolleyArrow($damager->getLevel(), $nbt, $damager, $entity->isCritical(), true, false);
+                $newentity = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), true, false);
                 $newentity->setMotion($newentity->getMotion()->multiply($event->getForce()));
                 $newentity->spawnToAll();
                 $entity->close();
@@ -888,7 +893,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLAZE);
             if ($enchantment !== null && $entity instanceof Fireball !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $fireball = new Fireball($damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false);
+                $fireball = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false);
                 $fireball->setMotion($fireball->getMotion()->multiply($event->getForce()));
                 $fireball->spawnToAll();
                 $entity->close();
@@ -897,7 +902,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PORKIFIED);
             if ($enchantment !== null && $entity instanceof PigProjectile !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $pig = new PigProjectile($event->getEntity()->getLevel(), $nbt, $event->getEntity(), isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel());
+                $pig = Entity::createEntity("PigProjectile", $event->getEntity()->getLevel(), $nbt, $event->getEntity(), isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel());
                 $pig->setMotion($pig->getMotion()->multiply($event->getForce()));
                 $pig->spawnToAll();
                 $entity->close();
@@ -906,7 +911,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHERSKULL);
             if ($enchantment !== null && $entity instanceof WitherSkull !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $skull = new WitherSkull($damager->getLevel(), $nbt, $damager);
+                $skull = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager);
                 $skull->setMotion($skull->getMotion()->multiply($event->getForce()));
                 $skull->spawnToAll();
                 $entity->close();
@@ -926,19 +931,19 @@ class EventListener implements Listener
                     $projectile = null;
                     if ($entity instanceof Arrow) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = new VolleyArrow($damager->getLevel(), $nbt, $damager, $entity->isCritical(), false, true);
+                        $projectile = Entity::createEntity("VolleyArrow", $damager->getLevel(), $nbt, $damager, $entity->isCritical(), false, true);
                     }
                     if ($entity instanceof Fireball) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = new Fireball($damager->getLevel(), $nbt, $damager);
+                        $projectile = Entity::createEntity("Fireball", $damager->getLevel(), $nbt, $damager);
                     }
                     if ($entity instanceof PigProjectile) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = new PigProjectile($damager->getLevel(), $nbt, $damager, false, $entity->getPorkLevel());
+                        $projectile = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, false, $entity->getPorkLevel());
                     }
                     if ($entity instanceof WitherSkull) {
                         $nbt = Entity::createBaseNBT($damager->add(0, $damager->getEyeHeight()), $damager->getDirectionVector(), $damager->yaw, $damager->pitch);
-                        $projectile = new WitherSkull($damager->getLevel(), $nbt, $damager);
+                        $projectile = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager);
                     }
                     $projectile->setMotion($newDir->normalize()->multiply($entity->getMotion()->multiply($event->getForce())->length()));
                     if ($projectile->isOnFire()) {
