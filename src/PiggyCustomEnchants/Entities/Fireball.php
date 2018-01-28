@@ -20,7 +20,7 @@ class Fireball extends PiggyProjectile
     protected $damage = 5;
 
     /**
-     * Used to replace const NETWORKD_ID to resolve registration conflicts with vanilla entities
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
      * @var int
      */
     const TYPE_ID = 94;

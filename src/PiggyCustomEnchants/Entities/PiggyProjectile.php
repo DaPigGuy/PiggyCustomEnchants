@@ -20,7 +20,7 @@ class PiggyProjectile extends Projectile
     private $ownerOriginalLocation;
 
     /**
-     * Used to replace const NETWORKD_ID to resolve registration conflicts with vanilla entities
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
      * @var int
      */
     const TYPE_ID = 0;
