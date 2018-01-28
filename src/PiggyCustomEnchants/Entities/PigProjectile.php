@@ -99,7 +99,7 @@ class PigProjectile extends PiggyProjectile
         $pk->entityRuntimeId = $this->getId();
         $pk->position = $this->asVector3();
         $pk->motion = $this->getMotion();
-        $pk->metadata = $this->getDataPropertyManager()->getAll();
+        $pk->metadata = $this->propertyManager->getAll();
         $player->dataPacket($pk);
     }
 
