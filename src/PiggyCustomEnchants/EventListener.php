@@ -4,9 +4,7 @@ namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\Fireball;
-use PiggyCustomEnchants\Entities\Lightning;
 use PiggyCustomEnchants\Entities\PigProjectile;
-use PiggyCustomEnchants\Entities\VolleyArrow;
 use PiggyCustomEnchants\Entities\WitherSkull;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
