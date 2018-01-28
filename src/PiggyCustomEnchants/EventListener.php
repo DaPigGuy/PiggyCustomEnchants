@@ -1100,9 +1100,6 @@ class EventListener implements Listener
                     }
                 }
                 if ($event instanceof EntityDamageByEntityEvent) {
-                    /**
-                     * @var $damager Player
-                     */
                     $damager = $event->getDamager();
                     foreach ($entity->getArmorInventory()->getContents() as $slot => $armor) {
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::MOLTEN);
