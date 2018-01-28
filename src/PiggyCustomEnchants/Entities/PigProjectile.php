@@ -26,7 +26,11 @@ class PigProjectile extends PiggyProjectile
 
     protected $damage = 1.5;
 
-    const NETWORK_ID = 12;
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 12;
 
     const PORKLEVELS = [
         //level => [damage, dinnerbone, zombie, drop id, drop name]
@@ -95,7 +99,7 @@ class PigProjectile extends PiggyProjectile
     protected function sendSpawnPacket(Player $player): void
     {
         $pk = new AddEntityPacket();
-        $pk->type = $this->isZombie() ? Entity::ZOMBIE_PIGMAN : PigProjectile::NETWORK_ID;
+        $pk->type = $this->isZombie() ? Entity::ZOMBIE_PIGMAN : static::TYPE_ID;
         $pk->entityRuntimeId = $this->getId();
         $pk->position = $this->asVector3();
         $pk->motion = $this->getMotion();
