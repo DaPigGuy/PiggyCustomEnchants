@@ -911,7 +911,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHERSKULL);
             if ($enchantment !== null && $entity instanceof WitherSkull !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $skull = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager);
+                $skull = Entity::createEntity("WitherSkull", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel() > 1 ? true : false);
                 $skull->setMotion($skull->getMotion()->multiply($event->getForce()));
                 $skull->spawnToAll();
                 $entity->close();
