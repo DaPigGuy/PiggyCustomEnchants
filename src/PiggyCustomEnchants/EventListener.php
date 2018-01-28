@@ -1022,7 +1022,7 @@ class EventListener implements Listener
                     if ($enchantment !== null) {
                         if ($event->getDamage() >= $entity->getHealth()) {
                             if ($enchantment->getLevel() > 1) {
-                                $entity->getArmorInventory()->setItem($slot,$this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
+                                $entity->getArmorInventory()->setItem($slot, $this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
                             }else{
                                 $entity->getArmorInventory()->setItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
                             }
