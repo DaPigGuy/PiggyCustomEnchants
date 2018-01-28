@@ -440,9 +440,6 @@ class EventListener implements Listener
                     $entity->addEffect($effect);
                 }
             }
-            /**
-             * @var $entity Entity|null
-             */
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LIFESTEAL);
             if ($enchantment !== null) {
                 if ($damager->getHealth() + 2 + $enchantment->getLevel() <= $damager->getMaxHealth()) {
