@@ -902,7 +902,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PORKIFIED);
             if ($enchantment !== null && $entity instanceof PigProjectile !== true) {
                 $nbt = Entity::createBaseNBT($entity, $damager->getDirectionVector(), $entity->yaw, $entity->pitch);
-                $pig = Entity::createEntity("PigProjectile", $event->getEntity()->getLevel(), $nbt, $event->getEntity(), isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel());
+                $pig = Entity::createEntity("PigProjectile", $damager->getLevel(), $nbt, $damager, isset($entity->placeholder) ? $entity->placeholder : false, $enchantment->getLevel());
                 $pig->setMotion($pig->getMotion()->multiply($event->getForce()));
                 $pig->spawnToAll();
                 $entity->close();
