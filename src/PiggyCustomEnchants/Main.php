@@ -6,11 +6,11 @@ use PiggyCustomEnchants\Blocks\PiggyObsidian;
 use PiggyCustomEnchants\Commands\CustomEnchantCommand;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
-use PiggyCustomEnchants\Entities\Fireball;
-use PiggyCustomEnchants\Entities\Lightning;
+use PiggyCustomEnchants\Entities\PiggyFireball;
+use PiggyCustomEnchants\Entities\PiggyLightning;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Entities\VolleyArrow;
-use PiggyCustomEnchants\Entities\WitherSkull;
+use PiggyCustomEnchants\Entities\PiggyWitherSkull;
 use PiggyCustomEnchants\Tasks\AutoAimTask;
 use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\ChickenTask;
@@ -88,11 +88,11 @@ class Main extends PluginBase
     ];
 
     const PIGGY_ENTITIES = [
-        Fireball::class,
-        Lightning::class,
+        PiggyFireball::class,
+        PiggyLightning::class,
         PigProjectile::class,
         VolleyArrow::class,
-        WitherSkull::class
+        PiggyWitherSkull::class
     ];
 
     public $berserkercd;
