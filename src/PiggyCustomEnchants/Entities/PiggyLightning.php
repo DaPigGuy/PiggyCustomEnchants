@@ -13,7 +13,7 @@ use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\Player;
 
 /**
- * Class Lightning
+ * Class PiggyLightning
  * @package PiggyCustomEnchants\Entities
  */
 class PiggyLightning extends Entity

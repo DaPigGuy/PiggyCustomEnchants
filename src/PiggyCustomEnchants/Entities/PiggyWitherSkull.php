@@ -9,7 +9,7 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\ProjectileHitEvent;
 
 /**
- * Class WitherSkull
+ * Class PiggyWitherSkull
  * @package PiggyCustomEnchants\Entities
  */
 class PiggyWitherSkull extends PiggyProjectile

@@ -9,7 +9,7 @@ use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 
 /**
- * Class Fireball
+ * Class PiggyFireball
  * @package PiggyCustomEnchants\Entities
  */
 class PiggyFireball extends PiggyProjectile
