@@ -4,8 +4,8 @@ namespace PiggyCustomEnchants;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\PiggyFireball;
-use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Entities\PiggyWitherSkull;
+use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Tasks\GoeyTask;
 use PiggyCustomEnchants\Tasks\GrapplingTask;
 use PiggyCustomEnchants\Tasks\HallucinationTask;
@@ -395,7 +395,7 @@ class EventListener implements Listener
     {
         //TODO: Check to make sure you can use enchant with item
         if ($event instanceof EntityDamageEvent) {
-            if($entity instanceof Living){
+            if ($entity instanceof Living) {
                 $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLIND);
                 if ($enchantment !== null && $entity->hasEffect(Effect::BLINDNESS) !== true) {
                     $effect = Effect::getEffect(Effect::BLINDNESS);
@@ -1022,7 +1022,7 @@ class EventListener implements Listener
                         if ($event->getDamage() >= $entity->getHealth()) {
                             if ($enchantment->getLevel() > 1) {
                                 $entity->getArmorInventory()->setItem($slot, $this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
-                            }else{
+                            } else {
                                 $entity->getArmorInventory()->setItem($slot, $this->plugin->removeEnchantment($armor, $enchantment));
                             }
                             $entity->removeAllEffects();
