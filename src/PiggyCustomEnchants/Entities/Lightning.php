@@ -9,6 +9,8 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
+use pocketmine\Player;
 
 /**
  * Class Lightning
@@ -20,7 +22,11 @@ class Lightning extends Entity
     public $length = 0.9;
     public $height = 1.8;
 
-    const NETWORK_ID = 93;
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 93;
 
     /**
      * @param int $tickDiff
@@ -53,5 +59,18 @@ class Lightning extends Entity
             $this->flagForDespawn();
         }
         return $hasUpdate;
+    }
+    /**
+     * @param Player $player
+     */
+    public function spawnTo(Player $player): void
+    {
+        $pk = new AddEntityPacket();
+        $pk->entityRuntimeId = $this->getId();
+        $pk->type = static::TYPE_ID;
+        $pk->position = $this->asVector3();
+        $pk->motion = $this->getMotion();
+        $pk->metadata = $this->propertyManager->getAll();
+        $player->dataPacket($pk);
     }
 }

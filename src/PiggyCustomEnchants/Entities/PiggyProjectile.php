@@ -7,6 +7,7 @@ use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\level\Level;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\Player;
 
 /**
@@ -17,6 +18,12 @@ class PiggyProjectile extends Projectile
 {
     public $placeholder;
     private $ownerOriginalLocation;
+
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 0;
 
     /**
      * PiggyProjectile constructor.
@@ -52,5 +59,21 @@ class PiggyProjectile extends Projectile
             $hasUpdate = true;
         }
         return $hasUpdate;
+    }
+    /**
+     * @param Player $player
+     */
+    public function spawnTo(Player $player): void
+    {
+        parent::spawnTo($player);
+        $pk = new AddEntityPacket();
+        $pk->entityRuntimeId = $this->getId();
+        $pk->type = static::TYPE_ID;
+        $pk->position =$this->asVector3();
+        $pk->motion = $this->getMotion();
+        $pk->yaw = $this->yaw;
+        $pk->pitch = $this->pitch;
+        $pk->metadata = $this->propertyManager->getAll();
+        $player->dataPacket($pk);
     }
 }

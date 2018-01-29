@@ -6,14 +6,13 @@ namespace PiggyCustomEnchants\Entities;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
-use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\ProjectileHitEvent;
 
 /**
  * Class WitherSkull
  * @package PiggyCustomEnchants\Entities
  */
-class WitherSkull extends Projectile
+class WitherSkull extends PiggyProjectile
 {
     public $width = 0.5;
     public $length = 0.5;
@@ -24,7 +23,11 @@ class WitherSkull extends Projectile
 
     protected $damage = 0;
 
-    const NETWORK_ID = 89;
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 89;
 
     /**
      * @param Entity $entity
