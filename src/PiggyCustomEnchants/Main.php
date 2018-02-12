@@ -8,9 +8,9 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\PiggyFireball;
 use PiggyCustomEnchants\Entities\PiggyLightning;
+use PiggyCustomEnchants\Entities\PiggyWitherSkull;
 use PiggyCustomEnchants\Entities\PigProjectile;
 use PiggyCustomEnchants\Entities\VolleyArrow;
-use PiggyCustomEnchants\Entities\PiggyWitherSkull;
 use PiggyCustomEnchants\Tasks\AutoAimTask;
 use PiggyCustomEnchants\Tasks\CactusTask;
 use PiggyCustomEnchants\Tasks\ChickenTask;
@@ -258,7 +258,7 @@ class Main extends PluginBase
                 $this->getLogger()->info(TextFormat::RED . "Jetpack is currently disabled in the levels " . implode(", ", $this->jetpackDisabled) . ".");
             }
             BlockFactory::registerBlock(new PiggyObsidian(), true);
-            foreach(self::PIGGY_ENTITIES as $piggyEntity) {
+            foreach (self::PIGGY_ENTITIES as $piggyEntity) {
                 Entity::registerEntity($piggyEntity, true);
             }
 
@@ -491,26 +491,30 @@ class Main extends PluginBase
                     $tag->ench->setTagType(NBT::TAG_Compound);
                 }
                 $found = false;
-                foreach ($tag->ench as $k => $entry) {
-                    if ($entry["id"] === $enchant->getId()) {
-                        $tag->ench->{$k} = new CompoundTag("", [
-                            "id" => new ShortTag("id", $enchant->getId()),
-                            "lvl" => new ShortTag("lvl", $level)
-                        ]);
-                        $item->setNamedTag($tag);
-                        $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level), $item->getName()));
-                        $found = true;
-                        break;
+                $ench = $item->getNamedTagEntry(Item::TAG_ENCH);
+                if (!($ench instanceof ListTag)) {
+                    $ench = new ListTag(Item::TAG_ENCH, [], NBT::TAG_Compound);
+                } else {
+                    foreach ($ench as $k => $entry) {
+                        if ($entry->getShort("id") === $enchant->getId()) {
+                            $ench[$k] = new CompoundTag("", [
+                                new ShortTag("id", $enchant->getId()),
+                                new ShortTag("lvl", $level)
+                            ]);
+                            $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level), $item->getName()));
+                            $found = true;
+                            break;
+                        }
                     }
                 }
                 if (!$found) {
-                    $tag->ench->{count($tag->ench->getValue()) + 1} = new CompoundTag($enchant->getName(), [
-                        "id" => new ShortTag("id", $enchant->getId()),
-                        "lvl" => new ShortTag("lvl", $level)
+                    $ench[count($ench)] = new CompoundTag("", [
+                        new ShortTag("id", $enchant->getId()),
+                        new ShortTag("lvl", $level)
                     ]);
-                    $item->setNamedTag($tag);
                     $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level));
                 }
+                $item->setNamedTagEntry($ench);
                 if ($sender !== null) {
                     $sender->sendMessage(TextFormat::GREEN . "Enchanting succeeded.");
                 }
