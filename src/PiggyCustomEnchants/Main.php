@@ -481,26 +481,17 @@ class Main extends PluginBase
                 if ($item->getId() == Item::BOOK) {
                     $item = Item::get(Item::ENCHANTED_BOOK, $level);
                 }
-                if (!$item->hasCompoundTag()) {
-                    $tag = new CompoundTag("", []);
-                } else {
-                    $tag = $item->getNamedTag();
-                }
-                if (!isset($tag->ench)) {
-                    $tag->ench = new ListTag("ench", []);
-                    $tag->ench->setTagType(NBT::TAG_Compound);
-                }
-                $found = false;
                 $ench = $item->getNamedTagEntry(Item::TAG_ENCH);
+                $found = false;
                 if (!($ench instanceof ListTag)) {
                     $ench = new ListTag(Item::TAG_ENCH, [], NBT::TAG_Compound);
                 } else {
                     foreach ($ench as $k => $entry) {
                         if ($entry->getShort("id") === $enchant->getId()) {
-                            $ench[$k] = new CompoundTag("", [
+                            $ench->set($k, new CompoundTag("", [
                                 new ShortTag("id", $enchant->getId()),
                                 new ShortTag("lvl", $level)
-                            ]);
+                            ]));
                             $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level), $item->getName()));
                             $found = true;
                             break;
@@ -508,13 +499,12 @@ class Main extends PluginBase
                     }
                 }
                 if (!$found) {
-                    $ench[count($ench)] = new CompoundTag("", [
+                    $ench->push(new CompoundTag("", [
                         new ShortTag("id", $enchant->getId()),
                         new ShortTag("lvl", $level)
-                    ]);
+                    ]));
                     $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level));
                 }
-                $item->setNamedTagEntry($ench);
                 if ($sender !== null) {
                     $sender->sendMessage(TextFormat::GREEN . "Enchanting succeeded.");
                 }
@@ -558,13 +548,18 @@ class Main extends PluginBase
         if ($enchant instanceof EnchantmentInstance) {
             $enchant = $enchant->getType();
         }
-        $tag = $item->getNamedTag();
-        $item = Item::get($item->getId(), $item->getDamage(), $item->getCount());
-        foreach ($tag->ench as $k => $enchantment) {
-            if (($enchantment["id"] == $enchant->getId() && ($enchantment["lvl"] == $level || $level == -1)) !== true) {
-                $item = $this->addEnchantment($item, $enchantment["id"], $enchantment["lvl"], true);
+        $ench = $item->getNamedTagEntry(Item::TAG_ENCH);
+        if (!($ench instanceof ListTag)) {
+            return false;
+        }
+        foreach ($ench as $k => $entry) {
+            if ($entry->getShort("id") === $enchant->getId() and ($level === -1 or $entry->getShort("lvl") === $level)) {
+                $ench->remove($k);
+                $item->setCustomName(str_replace("\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry->getShort("lvl")), "", $item->getCustomName()));
+                break;
             }
         }
+        $item->setNamedTagEntry($ench);
         return $item;
     }
 
