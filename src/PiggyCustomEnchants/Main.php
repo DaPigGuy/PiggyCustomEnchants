@@ -505,6 +505,7 @@ class Main extends PluginBase
                     ]));
                     $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level));
                 }
+                $item->setNamedTagEntry($ench);
                 if ($sender !== null) {
                     $sender->sendMessage(TextFormat::GREEN . "Enchanting succeeded.");
                 }
