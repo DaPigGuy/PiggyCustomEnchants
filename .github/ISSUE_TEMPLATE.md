@@ -11,8 +11,11 @@ Please make sure your issue complies with these guidelines:
 #### **General**
 <!-- Briefly describe what is wrong. -->
 
-#### **Version of PiggyCustomEnchants:**
+#### **Version:**
 <!-- Do /version PiggyCustomEnchants to check, do not input "latest". -->
+- PiggyCustomEnchants:
+<!-- Do /version to check, do not input "latest". -->
+- PMMP:
 
 #### **Steps to Reproduce the Issue**
 <!-- How do you reproduce the issue? -->
