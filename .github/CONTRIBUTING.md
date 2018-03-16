@@ -25,6 +25,6 @@ If you are translating, you must:
 * Tags, such as {player}, {pin}, and etc, must not be translated.
 * Title of the Pull Request must be "Translation for (x)", where x is the language name.
 * Translation must not include, even on the draft, any types of racial slurs or hate speech.
-->
+-->
 
 <i>Last updated: Wednesday, December 6, 2017.</i>
