@@ -28,7 +28,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityEffectAddEvent;
 use pocketmine\event\entity\EntityEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
-use pocketmine\event\entity\ProjectileHitEvent;
+use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\Event;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
@@ -349,12 +349,12 @@ class EventListener implements Listener
     }
 
     /**
-     * @param ProjectileHitEvent $event
+     * @param ProjectileHitBlockEvent $event
      *
      * @priority HIGHEST
      * @ignoreCancelled true
      */
-    public function onHit(ProjectileHitEvent $event)
+    public function onHit(ProjectileHitBlockEvent $event)
     {
         $entity = $event->getEntity();
         $shooter = $entity->getOwningEntity();
@@ -949,7 +949,7 @@ class EventListener implements Listener
                 $entity->close();
             }
         }
-        if ($event instanceof ProjectileHitEvent && $entity instanceof Projectile) {
+        if ($event instanceof ProjectileHitBlockEvent && $entity instanceof Projectile) {
             if ($entity->hadCollision) {
                 $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
                 if ($enchantment !== null) {
