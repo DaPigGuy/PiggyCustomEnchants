@@ -54,12 +54,15 @@ class PiggyProjectile extends Projectile
                 $this->getOwningEntity()->sendPosition($this->add($this->getDirectionVector()->multiply(2)), $this->yaw * 2 <= 360 ? $this->yaw * 2 : $this->yaw / 2, $this->pitch);
             }
         } else {
-            $this->getOwningEntity()->teleport($this->ownerOriginalLocation);
+            if ($this->placeholder) {
+                $this->getOwningEntity()->teleport($this->ownerOriginalLocation);
+            }
             $this->flagForDespawn();
             $hasUpdate = true;
         }
         return $hasUpdate;
     }
+
     /**
      * @param Player $player
      */
@@ -69,7 +72,7 @@ class PiggyProjectile extends Projectile
         $pk = new AddEntityPacket();
         $pk->entityRuntimeId = $this->getId();
         $pk->type = static::TYPE_ID;
-        $pk->position =$this->asVector3();
+        $pk->position = $this->asVector3();
         $pk->motion = $this->getMotion();
         $pk->yaw = $this->yaw;
         $pk->pitch = $this->pitch;

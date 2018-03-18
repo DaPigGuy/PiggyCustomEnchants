@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants;
 
-
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\level\Explosion;
 use pocketmine\level\Position;

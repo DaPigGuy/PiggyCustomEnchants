@@ -16,6 +16,7 @@ use PiggyCustomEnchants\Tasks\UseEnchantedBookTask;
 use pocketmine\block\Block;
 use pocketmine\block\Crops;
 use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow;
@@ -398,43 +399,28 @@ class EventListener implements Listener
             if ($entity instanceof Living) {
                 $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BLIND);
                 if ($enchantment !== null && $entity->hasEffect(Effect::BLINDNESS) !== true) {
-                    $effect = Effect::getEffect(Effect::BLINDNESS);
-                    $effect->setAmplifier(0);
-                    $effect->setDuration(100 + 20 * $enchantment->getLevel());
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::BLINDNESS), 100 + 20 * $enchantment->getLevel(), 0, false);
                     $entity->addEffect($effect);
                 }
                 $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::POISON);
                 if ($enchantment !== null && $entity->hasEffect(Effect::POISON) !== true) {
-                    $effect = Effect::getEffect(Effect::POISON);
-                    $effect->setAmplifier($enchantment->getLevel());
-                    $effect->setDuration(60 * $enchantment->getLevel());
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::POISON), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                     $entity->addEffect($effect);
                 }
                 $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::CRIPPLINGSTRIKE);
                 if ($enchantment !== null) {
                     if (!$entity->hasEffect(Effect::NAUSEA)) {
-                        $effect = Effect::getEffect(Effect::NAUSEA);
-                        $effect->setAmplifier(0);
-                        $effect->setDuration(100 * $enchantment->getLevel());
-                        $effect->setVisible(false);
+                        $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 100 * $enchantment->getLevel(), 0, false);
                         $entity->addEffect($effect);
                     }
                     if (!$entity->hasEffect(Effect::SLOWNESS)) {
-                        $effect = Effect::getEffect(Effect::SLOWNESS);
-                        $effect->setAmplifier($enchantment->getLevel());
-                        $effect->setDuration(100 * $enchantment->getLevel());
-                        $effect->setVisible(false);
+                        $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 100 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                         $entity->addEffect($effect);
                     }
                 }
                 $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::WITHER);
                 if ($enchantment !== null && $entity->hasEffect(Effect::WITHER) !== true) {
-                    $effect = Effect::getEffect(Effect::WITHER);
-                    $effect->setAmplifier($enchantment->getLevel());
-                    $effect->setDuration(60 * $enchantment->getLevel());
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::WITHER), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                     $entity->addEffect($effect);
                 }
             }
@@ -513,7 +499,7 @@ class EventListener implements Listener
                 $random = mt_rand(0, 100);
                 if ($random <= $chance) {
                     foreach ($damager->getEffects() as $effect) {
-                        if ($effect->isBad()) {
+                        if ($effect->getType()->isBad()) {
                             $damager->removeEffect($effect->getId());
                         }
                     }
@@ -699,18 +685,12 @@ class EventListener implements Listener
             }
             $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::ENERGIZING);
             if ($enchantment !== null && $player->hasEffect(Effect::HASTE) !== true) {
-                $effect = Effect::getEffect(Effect::HASTE);
-                $effect->setAmplifier(1 + $enchantment->getLevel() - 2);
-                $effect->setDuration(20);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::HASTE), 20, 1 + $enchantment->getLevel() - 2, false);
                 $player->addEffect($effect);
             }
             $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::QUICKENING);
             if ($enchantment !== null && $player->hasEffect(Effect::SPEED) !== true) {
-                $effect = Effect::getEffect(Effect::SPEED);
-                $effect->setAmplifier(3 + $enchantment->getLevel() - 2);
-                $effect->setDuration(40);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::SPEED), 40, 3 + $enchantment->getLevel() - 2, false);
                 $player->addEffect($effect);
             }
             $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::TELEPATHY);
@@ -807,24 +787,15 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PARALYZE);
             if ($enchantment !== null and $entity instanceof Living) {
                 if (!$entity->hasEffect(Effect::SLOWNESS)) {
-                    $effect = Effect::getEffect(Effect::SLOWNESS);
-                    $effect->setAmplifier(5 + $enchantment->getLevel() - 1);
-                    $effect->setDuration(60 + ($enchantment->getLevel() - 1) * 20);
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 60 + ($enchantment->getLevel() - 1) * 20, 5 + $enchantment->getLevel() - 1, false);
                     $entity->addEffect($effect);
                 }
                 if (!$entity->hasEffect(Effect::BLINDNESS)) {
-                    $effect = Effect::getEffect(Effect::BLINDNESS);
-                    $effect->setAmplifier(1);
-                    $effect->setDuration(60 + ($enchantment->getLevel() - 1) * 20);
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::BLINDNESS), 60 + ($enchantment->getLevel() - 1) * 20, 1, false);
                     $entity->addEffect($effect);
                 }
                 if (!$entity->hasEffect(Effect::WEAKNESS)) {
-                    $effect = Effect::getEffect(Effect::WEAKNESS);
-                    $effect->setAmplifier(5 + $enchantment->getLevel() - 1);
-                    $effect->setDuration(60 + ($enchantment->getLevel() - 1) * 20);
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 60 + ($enchantment->getLevel() - 1) * 20,  5 + $enchantment->getLevel() - 1, false);
                     $entity->addEffect($effect);
                 }
             }
@@ -1030,15 +1001,9 @@ class EventListener implements Listener
                             $entity->setFood($entity->getMaxFood());
                             $entity->setXpLevel(0);
                             $entity->setXpProgress(0);
-                            $effect = Effect::getEffect(Effect::NAUSEA);
-                            $effect->setAmplifier(0);
-                            $effect->setDuration(600);
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 600, 0, false);
                             $entity->addEffect($effect);
-                            $effect = Effect::getEffect(Effect::SLOWNESS);
-                            $effect->setAmplifier(0);
-                            $effect->setDuration(600);
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 600, 0, false);
                             $entity->addEffect($effect);
                             for ($i = $entity->y; $i <= 256; $i += 0.25) {
                                 $entity->getLevel()->addParticle(new FlameParticle(new Vector3($entity->x, $i, $entity->z)));
@@ -1084,10 +1049,7 @@ class EventListener implements Listener
                         if ($entity->getHealth() - $event->getDamage() <= 4) {
                             if ((!isset($this->plugin->berserkercd[$entity->getLowerCaseName()]) || time() > $this->plugin->berserkercd[$entity->getLowerCaseName()]) && $entity->hasEffect(Effect::STRENGTH) !== true) {
                                 $this->plugin->berserkercd[$entity->getLowerCaseName()] = time() + 300;
-                                $effect = Effect::getEffect(Effect::STRENGTH);
-                                $effect->setAmplifier(3 + $enchantment->getLevel());
-                                $effect->setDuration(200 * $enchantment->getLevel());
-                                $effect->setVisible(false);
+                                $effect = new EffectInstance(Effect::getEffect(Effect::STRENGTH), 200 * $enchantment->getLevel(), 3 + $enchantment->getLevel(), false);
                                 $entity->addEffect($effect);
                                 $entity->sendMessage("Your bloodloss makes your stronger!");
                             }
@@ -1103,73 +1065,46 @@ class EventListener implements Listener
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::ENLIGHTED);
                         if ($enchantment !== null && $entity->hasEffect(Effect::REGENERATION) !== true) {
-                            $effect = Effect::getEffect(Effect::REGENERATION);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::REGENERATION), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                             $entity->addEffect($effect);
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::HARDENED);
                         if ($enchantment !== null && $damager->hasEffect(Effect::WEAKNESS) !== true) {
-                            $effect = Effect::getEffect(Effect::WEAKNESS);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                             $damager->addEffect($effect);
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::POISONED);
                         if ($enchantment !== null && $damager->hasEffect(Effect::POISON) !== true) {
-                            $effect = Effect::getEffect(Effect::POISON);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::POISON), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                             $damager->addEffect($effect);
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::FROZEN);
                         if ($enchantment !== null && $damager->hasEffect(Effect::SLOWNESS) !== true) {
-                            $effect = Effect::getEffect(Effect::SLOWNESS);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                             $damager->addEffect($effect);
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVULSION);
                         if ($enchantment !== null && $damager->hasEffect(Effect::NAUSEA) !== true) {
-                            $effect = Effect::getEffect(Effect::NAUSEA);
-                            $effect->setAmplifier(0);
-                            $effect->setDuration(20 * $enchantment->getLevel());
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 20 * $enchantment->getLevel(), 0, false);
                             $damager->addEffect($effect);
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::CURSED);
                         if ($enchantment !== null && $damager->hasEffect(Effect::WITHER) !== true) {
-                            $effect = Effect::getEffect(Effect::WITHER);
-                            $effect->setAmplifier($enchantment->getLevel());
-                            $effect->setDuration(60 * $enchantment->getLevel());
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::WITHER), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                             $damager->addEffect($effect);
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::DRUNK);
                         if ($enchantment !== null) {
                             if (!$damager->hasEffect(Effect::SLOWNESS)) {
-                                $effect = Effect::getEffect(Effect::SLOWNESS);
-                                $effect->setAmplifier($enchantment->getLevel());
-                                $effect->setDuration(60 * $enchantment->getLevel());
-                                $effect->setVisible(false);
+                                $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                                 $damager->addEffect($effect);
                             }
                             if (!$damager->hasEffect(Effect::MINING_FATIGUE)) {
-                                $effect = Effect::getEffect(Effect::MINING_FATIGUE);
-                                $effect->setAmplifier($enchantment->getLevel());
-                                $effect->setDuration(60 * $enchantment->getLevel());
-                                $effect->setVisible(false);
+                                $effect = new EffectInstance(Effect::getEffect(Effect::MINING_FATIGUE), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                                 $damager->addEffect($effect);
                             }
                             if (!$damager->hasEffect(Effect::NAUSEA)) {
-                                $effect = Effect::getEffect(Effect::NAUSEA);
-                                $effect->setAmplifier(0);
-                                $effect->setDuration(60 * $enchantment->getLevel());
-                                $effect->setVisible(false);
+                                $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 60 * $enchantment->getLevel(), 0, false);
                                 $damager->addEffect($effect);
                             }
                         }
@@ -1177,10 +1112,7 @@ class EventListener implements Listener
                         if ($enchantment !== null) {
                             if ((!isset($this->plugin->cloakingcd[$entity->getLowerCaseName()]) || time() > $this->plugin->cloakingcd[$entity->getLowerCaseName()]) && $entity->hasEffect(Effect::INVISIBILITY)) {
                                 $this->plugin->cloakingcd[$entity->getLowerCaseName()] = time() + 10;
-                                $effect = Effect::getEffect(Effect::INVISIBILITY);
-                                $effect->setAmplifier(0);
-                                $effect->setDuration(60 * $enchantment->getLevel());
-                                $effect->setVisible(false);
+                                $effect = new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), 60 * $enchantment->getLevel(), 0, false);
                                 $entity->addEffect($effect);
                                 $entity->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
                             }

@@ -6,6 +6,7 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\scheduler\PluginTask;
 
@@ -38,10 +39,7 @@ class ProwlTask extends PluginTask
                 foreach ($this->plugin->getServer()->getOnlinePlayers() as $p) {
                     $p->hidePlayer($player);
                 }
-                $effect = Effect::getEffect(Effect::SLOWNESS);
-                $effect->setAmplifier(0);
-                $effect->setDuration(5);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 5, 0, false);
                 $player->setGenericFlag(Entity::DATA_FLAG_INVISIBLE, true);
                 $player->addEffect($effect);
                 $this->plugin->prowl[$player->getLowerCaseName()] = true;

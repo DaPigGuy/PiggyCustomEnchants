@@ -5,6 +5,7 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\scheduler\PluginTask;
 
 /**
@@ -33,26 +34,17 @@ class EffectTask extends PluginTask
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HASTE);
             if ($enchantment !== null) {
-                $effect = Effect::getEffect(Effect::HASTE);
-                $effect->setAmplifier($enchantment->getLevel() - 1);
-                $effect->setDuration(10);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::HASTE), 10, $enchantment->getLevel() - 1, false);
                 $player->addEffect($effect);
             }
             $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::OXYGENATE);
             if ($enchantment !== null) {
-                $effect = Effect::getEffect(Effect::WATER_BREATHING);
-                $effect->setAmplifier(0);
-                $effect->setDuration(10);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::WATER_BREATHING), 10, 0, false);
                 $player->addEffect($effect);
             }
             $enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::GLOWING);
             if ($enchantment !== null) {
-                $effect = Effect::getEffect(Effect::NIGHT_VISION);
-                $effect->setAmplifier(0);
-                $effect->setDuration(220);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 220, 0, false);
                 $player->addEffect($effect);
                 $this->plugin->glowing[$player->getLowerCaseName()] = true;
             } else {
@@ -63,28 +55,19 @@ class EffectTask extends PluginTask
             }
             $enchantment = $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantsIds::ENRAGED);
             if ($enchantment !== null) {
-                $effect = Effect::getEffect(Effect::STRENGTH);
-                $effect->setAmplifier($enchantment->getLevel() - 1);
-                $effect->setDuration(10);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::STRENGTH), 10, $enchantment->getLevel() - 1, false);
                 $player->addEffect($effect);
             }
             $enchantment = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantsIds::GEARS);
             if ($enchantment !== null) {
-                $effect = Effect::getEffect(Effect::SPEED);
-                $effect->setAmplifier(0);
-                $effect->setDuration(10);
-                $effect->setVisible(false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::SPEED), 10, 0, false);
                 $player->addEffect($effect);
             }
             $shielded = 0;
             foreach ($player->getArmorInventory()->getContents() as $slot => $armor) {
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::OBSIDIANSHIELD);
                 if ($enchantment !== null) {
-                    $effect = Effect::getEffect(Effect::FIRE_RESISTANCE);
-                    $effect->setAmplifier(0);
-                    $effect->setDuration(10);
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 10, 0, false);
                     $player->addEffect($effect);
                 }
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::OVERLOAD);
@@ -107,10 +90,7 @@ class EffectTask extends PluginTask
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::SHIELDED);
                 if ($enchantment !== null) {
                     $shielded += $enchantment->getLevel();
-                    $effect = Effect::getEffect(Effect::RESISTANCE);
-                    $effect->setAmplifier($shielded - 1);
-                    $effect->setDuration(10);
-                    $effect->setVisible(false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::RESISTANCE), 10, $shielded - 1, false);
                     $player->addEffect($effect);
                 }
             }

@@ -4,6 +4,7 @@ namespace PiggyCustomEnchants\Entities;
 
 
 use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\ProjectileHitEvent;
@@ -35,37 +36,9 @@ class PiggyWitherSkull extends PiggyProjectile
     public function onCollideWithEntity(Entity $entity)
     {
         if ($entity instanceof Living) {
-            $effect = Effect::getEffect(Effect::WITHER);
-            $effect->setAmplifier(1);
-            $effect->setDuration(800);
+            $effect = new EffectInstance(Effect::getEffect(Effect::WITHER), 800, 1);
             $entity->addEffect($effect);
         }
         parent::onCollideWithEntity($entity);
-    }
-
-    /**
-     * @param int $tickDiff
-     * @return bool
-     */
-    public function entityBaseTick(int $tickDiff = 1): bool
-    {
-        if ($this->closed) {
-            return false;
-        }
-        if (!$this->isFlaggedForDespawn()) {
-            if ($this->isCollided) {
-                if (!$this->hadCollision) {
-                    $this->hadCollision = true;
-                    $this->motionX = 0;
-                    $this->motionY = 0;
-                    $this->motionZ = 0;
-                    $this->server->getPluginManager()->callEvent($ev = new ProjectileHitEvent($this));
-                    //TODO: Add explosion
-                }
-                $this->flagForDespawn();
-            }
-        }
-        $hasUpdate = parent::entityBaseTick($tickDiff);
-        return $hasUpdate;
     }
 }

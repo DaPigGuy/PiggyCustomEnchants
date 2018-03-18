@@ -5,6 +5,7 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Effect;
+use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Living;
 use pocketmine\level\particle\DustParticle;
 use pocketmine\scheduler\PluginTask;
@@ -39,10 +40,7 @@ class PoisonousGasTask extends PluginTask
                     $radius = $enchantment->getLevel() * 3;
                     foreach ($player->getLevel()->getEntities() as $entity) {
                         if ($entity !== $player && $entity instanceof Living && $entity->distance($player) <= $radius) {
-                            $effect = Effect::getEffect(Effect::POISON);
-                            $effect->setAmplifier($enchantment->getLevel() - 1);
-                            $effect->setDuration($enchantment->getLevel() * 100);
-                            $effect->setVisible(false);
+                            $effect = new EffectInstance(Effect::getEffect(Effect::POISON), $enchantment->getLevel() * 100, $enchantment->getLevel() - 1, false);
                             $entity->addEffect($effect);
                         }
                     }

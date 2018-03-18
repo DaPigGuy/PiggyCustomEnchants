@@ -48,19 +48,11 @@ class PiggyFireball extends PiggyProjectile
             return false;
         }
         if (!$this->isFlaggedForDespawn()) {
-            if ($this->isCollided) {
-                if (!$this->hadCollision) {
-                    $this->hadCollision = true;
-                    $this->motionX = 0;
-                    $this->motionY = 0;
-                    $this->motionZ = 0;
-                    $this->server->getPluginManager()->callEvent(new ProjectileHitEvent($this));
-                    if (($this->isCollidedHorizontally || $this->isCollidedVertically) && $this->getLevel()->getBlock($this)->canBeFlowedInto() && Main::$blazeFlames) {
-                        $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
-                    }
+            if ($this->blockHit !== null) {
+                if (($this->isCollidedHorizontally || $this->isCollidedVertically) && $this->getLevel()->getBlock($this)->canBeFlowedInto() && Main::$blazeFlames) {
+                    $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
                 }
                 $this->flagForDespawn();
-
             }
         }
         $hasUpdate = parent::entityBaseTick($tickDiff);
