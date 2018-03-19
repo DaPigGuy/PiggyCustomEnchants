@@ -460,9 +460,10 @@ class Main extends PluginBase
                 $levels[] = 1;
             }
         }
-        $combined = array_combine($enchants, $levels);
+        $i = 0;
         foreach ($enchants as $enchant) {
-            $level = $combined[$enchant];
+            $level = $levels[$i];
+            $i++;
             if (!$enchant instanceof CustomEnchants) {
                 if (is_numeric($enchant)) {
                     $enchant = CustomEnchants::getEnchantment((int)$enchant);
@@ -716,7 +717,7 @@ class Main extends PluginBase
      * @param Item $item
      * @param $enchant
      * @param $level
-     * @return bool
+     * @return mixed
      */
     public function canBeEnchanted(Item $item, $enchant, $level)
     {

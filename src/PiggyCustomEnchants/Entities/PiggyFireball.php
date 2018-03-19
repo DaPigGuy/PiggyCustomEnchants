@@ -6,7 +6,6 @@ use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
-use pocketmine\event\entity\ProjectileHitEvent;
 
 /**
  * Class PiggyFireball

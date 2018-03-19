@@ -30,6 +30,7 @@ use pocketmine\event\entity\EntityEffectAddEvent;
 use pocketmine\event\entity\EntityEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\ProjectileHitBlockEvent;
+use pocketmine\event\entity\ProjectileLaunchEvent;
 use pocketmine\event\Event;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
@@ -350,12 +351,12 @@ class EventListener implements Listener
     }
 
     /**
-     * @param ProjectileHitBlockEvent $event
+     * @param ProjectileLaunchEvent $event
      *
      * @priority HIGHEST
      * @ignoreCancelled true
      */
-    public function onHit(ProjectileHitBlockEvent $event)
+    public function onHit(ProjectileLaunchEvent $event)
     {
         $entity = $event->getEntity();
         $shooter = $entity->getOwningEntity();
@@ -646,7 +647,8 @@ class EventListener implements Listener
                 $chance = 10 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
                 if ($random <= $chance) {
-                    if (isset(self::ORE_TIER[$block->getId()])) {
+					$ore = self::ORE_TIER[$block->getId()];
+                    if (isset($ore)) {
                         $tier = self::ORE_TIER[$block->getId()];
                         if (($tierkey = array_search($tier + 1, self::ORE_TIER)) !== false) {
                             foreach ($drops as $key => $drop) {
@@ -670,7 +672,8 @@ class EventListener implements Listener
                 $finaldrop = array();
                 $otherdrops = array();
                 foreach ($drops as $drop) {
-                    if (isset(self::SMELTED_ITEM[$drop->getId()])) {
+                	$smelted = self::SMELTED_ITEM[$drop->getId()];
+                    if (isset($smelted)) {
                         $finaldrop[] = Item::get(self::SMELTED_ITEM[$drop->getId()][0], self::SMELTED_ITEM[$drop->getId()][1], $drop->getCount());
                         continue;
                     }
