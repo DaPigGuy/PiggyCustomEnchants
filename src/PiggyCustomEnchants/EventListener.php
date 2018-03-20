@@ -647,9 +647,8 @@ class EventListener implements Listener
                 $chance = 10 * $enchantment->getLevel();
                 $random = mt_rand(0, 100);
                 if ($random <= $chance) {
-					$ore = self::ORE_TIER[$block->getId()];
-                    if (isset($ore)) {
-                        $tier = self::ORE_TIER[$block->getId()];
+					$tier = self::ORE_TIER[$block->getId()];
+                    if (isset($tier)) {
                         if (($tierkey = array_search($tier + 1, self::ORE_TIER)) !== false) {
                             foreach ($drops as $key => $drop) {
                                 foreach ($block->getDrops($player->getInventory()->getItemInHand()) as $originaldrop) {
