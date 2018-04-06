@@ -795,7 +795,7 @@ class EventListener implements Listener
                     $entity->addEffect($effect);
                 }
                 if (!$entity->hasEffect(Effect::WEAKNESS)) {
-                    $effect = new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 60 + ($enchantment->getLevel() - 1) * 20,  5 + $enchantment->getLevel() - 1, false);
+                    $effect = new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 60 + ($enchantment->getLevel() - 1) * 20, 5 + $enchantment->getLevel() - 1, false);
                     $entity->addEffect($effect);
                 }
             }
@@ -921,31 +921,29 @@ class EventListener implements Listener
             }
         }
         if ($event instanceof ProjectileHitBlockEvent && $entity instanceof Projectile) {
-            if ($entity->isCollided) {
-                $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
-                if ($enchantment !== null) {
-                    $location = $entity->getPosition();
-                    $damagerloc = $damager->getPosition();
-                    if ($damager->distance($entity) < 6) {
-                        if ($location->y > $damager->y) {
-                            $damager->setMotion(new Vector3(0, 0.25, 0));
-                        } else {
-                            $v = $location->subtract($damagerloc);
-                            $damager->setMotion($v);
-                        }
+            $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
+            if ($enchantment !== null) {
+                $location = $entity->getPosition();
+                $damagerloc = $damager->getPosition();
+                if ($damager->distance($entity) < 6) {
+                    if ($location->y > $damager->y) {
+                        $damager->setMotion(new Vector3(0, 0.25, 0));
                     } else {
-                        $g = -0.08;
-                        $d = $location->distance($damagerloc);
-                        $t = $d;
-                        $v_x = (1.0 + 0.07 * $t) * ($location->x - $damagerloc->x) / $t;
-                        $v_y = (1.0 + 0.03 * $t) * ($location->y - $damagerloc->y) / $t - 0.5 * $g * $t;
-                        $v_z = (1.0 + 0.07 * $t) * ($location->z - $damagerloc->z) / $t;
-                        $v = $damager->getMotion();
-                        $v->setComponents($v_x, $v_y, $v_z);
+                        $v = $location->subtract($damagerloc);
                         $damager->setMotion($v);
                     }
-                    $this->plugin->nofall[$damager->getLowerCaseName()] = time() + 1;
+                } else {
+                    $g = -0.08;
+                    $d = $location->distance($damagerloc);
+                    $t = $d;
+                    $v_x = (1.0 + 0.07 * $t) * ($location->x - $damagerloc->x) / $t;
+                    $v_y = (1.0 + 0.03 * $t) * ($location->y - $damagerloc->y) / $t - 0.5 * $g * $t;
+                    $v_z = (1.0 + 0.07 * $t) * ($location->z - $damagerloc->z) / $t;
+                    $v = $damager->getMotion();
+                    $v->setComponents($v_x, $v_y, $v_z);
+                    $damager->setMotion($v);
                 }
+                $this->plugin->nofall[$damager->getLowerCaseName()] = time() + 1;
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::MISSILE);
             if ($enchantment !== null) {

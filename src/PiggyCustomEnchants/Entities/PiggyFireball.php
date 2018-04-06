@@ -14,6 +14,10 @@ use pocketmine\event\entity\ProjectileHitEvent;
  */
 class PiggyFireball extends PiggyProjectile
 {
+    public $width = 0.5;
+    public $length = 0.5;
+    public $height = 0.5;
+
     protected $drag = 0.01;
     protected $gravity = 0.05;
 
