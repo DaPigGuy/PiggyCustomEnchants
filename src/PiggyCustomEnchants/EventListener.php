@@ -921,7 +921,7 @@ class EventListener implements Listener
             }
         }
         if ($event instanceof ProjectileHitBlockEvent && $entity instanceof Projectile) {
-            if ($entity->hadCollision) {
+            if ($entity->isCollided) {
                 $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
                 if ($enchantment !== null) {
                     $location = $entity->getPosition();
