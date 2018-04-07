@@ -64,7 +64,7 @@ class EffectTask extends PluginTask
                 $player->addEffect($effect);
             }
             $shielded = 0;
-            foreach ($player->getArmorInventory()->getContents() as $slot => $armor) {
+            foreach ($player->getArmorInventory()->getContents(true) as $slot => $armor) {
                 $enchantment = $armor->getEnchantment(CustomEnchantsIds::OBSIDIANSHIELD);
                 if ($enchantment !== null) {
                     $effect = new EffectInstance(Effect::getEffect(Effect::FIRE_RESISTANCE), 10, 0, false);
