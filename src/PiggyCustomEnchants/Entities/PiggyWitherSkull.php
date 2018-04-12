@@ -7,7 +7,6 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
-use pocketmine\event\entity\ProjectileHitEvent;
 
 /**
  * Class PiggyWitherSkull
