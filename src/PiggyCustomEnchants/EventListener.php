@@ -207,23 +207,28 @@ class EventListener implements Listener
             $equipment = $equipment_action->getSourceItem();
 
             $player = $transaction->getSource();
+            $success = false;
 
             foreach ($book->getEnchantments() as $enchant) {
                 $is_customenchant = $enchant->getType() instanceof CustomEnchants;
                 if (!$is_customenchant || $this->plugin->canBeEnchanted($equipment, $enchant, $enchant->getLevel())) {//TODO: Check XP
+                    $success = true;
                     if ($is_customenchant) {
                         $equipment = $this->plugin->addEnchantment($equipment, $enchant->getId(), $enchant->getLevel());
                     } else {
                         $equipment->addEnchantment($enchant);
                     }
-                    $event->setCancelled();
-                    $book->pop();
-                    $equipment_action->getInventory()->setItem($equipment_action->getSlot(), $equipment);
-                    $enchantedbook_action->getInventory()->setItem($enchantedbook_action->getSlot(), $book);
-                    $player->sendTip(TextFormat::GREEN . "Enchanting succeeded.");
                 } else {
                     $player->sendTip(TextFormat::RED . "The item is not compatible with this enchant.");
                 }
+            }
+
+            if ($success) {
+                $event->setCancelled();
+                $book->pop();
+                $equipment_action->getInventory()->setItem($equipment_action->getSlot(), $equipment);
+                $enchantedbook_action->getInventory()->setItem($enchantedbook_action->getSlot(), $book);
+                $player->sendTip(TextFormat::GREEN . "Enchanting succeeded.");
             }
         }
     }
