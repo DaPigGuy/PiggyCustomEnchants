@@ -2,6 +2,7 @@
 
 namespace PiggyCustomEnchants;
 
+use PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Entities\PiggyFireball;
 use PiggyCustomEnchants\Entities\PiggyWitherSkull;
@@ -12,7 +13,6 @@ use PiggyCustomEnchants\Tasks\HallucinationTask;
 use PiggyCustomEnchants\Tasks\ImplantsTask;
 use PiggyCustomEnchants\Tasks\MoltenTask;
 use PiggyCustomEnchants\Tasks\PlaceTask;
-use PiggyCustomEnchants\Tasks\UseEnchantedBookTask;
 use pocketmine\block\Block;
 use pocketmine\block\Crops;
 use pocketmine\entity\Effect;
@@ -190,12 +190,39 @@ class EventListener implements Listener
     public function onTransaction(InventoryTransactionEvent $event)
     {
         $transaction = $event->getTransaction();
+
         foreach ($transaction->getActions() as $action) {
             if ($action instanceof SlotChangeAction) {
-                $target = $action->getTargetItem();
-                $source = $action->getSourceItem();
-                if ($source->getId() == Item::ENCHANTED_BOOK && $target->getId() !== Item::AIR) {
-                    $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new UseEnchantedBookTask($this->plugin, $transaction->getSource(), $action), 1);
+                $item_clicked = $action->getSourceItem();
+                if ($item_clicked->getId() === Item::ENCHANTED_BOOK) {
+                    $enchantedbook_action = $action;
+                } elseif (!$item_clicked->isNull()) {
+                    $equipment_action = $action;
+                }
+            }
+        }
+
+        if (isset($enchantedbook_action, $equipment_action)) {
+            $book = $enchantedbook_action->getSourceItem();
+            $equipment = $equipment_action->getSourceItem();
+
+            $player = $transaction->getSource();
+
+            foreach ($book->getEnchantments() as $enchant) {
+                $is_customenchant = $enchant->getType() instanceof CustomEnchants;
+                if (!$is_customenchant || $this->plugin->canBeEnchanted($equipment, $enchant, $enchant->getLevel())) {//TODO: Check XP
+                    if ($is_customenchant) {
+                        $equipment = $this->plugin->addEnchantment($equipment, $enchant->getId(), $enchant->getLevel());
+                    } else {
+                        $equipment->addEnchantment($enchant);
+                    }
+                    $event->setCancelled();
+                    $book->pop();
+                    $equipment_action->getInventory()->setItem($equipment_action->getSlot(), $equipment);
+                    $enchantedbook_action->getInventory()->setItem($enchantedbook_action->getSlot(), $book);
+                    $player->sendTip(TextFormat::GREEN . "Enchanting succeeded.");
+                } else {
+                    $player->sendTip(TextFormat::RED . "The item is not compatible with this enchant.");
                 }
             }
         }
