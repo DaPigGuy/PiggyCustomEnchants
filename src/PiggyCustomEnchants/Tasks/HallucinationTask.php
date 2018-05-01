@@ -60,7 +60,7 @@ class HallucinationTask extends PluginTask
                             } else {
                                 $block = Block::get(Block::WALL_SIGN);
                                 $nbt = new LittleEndianNBTStream();
-                                $nbt->setData(new CompoundTag("", [
+                                $nbt->writeTag(new CompoundTag("", [
                                     new StringTag("id", Tile::SIGN),
                                     new StringTag("Text1", TextFormat::RED . "You seem to be"),
                                     new StringTag("Text2", TextFormat::RED . "hallucinating..."),
