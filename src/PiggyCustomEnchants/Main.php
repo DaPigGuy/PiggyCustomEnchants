@@ -756,7 +756,7 @@ class Main extends PluginBase
             case "Global":
                 return true;
             case "Damageable":
-                if (!$item instanceof Durable) {
+                if ($item instanceof Durable) {
                     return true;
                 }
                 break;
