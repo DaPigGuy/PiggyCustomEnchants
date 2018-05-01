@@ -4,7 +4,7 @@ namespace PiggyCustomEnchants\Tasks;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
-use pocketmine\entity\Item;
+use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\level\particle\FlameParticle;
 use pocketmine\math\Vector3;
@@ -50,7 +50,7 @@ class ForcefieldTask extends PluginTask
                             $entity->setMotion($entity->getMotion()->multiply(-1));
                         }
                     } else {
-                        if (!$entity instanceof Item && isset($entity->namedtag->SlapperVersion) !== true) {
+                        if (!$entity instanceof ItemEntity && is_null($entity->namedtag->getString("SlapperVersion"))) {
                             $entity->setMotion(new Vector3($player->subtract($entity)->normalize()->multiply(-0.75)->x, 0, $player->subtract($entity)->normalize()->multiply(-0.75)->z));
                         }
                     }

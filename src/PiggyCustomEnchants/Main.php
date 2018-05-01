@@ -29,6 +29,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use pocketmine\item\Armor;
+use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -755,7 +756,7 @@ class Main extends PluginBase
             case "Global":
                 return true;
             case "Damageable":
-                if ($item->getMaxDurability() !== 0) {
+                if ($item instanceof Durable) {
                     return true;
                 }
                 break;

@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants\Blocks;
 
-
 use pocketmine\block\Block;
 use pocketmine\block\Obsidian;
 use pocketmine\item\Item;
