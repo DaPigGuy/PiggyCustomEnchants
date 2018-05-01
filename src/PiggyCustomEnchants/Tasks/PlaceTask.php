@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-
 use PiggyCustomEnchants\Main;
 use pocketmine\item\Item;
 use pocketmine\level\Level;

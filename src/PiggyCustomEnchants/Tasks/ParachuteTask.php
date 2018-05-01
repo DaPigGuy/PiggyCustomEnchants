@@ -2,7 +2,6 @@
 
 namespace PiggyCustomEnchants\Tasks;
 
-
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\math\Vector3;

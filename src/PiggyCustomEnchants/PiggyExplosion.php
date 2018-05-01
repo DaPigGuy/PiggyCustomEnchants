@@ -13,21 +13,21 @@ use pocketmine\Player;
  */
 class PiggyExplosion extends Explosion
 {
-    protected $what;
+    protected $player;
     private $plugin;
 
     /**
      * PiggyExplosion constructor.
      * @param Position $center
      * @param $size
-     * @param Player $what
+     * @param Player $player
      * @param Main $plugin
      */
-    public function __construct(Position $center, $size, Player $what = null, Main $plugin)
+    public function __construct(Position $center, $size, Player $player = null, Main $plugin)
     {
         $this->plugin = $plugin;
-        $this->what = $what;
-        parent::__construct($center, $size, $what);
+        $this->player = $player;
+        parent::__construct($center, $size, $player);
     }
 
     /**
@@ -37,7 +37,7 @@ class PiggyExplosion extends Explosion
     {
         $result = parent::explodeB();
         foreach ($this->affectedBlocks as $index => $block) {
-            $ev = new BlockBreakEvent($this->what, $block, $this->what->getInventory()->getItemInHand());
+            $ev = new BlockBreakEvent($this->player, $block, $this->player->getInventory()->getItemInHand());
             $this->plugin->getServer()->getPluginManager()->callEvent($ev);
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$index]);

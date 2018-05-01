@@ -517,6 +517,10 @@ class CustomEnchantCommand extends PluginCommand
         return false;
     }
 
+
+    /**
+     * @return string
+     */
     public function list()
     {
         $plugin = $this->getPlugin();
