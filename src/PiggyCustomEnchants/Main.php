@@ -29,10 +29,15 @@ use pocketmine\block\BlockFactory;
 use pocketmine\command\CommandSender;
 use pocketmine\entity\Entity;
 use pocketmine\item\Armor;
+use pocketmine\item\Axe;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
+use pocketmine\item\Pickaxe;
+use pocketmine\item\Shears;
+use pocketmine\item\Shovel;
+use pocketmine\item\Sword;
 use pocketmine\level\Position;
 use pocketmine\nbt\NBT;
 use pocketmine\nbt\tag\CompoundTag;
@@ -761,7 +766,7 @@ class Main extends PluginBase
                 }
                 break;
             case "Weapons":
-                if ($item->isSword() !== false || $item->isAxe() || $item->getId() == Item::BOW) {
+                if ($item instanceof Sword || $item instanceof Axe || $item->getId() == Item::BOW) {
                     return true;
                 }
                 break;
@@ -771,7 +776,7 @@ class Main extends PluginBase
                 }
                 break;
             case "Tools":
-                if ($item->isPickaxe() || $item->isAxe() || $item->isShovel() || $item->isShears()) {
+                if ($item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Shears) {
                     return true;
                 }
                 break;
