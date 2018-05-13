@@ -434,7 +434,7 @@ class Main extends PluginBase
                 $rarity = CustomEnchants::RARITY_MYTHIC;
                 break;
         }
-        $ce = new CustomEnchants($id, $data[0], $rarity, $slot, $data[4]);
+        $ce = new CustomEnchants($id, $data[0], $rarity, $slot, CustomEnchants::SLOT_NONE, $data[4]);
         return $ce;
     }
 
