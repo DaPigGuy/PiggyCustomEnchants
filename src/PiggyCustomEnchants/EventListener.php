@@ -1057,17 +1057,11 @@ class EventListener implements Listener
                             if (!isset($this->plugin->endershiftcd[$entity->getLowerCaseName()]) || time() > $this->plugin->endershiftcd[$entity->getLowerCaseName()]) {
                                 $this->plugin->endershiftcd[$entity->getLowerCaseName()] = time() + 300;
                                 if (!$entity->hasEffect(Effect::SPEED)) {
-                                    $effect = Effect::getEffect(Effect::SPEED);
-                                    $effect->setAmplifier($enchantment->getLevel() + 3);
-                                    $effect->setDuration(200 * $enchantment->getLevel());
-                                    $effect->setVisible(false);
+                                    $effect = new EffectInstance(Effect::getEffect(Effect::SPEED), 200 * $enchantment->getLevel(), $enchantment->getLevel() + 3, false);
                                     $entity->addEffect($effect);
                                 }
                                 if (!$entity->hasEffect(Effect::ABSORPTION)) {
-                                    $effect = Effect::getEffect(Effect::ABSORPTION);
-                                    $effect->setAmplifier($enchantment->getLevel() + 3);
-                                    $effect->setDuration(200 * $enchantment->getLevel());
-                                    $effect->setVisible(false);
+                                    $effect = new EffectInstance(Effect::getEffect(Effect::ABSORPTION), 200 * $enchantment->getLevel(), $enchantment->getLevel() + 3, false);
                                     $entity->addEffect($effect);
                                 }
                                 $entity->sendMessage("You feel a rush of energy coming from your armor!");
