@@ -9,6 +9,11 @@ In order to prevent our issue tracker from being clogged up by suggestions inste
 - #94: Enable/Disable enchants in certain world, or as a whole. (FEATURE)
 - #111: XP required for auto-repair (BALANCING)
 
+<!-- If one question constantly persists, add the Q/A in here. -->
+## FAQ
+Q: How do I create/use an enchanted book?
+A: If you want to create an enchanted book, use the /ce enchant command on a normal book. Afterwards, you place the item you want to enchant on top of the enchanted book. It will then enchant your item. 
+
 ## Information
 * Request custom enchants [here.](https://docs.google.com/forms/d/e/1FAIpQLScfWdk8OyQ6NNw6KiJxP_4CH4GHnKlaFr4VfZIQojk7OPlyoQ/viewform) You do not need a google account in order to submit a form. If you want credit for the idea, state your name in the form (anywhere)
 * Are you a developer? Check out our API Documentation [here.](https://github.com/DaPigGuy/PiggyCustomEnchants/wiki/API-Documentation)
