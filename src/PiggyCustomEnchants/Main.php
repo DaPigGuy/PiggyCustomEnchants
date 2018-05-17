@@ -32,6 +32,7 @@ use pocketmine\item\Armor;
 use pocketmine\item\Axe;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\Hoe;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\Pickaxe;
@@ -776,27 +777,27 @@ class Main extends PluginBase
                 }
                 break;
             case "Tools":
-                if ($item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Shears) {
+                if ($item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Hoe || $item instanceof Shears) {
                     return true;
                 }
                 break;
             case "Pickaxe":
-                if ($item->isPickaxe()) {
+                if ($item instanceof Pickaxe) {
                     return true;
                 }
                 break;
             case "Axe":
-                if ($item->isAxe()) {
+                if ($item instanceof Axe) {
                     return true;
                 }
                 break;
             case "Shovel":
-                if ($item->isShovel()) {
+                if ($item instanceof Shovel) {
                     return true;
                 }
                 break;
             case "Hoe":
-                if ($item->isHoe()) {
+                if ($item instanceof Hoe) {
                     return true;
                 }
                 break;

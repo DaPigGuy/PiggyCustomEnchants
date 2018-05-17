@@ -5,7 +5,6 @@ namespace PiggyCustomEnchants\Blocks;
 use pocketmine\block\Block;
 use pocketmine\block\Obsidian;
 use pocketmine\item\Item;
-use pocketmine\item\TieredTool;
 use pocketmine\Player;
 
 /**
@@ -42,10 +41,9 @@ class PiggyObsidian extends Obsidian
     }
 
     /**
-     * @param int $type
      * @return bool|int|void
      */
-    public function onUpdate(int $type)
+    public function onRandomTick() : void
     {
         if ($this->isMagmaWalker()) {
             $count = 0;
@@ -87,6 +85,6 @@ class PiggyObsidian extends Obsidian
      */
     public function getDrops(Item $item): array
     {
-        return $this->isMagmaWalker() ? [] : ($item->isPickaxe() >= TieredTool::TIER_DIAMOND ? parent::getDrops($item) : []);
+        return $this->isMagmaWalker() ? [] : parent::getDrops($item);
     }
 }
