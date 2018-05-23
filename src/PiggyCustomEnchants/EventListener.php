@@ -211,7 +211,7 @@ class EventListener implements Listener
 
             foreach ($book->getEnchantments() as $enchant) {
                 $is_customenchant = $enchant->getType() instanceof CustomEnchants;
-                if (!$is_customenchant || $this->plugin->canBeEnchanted($equipment, $enchant, $enchant->getLevel())) {//TODO: Check XP
+                if (!$is_customenchant || $this->plugin->canBeEnchanted($equipment, $enchant, $enchant->getLevel()) === true) {//TODO: Check XP
                     $success = true;
                     if ($is_customenchant) {
                         $equipment = $this->plugin->addEnchantment($equipment, $enchant->getId(), $enchant->getLevel());

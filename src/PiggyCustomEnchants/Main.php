@@ -723,7 +723,7 @@ class Main extends PluginBase
      * @param Item $item
      * @param $enchant
      * @param $level
-     * @return bool
+     * @return bool|int
      */
     public function canBeEnchanted(Item $item, $enchant, $level)
     {
