@@ -10,7 +10,7 @@ use pocketmine\item\enchantment\Enchantment;
  */
 class CustomEnchants extends Enchantment
 {
-    public static function init()
+    public static function init(): void
     {
         $vanillaenchants = [];
         foreach (parent::$enchantments as $id => $enchantment) {
@@ -24,7 +24,7 @@ class CustomEnchants extends Enchantment
      *
      * @return Enchantment|null
      */
-    public static function getEnchantmentByName(string $name)
+    public static function getEnchantmentByName(string $name): ?Enchantment
     {
         $const = CustomEnchantsIds::class . "::" . strtoupper($name);
         if (defined($const)) {
