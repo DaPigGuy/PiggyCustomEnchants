@@ -42,7 +42,9 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
+use pocketmine\item\Axe;
 use pocketmine\item\Item;
+use pocketmine\item\Sword;
 use pocketmine\level\particle\FlameParticle;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
@@ -467,7 +469,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DEATHBRINGER);
             if ($enchantment !== null) {
                 $damage = 2 + ($enchantment->getLevel() / 10);
-                $event->setDamage($event->getDamage() + $damage);
+                $event->setModifier($damage, CustomEnchantsIds::DEATHBRINGER);
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GOOEY);
             if ($enchantment !== null) {
@@ -478,13 +480,13 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 if (!isset($this->plugin->vampirecd[$damager->getLowerCaseName()]) || time() > $this->plugin->vampirecd[$damager->getLowerCaseName()]) {
                     $this->plugin->vampirecd[$damager->getLowerCaseName()] = time() + 5;
-                    if ($damager->getHealth() + ($event->getDamage() / 2) <= $damager->getMaxHealth()) {
-                        $damager->setHealth($damager->getHealth() + ($event->getDamage() / 2));
+                    if ($damager->getHealth() + ($event->getFinalDamage() / 2) <= $damager->getMaxHealth()) {
+                        $damager->setHealth($damager->getHealth() + ($event->getFinalDamage() / 2));
                     } else {
                         $damager->setHealth($damager->getMaxHealth());
                     }
-                    if ($damager->getFood() + ($event->getDamage() / 2) <= $damager->getMaxFood()) {
-                        $damager->setFood($damager->getFood() + ($event->getDamage() / 2));
+                    if ($damager->getFood() + ($event->getFinalDamage() / 2) <= $damager->getMaxFood()) {
+                        $damager->setFood($damager->getFood() + ($event->getFinalDamage() / 2));
                     } else {
                         $damager->setFood($damager->getMaxFood());
                     }
@@ -493,13 +495,13 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::CHARGE);
             if ($enchantment !== null) {
                 if ($damager->isSprinting()) {
-                    $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
+                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::CHARGE);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::AERIAL);
             if ($enchantment !== null) {
                 if (!$damager->isOnGround()) {
-                    $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
+                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::AERIAL);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DISARMING);
@@ -554,7 +556,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BACKSTAB);
             if ($enchantment !== null) {
                 if ($damager->getDirectionVector()->dot($entity->getDirectionVector()) > 0) {
-                    $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
+                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::BACKSTAB);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LIGHTNING);
@@ -833,7 +835,7 @@ class EventListener implements Listener
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::PIERCING);
             if ($enchantment !== null) {
-                $event->setDamage(0, EntityDamageEvent::MODIFIER_ARMOR);
+                $event->setModifier(0, EntityDamageEvent::MODIFIER_ARMOR);
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::SHUFFLE);
             if ($enchantment !== null) {
@@ -858,18 +860,21 @@ class EventListener implements Listener
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HEALING);
             if ($enchantment !== null) {
-                if ($entity->getHealth() + $event->getDamage() + $enchantment->getLevel() <= $entity->getMaxHealth()) {
-                    $entity->setHealth($entity->getHealth() + $event->getDamage() + $enchantment->getLevel());
+                if ($entity->getHealth() + $event->getFinalDamage() + $enchantment->getLevel() <= $entity->getMaxHealth()) {
+                    $entity->setHealth($entity->getHealth() + $event->getFinalDamage() + $enchantment->getLevel());
                 } else {
                     $entity->setHealth($entity->getMaxHealth());
                 }
-                $event->setDamage(0);
+                foreach ($event->getModifiers() as $modifier => $damage) {
+                    $event->setModifier(0, $modifier);
+                }
+                $event->setBaseDamage(0);
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HEADHUNTER);
             if ($enchantment !== null) {
                 $projectile = $event->getChild();
                 if ($projectile->y > $entity->getPosition()->y + $entity->getEyeHeight()) {
-                    $event->setDamage($event->getDamage() * (1 + 0.10 * $enchantment->getLevel()));
+                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::HEADHUNTER);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
@@ -997,7 +1002,6 @@ class EventListener implements Listener
         if ($entity instanceof Player) {
             $random = new Random();
             if ($event instanceof EntityDamageEvent) {
-                $damage = $event->getDamage();
                 $cause = $event->getCause();
                 $antikb = 4;
                 if ($cause == EntityDamageEvent::CAUSE_FALL) {
@@ -1013,14 +1017,14 @@ class EventListener implements Listener
                             $e->attack($ev);
                         }
                         if (count($entities) > 1) {
-                            $event->setDamage($event->getDamage() / 4);
+                            $event->setModifier(-($event->getFinalDamage() * (3 / 4)), CustomEnchantsIds::STOMP);
                         }
                     }
                 }
                 foreach ($entity->getArmorInventory()->getContents() as $slot => $armor) {
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVIVE);
                     if ($enchantment !== null) {
-                        if ($event->getDamage() >= $entity->getHealth()) {
+                        if ($event->getFinalDamage() >= $entity->getHealth()) {
                             if ($enchantment->getLevel() > 1) {
                                 $entity->getArmorInventory()->setItem($slot, $this->plugin->addEnchantment($armor, $enchantment->getId(), $enchantment->getLevel() - 1));
                             } else {
@@ -1039,12 +1043,15 @@ class EventListener implements Listener
                                 $entity->getLevel()->addParticle(new FlameParticle(new Vector3($entity->x, $i, $entity->z)));
                             }
                             $entity->sendTip(TextFormat::GREEN . "You were revived.");
-                            $event->setDamage(0);
+                            foreach ($event->getModifiers() as $modifier => $damage) {
+                                $event->setModifier(0, $modifier);
+                            }
+                            $event->setBaseDamage(0);
                         }
                     }
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::SELFDESTRUCT);
                     if ($enchantment !== null) {
-                        if ($event->getDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
+                        if ($event->getFinalDamage() >= $entity->getHealth()) { //Compatibility for plugins that auto respawn players on death
                             for ($i = $enchantment->getLevel(); $i >= 0; $i--) {
                                 $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
                                 $tnt->spawnToAll();
@@ -1053,7 +1060,7 @@ class EventListener implements Listener
                     }
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::ENDERSHIFT);
                     if ($enchantment !== null) {
-                        if ($entity->getHealth() - $event->getDamage() <= 4) {
+                        if ($entity->getHealth() - $event->getFinalDamage() <= 4) {
                             if (!isset($this->plugin->endershiftcd[$entity->getLowerCaseName()]) || time() > $this->plugin->endershiftcd[$entity->getLowerCaseName()]) {
                                 $this->plugin->endershiftcd[$entity->getLowerCaseName()] = time() + 300;
                                 if (!$entity->hasEffect(Effect::SPEED)) {
@@ -1070,7 +1077,7 @@ class EventListener implements Listener
                     }
                     $enchantment = $armor->getEnchantment(CustomEnchantsIds::BERSERKER);
                     if ($enchantment !== null) {
-                        if ($entity->getHealth() - $event->getDamage() <= 4) {
+                        if ($entity->getHealth() - $event->getFinalDamage() <= 4) {
                             if ((!isset($this->plugin->berserkercd[$entity->getLowerCaseName()]) || time() > $this->plugin->berserkercd[$entity->getLowerCaseName()]) && $entity->hasEffect(Effect::STRENGTH) !== true) {
                                 $this->plugin->berserkercd[$entity->getLowerCaseName()] = time() + 300;
                                 $effect = new EffectInstance(Effect::getEffect(Effect::STRENGTH), 200 * $enchantment->getLevel(), 3 + $enchantment->getLevel(), false);
@@ -1149,20 +1156,20 @@ class EventListener implements Listener
                         if ($damager instanceof Player) {
                             $enchantment = $armor->getEnchantment(CustomEnchantsIds::ARMORED);
                             if ($enchantment !== null) {
-                                if ($damager->getInventory()->getItemInHand()->isSword()) {
-                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                if ($damager->getInventory()->getItemInHand() instanceof Sword) {
+                                    $event->setModifier($event->getFinalDamage() - ($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::ARMORED);
                                 }
                             }
                             $enchantment = $armor->getEnchantment(CustomEnchantsIds::TANK);
                             if ($enchantment !== null) {
-                                if ($damager->getInventory()->getItemInHand()->isAxe()) {
-                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                if ($damager->getInventory()->getItemInHand() instanceof Axe) {
+                                    $event->setModifier($event->getFinalDamage() - ($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::TANK);
                                 }
                             }
                             $enchantment = $armor->getEnchantment(CustomEnchantsIds::HEAVY);
                             if ($enchantment !== null) {
                                 if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) {
-                                    $event->setDamage($damage - ($damage * 0.2 * $enchantment->getLevel()));
+                                    $event->setModifier($event->getFinalDamage() - ($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::HEAVY);
                                 }
                             }
                         }
