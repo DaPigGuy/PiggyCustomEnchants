@@ -5,7 +5,7 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\level\Position;
-use pocketmine\nbt\LittleEndianNBTStream;
+use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
@@ -59,8 +59,8 @@ class HallucinationTask extends PluginTask
                                 $block = Block::get(Block::BEDROCK);
                             } else {
                                 $block = Block::get(Block::WALL_SIGN);
-                                $nbt = new LittleEndianNBTStream();
-                                $nbt->writeTag(new CompoundTag("", [
+                                $nbtWriter = new NetworkLittleEndianNBTStream();
+                                $nbt = $nbtWriter->write(new CompoundTag("", [
                                     new StringTag("id", Tile::SIGN),
                                     new StringTag("Text1", TextFormat::RED . "You seem to be"),
                                     new StringTag("Text2", TextFormat::RED . "hallucinating..."),
@@ -74,7 +74,7 @@ class HallucinationTask extends PluginTask
                                 $pk->x = (int)$pos->x;
                                 $pk->y = (int)$pos->y;
                                 $pk->z = (int)$pos->z;
-                                $pk->namedtag = $nbt->write();
+                                $pk->namedtag = $nbt;
                                 $this->player->dataPacket($pk);
                             }
                         } else {
