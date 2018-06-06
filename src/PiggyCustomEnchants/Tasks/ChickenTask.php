@@ -5,14 +5,14 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\item\Item;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
 /**
  * Class ChickenTask
  * @package PiggyCustomEnchants\Tasks
  */
-class ChickenTask extends PluginTask
+class ChickenTask extends Task
 {
     private $plugin;
 
@@ -23,7 +23,6 @@ class ChickenTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**

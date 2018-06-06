@@ -5,14 +5,14 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\event\entity\EntityRegainHealthEvent;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
 /**
  * Class MeditationTask
  * @package PiggyCustomEnchants\Tasks
  */
-class MeditationTask extends PluginTask
+class MeditationTask extends Task
 {
     private $plugin;
 
@@ -23,7 +23,6 @@ class MeditationTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**

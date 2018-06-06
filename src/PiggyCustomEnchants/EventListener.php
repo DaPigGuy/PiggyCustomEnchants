@@ -474,7 +474,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GOOEY);
             if ($enchantment !== null) {
                 $task = new GoeyTask($this->plugin, $entity, $enchantment->getLevel());
-                $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 1);
+                $this->plugin->getScheduler()->scheduleDelayedTask($task, 1);
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::VAMPIRE);
             if ($enchantment !== null) {
@@ -523,7 +523,7 @@ class EventListener implements Listener
                 if ($random <= $chance && $entity instanceof Player && isset($this->plugin->hallucination[$entity->getLowerCaseName()]) !== true) {
                     $this->plugin->hallucination[$entity->getLowerCaseName()] = true;
                     $task = new HallucinationTask($this->plugin, $entity, $entity->getPosition());
-                    $handler = $this->plugin->getServer()->getScheduler()->scheduleRepeatingTask($task, 1);
+                    $handler = $this->plugin->getScheduler()->scheduleRepeatingTask($task, 1);
                     $task->setHandler($handler);
                 }
             }
@@ -754,7 +754,7 @@ class EventListener implements Listener
                 if ($seed !== null) {
                     $seed = Item::get($seed, 0, 1);
                     $pos = $block->subtract(0, 1);
-                    $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new PlaceTask($this->plugin, $pos, $block->getLevel(), $seed, $player), 1);
+                    $this->plugin->getScheduler()->scheduleDelayedTask(new PlaceTask($this->plugin, $pos, $block->getLevel(), $seed, $player), 1);
                 }
             }
             $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HARVEST);
@@ -880,7 +880,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
             if ($enchantment !== null) {
                 $task = new GrapplingTask($this->plugin, $damager->getPosition(), $entity);
-                $this->plugin->getServer()->getScheduler()->scheduleDelayedTask($task, 1); //Delayed due to knockback interfering
+                $this->plugin->getScheduler()->scheduleDelayedTask($task, 1); //Delayed due to knockback interfering
             }
         }
         if ($event instanceof EntityShootBowEvent) {
@@ -1092,7 +1092,7 @@ class EventListener implements Listener
                     foreach ($entity->getArmorInventory()->getContents() as $slot => $armor) {
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::MOLTEN);
                         if ($enchantment !== null) {
-                            $this->plugin->getServer()->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
+                            $this->plugin->getScheduler()->scheduleDelayedTask(new MoltenTask($this->plugin, $damager, $enchantment->getLevel()), 1);
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::ENLIGHTED);
                         if ($enchantment !== null && $entity->hasEffect(Effect::REGENERATION) !== true) {
@@ -1236,7 +1236,7 @@ class EventListener implements Listener
                             if ($entity->getAirSupplyTicks() < $entity->getMaxAirSupplyTicks() && isset($this->plugin->implants[$entity->getLowerCaseName()]) !== true) {
                                 $this->plugin->implants[$entity->getLowerCaseName()] = true;
                                 $task = new ImplantsTask($this->plugin, $entity);
-                                $handler = $this->plugin->getServer()->getScheduler()->scheduleDelayedRepeatingTask($task, 20, 60);
+                                $handler = $this->plugin->getScheduler()->scheduleDelayedRepeatingTask($task, 20, 60);
                                 $task->setHandler($handler);
                             }
                             $this->plugin->implantscd[$entity->getLowerCaseName()] = time() + 1;

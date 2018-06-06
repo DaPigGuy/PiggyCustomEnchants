@@ -6,14 +6,14 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\Player;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
 /**
  * Class RadarTask
  * @package PiggyCustomEnchants
  */
-class RadarTask extends PluginTask
+class RadarTask extends Task
 {
     private $plugin;
     private $radars;
@@ -24,7 +24,6 @@ class RadarTask extends PluginTask
      */
     public function __construct(Main $plugin)
     {
-        parent::__construct($plugin);
         $this->plugin = $plugin;
     }
 

@@ -273,20 +273,20 @@ class Main extends PluginBase
                 ItemFactory::registerItem(new Item(Item::ENCHANTED_BOOK, 0, "Enchanted Book")); //This is a temporary fix for name being Unknown when given due to no implementation in PMMP. Will remove when implemented in PMMP
             }
             $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new AutoAimTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 20);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ForcefieldTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new EffectTask($this), 5);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 20);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 2);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ProwlTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new SpiderTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new PoisonousGasTask($this), 1);
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new VacuumTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new AutoAimTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
+            $this->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 20);
+            $this->getScheduler()->scheduleRepeatingTask(new ForcefieldTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new EffectTask($this), 5);
+            $this->getScheduler()->scheduleRepeatingTask(new JetpackTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new MeditationTask($this), 20);
+            $this->getScheduler()->scheduleRepeatingTask(new ParachuteTask($this), 2);
+            $this->getScheduler()->scheduleRepeatingTask(new ProwlTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new RadarTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new SizeTask($this), 20);
+            $this->getScheduler()->scheduleRepeatingTask(new SpiderTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new PoisonousGasTask($this), 1);
+            $this->getScheduler()->scheduleRepeatingTask(new VacuumTask($this), 1);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
 
             $this->getLogger()->info(TextFormat::GREEN . "Enabled.");

@@ -6,14 +6,14 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\level\particle\FlameParticle;
 use pocketmine\Player;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
 /**
  * Class JetpackTask
  * @package PiggyCustomEnchants\Tasks
  */
-class JetpackTask extends PluginTask
+class JetpackTask extends Task
 {
     private $plugin;
 
@@ -23,7 +23,6 @@ class JetpackTask extends PluginTask
      */
     public function __construct(Main $plugin)
     {
-        parent::__construct($plugin);
         $this->plugin = $plugin;
     }
 

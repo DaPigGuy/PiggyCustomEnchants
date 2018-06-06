@@ -11,7 +11,7 @@ use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\network\mcpe\protocol\BlockEntityDataPacket;
 use pocketmine\Player;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 use pocketmine\tile\Tile;
 use pocketmine\utils\TextFormat;
 
@@ -19,7 +19,7 @@ use pocketmine\utils\TextFormat;
  * Class HallucinationTask
  * @package PiggyCustomEnchants
  */
-class HallucinationTask extends PluginTask
+class HallucinationTask extends Task
 {
     private $plugin;
     private $player;
@@ -34,7 +34,6 @@ class HallucinationTask extends PluginTask
      */
     public function __construct(Main $plugin, Player $player, Position $position)
     {
-        parent::__construct($plugin);
         $this->plugin = $plugin;
         $this->player = $player;
         $this->position = $position;
@@ -88,7 +87,7 @@ class HallucinationTask extends PluginTask
         }
         if ($this->time >= 20 * 60) {
             unset($this->plugin->hallucination[$this->player->getLowerCaseName()]);
-            $this->plugin->getServer()->getScheduler()->cancelTask($this->getHandler()->getTaskId());
+            $this->plugin->getScheduler()->cancelTask($this->getHandler()->getTaskId());
         }
     }
 }

@@ -8,13 +8,13 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Living;
 use pocketmine\level\particle\DustParticle;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class PoisonousGasTask
  * @package PiggyCustomEnchants\Tasks
  */
-class PoisonousGasTask extends PluginTask
+class PoisonousGasTask extends Task
 {
     private $plugin;
 
@@ -25,7 +25,6 @@ class PoisonousGasTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**

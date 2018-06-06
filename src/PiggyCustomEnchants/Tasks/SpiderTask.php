@@ -6,13 +6,13 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class SpiderTask
  * @package PiggyCustomEnchants\Tasks
  */
-class SpiderTask extends PluginTask
+class SpiderTask extends Task
 {
     private $plugin;
 
@@ -23,7 +23,6 @@ class SpiderTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**

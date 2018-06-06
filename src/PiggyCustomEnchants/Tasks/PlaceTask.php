@@ -7,13 +7,13 @@ use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class PlaceTask
  * @package PiggyCustomEnchants\Tasks
  */
-class PlaceTask extends PluginTask
+class PlaceTask extends Task
 {
     private $plugin;
     private $position;
@@ -36,7 +36,6 @@ class PlaceTask extends PluginTask
         $this->level = $level;
         $this->seed = $seed;
         $this->player = $player;
-        parent::__construct($plugin);
     }
 
     /**

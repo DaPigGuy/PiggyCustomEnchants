@@ -7,13 +7,13 @@ use PiggyCustomEnchants\Main;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Entity;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class ProwlTask
  * @package PiggyCustomEnchants\Tasks
  */
-class ProwlTask extends PluginTask
+class ProwlTask extends Task
 {
     private $plugin;
 
@@ -24,7 +24,6 @@ class ProwlTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**

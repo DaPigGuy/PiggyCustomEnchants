@@ -4,13 +4,13 @@ namespace PiggyCustomEnchants\Tasks;
 
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Entity;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class MoltenTask
  * @package PiggyCustomEnchants\Tasks
  */
-class MoltenTask extends PluginTask
+class MoltenTask extends Task
 {
     private $plugin;
     private $entity;
@@ -24,7 +24,6 @@ class MoltenTask extends PluginTask
      */
     public function __construct(Main $plugin, Entity $entity, $level)
     {
-        parent::__construct($plugin);
         $this->plugin = $plugin;
         $this->entity = $entity;
         $this->level = $level;

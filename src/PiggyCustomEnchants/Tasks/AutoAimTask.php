@@ -5,13 +5,13 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\Player;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class AutoAimTask
  * @package PiggyCustomEnchants
  */
-class AutoAimTask extends PluginTask
+class AutoAimTask extends Task
 {
     private $plugin;
     private $lastPosition;
@@ -22,7 +22,6 @@ class AutoAimTask extends PluginTask
      */
     public function __construct(Main $plugin)
     {
-        parent::__construct($plugin);
         $this->plugin = $plugin;
     }
 

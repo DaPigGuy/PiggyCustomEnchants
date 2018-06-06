@@ -5,13 +5,13 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\object\ItemEntity;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class VacuumTask
  * @package PiggyCustomEnchants\Tasks
  */
-class VacuumTask extends PluginTask
+class VacuumTask extends Task
 {
     private $plugin;
 
@@ -22,7 +22,6 @@ class VacuumTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**

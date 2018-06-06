@@ -8,13 +8,13 @@ use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\level\particle\FlameParticle;
 use pocketmine\math\Vector3;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class ForcefieldTask
  * @package PiggyCustomEnchants\Tasks
  */
-class ForcefieldTask extends PluginTask
+class ForcefieldTask extends Task
 {
     private $plugin;
 
@@ -25,7 +25,6 @@ class ForcefieldTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**

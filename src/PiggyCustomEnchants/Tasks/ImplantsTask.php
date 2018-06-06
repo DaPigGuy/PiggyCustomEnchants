@@ -6,13 +6,13 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\Player;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class ImplantsTask
  * @package PiggyCustomEnchants\Tasks
  */
-class ImplantsTask extends PluginTask
+class ImplantsTask extends Task
 {
     private $plugin;
     private $player;
@@ -26,7 +26,6 @@ class ImplantsTask extends PluginTask
     {
         $this->plugin = $plugin;
         $this->player = $player;
-        parent::__construct($plugin);
     }
 
     /**
@@ -57,6 +56,6 @@ class ImplantsTask extends PluginTask
     public function cancel()
     {
         unset($this->plugin->implants[$this->player->getLowerCaseName()]);
-        $this->plugin->getServer()->getScheduler()->cancelTask($this->getHandler()->getTaskId());
+        $this->plugin->getScheduler()->cancelTask($this->getHandler()->getTaskId());
     }
 }

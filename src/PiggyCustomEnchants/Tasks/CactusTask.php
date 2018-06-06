@@ -6,13 +6,13 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class CactusTask
  * @package PiggyCustomEnchants\Tasks
  */
-class CactusTask extends PluginTask
+class CactusTask extends Task
 {
     private $plugin;
 
@@ -22,7 +22,6 @@ class CactusTask extends PluginTask
      */
     public function __construct(Main $plugin)
     {
-        parent::__construct($plugin);
         $this->plugin = $plugin;
     }
 

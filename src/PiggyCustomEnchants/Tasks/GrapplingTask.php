@@ -5,13 +5,13 @@ namespace PiggyCustomEnchants\Tasks;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Entity;
 use pocketmine\level\Position;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class GrapplingTask
  * @package PiggyCustomEnchants
  */
-class GrapplingTask extends PluginTask
+class GrapplingTask extends Task
 {
     private $plugin;
     private $location;
@@ -25,7 +25,6 @@ class GrapplingTask extends PluginTask
      */
     public function __construct(Main $plugin, Position $location, Entity $entity)
     {
-        parent::__construct($plugin);
         $this->plugin = $plugin;
         $this->location = $location;
         $this->entity = $entity;

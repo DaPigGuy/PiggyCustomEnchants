@@ -6,13 +6,13 @@ use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
-use pocketmine\scheduler\PluginTask;
+use pocketmine\scheduler\Task;
 
 /**
  * Class EffectTask
  * @package PiggyCustomEnchants\Tasks
  */
-class EffectTask extends PluginTask
+class EffectTask extends Task
 {
     private $plugin;
 
@@ -23,7 +23,6 @@ class EffectTask extends PluginTask
     public function __construct(Main $plugin)
     {
         $this->plugin = $plugin;
-        parent::__construct($plugin);
     }
 
     /**
