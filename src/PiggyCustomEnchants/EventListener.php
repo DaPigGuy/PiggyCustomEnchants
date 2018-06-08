@@ -495,13 +495,13 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::CHARGE);
             if ($enchantment !== null) {
                 if ($damager->isSprinting()) {
-                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::CHARGE);
+                    $event->setModifier((($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel())) - $event->getFinalDamage()), CustomEnchantsIds::CHARGE);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::AERIAL);
             if ($enchantment !== null) {
                 if (!$damager->isOnGround()) {
-                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::AERIAL);
+                    $event->setModifier((($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel())) - $event->getFinalDamage()), CustomEnchantsIds::AERIAL);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::DISARMING);
@@ -556,7 +556,7 @@ class EventListener implements Listener
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::BACKSTAB);
             if ($enchantment !== null) {
                 if ($damager->getDirectionVector()->dot($entity->getDirectionVector()) > 0) {
-                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::BACKSTAB);
+                    $event->setModifier((($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel())) - $event->getFinalDamage()), CustomEnchantsIds::BACKSTAB);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::LIGHTNING);
@@ -874,7 +874,7 @@ class EventListener implements Listener
             if ($enchantment !== null) {
                 $projectile = $event->getChild();
                 if ($projectile->y > $entity->getPosition()->y + $entity->getEyeHeight()) {
-                    $event->setModifier($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel()), CustomEnchantsIds::HEADHUNTER);
+                    $event->setModifier((($event->getFinalDamage() * (1 + 0.10 * $enchantment->getLevel())) - $event->getFinalDamage()), CustomEnchantsIds::HEADHUNTER);
                 }
             }
             $enchantment = $damager->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::GRAPPLING);
@@ -1157,19 +1157,19 @@ class EventListener implements Listener
                             $enchantment = $armor->getEnchantment(CustomEnchantsIds::ARMORED);
                             if ($enchantment !== null) {
                                 if ($damager->getInventory()->getItemInHand() instanceof Sword) {
-                                    $event->setModifier($event->getFinalDamage() - ($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::ARMORED);
+                                    $event->setModifier(-($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::ARMORED);
                                 }
                             }
                             $enchantment = $armor->getEnchantment(CustomEnchantsIds::TANK);
                             if ($enchantment !== null) {
                                 if ($damager->getInventory()->getItemInHand() instanceof Axe) {
-                                    $event->setModifier($event->getFinalDamage() - ($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::TANK);
+                                    $event->setModifier(-($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::TANK);
                                 }
                             }
                             $enchantment = $armor->getEnchantment(CustomEnchantsIds::HEAVY);
                             if ($enchantment !== null) {
                                 if ($damager->getInventory()->getItemInHand()->getId() == Item::BOW) {
-                                    $event->setModifier($event->getFinalDamage() - ($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::HEAVY);
+                                    $event->setModifier(-($event->getFinalDamage() * 0.2 * $enchantment->getLevel()), CustomEnchantsIds::HEAVY);
                                 }
                             }
                         }
