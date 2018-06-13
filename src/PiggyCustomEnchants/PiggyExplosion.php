@@ -37,7 +37,11 @@ class PiggyExplosion extends Explosion
     {
         $result = parent::explodeB();
         foreach ($this->affectedBlocks as $index => $block) {
-            $ev = new BlockBreakEvent($this->player, $block, $this->player->getInventory()->getItemInHand());
+            if($block->equals($this->source)){
+                continue;
+            }
+            $item = $this->player->getInventory()->getItemInHand();
+            $ev = new BlockBreakEvent($this->player, $block, $item, true, $this->player->isCreative() ? [] : $block->getDrops($item), $this->player->isCreative() ? 0 : $block->getXpDropForTool($item));
             $this->plugin->getServer()->getPluginManager()->callEvent($ev);
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$index]);
