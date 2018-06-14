@@ -17,8 +17,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# PhpStorm
-
+# JetBrains IDE
 \.idea/
 
 # =========================
