@@ -37,7 +37,7 @@ class PiggyExplosion extends Explosion
     {
         $result = parent::explodeB();
         foreach ($this->affectedBlocks as $index => $block) {
-            if($block->equals($this->source)){
+            if ($block->equals($this->source)) {
                 continue;
             }
             $item = $this->player->getInventory()->getItemInHand();

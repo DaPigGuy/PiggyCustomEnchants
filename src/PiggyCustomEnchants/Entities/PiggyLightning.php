@@ -60,6 +60,7 @@ class PiggyLightning extends Entity
         }
         return $hasUpdate;
     }
+
     /**
      * @param Player $player
      */
