@@ -753,8 +753,10 @@ class EventListener implements Listener
                 }
                 if ($seed !== null) {
                     $seed = Item::get($seed, 0, 1);
-                    $pos = $block->subtract(0, 1);
-                    $this->plugin->getScheduler()->scheduleDelayedTask(new PlaceTask($this->plugin, $pos, $block->getLevel(), $seed, $player), 1);
+                    if ($player->getInventory()->contains($seed)) {
+                        $pos = $block->subtract(0, 1);
+                        $this->plugin->getScheduler()->scheduleDelayedTask(new PlaceTask($this->plugin, $pos, $block->getLevel(), $seed, $player), 1);
+                    }
                 }
             }
             $enchantment = $player->getInventory()->getItemInHand()->getEnchantment(CustomEnchantsIds::HARVEST);
