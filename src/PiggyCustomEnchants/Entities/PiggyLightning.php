@@ -38,7 +38,7 @@ class PiggyLightning extends Entity
             return false;
         }
         $hasUpdate = parent::entityBaseTick($tickDiff);
-        foreach ($this->getLevel()->getNearbyEntities($this->getBoundingBox()->grow(4, 3, 4), $this) as $entity) {
+        foreach ($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expand(4, 3, 4), $this) as $entity) {
             if ($entity instanceof Living && $entity->isAlive() && $this->getOwningEntityId() !== $entity->getId()) {
                 $ev = new EntityCombustByEntityEvent($this, $entity, mt_rand(3, 8));
                 $this->server->getPluginManager()->callEvent($ev);
