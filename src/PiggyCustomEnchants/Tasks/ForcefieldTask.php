@@ -43,14 +43,14 @@ class ForcefieldTask extends Task
             }
             if ($forcefields > 0) {
                 $radius = $forcefields * 0.75;
-                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->expand($radius, $radius, $radius), $player);
+                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);
                 foreach ($entities as $entity) {
                     if ($entity instanceof Projectile) {
                         if ($entity->getOwningEntity() !== $player) {
                             $entity->setMotion($entity->getMotion()->multiply(-1));
                         }
                     } else {
-                        if (!$entity instanceof ItemEntity && is_null($entity->namedtag->getString("SlapperVersion"))) {
+                        if (!$entity instanceof ItemEntity && !isset($entity->namedtag->getValue()["SlapperVersion"])) {
                             $entity->setMotion(new Vector3($player->subtract($entity)->normalize()->multiply(-0.75)->x, 0, $player->subtract($entity)->normalize()->multiply(-0.75)->z));
                         }
                     }
