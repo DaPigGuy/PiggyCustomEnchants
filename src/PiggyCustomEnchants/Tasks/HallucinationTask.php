@@ -21,9 +21,13 @@ use pocketmine\utils\TextFormat;
  */
 class HallucinationTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var Player */
     private $player;
+    /** @var Position */
     private $position;
+    /** @var int */
     private $time = 0;
 
     /**

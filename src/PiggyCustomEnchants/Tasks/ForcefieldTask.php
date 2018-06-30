@@ -16,6 +16,7 @@ use pocketmine\scheduler\Task;
  */
 class ForcefieldTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**
@@ -42,7 +43,7 @@ class ForcefieldTask extends Task
             }
             if ($forcefields > 0) {
                 $radius = $forcefields * 0.75;
-                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->grow($radius, $radius, $radius), $player);
+                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->expand($radius, $radius, $radius), $player);
                 foreach ($entities as $entity) {
                     if ($entity instanceof Projectile) {
                         if ($entity->getOwningEntity() !== $player) {

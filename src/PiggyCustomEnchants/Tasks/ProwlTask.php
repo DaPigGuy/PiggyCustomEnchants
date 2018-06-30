@@ -15,6 +15,7 @@ use pocketmine\scheduler\Task;
  */
 class ProwlTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

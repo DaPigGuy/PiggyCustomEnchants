@@ -5,6 +5,7 @@ namespace PiggyCustomEnchants\Entities;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\level\Level;
+use pocketmine\level\Location;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 
@@ -14,8 +15,11 @@ use pocketmine\Player;
  */
 class VolleyArrow extends Arrow
 {
+    /** @var bool */
     private $volley;
+    /** @var bool */
     public $placeholder;
+    /** @var Location */
     private $ownerOriginalLocation;
 
     /**

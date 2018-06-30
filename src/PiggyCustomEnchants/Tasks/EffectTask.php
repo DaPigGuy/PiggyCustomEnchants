@@ -14,6 +14,7 @@ use pocketmine\scheduler\Task;
  */
 class EffectTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

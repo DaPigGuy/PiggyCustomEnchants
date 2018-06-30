@@ -13,8 +13,11 @@ use pocketmine\scheduler\Task;
  */
 class GoeyTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var Entity */
     private $entity;
+    /** @var int */
     private $level;
 
     /**

@@ -16,6 +16,7 @@ use pocketmine\scheduler\Task;
  */
 class PoisonousGasTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

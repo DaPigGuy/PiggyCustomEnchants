@@ -12,8 +12,11 @@ use pocketmine\scheduler\Task;
  */
 class MoltenTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var Entity */
     private $entity;
+    /** @var int */
     private $level;
 
     /**

@@ -6,6 +6,7 @@ namespace PiggyCustomEnchants\Entities;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\level\Level;
+use pocketmine\level\Position;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\Player;
@@ -16,7 +17,9 @@ use pocketmine\Player;
  */
 class PiggyProjectile extends Projectile
 {
+    /** @var bool */
     public $placeholder;
+    /** @var Position */
     private $ownerOriginalLocation;
 
     /**

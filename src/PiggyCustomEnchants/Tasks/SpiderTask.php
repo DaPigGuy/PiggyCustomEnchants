@@ -14,6 +14,7 @@ use pocketmine\scheduler\Task;
  */
 class SpiderTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

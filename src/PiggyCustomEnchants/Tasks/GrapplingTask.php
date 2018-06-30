@@ -13,8 +13,11 @@ use pocketmine\scheduler\Task;
  */
 class GrapplingTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var Position */
     private $location;
+    /** @var Entity */
     private $entity;
 
     /**

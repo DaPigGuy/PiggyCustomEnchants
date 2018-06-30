@@ -14,6 +14,7 @@ use pocketmine\utils\TextFormat;
  */
 class MeditationTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

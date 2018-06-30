@@ -18,8 +18,11 @@ use pocketmine\Player;
  */
 class PiggyLightning extends Entity
 {
+    /** @var float */
     public $width = 0.3;
+    /** @var float */
     public $length = 0.9;
+    /** @var float */
     public $height = 1.8;
 
     /**

@@ -15,15 +15,22 @@ use pocketmine\Player;
  */
 class PigProjectile extends PiggyProjectile
 {
+    /** @var int */
     private $porklevel = 1;
+    /** @var bool */
     private $zombie = false;
 
+    /** @var float */
     public $width = 0.9;
+    /** @var float */
     public $height = 0.9;
 
+    /** @var float */
     protected $drag = 0.01;
+    /** @var float */
     protected $gravity = 0.05;
 
+    /** @var float */
     protected $damage = 1.5;
 
     /**

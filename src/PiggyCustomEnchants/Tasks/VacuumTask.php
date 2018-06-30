@@ -13,6 +13,7 @@ use pocketmine\scheduler\Task;
  */
 class VacuumTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

@@ -13,6 +13,7 @@ use pocketmine\scheduler\Task;
  */
 class ParachuteTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

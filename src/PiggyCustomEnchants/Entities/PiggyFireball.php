@@ -13,13 +13,19 @@ use pocketmine\event\entity\EntityCombustByEntityEvent;
  */
 class PiggyFireball extends PiggyProjectile
 {
+    /** @var float */
     public $width = 0.5;
+    /** @var float */
     public $length = 0.5;
+    /** @var float */
     public $height = 0.5;
 
+    /** @var float */
     protected $drag = 0.01;
+    /** @var float */
     protected $gravity = 0.05;
 
+    /** @var int */
     protected $damage = 5;
 
     /**

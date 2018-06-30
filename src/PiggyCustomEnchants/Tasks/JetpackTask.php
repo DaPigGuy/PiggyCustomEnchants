@@ -15,6 +15,7 @@ use pocketmine\utils\TextFormat;
  */
 class JetpackTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

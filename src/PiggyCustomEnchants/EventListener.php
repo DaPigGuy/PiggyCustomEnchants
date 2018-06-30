@@ -86,6 +86,7 @@ class EventListener implements Listener
         Item::WOOD2 => [Item::COAL, 1],
     ];
 
+    /** @var Main */
     private $plugin;
 
     /**

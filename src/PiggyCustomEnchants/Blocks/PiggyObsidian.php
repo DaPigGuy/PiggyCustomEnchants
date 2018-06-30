@@ -13,6 +13,7 @@ use pocketmine\Player;
  */
 class PiggyObsidian extends Obsidian
 {
+    /** @var int */
     private $age = 0;
 
     /**

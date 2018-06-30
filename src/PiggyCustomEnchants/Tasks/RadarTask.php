@@ -15,7 +15,9 @@ use pocketmine\utils\TextFormat;
  */
 class RadarTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var array */
     private $radars;
 
     /**

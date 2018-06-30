@@ -14,7 +14,9 @@ use pocketmine\scheduler\Task;
  */
 class ImplantsTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var Player */
     private $player;
 
     /**

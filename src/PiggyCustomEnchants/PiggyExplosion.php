@@ -13,7 +13,9 @@ use pocketmine\Player;
  */
 class PiggyExplosion extends Explosion
 {
+    /** @var Player */
     protected $player;
+    /** @var Main */
     private $plugin;
 
     /**

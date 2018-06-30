@@ -13,6 +13,7 @@ use pocketmine\utils\TextFormat;
  */
 class SizeTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

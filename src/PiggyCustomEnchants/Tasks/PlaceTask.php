@@ -15,10 +15,15 @@ use pocketmine\scheduler\Task;
  */
 class PlaceTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var Vector3 */
     private $position;
+    /** @var Level */
     private $level;
+    /** @var Item */
     private $seed;
+    /** @var Player */
     private $player;
 
     /**

@@ -14,6 +14,7 @@ use pocketmine\utils\TextFormat;
  */
 class ChickenTask extends Task
 {
+    /** @var Main */
     private $plugin;
 
     /**

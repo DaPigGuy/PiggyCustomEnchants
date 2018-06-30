@@ -102,47 +102,82 @@ class Main extends PluginBase
         PiggyWitherSkull::class
     ];
 
+    /** @var array */
     public $berserkercd;
+    /** @var array */
     public $bountyhuntercd;
+    /** @var array */
     public $cloakingcd;
+    /** @var array */
     public $endershiftcd;
+    /** @var array */
     public $growcd;
+    /** @var array */
     public $implantscd;
+    /** @var array */
     public $jetpackcd;
+    /** @var array */
     public $shrinkcd;
+    /** @var array */
     public $vampirecd;
 
+    /** @var array */
     public $growremaining;
+    /** @var array */
     public $jetpackDisabled;
+    /** @var array*/
     public $shrinkremaining;
+    /** @var array */
     public $flyremaining;
 
+    /** @var array */
     public $chickenTick;
+    /** @var array */
     public $forcefieldParticleTick;
+    /** @var array */
     public $gasParticleTick;
+    /** @var array */
     public $jetpackChargeTick;
+    /** @var array */
     public $meditationTick;
 
+    /** @var array */
     public $blockface;
 
+    /** @var array */
     public $glowing;
+    /** @var array */
     public $grew;
+    /** @var array */
     public $flying;
+    /** @var array */
     public $hallucination;
+    /** @var array */
     public $implants;
+    /** @var array */
     public $mined;
+    /** @var array */
     public $moved;
+    /** @var array */
     public $nofall;
+    /** @var array */
     public $overload;
+    /** @var array */
     public $prowl;
+    /** @var array */
     public $using;
+    /** @var array */
     public $shrunk;
 
+    /** @var bool */
     public $formsEnabled = false;
 
+    /** @var bool */
     public static $lightningFlames = false;
+    /** @var bool */
     public static $blazeFlames = false;
 
+    /** @var array */
     public $enchants = [
         //id => ["name", "slot", "trigger", "rarity", maxlevel", "description"]
         CustomEnchantsIds::ANTIKNOCKBACK => ["Anti Knockback", "Armor", "Damage", "Rare", 1, "Reduces knockback by 25% per armor piece"],
@@ -236,6 +271,7 @@ class Main extends PluginBase
         CustomEnchantsIds::PLACEHOLDER => ["Placeholder", "Bow", "Shoot", "Rare", 1, ""]
     ];
 
+    /** @var array */
     public $incompatibilities = [
         CustomEnchantsIds::GROW => [CustomEnchantsIds::SHRINK],
         CustomEnchantsIds::PORKIFIED => [CustomEnchantsIds::BLAZE, CustomEnchantsIds::WITHERSKULL],

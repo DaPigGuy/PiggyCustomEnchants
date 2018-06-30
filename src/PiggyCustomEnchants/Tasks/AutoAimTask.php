@@ -4,6 +4,7 @@ namespace PiggyCustomEnchants\Tasks;
 
 use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
 use PiggyCustomEnchants\Main;
+use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\scheduler\Task;
 
@@ -13,7 +14,9 @@ use pocketmine\scheduler\Task;
  */
 class AutoAimTask extends Task
 {
+    /** @var Main */
     private $plugin;
+    /** @var Vector3[] */
     private $lastPosition;
 
     /**
