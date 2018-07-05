@@ -990,7 +990,7 @@ class EventListener implements Listener
                 for ($i = 0; $i <= $enchantment->getLevel(); $i++) {
                     $tnt = Entity::createEntity("PrimedTNT", $entity->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $entity->x), new DoubleTag("", $entity->y), new DoubleTag("", $entity->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
                     $tnt->spawnToAll();
-                    $entity->close();
+                    $entity->flagForDespawn();
                 }
             }
         }
