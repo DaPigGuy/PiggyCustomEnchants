@@ -610,6 +610,18 @@ class EventListener implements Listener
                     $damager->getInventory()->setItem($slot, $item);
                 }
             }
+            foreach ($damager->getArmorInventory()->getContents() as $slot => $item) {
+                $enchantment = $item->getEnchantment(CustomEnchantsIds::AUTOREPAIR);
+                if ($enchantment !== null) {
+                    $newDir = $item->getDamage() - (1 + (1 * $enchantment->getLevel()));
+                    if ($newDir < 0) {
+                        $item->setDamage(0);
+                    } else {
+                        $item->setDamage($newDir);
+                    }
+                    $damager->getArmorInventory()->setItem($slot, $item);
+                }
+            }
         }
     }
 
