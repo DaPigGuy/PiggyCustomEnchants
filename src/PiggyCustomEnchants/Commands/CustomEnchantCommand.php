@@ -145,10 +145,11 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
-                        switch ($data[0]) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+                    if (!is_null($data)) {
+                        switch ($data) {
                             case 0:
                                 if (!$player->hasPermission("piggycustomenchants.command.ce.about")) {
                                     $this->errorForm($player, TextFormat::RED . "You do not have permission to do this.");
@@ -225,9 +226,10 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+                    if (!is_null($data)) {
                         $this->formMenu($player);
                         return true;
                     }
@@ -251,9 +253,10 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+                    if (!is_null($data)) {
                         $this->formMenu($player);
                         return true;
                     }
@@ -275,11 +278,14 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createCustomForm(function (Player $player, $data) {
-                    if (isset($data[0]) && isset($data[1]) && isset($data[2])) {
-                        $this->checkEnchantForm($player, $data);
-                        return true;
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createCustomForm(function (Player $player, ?array $data) {
+                    if (!is_null($data)) {
+                        if (isset($data[0]) && isset($data[1]) && isset($data[2])) {
+                            $this->checkEnchantForm($player, $data);
+                            return true;
+                        }
                     }
                     return false;
                 });
@@ -304,7 +310,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
                 $enchant = null;
                 if (is_numeric($data[0])) {
                     $enchant = CustomEnchants::getEnchantment((int)$data[0]);
@@ -355,9 +362,10 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+                    if (!is_null($data)) {
                         $this->formMenu($player);
                         return true;
                     }
@@ -379,10 +387,13 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createCustomForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
-                        $this->sendInfo($player, $data[0]);
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createCustomForm(function (Player $player, ?array $data) {
+                    if (!is_null($data)) {
+                        if (isset($data[0])) {
+                            $this->sendInfo($player, $data[0]);
+                        }
                     }
                 });
                 $form->setTitle(TextFormat::GREEN . "Info");
@@ -404,9 +415,10 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+                    if (!is_null($data)) {
                         $this->formMenu($player);
                         return true;
                     }
@@ -436,12 +448,13 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+                    if (!is_null($data)) {
                         $sorted = $this->getPlugin()->sortEnchants();
                         foreach ($sorted as $type => $enchants) {
-                            if (array_search($type, array_keys($sorted)) == $data[0]) {
+                            if (array_search($type, array_keys($sorted)) == $data) {
                                 $this->sendList($player, $type);
                                 return true;
                             }
@@ -472,9 +485,10 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            if ($plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
+            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
                 $form = $formsapi->createSimpleForm(function (Player $player, $data) {
-                    if (isset($data[0])) {
+                    if (!is_null($data)) {
                         $this->formMenu($player);
                         return true;
                     }
