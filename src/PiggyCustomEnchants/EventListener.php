@@ -582,11 +582,17 @@ class EventListener implements Listener
                     if ($index !== false) {
                         unset($drops[$index]);
                     }
-                    if ($k >= $damager->getInventory()->getSize()) {
-                        $soulboundedarmor[abs($damager->getInventory()->getSize() - $k)] = $enchantment->getLevel() > 1 ? $this->plugin->addEnchantment($item, $enchantment->getId(), $enchantment->getLevel() - 1) : $this->plugin->removeEnchantment($item, $enchantment);
-                    } else {
-                        $soulbounded[$k] = $enchantment->getLevel() > 1 ? $this->plugin->addEnchantment($item, $enchantment->getId(), $enchantment->getLevel() - 1) : $this->plugin->removeEnchantment($item, $enchantment);
+                    $soulbounded[$k] = $enchantment->getLevel() > 1 ? $this->plugin->addEnchantment($item, $enchantment->getId(), $enchantment->getLevel() - 1) : $this->plugin->removeEnchantment($item, $enchantment);
+                }
+            }
+            foreach ($damager->getArmorInventory()->getContents() as $k => $item) {
+                $enchantment = $item->getEnchantment(CustomEnchantsIds::SOULBOUND);
+                if ($enchantment !== null) {
+                    $index = array_search($item, $drops);
+                    if ($index !== false) {
+                        unset($drops[$index]);
                     }
+                    $soulboundedarmor[$k] = $enchantment->getLevel() > 1 ? $this->plugin->addEnchantment($item, $enchantment->getId(), $enchantment->getLevel() - 1) : $this->plugin->removeEnchantment($item, $enchantment);
                 }
             }
             $event->setDrops([]);
