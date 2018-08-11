@@ -1120,44 +1120,46 @@ class EventListener implements Listener
                             $effect = new EffectInstance(Effect::getEffect(Effect::REGENERATION), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                             $entity->addEffect($effect);
                         }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::HARDENED);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::WEAKNESS) !== true) {
-                            $effect = new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::POISONED);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::POISON) !== true) {
-                            $effect = new EffectInstance(Effect::getEffect(Effect::POISON), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::FROZEN);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::SLOWNESS) !== true) {
-                            $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVULSION);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::NAUSEA) !== true) {
-                            $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 20 * $enchantment->getLevel(), 0, false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::CURSED);
-                        if ($enchantment !== null && $damager->hasEffect(Effect::WITHER) !== true) {
-                            $effect = new EffectInstance(Effect::getEffect(Effect::WITHER), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
-                            $damager->addEffect($effect);
-                        }
-                        $enchantment = $armor->getEnchantment(CustomEnchantsIds::DRUNK);
-                        if ($enchantment !== null) {
-                            if (!$damager->hasEffect(Effect::SLOWNESS)) {
+                        if ($damager instanceof Living) {
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::HARDENED);
+                            if ($enchantment !== null && $damager->hasEffect(Effect::WEAKNESS) !== true) {
+                                $effect = new EffectInstance(Effect::getEffect(Effect::WEAKNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
+                                $damager->addEffect($effect);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::POISONED);
+                            if ($enchantment !== null && $damager->hasEffect(Effect::POISON) !== true) {
+                                $effect = new EffectInstance(Effect::getEffect(Effect::POISON), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
+                                $damager->addEffect($effect);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::FROZEN);
+                            if ($enchantment !== null && $damager->hasEffect(Effect::SLOWNESS) !== true) {
                                 $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                                 $damager->addEffect($effect);
                             }
-                            if (!$damager->hasEffect(Effect::MINING_FATIGUE)) {
-                                $effect = new EffectInstance(Effect::getEffect(Effect::MINING_FATIGUE), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::REVULSION);
+                            if ($enchantment !== null && $damager->hasEffect(Effect::NAUSEA) !== true) {
+                                $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 20 * $enchantment->getLevel(), 0, false);
                                 $damager->addEffect($effect);
                             }
-                            if (!$damager->hasEffect(Effect::NAUSEA)) {
-                                $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 60 * $enchantment->getLevel(), 0, false);
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::CURSED);
+                            if ($enchantment !== null && $damager->hasEffect(Effect::WITHER) !== true) {
+                                $effect = new EffectInstance(Effect::getEffect(Effect::WITHER), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
                                 $damager->addEffect($effect);
+                            }
+                            $enchantment = $armor->getEnchantment(CustomEnchantsIds::DRUNK);
+                            if ($enchantment !== null) {
+                                if (!$damager->hasEffect(Effect::SLOWNESS)) {
+                                    $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
+                                    $damager->addEffect($effect);
+                                }
+                                if (!$damager->hasEffect(Effect::MINING_FATIGUE)) {
+                                    $effect = new EffectInstance(Effect::getEffect(Effect::MINING_FATIGUE), 60 * $enchantment->getLevel(), $enchantment->getLevel(), false);
+                                    $damager->addEffect($effect);
+                                }
+                                if (!$damager->hasEffect(Effect::NAUSEA)) {
+                                    $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 60 * $enchantment->getLevel(), 0, false);
+                                    $damager->addEffect($effect);
+                                }
                             }
                         }
                         $enchantment = $armor->getEnchantment(CustomEnchantsIds::CLOAKING);
