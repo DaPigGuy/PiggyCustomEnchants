@@ -261,7 +261,7 @@ class Main extends PluginBase
         CustomEnchantsIds::SPIDER => ["Spider", "Chestplate", "Equip", "Rare", 1, "Climb walls"],
         CustomEnchantsIds::SPRINGS => ["Springs", "Boots", "Equip", "Uncommon", 5, "Gives a jump boost"],
         CustomEnchantsIds::STOMP => ["Stomp", "Boots", "Fall_Damage", "Uncommon", 5, "Deal part of fall damage to enemy when taking fall damage"],
-        CustomEnchantsIds::TANK => ["Tank", "Armor", "Damage", "Uncommon", 5, "Tank: Decreases damage from bows by 20l%"],
+        CustomEnchantsIds::TANK => ["Tank", "Armor", "Damage", "Uncommon", 5, "Decreases damage from bows by 20l%"],
         CustomEnchantsIds::TELEPATHY => ["Telepathy", "Tools", "Break", "Rare", 1, "Automatically puts drops in inventory."],
         CustomEnchantsIds::VACUUM => ["Vacuum", "Chestplate", "Equip", "Rare", 3, "Suck up items in a 3l radius"],
         CustomEnchantsIds::VAMPIRE => ["Vampire", "Weapons", "Damage", "Uncommon", 1, "Heals by part of damage dealt"],
