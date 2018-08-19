@@ -32,7 +32,6 @@ class ImplantsTask extends Task
 
     /**
      * @param int $currentTick
-     * @return bool
      */
     public function onRun(int $currentTick)
     {
@@ -40,19 +39,16 @@ class ImplantsTask extends Task
         if ($player->isOnline() && $player->isAlive() && ($enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantsIds::IMPLANTS)) !== null) {
             if (!$this->plugin->checkBlocks($player, [Block::WATER, Block::STILL_WATER, Block::FLOWING_WATER], -1)) {
                 $this->cancel();
-                return false;
+                return;
             }
             if ($player->getAirSupplyTicks() < $player->getMaxAirSupplyTicks()) {
                 $player->setAirSupplyTicks($player->getAirSupplyTicks() + ($enchantment->getLevel() * 40) > $player->getMaxAirSupplyTicks() ? $player->getMaxAirSupplyTicks() : $player->getAirSupplyTicks() + ($enchantment->getLevel() * 40));
             } else {
                 $this->cancel();
-                return false;
             }
         } else {
             $this->cancel();
-            return false;
         }
-        return true;
     }
 
     public function cancel()

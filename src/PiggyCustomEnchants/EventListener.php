@@ -300,7 +300,6 @@ class EventListener implements Listener
      *
      * @priority HIGHEST
      * @ignoreCancelled true
-     * @return bool
      */
     public function onMove(PlayerMoveEvent $event)
     {
@@ -315,12 +314,11 @@ class EventListener implements Listener
         }
         if ($from->getFloorX() == $player->getFloorX() && $from->getFloorY() == $player->getFloorY() && $from->getFloorZ() == $player->getFloorZ()) {
             $this->plugin->moved[$player->getLowerCaseName()] = 10;
-            return false;
+            return;
         }
         $this->plugin->moved[$player->getLowerCaseName()] = 0;
         $this->checkGlobalEnchants($player, null, $event);
         $this->checkArmorEnchants($player, $event);
-        return true;
     }
 
     /**
@@ -1033,7 +1031,7 @@ class EventListener implements Listener
                             if ($entity === $e) {
                                 continue;
                             }
-                            $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $damage / 2);
+                            $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage() / 2);
                             $this->plugin->getServer()->getPluginManager()->callEvent($ev);
                             $e->attack($ev);
                         }
