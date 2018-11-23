@@ -4,6 +4,8 @@ namespace DaPigGuy\PiggyCustomEnchants\Commands;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchants\CustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\Main;
+use jojoe77777\FormAPI\CustomForm;
+use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 use pocketmine\command\PluginCommand;
@@ -12,7 +14,7 @@ use pocketmine\utils\TextFormat;
 
 /**
  * Class CustomEnchantCommand
- * @package PiggyCustomEnchants\Commands
+ * @package DaPigGuy\PiggyCustomEnchants\Commands
  */
 class CustomEnchantCommand extends PluginCommand
 {
@@ -39,7 +41,7 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $forms = $sender instanceof Player && $plugin->formsEnabled && ($formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI")) instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled();
+            $forms = $sender instanceof Player && $plugin->formsEnabled;
             if (count($args) < 1) {
                 if ($forms) {
                     $this->formMenu($sender);
@@ -142,9 +144,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+            if ($plugin->formsEnabled) {
+                $form = new SimpleForm(function (Player $player, ?int $data) {
                     if (!is_null($data)) {
                         switch ($data) {
                             case 0:
@@ -191,7 +192,7 @@ class CustomEnchantCommand extends PluginCommand
                 $form->addButton("Help");
                 $form->addButton("Info");
                 $form->addButton("List");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }
@@ -205,9 +206,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+            if ($plugin->formsEnabled) {
+                $form = new SimpleForm(function (Player $player, ?int $data) {
                     if (!is_null($data)) {
                         $this->formMenu($player);
                         return;
@@ -216,7 +216,7 @@ class CustomEnchantCommand extends PluginCommand
                 $form->setTitle(TextFormat::RED . "Error");
                 $form->setContent($error);
                 $form->addButton(TextFormat::BOLD . "Back");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
                 return true;
             }
         }
@@ -230,9 +230,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+            if ($plugin->formsEnabled) {
+                $form = new SimpleForm(function (Player $player, ?int $data) {
                     if (!is_null($data)) {
                         $this->formMenu($player);
                     }
@@ -240,7 +239,7 @@ class CustomEnchantCommand extends PluginCommand
                 $form->setTitle(TextFormat::GREEN . "About");
                 $form->setContent(TextFormat::GREEN . "PiggyCustomEnchants v" . $this->getPlugin()->getDescription()->getVersion() . " is a custom enchants plugin made by DaPigGuy (IGN: MCPEPIG) & Aericio. You can find it at https://github.com/DaPigGuy/PiggyCustomEnchants.");
                 $form->addButton(TextFormat::BOLD . "Back");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }
@@ -252,9 +251,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createCustomForm(function (Player $player, ?array $data) {
+            if ($plugin->formsEnabled) {
+                $form = new CustomForm(function (Player $player, ?array $data) {
                     if (!is_null($data)) {
                         if (isset($data[0]) && isset($data[1]) && isset($data[2])) {
                             $this->checkEnchantForm($player, $data);
@@ -265,7 +263,7 @@ class CustomEnchantCommand extends PluginCommand
                 $form->addInput(TextFormat::GREEN . "Enchantment");
                 $form->addInput(TextFormat::GREEN . "Level", "", 1);
                 $form->addInput(TextFormat::GREEN . "Player", "", $player->getName());
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }
@@ -278,8 +276,7 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
+            if ($plugin->formsEnabled) {
                 $enchant = null;
                 if (is_numeric($data[0])) {
                     $enchant = CustomEnchants::getEnchantment((int)$data[0]);
@@ -354,9 +351,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+            if ($plugin->formsEnabled) {
+                $form = new SimpleForm(function (Player $player, ?int $data) {
                     if (!is_null($data)) {
                         $this->formMenu($player);
                     }
@@ -364,7 +360,7 @@ class CustomEnchantCommand extends PluginCommand
                 $form->setTitle(TextFormat::GREEN . "Help");
                 $form->setContent(TextFormat::GREEN . "Tell me you're joking... Why do you even need a help menu when you have the UI? Wait... why is this even here?");
                 $form->addButton(TextFormat::BOLD . "Back");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }
@@ -376,9 +372,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createCustomForm(function (Player $player, ?array $data) {
+            if ($plugin->formsEnabled) {
+                $form = new CustomForm(function (Player $player, ?array $data) {
                     if (!is_null($data)) {
                         if (isset($data[0])) {
                             $this->sendInfo($player, $data[0]);
@@ -387,7 +382,7 @@ class CustomEnchantCommand extends PluginCommand
                 });
                 $form->setTitle(TextFormat::GREEN . "Info");
                 $form->addInput(TextFormat::GREEN . "Enchantment");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }
@@ -400,9 +395,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+            if ($plugin->formsEnabled) {
+                $form = new SimpleForm(function (Player $player, ?int $data) {
                     if (!is_null($data)) {
                         $this->formMenu($player);
                     }
@@ -415,7 +409,7 @@ class CustomEnchantCommand extends PluginCommand
                     $form->setContent(TextFormat::RED . "Invalid enchantment.");
                 }
                 $form->addButton(TextFormat::BOLD . "Back");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }
@@ -427,9 +421,8 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, ?int $data) {
+            if ($plugin->formsEnabled) {
+                $form = new SimpleForm(function (Player $player, ?int $data) {
                     if (!is_null($data)) {
                         $sorted = $this->getPlugin()->sortEnchants();
                         foreach ($sorted as $type => $enchants) {
@@ -447,7 +440,7 @@ class CustomEnchantCommand extends PluginCommand
                     $form->addButton($type);
                 }
                 $form->addButton(TextFormat::BOLD . "Back");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }
@@ -460,16 +453,15 @@ class CustomEnchantCommand extends PluginCommand
     {
         $plugin = $this->getPlugin();
         if ($plugin instanceof Main) {
-            $formsapi = $plugin->getServer()->getPluginManager()->getPlugin("FormAPI");
-            if ($plugin->formsEnabled && $formsapi instanceof \jojoe77777\FormAPI\FormAPI && $formsapi->isEnabled()) {
-                $form = $formsapi->createSimpleForm(function (Player $player, $data) {
+            if ($plugin->formsEnabled) {
+                $form = new SimpleForm(function (Player $player, $data) {
                     if (!is_null($data)) {
                         $this->formMenu($player);
                     }
                 });
                 $form->setContent(TextFormat::GREEN . TextFormat::BOLD . $type . "\n" . TextFormat::RESET . implode(", ", $this->getPlugin()->sortEnchants()[$type]));
                 $form->addButton(TextFormat::BOLD . "Back");
-                $form->sendToPlayer($player);
+                $player->sendForm($form);
             }
         }
     }

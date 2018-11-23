@@ -5,4 +5,7 @@ projects:
   PiggyCustomEnchants:
     path: ""
     icon: "resources/PCE_Icon.png"
+    libs:
+    - src: jojoe77777/FormAPI/libFormAPI
+      version: ^1.3
 ...

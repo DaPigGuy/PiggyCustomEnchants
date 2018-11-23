@@ -276,11 +276,7 @@ class Main extends PluginBase
             $this->initCustomEnchants();
             $this->saveDefaultConfig();
             if ($this->getConfig()->getNested("forms.enabled")) {
-                if ($this->getServer()->getPluginManager()->getPlugin("FormAPI") !== null) {
-                    $this->formsEnabled = true;
-                } else {
-                    $this->getLogger()->error("Forms are enabled but FormAPI is not found.");
-                }
+                $this->formsEnabled = true;
             }
             if ($this->getConfig()->getNested("blaze.flames")) {
                 self::$blazeFlames = true;
@@ -296,7 +292,6 @@ class Main extends PluginBase
             foreach (self::PIGGY_ENTITIES as $piggyEntity) {
                 Entity::registerEntity($piggyEntity, true);
             }
-
             if (!ItemFactory::isRegistered(Item::ENCHANTED_BOOK)) { //Check if it isn't already registered by another plugin
                 ItemFactory::registerItem(new Item(Item::ENCHANTED_BOOK, 0, "Enchanted Book")); //This is a temporary fix for name being Unknown when given due to no implementation in PMMP. Will remove when implemented in PMMP
             }
