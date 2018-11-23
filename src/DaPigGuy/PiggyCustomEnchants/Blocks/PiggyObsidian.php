@@ -77,7 +77,7 @@ class PiggyObsidian extends Obsidian
      */
     public function onBreak(Item $item, Player $player = null): bool
     {
-        return $this->getLevel()->setBlock($this, Block::get($this->isMagmaWalker() ? Block::LAVA : Block::AIR), true, true);
+        return $this->getLevel()->setBlock($this, Block::get($this->isMagmaWalker() ? Block::LAVA : Block::AIR), true);
     }
 
     /**
