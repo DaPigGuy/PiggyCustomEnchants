@@ -1,38 +1,35 @@
 <?php
 
-namespace PiggyCustomEnchants\Entities;
+namespace DaPigGuy\PiggyCustomEnchants\Entities;
 
-use PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 
 /**
  * Class PiggyFireball
- * @package PiggyCustomEnchants\Entities
+ * @package DaPigGuy\PiggyCustomEnchants\Entities
  */
 class PiggyFireball extends PiggyProjectile
 {
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 94;
     /** @var float */
     public $width = 0.5;
     /** @var float */
     public $length = 0.5;
     /** @var float */
     public $height = 0.5;
-
     /** @var float */
     protected $drag = 0.01;
     /** @var float */
     protected $gravity = 0.05;
-
     /** @var int */
     protected $damage = 5;
-
-    /**
-     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
-     * @var int
-     */
-    const TYPE_ID = 94;
 
     /**
      * @param Entity $entity

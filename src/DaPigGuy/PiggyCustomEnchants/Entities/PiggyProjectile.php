@@ -1,7 +1,6 @@
 <?php
 
-namespace PiggyCustomEnchants\Entities;
-
+namespace DaPigGuy\PiggyCustomEnchants\Entities;
 
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
@@ -13,27 +12,26 @@ use pocketmine\Player;
 
 /**
  * Class PiggyProjectile
- * @package PiggyCustomEnchants\Entities
+ * @package DaPigGuy\PiggyCustomEnchants\Entities
  */
 class PiggyProjectile extends Projectile
 {
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 0;
     /** @var bool */
     public $placeholder;
     /** @var Position */
     private $ownerOriginalLocation;
 
     /**
-     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
-     * @var int
-     */
-    const TYPE_ID = 0;
-
-    /**
      * PiggyProjectile constructor.
-     * @param Level $level
+     * @param Level       $level
      * @param CompoundTag $nbt
      * @param Entity|null $shootingEntity
-     * @param bool $placeholder
+     * @param bool        $placeholder
      */
     public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, $placeholder = false)
     {

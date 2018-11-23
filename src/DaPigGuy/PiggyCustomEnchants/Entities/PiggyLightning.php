@@ -1,8 +1,8 @@
 <?php
 
-namespace PiggyCustomEnchants\Entities;
+namespace DaPigGuy\PiggyCustomEnchants\Entities;
 
-use PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
@@ -14,22 +14,21 @@ use pocketmine\Player;
 
 /**
  * Class PiggyLightning
- * @package PiggyCustomEnchants\Entities
+ * @package DaPigGuy\PiggyCustomEnchants\Entities
  */
 class PiggyLightning extends Entity
 {
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 93;
     /** @var float */
     public $width = 0.3;
     /** @var float */
     public $length = 0.9;
     /** @var float */
     public $height = 1.8;
-
-    /**
-     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
-     * @var int
-     */
-    const TYPE_ID = 93;
 
     /**
      * @param int $tickDiff

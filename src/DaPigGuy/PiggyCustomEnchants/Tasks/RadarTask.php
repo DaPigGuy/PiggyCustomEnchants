@@ -1,9 +1,9 @@
 <?php
 
-namespace PiggyCustomEnchants\Tasks;
+namespace DaPigGuy\PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
-use PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\CustomEnchants\CustomEnchantsIds;
+use DaPigGuy\PiggyCustomEnchants\Main;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\Player;
 use pocketmine\scheduler\Task;

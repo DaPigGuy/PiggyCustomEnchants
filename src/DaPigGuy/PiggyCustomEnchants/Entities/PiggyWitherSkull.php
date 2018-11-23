@@ -1,6 +1,6 @@
 <?php
 
-namespace PiggyCustomEnchants\Entities;
+namespace DaPigGuy\PiggyCustomEnchants\Entities;
 
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
@@ -9,30 +9,27 @@ use pocketmine\entity\Living;
 
 /**
  * Class PiggyWitherSkull
- * @package PiggyCustomEnchants\Entities
+ * @package DaPigGuy\PiggyCustomEnchants\Entities
  */
 class PiggyWitherSkull extends PiggyProjectile
 {
+    /**
+     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
+     * @var int
+     */
+    const TYPE_ID = 89;
     /** @var float */
     public $width = 0.5;
     /** @var float */
     public $length = 0.5;
     /** @var float */
     public $height = 0.5;
-
     /** @var float */
     protected $drag = 0.01;
     /** @var float */
     protected $gravity = 0.05;
-
     /** @var int */
     protected $damage = 0;
-
-    /**
-     * Used to replace const NETWORK_ID to resolve registration conflicts with vanilla entities
-     * @var int
-     */
-    const TYPE_ID = 89;
 
     /**
      * @param Entity $entity
