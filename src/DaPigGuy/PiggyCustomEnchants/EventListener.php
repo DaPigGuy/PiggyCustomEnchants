@@ -359,7 +359,7 @@ class EventListener implements Listener
                                 continue;
                             }
                             $ev = new EntityDamageByEntityEvent($entity, $e, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage() / 2);
-                            $this->plugin->getServer()->getPluginManager()->callEvent($ev);
+                            $ev->call();
                             $e->attack($ev);
                         }
                         if (count($entities) > 1) {

@@ -43,12 +43,12 @@ class PiggyLightning extends Entity
         foreach ($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
             if ($entity instanceof Living && $entity->isAlive() && $this->getOwningEntityId() !== $entity->getId()) {
                 $ev = new EntityCombustByEntityEvent($this, $entity, mt_rand(3, 8));
-                $this->server->getPluginManager()->callEvent($ev);
+                $ev->call();
                 if (!$ev->isCancelled()) {
                     $entity->setOnFire($ev->getDuration());
                 }
                 $ev = new EntityDamageByEntityEvent($this, $entity, EntityDamageEvent::CAUSE_CUSTOM, 5);
-                $this->server->getPluginManager()->callEvent($ev);
+                $ev->call();
                 if (!$ev->isCancelled()) {
                     $entity->attack($ev);
                 }

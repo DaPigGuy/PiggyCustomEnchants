@@ -37,7 +37,7 @@ class PiggyFireball extends PiggyProjectile
     public function onCollideWithEntity(Entity $entity)
     {
         $ev = new EntityCombustByEntityEvent($this, $entity, 5);
-        $this->server->getPluginManager()->callEvent($ev);
+        $ev->call();
         if (!$ev->isCancelled()) {
             $entity->setOnFire($ev->getDuration());
         }

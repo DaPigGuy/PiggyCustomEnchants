@@ -44,7 +44,7 @@ class PiggyExplosion extends Explosion
             }
             $item = $this->player->getInventory()->getItemInHand();
             $ev = new BlockBreakEvent($this->player, $block, $item, true, $this->player->isCreative() ? [] : $block->getDrops($item), $this->player->isCreative() ? 0 : $block->getXpDropForTool($item));
-            $this->plugin->getServer()->getPluginManager()->callEvent($ev);
+            $ev->call();
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$index]);
             } else {
