@@ -87,7 +87,7 @@ class PigProjectile extends PiggyProjectile
             if ($this->getPorkLevel() > 1) {
                 foreach ($this->getDrops() as $drop) {
                     $droppeditem = $this->getLevel()->dropItem($this, $drop);
-                    $droppeditem->age = 5700; //300 ticks (15 seconds) til despawns}
+                    $droppeditem->age = 5700; //300 ticks (15 seconds) til despawns
                 }
             }
         } else {

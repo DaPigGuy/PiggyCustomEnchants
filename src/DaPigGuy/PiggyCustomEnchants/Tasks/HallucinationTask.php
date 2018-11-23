@@ -1,8 +1,8 @@
 <?php
 
-namespace PiggyCustomEnchants\Tasks;
+namespace DaPigGuy\PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\Main;
 use pocketmine\block\Block;
 use pocketmine\level\Position;
 use pocketmine\nbt\NetworkLittleEndianNBTStream;
@@ -17,7 +17,7 @@ use pocketmine\utils\TextFormat;
 
 /**
  * Class HallucinationTask
- * @package PiggyCustomEnchants
+ * @package DaPigGuy\PiggyCustomEnchants
  */
 class HallucinationTask extends Task
 {

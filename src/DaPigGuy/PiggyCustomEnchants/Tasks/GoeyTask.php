@@ -1,15 +1,15 @@
 <?php
 
-namespace PiggyCustomEnchants\Tasks;
+namespace DaPigGuy\PiggyCustomEnchants\Tasks;
 
-use PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\Main;
 use pocketmine\entity\Entity;
 use pocketmine\math\Vector3;
 use pocketmine\scheduler\Task;
 
 /**
  * Class GoeyTask
- * @package PiggyCustomEnchants
+ * @package DaPigGuy\PiggyCustomEnchants
  */
 class GoeyTask extends Task
 {
