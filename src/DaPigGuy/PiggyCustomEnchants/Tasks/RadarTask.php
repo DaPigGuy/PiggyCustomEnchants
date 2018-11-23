@@ -47,7 +47,7 @@ class RadarTask extends Task
                         $pk->z = (int)$detected->z;
                         $pk->spawnForced = true;
                         $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-                        $player->dataPacket($pk);
+                        $player->sendDataPacket($pk);
                         $radar = true;
                         $this->radars[$player->getLowerCaseName()] = true;
                         if ($item->equalsExact($player->getInventory()->getItemInHand())) {
@@ -69,7 +69,7 @@ class RadarTask extends Task
                     $pk->z = (int)$player->getLevel()->getSafeSpawn()->z;
                     $pk->spawnForced = true;
                     $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-                    $player->dataPacket($pk);
+                    $player->sendDataPacket($pk);
                     unset($this->radars[$player->getLowerCaseName()]);
                 }
             }

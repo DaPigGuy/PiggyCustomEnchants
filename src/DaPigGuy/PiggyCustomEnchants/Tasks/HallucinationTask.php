@@ -78,7 +78,7 @@ class HallucinationTask extends Task
                                 $pk->y = (int)$pos->y;
                                 $pk->z = (int)$pos->z;
                                 $pk->namedtag = $nbt;
-                                $this->player->dataPacket($pk);
+                                $this->player->sendDataPacket($pk);
                             }
                         } else {
                             $block = Block::get(Block::LAVA);

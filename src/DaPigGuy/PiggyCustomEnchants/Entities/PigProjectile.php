@@ -127,7 +127,7 @@ class PigProjectile extends PiggyProjectile
         $pk->position = $this->asVector3();
         $pk->motion = $this->getMotion();
         $pk->metadata = $this->propertyManager->getAll();
-        $player->dataPacket($pk);
+        $player->sendDataPacket($pk);
     }
 
     /**

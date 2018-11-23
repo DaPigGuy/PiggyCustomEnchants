@@ -78,6 +78,6 @@ class PiggyProjectile extends Projectile
         $pk->yaw = $this->yaw;
         $pk->pitch = $this->pitch;
         $pk->metadata = $this->propertyManager->getAll();
-        $player->dataPacket($pk);
+        $player->sendDataPacket($pk);
     }
 }
