@@ -300,7 +300,7 @@ class Main extends PluginBase
             if (!ItemFactory::isRegistered(Item::ENCHANTED_BOOK)) { //Check if it isn't already registered by another plugin
                 ItemFactory::registerItem(new Item(Item::ENCHANTED_BOOK, 0, "Enchanted Book")); //This is a temporary fix for name being Unknown when given due to no implementation in PMMP. Will remove when implemented in PMMP
             }
-            $this->getServer()->getCommandMap()->register("customenchant", new CustomEnchantCommand("customenchant", $this));
+            $this->getServer()->getCommandMap()->register("piggycustomenchants", new CustomEnchantCommand("customenchant", $this));
             $this->getScheduler()->scheduleRepeatingTask(new AutoAimTask($this), 1);
             $this->getScheduler()->scheduleRepeatingTask(new CactusTask($this), 10);
             $this->getScheduler()->scheduleRepeatingTask(new ChickenTask($this), 20);
@@ -316,8 +316,6 @@ class Main extends PluginBase
             $this->getScheduler()->scheduleRepeatingTask(new PoisonousGasTask($this), 1);
             $this->getScheduler()->scheduleRepeatingTask(new VacuumTask($this), 1);
             $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-
-            $this->getLogger()->info(TextFormat::GREEN . "Enabled.");
         }
     }
 
