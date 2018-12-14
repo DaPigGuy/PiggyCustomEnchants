@@ -69,7 +69,6 @@ class PiggyProjectile extends Projectile
      */
     public function spawnTo(Player $player): void
     {
-        parent::spawnTo($player);
         $pk = new AddEntityPacket();
         $pk->entityRuntimeId = $this->getId();
         $pk->type = static::TYPE_ID;
