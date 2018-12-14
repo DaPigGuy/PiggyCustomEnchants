@@ -30,6 +30,8 @@ class PiggyLightning extends Entity
     /** @var float */
     public $height = 1.8;
 
+    protected $age = 0;
+
     /**
      * @param int $tickDiff
      * @return bool
@@ -39,6 +41,7 @@ class PiggyLightning extends Entity
         if ($this->closed) {
             return false;
         }
+        $this->age += $tickDiff;
         $hasUpdate = parent::entityBaseTick($tickDiff);
         foreach ($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
             if ($entity instanceof Living && $entity->isAlive() && $this->getOwningEntityId() !== $entity->getId()) {

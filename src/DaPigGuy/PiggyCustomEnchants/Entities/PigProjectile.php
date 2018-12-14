@@ -3,8 +3,10 @@
 namespace DaPigGuy\PiggyCustomEnchants\Entities;
 
 use pocketmine\entity\Entity;
+use pocketmine\entity\object\ItemEntity;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
+use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\Player;
@@ -48,11 +50,11 @@ class PigProjectile extends PiggyProjectile
 
     /**
      * PigProjectile constructor.
-     * @param Level       $level
+     * @param Level $level
      * @param CompoundTag $nbt
      * @param Entity|null $shootingEntity
-     * @param bool        $placeholder
-     * @param int         $porklevel
+     * @param bool $placeholder
+     * @param int $porklevel
      */
     public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, bool $placeholder = false, int $porklevel = 1)
     {
@@ -86,8 +88,20 @@ class PigProjectile extends PiggyProjectile
         if (!$this->isCollided) {
             if ($this->getPorkLevel() > 1) {
                 foreach ($this->getDrops() as $drop) {
-                    $droppeditem = $this->getLevel()->dropItem($this, $drop);
-                    $droppeditem->age = 5700; //300 ticks (15 seconds) til despawns
+                    $motion = new Vector3(lcg_value() * 0.2 - 0.1, 0.2, lcg_value() * 0.2 - 0.1);
+                    $itemTag = $drop->nbtSerialize();
+                    $itemTag->setName("Item");
+                    if (!$drop->isNull()) {
+                        $nbt = Entity::createBaseNBT($this, $motion, lcg_value() * 360, 0);
+                        $nbt->setShort("Health", 5);
+                        $nbt->setShort("PickupDelay", 10);
+                        $nbt->setShort("Age", 5700);
+                        $nbt->setTag($itemTag);
+                        $itemEntity = Entity::createEntity("Item", $this->level, $nbt);
+                        if ($itemEntity instanceof ItemEntity) {
+                            $itemEntity->spawnToAll();
+                        }
+                    }
                 }
             }
         } else {
@@ -106,7 +120,7 @@ class PigProjectile extends PiggyProjectile
     }
 
     /**
-     * @return array
+     * @return Item[]
      */
     public function getDrops(): array
     {
