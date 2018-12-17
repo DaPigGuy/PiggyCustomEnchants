@@ -9,7 +9,7 @@ Please make sure your issue complies with these guidelines:
 - * [ ] If possible, provide crashdumps/errors related to the issue.
 
 #### **General**
-<!-- Briefly describe what is wrong. -->
+<!-- Briefly describe what is wrong, and what was expected to happen. -->
 
 #### **Version:**
 <!-- Do /version PiggyCustomEnchants to check, do not input "latest". -->
