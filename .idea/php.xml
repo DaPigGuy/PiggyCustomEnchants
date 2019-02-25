@@ -2,9 +2,8 @@
 <project version="4">
   <component name="PhpIncludePathManager">
     <include_path>
-      <path value="C:\Users\Kevin\Downloads\Pigsplosion-Hub\src" />
-      <path value="C:\Users\xxech\OneDrive\Documents\GitKraken\PocketMine-MP" />
+      <path value="$PROJECT_DIR$/../dependencies/PocketMine-MP" />
     </include_path>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="7.1" />
+  <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />
 </project>

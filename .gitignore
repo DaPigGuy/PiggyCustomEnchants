@@ -18,7 +18,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # JetBrains IDE
-\.idea
+\.idea/
+.idea/workspace.xml
 
 # Floobits
 \.floo
