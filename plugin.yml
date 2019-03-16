@@ -1,6 +1,6 @@
 name: PiggyCustomEnchants
 main: DaPigGuy\PiggyCustomEnchants\Main
-version: 1.4.3
+version: 1.4.4
 api: 3.2.0
 load: POSTWORLD
 author: DaPigGuy

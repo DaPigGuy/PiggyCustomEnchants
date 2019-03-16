@@ -520,7 +520,8 @@ class Main extends PluginBase
                                 new ShortTag("id", $enchant->getId()),
                                 new ShortTag("lvl", $level)
                             ]));
-                            $item->setLore([str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level), implode("\n", $item->getLore()))]);
+                            if ($this->getConfig()->getNested('enchant-position.name')) $item->setCustomName(str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level), $item->getName()));
+                            if ($this->getConfig()->getNested('enchant-position.lore')) $item->setLore([str_replace($this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry["lvl"]), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level), implode("\n", $item->getLore()))]);
                             $found = true;
                             break;
                         }
@@ -531,7 +532,8 @@ class Main extends PluginBase
                         new ShortTag("id", $enchant->getId()),
                         new ShortTag("lvl", $level)
                     ]));
-                    $item->setLore([implode("\n", $item->getLore()), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level)]);
+                    if ($this->getConfig()->getNested('enchant-position.name')) $item->setCustomName($item->getName() . "\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level));
+                    if ($this->getConfig()->getNested('enchant-position.lore')) $item->setLore([implode("\n", $item->getLore()), $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($level)]);
                 }
                 $item->setNamedTagEntry($ench);
                 if ($sender !== null) {

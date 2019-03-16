@@ -21,3 +21,7 @@ jetpack:
 # Disable to prevent fire from Lightning enchant
 lightning:
   flames: false
+# Where should the enchants be listed, or both (if wanted.)
+enchant-position:
+  name: false
+  lore: true
