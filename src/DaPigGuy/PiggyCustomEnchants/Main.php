@@ -820,7 +820,8 @@ class Main extends PluginBase
         foreach ($ench as $k => $entry) {
             if ($entry->getShort("id") === $enchant->getId() and ($level === -1 or $entry->getShort("lvl") === $level)) {
                 $ench->remove($k);
-                $item->setCustomName(str_replace("\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry->getShort("lvl")), "", $item->getCustomName()));
+                if ($this->getConfig()->getNested('enchant-position.name')) $item->setCustomName(str_replace("\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry->getShort("lvl")), "", $item->getCustomName()));
+                if ($this->getConfig()->getNested('enchant-position.lore')) $item->setLore(str_replace("\n" . $this->getRarityColor($enchant->getRarity()) . $enchant->getName() . " " . $this->getRomanNumber($entry->getShort("lvl")), "", $item->getLore()));
                 break;
             }
         }
