@@ -4,6 +4,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for PMMP.
 
 ## Notice - Namespace Refactor
 As of `v1.3.0`, the namespace for PiggyCustomEnchants has been changed from `PiggyCustomEnchants\Main` to `DaPigGuy\PiggyCustomEnchants\Main` in order to comply with Poggit's C1a rule. If you currently use the API, please make sure to update accordingly. We are sorry for the inconvenience this might have caused.
+ - If you are using KitUI by @Infernus101, download from this link instead: https://poggit.pmmp.io/r/48634/KitUI_dev-73.phar
 
 <!-- If one question constantly persists, add the Q/A in here. -->
 ## FAQ
