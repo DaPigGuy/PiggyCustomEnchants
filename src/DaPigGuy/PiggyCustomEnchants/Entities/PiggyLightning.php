@@ -9,7 +9,7 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\network\mcpe\protocol\AddEntityPacket;
+use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\Player;
 
 /**
@@ -71,7 +71,7 @@ class PiggyLightning extends Entity
      */
     public function spawnTo(Player $player): void
     {
-        $pk = new AddEntityPacket();
+        $pk = new AddActorPacket();
         $pk->entityRuntimeId = $this->getId();
         $pk->type = static::TYPE_ID;
         $pk->position = $this->asVector3();

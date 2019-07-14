@@ -9,7 +9,7 @@ use pocketmine\nbt\NetworkLittleEndianNBTStream;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\IntTag;
 use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\mcpe\protocol\BlockEntityDataPacket;
+use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
 use pocketmine\Player;
 use pocketmine\scheduler\Task;
 use pocketmine\tile\Tile;
@@ -73,7 +73,7 @@ class HallucinationTask extends Task
                                     new IntTag("y", $pos->y),
                                     new IntTag("z", $pos->z)
                                 ]));
-                                $pk = new BlockEntityDataPacket();
+                                $pk = new BlockActorDataPacket();
                                 $pk->x = (int)$pos->x;
                                 $pk->y = (int)$pos->y;
                                 $pk->z = (int)$pos->z;

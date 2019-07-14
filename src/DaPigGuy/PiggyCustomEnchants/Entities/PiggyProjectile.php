@@ -7,7 +7,7 @@ use pocketmine\entity\projectile\Projectile;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\protocol\AddEntityPacket;
+use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\Player;
 
 /**
@@ -69,7 +69,7 @@ class PiggyProjectile extends Projectile
      */
     public function spawnTo(Player $player): void
     {
-        $pk = new AddEntityPacket();
+        $pk = new AddActorPacket();
         $pk->entityRuntimeId = $this->getId();
         $pk->type = static::TYPE_ID;
         $pk->position = $this->asVector3();
