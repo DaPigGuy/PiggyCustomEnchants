@@ -52,7 +52,7 @@ class CustomEnchantsIds
 
     //BOWS
     //const BOMBARDMENT = 300;
-    const WITHERSKULL = 301;
+    const WITHERSKULL = 301; //witherskulls remain
     //const FIREWORK = 302;
     const PARALYZE = 303;
     const MOLOTOV = 304; //Falling sand fire doesn't appear
@@ -65,7 +65,7 @@ class CustomEnchantsIds
     const BLAZE = 311;
     const HEADHUNTER = 312;
     const GRAPPLING = 313;
-    const PORKIFIED = 314;
+    const PORKIFIED = 314; //pigs remain
     const MISSILE = 315;
     const PLACEHOLDER = 316;
 
@@ -108,7 +108,7 @@ class CustomEnchantsIds
     const CHICKEN = 801;
     const PROWL = 802;
     const SPIDER = 803;
-    const ENRAGED = 804;
+    const ENRAGED = 804; //doesn't seem to actually exist in code, but is an enchantment.
     const VACUUM = 805;
 
     //BOOTS
@@ -120,5 +120,4 @@ class CustomEnchantsIds
 
     //COMPASS
     const RADAR = 700;
-
 }
