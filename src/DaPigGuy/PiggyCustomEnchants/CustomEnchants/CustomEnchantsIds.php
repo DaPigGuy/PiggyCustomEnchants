@@ -108,7 +108,7 @@ class CustomEnchantsIds
     const CHICKEN = 801;
     const PROWL = 802;
     const SPIDER = 803;
-    const ENRAGED = 804; //doesn't seem to actually exist in code, but is an enchantment.
+    const ENRAGED = 804;
     const VACUUM = 805;
 
     //BOOTS
