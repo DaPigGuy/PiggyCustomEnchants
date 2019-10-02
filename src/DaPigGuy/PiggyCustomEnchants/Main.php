@@ -184,7 +184,7 @@ class Main extends PluginBase
         CustomEnchantsIds::BLAZE => ["Blaze", "Bow", "Shoot", "Rare", 1, "Shoots fireballs"],
         CustomEnchantsIds::BLIND => ["Blind", "Weapons", "Damage", "Common", 5, "Gives enemies blindness"],
         CustomEnchantsIds::BOUNTYHUNTER => ["Bounty Hunter", "Bow", "Damage", "Uncommon", 5, "Collect bounties (items) when hitting enemies."],
-        CustomEnchantsIds::CACTUS => ["Cactus", "Armor", "Equip", "Rare", 1, "Poke people around you", "Poke people around you"],
+        CustomEnchantsIds::CACTUS => ["Cactus", "Armor", "Equip", "Rare", 1, "Poke people around you"],
         CustomEnchantsIds::CHARGE => ["Charge", "Weapons", "Damage", "Uncommon", 5, "Increases damage when sprinting"],
         CustomEnchantsIds::CHICKEN => ["Chicken", "Chestplate", "Equip", "Uncommon", 5, "Lays egg every 5 minutes, 5l% (l = level) chance of rare drop"],
         CustomEnchantsIds::CLOAKING => ["Cloaking", "Armor", "Damaged", "Uncommon", 5, "Becomes invisible when hit"],
