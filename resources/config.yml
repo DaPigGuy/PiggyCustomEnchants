@@ -1,27 +1,33 @@
-# The color of an enchant depending on rarity
-# List of available colors:
-# black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, and white.
-color:
+# Specifies the color enchants are shown depending on rarity.
+# Options: black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, and white.
+rarity-colors:
   common: yellow
   uncommon: blue
   rare: gold
   mythic: light_purple
-# Enable to use forms (UIs)
+enchants:
+  # Specifies the location enchants are shown. Options: name, lore
+  position: "name"
+  # Toggles roman numerals for displaying enchantment levels
+  roman-numerals: true
+# Toggles forms for /ce command
 forms:
   enabled: false
-# Disable to prevent fire from Blaze enchant
-blaze:
-  flames: false
-# Rare Drop(s) from Chicken enchant ("id:meta:amount"), if multiple, will randomly chose a drop
+# What enchants to disable ENTIRELY
+disabled-enchants: []
+# What enchants to disable in specific worlds
+per-world-disabled-enchants:
+  NoJetpackWorld:
+    - "jetpack"
+# Whether or not an enchant damages world
+world-damage:
+  blaze: true
+  explosive: true
+  lightning: true
+  missile: true
+# Items the chicken enchant will drop. Formatted as "id:meta:count"
 chicken:
-  rare-drop: ["266:0:1"]
-# Leave empty to allow jetpacks anywhere, or add worlds where jetpacks will be disabled: ["PvPArena", "AnotherWorld"]
-jetpack:
-  disabled: []
-# Disable to prevent fire from Lightning enchant
-lightning:
-  flames: false
-# Where should the enchants be listed, or both (if wanted.)
-enchant-position:
-  name: false
-  lore: true
+  drops: ["266:0:1"]
+miscellaneous:
+  # Toggles PiggyCE's implementation of the vanilla feature to hold armor to equip
+  armor-hold-equip: true

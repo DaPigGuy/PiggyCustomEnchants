@@ -1,0 +1,62 @@
+<?php
+
+declare(strict_types=1);
+
+namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
+
+use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\Event;
+use pocketmine\inventory\Inventory;
+use pocketmine\item\Item;
+use pocketmine\Player;
+
+/**
+ * Class DisarmingEnchant
+ * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons
+ */
+class DisarmingEnchant extends ReactiveEnchantment
+{
+    /** @var string */
+    public $name = "Disarming";
+
+    /**
+     * @return array
+     */
+    public function getReagent(): array
+    {
+        return [EntityDamageByEntityEvent::class];
+    }
+
+    /**
+     * @param int $level
+     * @return int
+     */
+    public function getChance(int $level): int
+    {
+        return 10 * $level;
+    }
+
+    /**
+     * @param Player $player
+     * @param Item $item
+     * @param Inventory $inventory
+     * @param int $slot
+     * @param Event $event
+     * @param int $level
+     * @param int $stack
+     */
+    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    {
+        if ($event instanceof EntityDamageByEntityEvent) {
+            $entity = $event->getEntity();
+            if ($entity instanceof Player) {
+                if (count($contents = $entity->getInventory()->getContents(false)) > 0) {
+                    $item = $contents[array_rand($contents)];
+                    $entity->getArmorInventory()->removeItem($item);
+                    $entity->dropItem($item);
+                }
+            }
+        }
+    }
+}
