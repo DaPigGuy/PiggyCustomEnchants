@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -24,14 +24,14 @@ class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
 
     /**
      * ConditionalDamageMultiplierEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param string $name
      * @param int $rarity
      * @param callable $condition
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, string $name, callable $condition, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, callable $condition, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
         $this->condition = $condition;

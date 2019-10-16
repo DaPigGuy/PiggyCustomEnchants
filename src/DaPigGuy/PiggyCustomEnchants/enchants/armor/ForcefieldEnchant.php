@@ -6,7 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\inventory\Inventory;
@@ -37,12 +37,12 @@ class ForcefieldEnchant extends ToggleableEnchantment
 
     /**
      * CustomEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param int $rarity
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
     {
         parent::__construct($plugin, $id, $rarity);
         $this->taskHandler = $plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {

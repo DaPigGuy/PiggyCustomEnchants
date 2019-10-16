@@ -88,14 +88,8 @@ class PiggyExplosion extends Explosion
         foreach ($this->affectedBlocks as $key => $block) {
             $drops = $this->what->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
             $t = $this->level->getTileAt($block->x, $block->y, $block->z);
-            if ($t instanceof Tile) {
-                if ($t instanceof Chest) {
-                    $t->unpair();
-                }
-                if ($t instanceof Container) {
-                    $drops = array_merge($drops, $t->getInventory()->getContents());
-                }
-                $t->close();
+            if ($t instanceof Container) {
+                $drops = array_merge($drops, $t->getInventory()->getContents());
             }
 
             $ev = new BlockBreakEvent($this->what, $block, $item, true, $drops);
@@ -103,6 +97,13 @@ class PiggyExplosion extends Explosion
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$key]);
                 continue;
+            }
+
+            if ($t instanceof Tile) {
+                if ($t instanceof Chest) {
+                    $t->unpair();
+                }
+                $t->close();
             }
 
             if ($block instanceof TNT) {

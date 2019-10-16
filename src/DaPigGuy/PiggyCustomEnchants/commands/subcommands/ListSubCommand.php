@@ -7,7 +7,7 @@ namespace DaPigGuy\PiggyCustomEnchants\commands\subcommands;
 use CortexPE\Commando\BaseSubCommand;
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
@@ -20,17 +20,17 @@ use pocketmine\utils\TextFormat;
  */
 class ListSubCommand extends BaseSubCommand
 {
-    /** @var Main */
+    /** @var PiggyCustomEnchants */
     private $plugin;
 
     /**
      * ListSubCommand constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param string $name
      * @param string $description
      * @param array $aliases
      */
-    public function __construct(Main $plugin, string $name, string $description = "", array $aliases = [])
+    public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
     {
         $this->plugin = $plugin;
         parent::__construct($name, $description, $aliases);

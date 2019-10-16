@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
@@ -37,7 +37,7 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
 
     /**
      * ToggleableEffectEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param string $name
      * @param int $maxLevel
@@ -49,7 +49,7 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
      * @param int $rarity
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, int $effect, int $baseAmplifier = 0, int $amplifierMultiplier = 1, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, int $effect, int $baseAmplifier = 0, int $amplifierMultiplier = 1, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
         $this->maxLevel = $maxLevel;

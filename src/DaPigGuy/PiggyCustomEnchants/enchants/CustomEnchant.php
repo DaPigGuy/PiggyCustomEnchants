@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants;
 
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\Player;
 use ReflectionClass;
@@ -16,7 +16,7 @@ use ReflectionException;
  */
 class CustomEnchant extends Enchantment
 {
-    /** @var Main */
+    /** @var PiggyCustomEnchants */
     private $plugin;
 
     /** @var string */
@@ -55,12 +55,12 @@ class CustomEnchant extends Enchantment
 
     /**
      * CustomEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param int $rarity
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
     {
         $this->plugin = $plugin;
         if ($plugin->getDescription()->getName() !== base64_decode("UGlnZ3lDdXN0b21FbmNoYW50cw==") || !in_array(base64_decode("RGFQaWdHdXk="), $plugin->getDescription()->getAuthors())) $id = array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));

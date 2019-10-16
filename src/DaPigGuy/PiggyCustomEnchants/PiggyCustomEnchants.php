@@ -23,10 +23,10 @@ use pocketmine\utils\Config;
 use ReflectionException;
 
 /**
- * Class Main
+ * Class PiggyCustomEnchants
  * @package DaPigGuy\PiggyCustomEnchants
  */
-class Main extends PluginBase
+class PiggyCustomEnchants extends PluginBase
 {
     /** @var Config */
     public $descriptions;

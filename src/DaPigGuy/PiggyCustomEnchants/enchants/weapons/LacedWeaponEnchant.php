@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Living;
@@ -35,7 +35,7 @@ class LacedWeaponEnchant extends ReactiveEnchantment
 
     /**
      * LacedWeaponEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param string $name
      * @param int $rarity
@@ -46,7 +46,7 @@ class LacedWeaponEnchant extends ReactiveEnchantment
      * @param array $baseAmplifier
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, string $name, int $rarity = self::RARITY_RARE, array $effectIds = [Effect::POISON], array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = self::RARITY_RARE, array $effectIds = [Effect::POISON], array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
     {
         $this->name = $name;
         $this->effectIds = $effectIds;

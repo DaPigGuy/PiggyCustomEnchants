@@ -5,7 +5,7 @@ namespace DaPigGuy\PiggyCustomEnchants\commands\subcommands;
 
 
 use CortexPE\Commando\BaseSubCommand;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -16,17 +16,17 @@ use pocketmine\utils\TextFormat;
  */
 class NBTSubCommand extends BaseSubCommand
 {
-    /** @var Main */
+    /** @var PiggyCustomEnchants */
     private $plugin;
 
     /**
      * NBTSubCommand constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param string $name
      * @param string $description
      * @param array $aliases
      */
-    public function __construct(Main $plugin, string $name, string $description = "", array $aliases = [])
+    public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
     {
         $this->plugin = $plugin;
         parent::__construct($name, $description, $aliases);

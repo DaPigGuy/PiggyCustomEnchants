@@ -6,7 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\boots;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
@@ -43,12 +43,12 @@ class JetpackEnchant extends ReactiveEnchantment
 
     /**
      * JetpackEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param int $rarity
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
     {
         parent::__construct($plugin, $id, $rarity);
         $this->taskHandler = $plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick) use ($id): void {

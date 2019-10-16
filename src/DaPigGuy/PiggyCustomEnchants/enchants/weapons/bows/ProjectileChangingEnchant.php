@@ -6,7 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Projectile;
@@ -28,7 +28,7 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
 
     /**
      * ProjectileChangingEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param string $name
      * @param string $projectileType
@@ -36,7 +36,7 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
      * @param int $rarity
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
         $this->projectileType = $projectileType;

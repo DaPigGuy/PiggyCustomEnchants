@@ -85,17 +85,17 @@ use ReflectionProperty;
  */
 class CustomEnchantManager
 {
-    /** @var Main */
+    /** @var PiggyCustomEnchants */
     private static $plugin;
 
     /** @var CustomEnchant[] */
     public static $enchants = [];
 
     /**
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @throws ReflectionException
      */
-    public static function init(Main $plugin)
+    public static function init(PiggyCustomEnchants $plugin)
     {
         self::$plugin = $plugin;
         $vanillaEnchantments = [];
@@ -206,9 +206,9 @@ class CustomEnchantManager
     }
 
     /**
-     * @return Main
+     * @return PiggyCustomEnchants
      */
-    public static function getPlugin(): Main
+    public static function getPlugin(): PiggyCustomEnchants
     {
         return self::$plugin;
     }

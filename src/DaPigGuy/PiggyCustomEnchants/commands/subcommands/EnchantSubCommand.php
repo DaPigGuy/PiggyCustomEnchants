@@ -8,7 +8,7 @@ use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\exception\ArgumentOrderException;
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
@@ -22,17 +22,17 @@ use pocketmine\utils\TextFormat;
  */
 class EnchantSubCommand extends BaseSubCommand
 {
-    /** @var Main */
+    /** @var PiggyCustomEnchants */
     private $plugin;
 
     /**
      * EnchantSubCommand constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param string $name
      * @param string $description
      * @param array $aliases
      */
-    public function __construct(Main $plugin, string $name, string $description = "", array $aliases = [])
+    public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
     {
         $this->plugin = $plugin;
         parent::__construct($name, $description, $aliases);

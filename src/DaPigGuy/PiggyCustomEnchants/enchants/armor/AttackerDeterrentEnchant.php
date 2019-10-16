@@ -6,7 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Living;
@@ -32,7 +32,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
 
     /**
      * CustomEnchant constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param string $name
      * @param array $effects
@@ -41,7 +41,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
      * @param int $rarity
      * @throws ReflectionException
      */
-    public function __construct(Main $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
         $this->effects = $effects;

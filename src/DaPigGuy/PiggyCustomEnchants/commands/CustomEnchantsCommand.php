@@ -11,7 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\commands\subcommands\EnchantSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\InfoSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\ListSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\NBTSubCommand;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
 use pocketmine\Player;
@@ -23,17 +23,17 @@ use pocketmine\utils\TextFormat;
  */
 class CustomEnchantsCommand extends BaseCommand
 {
-    /** @var Main */
+    /** @var PiggyCustomEnchants */
     private $plugin;
 
     /**
      * CustomEnchantsCommand constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      * @param string $name
      * @param string $description
      * @param array $aliases
      */
-    public function __construct(Main $plugin, string $name, string $description = "", array $aliases = [])
+    public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
     {
         $this->plugin = $plugin;
         parent::__construct($name, $description, $aliases);

@@ -6,7 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
-use DaPigGuy\PiggyCustomEnchants\Main;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\IntTag;
@@ -19,14 +19,14 @@ use pocketmine\utils\TextFormat;
  */
 class TickEnchantmentsTask extends Task
 {
-    /** @var Main */
+    /** @var PiggyCustomEnchants */
     private $plugin;
 
     /**
      * TickEnchantmentsTask constructor.
-     * @param Main $plugin
+     * @param PiggyCustomEnchants $plugin
      */
-    public function __construct(Main $plugin)
+    public function __construct(PiggyCustomEnchants $plugin)
     {
         $this->plugin = $plugin;
     }
