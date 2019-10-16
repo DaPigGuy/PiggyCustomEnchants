@@ -39,7 +39,6 @@ use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Armor;
-use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
@@ -510,17 +509,17 @@ class EventListener implements Listener
             $itemClickedWith = $oldToNew->getSourceItem();
             if ($itemClickedWith->getId() === Item::ENCHANTED_BOOK && $itemClicked->getId() !== Item::AIR) {
                 if (count($itemClickedWith->getEnchantments()) < 1) return;
+                $enchantmentSuccessful = false;
                 foreach ($itemClickedWith->getEnchantments() as $enchantment) {
-                    $existingEnchantment = $itemClicked->getEnchantment($enchantment->getId());
-                    if ($existingEnchantment instanceof EnchantmentInstance && $existingEnchantment->getLevel() >= $enchantment->getLevel()) {
-                        if (count($itemClickedWith->getEnchantments()) <= 1) return;
-                        continue;
-                    }
+                    if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $enchantment->getLevel())) continue;
                     $itemClicked->addEnchantment($enchantment);
                     $newToOld->getInventory()->setItem($newToOld->getSlot(), $itemClicked);
+                    $enchantmentSuccessful = true;
                 }
-                $event->setCancelled();
-                $oldToNew->getInventory()->setItem($oldToNew->getSlot(), Item::get(Item::AIR));
+                if ($enchantmentSuccessful) {
+                    $event->setCancelled();
+                    $oldToNew->getInventory()->setItem($oldToNew->getSlot(), Item::get(Item::AIR));
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ use pocketmine\item\Axe;
 use pocketmine\item\Bow;
 use pocketmine\item\Compass;
 use pocketmine\item\Durable;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Hoe;
 use pocketmine\item\Item;
@@ -339,5 +340,21 @@ class Utils
     public static function increaseNoFallDamageDuration(Player $player, int $duration = 1): void
     {
         self::$shouldTakeFallDamage[$player->getName()] += $duration;
+    }
+
+    /**
+     * @param Item $item
+     * @param Enchantment $enchant
+     * @param int $level
+     * @return bool
+     */
+    public static function canBeEnchanted(Item $item, Enchantment $enchant, int $level): bool
+    {
+        return ((!$enchant instanceof CustomEnchant || self::itemMatchesItemType($item, $enchant->getItemType())) &&
+            $level <= $enchant->getMaxLevel() &&
+            (($enchantmentInstance = $item->getEnchantment($enchant->getId())) === null || $enchantmentInstance->getLevel() < $level) &&
+            $item->getCount() === 1 &&
+            (!$enchant instanceof CustomEnchant || self::checkEnchantIncompatibilities($item, $enchant))
+        );
     }
 }

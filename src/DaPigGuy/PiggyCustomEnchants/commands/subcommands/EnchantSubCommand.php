@@ -123,6 +123,10 @@ class EnchantSubCommand extends BaseSubCommand
                             Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
                             return;
                         }
+                        if (($enchantmentInstance = $item->getEnchantment($enchant->getId())) !== null && $enchantmentInstance->getLevel() > $args["level"]) {
+                            Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The enchant has already been applied with a higher level on the item.");
+                            return;
+                        }
                         if ($item->getCount() > 1) {
                             Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "You can only enchant one item at a time.");
                             return;
