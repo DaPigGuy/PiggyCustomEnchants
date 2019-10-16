@@ -22,9 +22,9 @@ per-world-disabled-enchants:
 # Whether or not an enchant damages world
 world-damage:
   blaze: true
-  explosive: true
   lightning: true
   missile: true
+  self-destruct: true
 # Items the chicken enchant will drop. Formatted as "id:meta:count"
 chicken:
   drops: ["266:0:1"]

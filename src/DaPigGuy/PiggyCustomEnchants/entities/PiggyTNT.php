@@ -17,6 +17,9 @@ use ReflectionException;
  */
 class PiggyTNT extends PrimedTNT
 {
+    /** @var bool */
+    public $worldDamage = true;
+
     /**
      * @throws ReflectionException
      */
@@ -28,6 +31,7 @@ class PiggyTNT extends PrimedTNT
             return;
         }
         $ev = new ExplosionPrimeEvent($this, 4);
+        $ev->setBlockBreaking($this->worldDamage);
         $ev->call();
         if (!$ev->isCancelled()) {
             $explosion = new PiggyExplosion(Position::fromObject($this->add(0, $this->height / 2, 0), $this->level), $ev->getForce(), $ownerEntity);
