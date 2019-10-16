@@ -60,7 +60,12 @@ class ListSubCommand extends BaseSubCommand
             if (!isset($enchantmentsByType[$enchantment->getItemType()])) $enchantmentsByType[$enchantment->getItemType()] = [];
             $enchantmentsByType[$enchantment->getItemType()][] = $enchantment;
         }
-        return $enchantmentsByType;
+        return array_map(function (array $typeEnchants) {
+            uasort($typeEnchants, function (CustomEnchant $a, CustomEnchant $b) {
+                return strcmp($a->getName(), $b->getName());
+            });
+            return $typeEnchants;
+        }, $enchantmentsByType);
     }
 
     /**
