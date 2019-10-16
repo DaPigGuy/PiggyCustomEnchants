@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\Main;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
@@ -81,5 +82,13 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     public function getPriority(): int
     {
         return 2;
+    }
+
+    /**
+     * @return int
+     */
+    public function getItemType(): int
+    {
+        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }
