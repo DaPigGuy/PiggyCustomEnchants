@@ -205,20 +205,22 @@ class Utils
     public static function displayEnchants(Item $item): Item
     {
         $plugin = CustomEnchantManager::getPlugin();
-        $additionalInformation = $plugin->getConfig()->getNested("enchants.position") === "name" ? TextFormat::RESET . TextFormat::WHITE . $item->getName() : "";
-        foreach ($item->getEnchantments() as $enchantmentInstance) {
-            $enchantment = $enchantmentInstance->getType();
-            if ($enchantment instanceof CustomEnchant) {
-                $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
+        if (count($item->getEnchantments()) > 0) {
+            $additionalInformation = $plugin->getConfig()->getNested("enchants.position") === "name" ? TextFormat::RESET . TextFormat::WHITE . $item->getName() : "";
+            foreach ($item->getEnchantments() as $enchantmentInstance) {
+                $enchantment = $enchantmentInstance->getType();
+                if ($enchantment instanceof CustomEnchant) {
+                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
+                }
             }
-        }
-        if ($item->getNamedTagEntry(Item::TAG_DISPLAY) instanceof CompoundTag) $item->setNamedTagEntry(new CompoundTag("OriginalDisplayTag", $item->getNamedTagEntry(Item::TAG_DISPLAY)->getValue()));
-        if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position") === "lore") {
-            $lore = array_merge(explode("\n", $additionalInformation), $item->getLore());
-            array_shift($lore);
-            $item = $item->setLore($lore);
-        } else {
-            $item = $item->setCustomName($additionalInformation);
+            if ($item->getNamedTagEntry(Item::TAG_DISPLAY) instanceof CompoundTag) $item->setNamedTagEntry(new CompoundTag("OriginalDisplayTag", $item->getNamedTagEntry(Item::TAG_DISPLAY)->getValue()));
+            if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position") === "lore") {
+                $lore = array_merge(explode("\n", $additionalInformation), $item->getLore());
+                array_shift($lore);
+                $item = $item->setLore($lore);
+            } else {
+                $item = $item->setCustomName($additionalInformation);
+            }
         }
         if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors())) $item->setNamedTagEntry(new StringTag("LolGetRekted", "Loser"));
         return $item;
