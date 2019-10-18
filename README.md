@@ -24,10 +24,10 @@ All custom enchantments in Version 1.4.6 have also been ported to Version 2.0.0.
 
 ## Information
 * We do not support any spoons. Anything to do with spoons (Issues or PRs) will be ignored.
-* You can find a list of the current custom enchants at [wiki](https://staging-piggydocs.aericio.net/PiggyCustomEnchants.html).
+* You can find a list of the current custom enchants at [wiki](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
 * We are using the [libFormAPI](https://github.com/jojoe77777/FormAPI), so there is no need to install the FormAPI plugin.
     * In other words, you must use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants/~) instead of GitHub.
     * If you wish to run it via source, check out [DEVirion](https://github.com/poggit/devirion).
-* Are you a developer? Check out our API Documentation at [PiggyDocs](https://staging-piggydocs.aericio.net/PiggyCustomEnchants.html).
+* Are you a developer? Check out our API Documentation at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
     * v2.0.0 list of custom enchants are also at PiggyDocs.
 * Check out our [Discord Server](https://discord.gg/qmnDsSD) for additional plugin support.
