@@ -59,6 +59,7 @@ class RadarEnchant extends TickingEnchantment
          * Everything below this line is NASTY
          */
         $task = new ClosureTask(function (int $currentTick) use ($player): void {
+            if (!$player->isOnline()) return;
             $hasRadar = false;
             foreach ($player->getInventory()->getContents() as $content) {
                 if ($content->getEnchantment(CustomEnchantIds::RADAR) !== null) {
