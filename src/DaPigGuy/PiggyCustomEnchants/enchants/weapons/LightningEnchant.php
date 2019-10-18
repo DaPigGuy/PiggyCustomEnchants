@@ -30,15 +30,6 @@ class LightningEnchant extends ReactiveEnchantment
     }
 
     /**
-     * @param int $level
-     * @return int
-     */
-    public function getChance(int $level): int
-    {
-        return 10 * $level;
-    }
-
-    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory

@@ -107,13 +107,4 @@ class HallucinationEnchant extends ReactiveEnchantment
             }
         }
     }
-
-    /**
-     * @param int $level
-     * @return int
-     */
-    public function getChance(int $level): int
-    {
-        return 5 * $level;
-    }
 }

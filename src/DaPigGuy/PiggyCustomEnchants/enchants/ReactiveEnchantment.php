@@ -66,7 +66,7 @@ class ReactiveEnchantment extends CustomEnchant
      */
     public function getChance(int $level): int
     {
-        return 100;
+        return (CustomEnchantManager::getPlugin()->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName()))) ?? 100) * $level;
     }
 
     /**

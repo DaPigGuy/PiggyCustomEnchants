@@ -31,3 +31,13 @@ chicken:
 miscellaneous:
   # Toggles PiggyCE's implementation of the vanilla feature to hold armor to equip
   armor-hold-equip: true
+# Reaction chances are defined as chance multiplier x enchantment level. The chance multiplier by default for most enchantments is 100.
+# Chance multipliers can be defined for any reactive enchantments. Enchantments below merely have default chance multipliers.
+# Please keep enchantment names LOWERCASE
+chances:
+  blessed: 15
+  disarmor: 10
+  disarming: 10
+  hallucination: 5
+  jackpot: 10
+  lightning: 10

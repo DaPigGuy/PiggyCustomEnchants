@@ -31,15 +31,6 @@ class BlessedEnchant extends ReactiveEnchantment
     }
 
     /**
-     * @param int $level
-     * @return int
-     */
-    public function getChance(int $level): int
-    {
-        return $level * 15;
-    }
-
-    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
