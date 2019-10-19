@@ -34,7 +34,7 @@ class ParachuteEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($this->isInAir($player)) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::LEVITATION), 30, -5)); //Hack to make the Parachute CE feel like a parachute
+            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::LEVITATION), 30, -5, false)); //Hack to make the Parachute CE feel like a parachute
         }
         $player->resetFallDistance();
     }
