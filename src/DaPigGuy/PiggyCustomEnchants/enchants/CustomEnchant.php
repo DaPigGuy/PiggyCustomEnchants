@@ -23,6 +23,11 @@ class CustomEnchant extends Enchantment
     public $name = "";
     /** @var int */
     public $maxLevel = 5;
+    
+    /** @var int */
+    public $usageType = self::TYPE_HAND;
+    /** @var int */
+    public $itemType = self::ITEM_TYPE_WEAPON;
 
     /** @var array */
     public $cooldown;
@@ -72,7 +77,7 @@ class CustomEnchant extends Enchantment
      */
     public function getUsageType(): int
     {
-        return self::TYPE_HAND;
+        return $this->usageType;
     }
 
     /**
@@ -80,7 +85,7 @@ class CustomEnchant extends Enchantment
      */
     public function getItemType(): int
     {
-        return self::ITEM_TYPE_WEAPON;
+        return $this->itemType;
     }
 
     /**
