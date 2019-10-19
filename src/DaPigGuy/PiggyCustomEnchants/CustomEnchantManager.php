@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\AntiKnockbackEnchant;
-use DaPigGuy\PiggyCustomEnchants\enchants\armor\AntitoxinEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\ArmoredEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\AttackerDeterrentEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\BerserkerEnchant;
@@ -23,6 +22,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\armor\EndershiftEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\EnlightedEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\ForcefieldEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\HeavyEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet\AntitoxinEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet\FocusedEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet\ImplantsEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet\MeditationEnchant;

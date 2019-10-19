@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
+namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
@@ -53,7 +53,7 @@ class AntitoxinEnchant extends ReactiveEnchantment
      */
     public function getUsageType(): int
     {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
+        return CustomEnchant::TYPE_HELMET;
     }
 
     /**
@@ -61,6 +61,6 @@ class AntitoxinEnchant extends ReactiveEnchantment
      */
     public function getItemType(): int
     {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
+        return CustomEnchant::ITEM_TYPE_HELMET;
     }
 }

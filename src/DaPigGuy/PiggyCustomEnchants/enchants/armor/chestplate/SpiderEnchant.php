@@ -43,8 +43,10 @@ class SpiderEnchant extends ToggleableEnchantment
             }), 1);
         } else {
             $player->setCanClimbWalls(false);
-            $this->tasks[$player->getName()]->cancel();
-            unset($this->tasks[$player->getName()]);
+            if (isset($this->tasks[$player->getName()])) {
+                $this->tasks[$player->getName()]->cancel();
+                unset($this->tasks[$player->getName()]);
+            }
         }
     }
 

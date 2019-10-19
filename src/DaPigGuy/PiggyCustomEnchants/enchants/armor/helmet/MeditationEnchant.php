@@ -53,8 +53,8 @@ class MeditationEnchant extends ReactiveEnchantment
                 $enchantment = $meditating->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantIds::MEDITATION);
                 if ($enchantment !== null) {
                     self::$meditationTick[$meditating->getName()]++;
-                    $time = self::$meditationTick[$meditating->getName()] / 40;
-                    $meditating->sendTip(TextFormat::DARK_GREEN . "Meditating...\n " . TextFormat::GREEN . str_repeat("▌", $time) . TextFormat::GRAY . str_repeat("▌", (20 * 20 / 40) - $time));
+                    $time = (int)(self::$meditationTick[$meditating->getName()] / 40);
+                    $meditating->sendTip(TextFormat::DARK_GREEN . "Meditating...\n" . TextFormat::GREEN . str_repeat("▌", $time) . TextFormat::GRAY . str_repeat("▌", (20 * 20 / 40) - $time));
                     if (self::$meditationTick[$meditating->getName()] >= 20 * 20) {
                         self::$meditationTick[$meditating->getName()] = 0;
                         $event = new EntityRegainHealthEvent($meditating, $enchantment->getLevel(), EntityRegainHealthEvent::CAUSE_MAGIC);
