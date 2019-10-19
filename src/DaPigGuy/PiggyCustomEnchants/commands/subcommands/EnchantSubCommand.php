@@ -101,7 +101,7 @@ class EnchantSubCommand extends BaseSubCommand
     public function onRunForm(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if ($sender instanceof Player) {
-            $form = new CustomForm(function (Player $player, ?array $data) use ($args) : void {
+            $form = new CustomForm(function (Player $player, ?array $data): void {
                 if ($data !== null) {
                     $enchant = is_numeric($data[0]) ? CustomEnchantManager::getEnchantment((int)$data[0]) : CustomEnchantManager::getEnchantmentByName($data[0]);
                     if ($enchant == null) {
@@ -119,11 +119,11 @@ class EnchantSubCommand extends BaseSubCommand
                             Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The item is not compatible with this enchant.");
                             return;
                         }
-                        if ($args["level"] > $enchant->getMaxLevel()) {
+                        if ($data[1] > $enchant->getMaxLevel()) {
                             Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
                             return;
                         }
-                        if (($enchantmentInstance = $item->getEnchantment($enchant->getId())) !== null && $enchantmentInstance->getLevel() > $args["level"]) {
+                        if (($enchantmentInstance = $item->getEnchantment($enchant->getId())) !== null && $enchantmentInstance->getLevel() > $data[1]) {
                             Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The enchant has already been applied with a higher level on the item.");
                             return;
                         }
@@ -136,8 +136,9 @@ class EnchantSubCommand extends BaseSubCommand
                             return;
                         }
                     }
-                    $item->addEnchantment(new EnchantmentInstance($enchant, $args["level"]));
+                    $item->addEnchantment(new EnchantmentInstance($enchant, $data[1]));
                     $player->sendMessage(TextFormat::GREEN . "Item successfully enchanted.");
+                    $target->getInventory()->setItemInHand($item);
                 }
             });
             $form->setTitle(TextFormat::GRAY . "Enchant");
