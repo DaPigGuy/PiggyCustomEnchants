@@ -50,8 +50,7 @@ class MeditationEnchant extends ReactiveEnchantment
         parent::__construct($plugin, $id, $rarity);
         $this->taskHandler = $plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
             foreach (self::$meditating as $meditating) {
-                $enchantment = $meditating->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantIds::MEDITATION);
-                if ($enchantment !== null) {
+                if ($meditating->isOnline() && ($enchantment = $meditating->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantIds::MEDITATION)) !== null) {
                     self::$meditationTick[$meditating->getName()]++;
                     $time = (int)(self::$meditationTick[$meditating->getName()] / 40);
                     $meditating->sendTip(TextFormat::DARK_GREEN . "Meditating...\n" . TextFormat::GREEN . str_repeat("▌", $time) . TextFormat::GRAY . str_repeat("▌", (20 * 20 / 40) - $time));
