@@ -374,7 +374,13 @@ class EventListener implements Listener
         foreach ($player->getInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
                 $enchantment = $enchantmentInstance->getType();
-                if ($enchantment instanceof ToggleableEnchantment) {
+                if ($enchantment instanceof ToggleableEnchantment &&
+                    (
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY ||
+                        ($enchantment->getUsageType() === CustomEnchant::TYPE_HAND && $slot === $player->getInventory()->getHeldItemIndex())
+                    )
+                ) {
                     $enchantment->onToggle($player, $content, $player->getInventory(), $slot, $enchantmentInstance->getLevel(), false);
                 }
             }
@@ -382,7 +388,15 @@ class EventListener implements Listener
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
                 $enchantment = $enchantmentInstance->getType();
-                if ($enchantment instanceof ToggleableEnchantment) {
+                if ($enchantment instanceof ToggleableEnchantment &&
+                    (
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_ARMOR_INVENTORY ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_HELMET && Utils::isHelmet($content) ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_CHESTPLATE && Utils::isChestplate($content) ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_LEGGINGS && Utils::isLeggings($content) ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_BOOTS && Utils::isBoots($content))
+                ) {
                     $enchantment->onToggle($player, $content, $player->getArmorInventory(), $slot, $enchantmentInstance->getLevel(), false);
                 }
             }
