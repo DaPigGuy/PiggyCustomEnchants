@@ -51,7 +51,7 @@ class EnchantSubCommand extends BaseSubCommand
             return;
         }
 
-        if ((!$sender instanceof Player && !empty($args["player"])) || !isset($args["enchantment"])) {
+        if ((!$sender instanceof Player && empty($args["player"])) || !isset($args["enchantment"])) {
             $sender->sendMessage("Usage: /ce enchant <enchantment> <level> <player>");
             return;
         }
