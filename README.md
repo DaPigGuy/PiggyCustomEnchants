@@ -20,7 +20,10 @@ All custom enchantments in Version 1.4.6 have also been ported to Version 2.0.0.
 <!-- If one question constantly persists, add the Q/A in here. -->
 ## FAQ
 **Q:** How do I create/use an enchanted book? </br>
-**A:** If you want to create an enchanted book, use the /ce enchant command on a normal book. Afterwards, you place the item you want to enchant on top of the enchanted book. It will then enchant your item. 
+**A:** If you want to create an enchanted book, use the /ce enchant command on a normal book. Afterwards, you place the item you want to enchant on top of the enchanted book. It will then enchant your item.
+
+**Q:** `ErrorException: "Invalid argument supplied for foreach()" (EXCEPTION) in "plugins/PiggyCustomEnchants.phar/src/DaPigGuy/PiggyCustomEnchants/PiggyCustomEnchants" at line 54`</br>
+**A:** This is due to an outdated configuration from Version 1.0.0. You should delete your old configuration to allow PiggyCE to re-generate a new configuration.
 
 ## Information
 * We do not support any spoons. Anything to do with spoons (Issues or PRs) will be ignored.
