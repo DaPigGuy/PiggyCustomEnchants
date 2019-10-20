@@ -1,7 +1,6 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants
 branches:
 - master
-- 2.0.0
 projects:
   PiggyCustomEnchants:
     path: ""

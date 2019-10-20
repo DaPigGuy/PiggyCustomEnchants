@@ -4,6 +4,7 @@
 namespace DaPigGuy\PiggyCustomEnchants\commands\subcommands;
 
 
+use CortexPE\Commando\args\IntegerArgument;
 use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\exception\ArgumentOrderException;
@@ -141,10 +142,10 @@ class EnchantSubCommand extends BaseSubCommand
                     $target->getInventory()->setItemInHand($item);
                 }
             });
-            $form->setTitle(TextFormat::GRAY . "Enchant");
-            $form->addInput(TextFormat::GREEN . "Enchantment");
-            $form->addInput(TextFormat::GREEN . "Level", "", 1);
-            $form->addInput(TextFormat::GREEN . "Player", "", $sender->getName());
+            $form->setTitle(TextFormat::GREEN . "Apply Custom Enchantment");
+            $form->addInput("Enchantment");
+            $form->addInput("Level", "", 1);
+            $form->addInput("Player", "", $sender->getName());
             $sender->sendForm($form);
         }
     }
@@ -156,7 +157,7 @@ class EnchantSubCommand extends BaseSubCommand
     {
         $this->setPermission("piggycustomenchants.command.ce.enchant");
         $this->registerArgument(0, new RawStringArgument("enchantment", true));
-        $this->registerArgument(1, new RawStringArgument("level", true));
+        $this->registerArgument(1, new IntegerArgument("level", true));
         $this->registerArgument(2, new RawStringArgument("player", true));
     }
 }
