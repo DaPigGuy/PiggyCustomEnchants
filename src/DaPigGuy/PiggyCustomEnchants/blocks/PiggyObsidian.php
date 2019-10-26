@@ -27,7 +27,7 @@ class PiggyObsidian extends Obsidian
     /**
      * @return bool
      */
-    public function isMagmaWalker()
+    public function isMagmaWalker(): bool
     {
         return $this->getDamage() === 15;
     }

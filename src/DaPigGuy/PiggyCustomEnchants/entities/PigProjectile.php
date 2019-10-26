@@ -112,7 +112,7 @@ class PigProjectile extends PiggyProjectile
     /**
      * @return int
      */
-    public function getPorkLevel()
+    public function getPorkLevel(): int
     {
         return $this->porkLevel;
     }
@@ -120,7 +120,7 @@ class PigProjectile extends PiggyProjectile
     /**
      * @return bool
      */
-    public function isZombie()
+    public function isZombie(): bool
     {
         return $this->zombie;
     }

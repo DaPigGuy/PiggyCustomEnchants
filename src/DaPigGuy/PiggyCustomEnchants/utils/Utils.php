@@ -74,7 +74,7 @@ class Utils
      * @param int $integer
      * @return string
      */
-    public static function getRomanNumeral(int $integer)
+    public static function getRomanNumeral(int $integer): string
     {
         $romanString = "";
         while ($integer > 0) {
@@ -145,7 +145,7 @@ class Utils
      * @param int $itemType
      * @return bool
      */
-    public static function itemMatchesItemType(Item $item, int $itemType)
+    public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
         switch ($itemType) {
             case CustomEnchant::ITEM_TYPE_GLOBAL:
@@ -258,7 +258,7 @@ class Utils
      * @param int $rarity
      * @return string
      */
-    public static function getColorFromRarity(int $rarity)
+    public static function getColorFromRarity(int $rarity): string
     {
         return self::getTFConstFromString(CustomEnchantManager::getPlugin()->getConfig()->get("rarity-colors")[strtolower(self::RARITY_NAMES[$rarity])]);
     }
@@ -267,7 +267,7 @@ class Utils
      * @param string $color
      * @return string
      */
-    public static function getTFConstFromString(string $color)
+    public static function getTFConstFromString(string $color): string
     {
         $colorConversionTable = [
             "BLACK" => TextFormat::BLACK,

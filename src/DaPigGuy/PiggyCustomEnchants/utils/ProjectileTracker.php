@@ -20,7 +20,7 @@ class ProjectileTracker
      * @param Projectile $projectile
      * @param Item $item
      */
-    public static function addProjectile(Projectile $projectile, Item $item)
+    public static function addProjectile(Projectile $projectile, Item $item): void
     {
         self::$projectile[$projectile->getId()] = $item;
     }
@@ -29,7 +29,7 @@ class ProjectileTracker
      * @param Projectile $projectile
      * @return bool
      */
-    public static function isTrackedProjectile(Projectile $projectile)
+    public static function isTrackedProjectile(Projectile $projectile): bool
     {
         return isset(self::$projectile[$projectile->getId()]);
     }
@@ -58,7 +58,7 @@ class ProjectileTracker
     /**
      * @param Projectile $projectile
      */
-    public static function removeProjectile(Projectile $projectile)
+    public static function removeProjectile(Projectile $projectile): void
     {
         if (!isset(self::$projectile[$projectile->getId()])) return;
         unset(self::$projectile[$projectile->getId()]);

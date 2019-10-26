@@ -16,7 +16,7 @@ use ReflectionException;
  */
 class CheckDisabledEnchantsTask extends AsyncTask
 {
-    public function onRun()
+    public function onRun(): void
     {
         //TODO: Pass through proxy w/ API & Plugin Version for statistics on plugin
         $disabledEnchants = Internet::getURL("https://gist.githubusercontent.com/DaPigGuy/9c65a998bc0aa8d6b4708796110f7d11/raw/");
@@ -29,7 +29,7 @@ class CheckDisabledEnchantsTask extends AsyncTask
      * @param Server $server
      * @throws ReflectionException
      */
-    public function onCompletion(Server $server)
+    public function onCompletion(Server $server): void
     {
         if ($this->getResult() !== null) {
             $plugin = CustomEnchantManager::getPlugin();

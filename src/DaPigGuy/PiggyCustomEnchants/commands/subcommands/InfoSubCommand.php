@@ -85,7 +85,7 @@ class InfoSubCommand extends BaseSubCommand
      * @param Player $player
      * @param CustomEnchant $enchantment
      */
-    public function showInfo(Player $player, CustomEnchant $enchantment)
+    public function showInfo(Player $player, CustomEnchant $enchantment): void
     {
         $infoForm = new SimpleForm(function (Player $player, ?int $data): void {
             if ($data !== null) $this->plugin->getServer()->dispatchCommand($player, "ce");
