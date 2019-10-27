@@ -265,9 +265,8 @@ class CustomEnchantManager
      */
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
-        $const = CustomEnchantIds::class . "::" . strtoupper($name);
-        if (defined($const)) {
-            return self::getEnchantment(constant($const));
+        foreach (self::$enchants as $enchant) {
+            if (strtolower(str_replace(" ", "", $enchant->getName())) === strtolower($name)) return $enchant;
         }
         return null;
     }
