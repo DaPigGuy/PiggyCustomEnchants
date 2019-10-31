@@ -19,6 +19,8 @@ disabled-enchants: []
 per-world-disabled-enchants:
   NoJetpackWorld:
     - "jetpack"
+# If enabled, will check https://gist.github.com/DaPigGuy/9c65a998bc0aa8d6b4708796110f7d11 for extremely problematic enchantments on your version of the plugin to be disabled
+remote-disable: true
 # Whether or not an enchant damages world
 world-damage:
   blaze: true
