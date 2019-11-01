@@ -17,6 +17,8 @@ trait ToggleTrait
 {
     /** @var array */
     public $stack;
+    /** @var array */
+    public $equippedArmorStack;
 
     /**
      * @return bool
@@ -58,7 +60,7 @@ trait ToggleTrait
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
     {
     }
-    
+
     /**
      * @param Player $player
      * @param int $level
@@ -66,7 +68,9 @@ trait ToggleTrait
     public function addToStack(Player $player, int $level): void
     {
         if (!isset($this->stack[$player->getName()])) $this->stack[$player->getName()] = 0;
+        if (!isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()] = 0;
         $this->stack[$player->getName()] += $level;
+        $this->equippedArmorStack[$player->getName()]++;
     }
 
     /**
@@ -76,5 +80,6 @@ trait ToggleTrait
     public function removeFromStack(Player $player, int $level): void
     {
         if (isset($this->stack[$player->getName()])) $this->stack[$player->getName()] -= $level;
+        if (isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()]--;
     }
 }
