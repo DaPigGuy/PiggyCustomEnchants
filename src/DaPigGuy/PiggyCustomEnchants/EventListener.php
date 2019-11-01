@@ -256,7 +256,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $item = $player->getInventory()->getItemInHand();
         $this->attemptReaction($player, $event);
-        if ($this->plugin->getConfig()->getNested("miscellaneous.armor-hold-equip")) {
+        if ($this->plugin->getConfig()->getNested("miscellaneous.armor-hold-equip") && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_AIR) {
             if ($item instanceof Armor || $item->getId() === Item::PUMPKIN || $item->getId() === Item::SKULL) {
                 $slot = 0;
                 if (Utils::isChestplate($item)) $slot = 1;
