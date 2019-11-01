@@ -24,14 +24,6 @@ class AntiKnockbackEnchant extends ReactiveEnchantment
     public $maxLevel = 1;
 
     /**
-     * @return array
-     */
-    public function getReagent(): array
-    {
-        return [EntityDamageByEntityEvent::class];
-    }
-
-    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory

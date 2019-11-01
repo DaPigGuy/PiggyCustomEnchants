@@ -49,7 +49,7 @@ class GrapplingEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $projectile = $event->getChild();
-            $task = new ClosureTask(function (int $currentTick) use ($event, $projectile) : void {
+            $task = new ClosureTask(function () use ($event, $projectile) : void {
                 if ($projectile instanceof Projectile) {
                     $damager = $event->getDamager();
                     $entity = $event->getEntity();

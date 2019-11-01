@@ -48,7 +48,7 @@ class SoulboundEnchant extends ReactiveEnchantment
             $event->setDrops($drops);
             $level > 1 ? $item->addEnchantment($item->getEnchantment(CustomEnchantIds::SOULBOUND)->setLevel($level - 1)) : $item->removeEnchantment(CustomEnchantIds::SOULBOUND);
             if (count($item->getEnchantments()) === 0) $item->removeNamedTagEntry(Item::TAG_ENCH);
-            CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function (int $currentTick) use ($inventory, $slot, $item): void {
+            CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($inventory, $slot, $item): void {
                 $inventory->setItem($slot, $item);
             }), 1);
         }

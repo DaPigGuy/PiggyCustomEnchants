@@ -24,14 +24,6 @@ class GooeyEnchant extends ReactiveEnchantment
     public $name = "Gooey";
 
     /**
-     * @return array
-     */
-    public function getReagent(): array
-    {
-        return [EntityDamageByEntityEvent::class];
-    }
-
-    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -44,7 +36,7 @@ class GooeyEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByEntityEvent) {
             $entity = $event->getEntity();
-            CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function (int $currentTick) use($entity, $level): void {
+            CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use($entity, $level): void {
                 $entity->setMotion(new Vector3($entity->getMotion()->x, (3 * $level * 0.05) + 0.75, $entity->getMotion()->z));
             }), 1);
         }

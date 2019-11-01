@@ -9,7 +9,6 @@ use pocketmine\entity\object\PrimedTNT;
 use pocketmine\event\entity\ExplosionPrimeEvent;
 use pocketmine\level\Position;
 use pocketmine\Player;
-use ReflectionException;
 
 /**
  * Class PiggyTNT
@@ -21,7 +20,6 @@ class PiggyTNT extends PrimedTNT
     public $worldDamage = true;
 
     /**
-     * @throws ReflectionException
      */
     public function explode(): void
     {

@@ -15,13 +15,11 @@ use pocketmine\level\particle\HugeExplodeSeedParticle;
 use pocketmine\level\Position;
 use pocketmine\math\AxisAlignedBB;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\ExplodePacket;
 use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\Player;
 use pocketmine\tile\Chest;
 use pocketmine\tile\Container;
 use pocketmine\tile\Tile;
-use ReflectionException;
 
 /**
  * Class PiggyExplosion
@@ -45,7 +43,6 @@ class PiggyExplosion extends Explosion
 
     /**
      * @return bool
-     * @throws ReflectionException
      */
     public function explodeB(): bool
     {
@@ -137,12 +134,6 @@ class PiggyExplosion extends Explosion
             }
             $send[] = new Vector3($block->x - $source->x, $block->y - $source->y, $block->z - $source->z);
         }
-        $pk = new ExplodePacket();
-        $pk->position = $this->source->asVector3();
-        $pk->radius = $this->size;
-        $pk->records = $send;
-        $this->level->broadcastPacketToViewers($source, $pk);
-
         $this->level->addParticle(new HugeExplodeSeedParticle($source));
         $this->level->broadcastLevelSoundEvent($source, LevelSoundEventPacket::SOUND_EXPLODE);
         return true;

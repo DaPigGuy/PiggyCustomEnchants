@@ -22,14 +22,6 @@ class LightningEnchant extends ReactiveEnchantment
     public $name = "Lightning";
 
     /**
-     * @return array
-     */
-    public function getReagent(): array
-    {
-        return [EntityDamageByEntityEvent::class];
-    }
-
-    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory

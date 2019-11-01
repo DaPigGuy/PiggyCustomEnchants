@@ -12,7 +12,6 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use ReflectionException;
 
 /**
  * Class ExplosiveEnchant
@@ -39,7 +38,6 @@ class ExplosiveEnchant extends ReactiveEnchantment
      * @param Event $event
      * @param int $level
      * @param int $stack
-     * @throws ReflectionException
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

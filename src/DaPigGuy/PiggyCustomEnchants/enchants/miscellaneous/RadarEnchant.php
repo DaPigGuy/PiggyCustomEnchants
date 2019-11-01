@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
-use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\Player;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -19,6 +17,8 @@ use pocketmine\utils\TextFormat;
  */
 class RadarEnchant extends TickingEnchantment
 {
+    use ToggleTrait;
+
     /** @var string */
     public $name = "Radar";
 
@@ -55,29 +55,27 @@ class RadarEnchant extends TickingEnchantment
                 $player->sendDataPacket($pk);
             }
         }
-        /**
-         * Everything below this line is NASTY
-         */
-        $task = new ClosureTask(function (int $currentTick) use ($player): void {
-            if (!$player->isOnline()) return;
-            $hasRadar = false;
-            foreach ($player->getInventory()->getContents() as $content) {
-                if ($content->getEnchantment(CustomEnchantIds::RADAR) !== null) {
-                    $hasRadar = true;
-                    break;
-                }
-            }
-            if (!$hasRadar) {
-                $pk = new SetSpawnPositionPacket();
-                $pk->x = (int)$player->getLevel()->getSafeSpawn()->x;
-                $pk->y = (int)$player->getLevel()->getSafeSpawn()->y;
-                $pk->z = (int)$player->getLevel()->getSafeSpawn()->z;
-                $pk->spawnForced = true;
-                $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-                $player->sendDataPacket($pk);
-            }
-        });
-        CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask($task, 5);
+    }
+
+    /**
+     * @param Player $player
+     * @param Item $item
+     * @param Inventory $inventory
+     * @param int $slot
+     * @param int $level
+     * @param bool $toggle
+     */
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    {
+        if (!$toggle && $player->isOnline()) {
+            $pk = new SetSpawnPositionPacket();
+            $pk->x = (int)$player->getLevel()->getSafeSpawn()->x;
+            $pk->y = (int)$player->getLevel()->getSafeSpawn()->y;
+            $pk->z = (int)$player->getLevel()->getSafeSpawn()->z;
+            $pk->spawnForced = true;
+            $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
+            $player->sendDataPacket($pk);
+        }
     }
 
     /**

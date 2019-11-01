@@ -164,7 +164,7 @@ class CustomEnchantManager
         self::registerEnchantment(new FertilizerEnchant($plugin, CustomEnchantIds::FERTILIZER, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new FocusedEnchant($plugin, CustomEnchantIds::FOCUSED, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new ForcefieldEnchant($plugin, CustomEnchantIds::FORCEFIELD, CustomEnchant::RARITY_MYTHIC));
-        self::registerEnchantment(new GooeyEnchant($plugin, CustomEnchantIds::GOOEY, CustomEnchant::RARITY_UNCOMMON));
+        self::registerEnchantment(new GooeyEnchant($plugin, CustomEnchantIds::GOOEY));
         self::registerEnchantment(new GrapplingEnchant($plugin, CustomEnchantIds::GRAPPLING));
         self::registerEnchantment(new HallucinationEnchant($plugin, CustomEnchantIds::HALLUCINATION, CustomEnchant::RARITY_MYTHIC));
         self::registerEnchantment(new HarvestEnchant($plugin, CustomEnchantIds::HARVEST, CustomEnchant::RARITY_UNCOMMON));
@@ -175,7 +175,7 @@ class CustomEnchantManager
         self::registerEnchantment(new JackpotEnchant($plugin, CustomEnchantIds::JACKPOT, CustomEnchant::RARITY_MYTHIC));
         self::registerEnchantment(new JetpackEnchant($plugin, CustomEnchantIds::JETPACK));
         self::registerEnchantment(new LifestealEnchant($plugin, CustomEnchantIds::LIFESTEAL, CustomEnchant::RARITY_COMMON));
-        self::registerEnchantment(new LightningEnchant($plugin, CustomEnchantIds::LIGHTNING));
+        self::registerEnchantment(new LightningEnchant($plugin, CustomEnchantIds::LIGHTNING, CustomEnchant::RARITY_MYTHIC));
         self::registerEnchantment(new LumberjackEnchant($plugin, CustomEnchantIds::LUMBERJACK));
         self::registerEnchantment(new MagmaWalkerEnchant($plugin, CustomEnchantIds::MAGMAWALKER, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new MeditationEnchant($plugin, CustomEnchantIds::MEDITATION, CustomEnchant::RARITY_UNCOMMON));
