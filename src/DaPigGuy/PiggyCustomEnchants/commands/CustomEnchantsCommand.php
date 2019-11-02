@@ -48,7 +48,7 @@ class CustomEnchantsCommand extends BaseCommand
     {
         if ($sender instanceof Player && $this->plugin->areFormsEnabled()) {
             $subcommands = ["about", "enchant", "info", "list"];
-            $form = new SimpleForm(function (Player $player, ?int $data) use ($subcommands) : void {
+            $form = new SimpleForm(function (Player $player, ?int $data) use ($subcommands): void {
                 if ($data !== null && isset($subcommands[$data])) {
                     $this->plugin->getServer()->dispatchCommand($player, "ce " . $subcommands[$data]);
                 }
