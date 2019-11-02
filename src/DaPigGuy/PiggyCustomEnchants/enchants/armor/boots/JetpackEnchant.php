@@ -63,7 +63,7 @@ class JetpackEnchant extends ReactiveEnchantment
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL) $event->setCancelled();
+        if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL && $this->hasActiveJetpack($player)) $event->setCancelled();
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {

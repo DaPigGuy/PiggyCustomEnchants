@@ -9,8 +9,8 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use pocketmine\entity\Entity;
-use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
+use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\ByteTag;
@@ -35,7 +35,7 @@ class SelfDestructEnchant extends ReactiveEnchantment
      */
     public function getReagent(): array
     {
-        return [EntityDamageEvent::class];
+        return [PlayerDeathEvent::class];
     }
 
     /**
@@ -49,16 +49,14 @@ class SelfDestructEnchant extends ReactiveEnchantment
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if ($event instanceof EntityDamageEvent) {
-            if ($event->getFinalDamage() >= $player->getHealth()) {
-                for ($i = 0; $i < $level; $i++) {
-                    $random = new Random();
-                    /** @var PiggyTNT $tnt */
-                    $tnt = Entity::createEntity("PiggyTNT", $player->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $player->x), new DoubleTag("", $player->y), new DoubleTag("", $player->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
-                    $tnt->worldDamage = CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.self-destruct");
-                    $tnt->setOwningEntity($player);
-                    $tnt->spawnToAll();
-                }
+        if ($event instanceof PlayerDeathEvent) {
+            for ($i = 0; $i < $level; $i++) {
+                $random = new Random();
+                /** @var PiggyTNT $tnt */
+                $tnt = Entity::createEntity("PiggyTNT", $player->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $player->x), new DoubleTag("", $player->y), new DoubleTag("", $player->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
+                $tnt->worldDamage = CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.self-destruct");
+                $tnt->setOwningEntity($player);
+                $tnt->spawnToAll();
             }
         }
     }
