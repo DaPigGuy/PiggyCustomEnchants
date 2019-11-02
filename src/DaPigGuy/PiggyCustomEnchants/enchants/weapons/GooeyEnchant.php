@@ -36,8 +36,8 @@ class GooeyEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByEntityEvent) {
             $entity = $event->getEntity();
-            CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use($entity, $level): void {
-                $entity->setMotion(new Vector3($entity->getMotion()->x, (3 * $level * 0.05) + 0.75, $entity->getMotion()->z));
+            CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($entity, $level): void {
+                if (!$entity->isClosed() && !$entity->isFlaggedForDespawn()) $entity->setMotion(new Vector3($entity->getMotion()->x, (3 * $level * 0.05) + 0.75, $entity->getMotion()->z));
             }), 1);
         }
     }

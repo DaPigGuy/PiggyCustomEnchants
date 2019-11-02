@@ -34,10 +34,8 @@ class VampireEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $player->setHealth($player->getHealth() + ($event->getFinalDamage() / 2));
-            $player->setFood($player->getFood() + ($event->getFinalDamage() / 2));
-            if ($player->getHealth() > $player->getMaxHealth()) $player->setHealth($player->getMaxHealth());
-            if ($player->getFood() > $player->getMaxFood()) $player->setFood($player->getMaxFood());
+            $player->setHealth($player->getHealth() + ($event->getFinalDamage() / 2) > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + ($event->getFinalDamage() / 2));
+            $player->setFood($player->getFood() + ($event->getFinalDamage() / 2) > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + ($event->getFinalDamage() / 2));
             $this->setCooldown($player, 5);
         }
     }

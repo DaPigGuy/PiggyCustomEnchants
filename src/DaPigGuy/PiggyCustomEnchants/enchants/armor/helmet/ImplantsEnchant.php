@@ -49,7 +49,7 @@ class ImplantsEnchant extends ReactiveEnchantment
     {
         if ($event instanceof PlayerMoveEvent) {
             if ($player->getFood() < 20) {
-                $player->setFood($player->getFood() + $level > 20 ? 20 : $player->getFood() + $level);
+                $player->setFood($player->getFood() + $level > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level);
             }
             if ($player->getAirSupplyTicks() < $player->getMaxAirSupplyTicks() && !isset(self::$tasks[$player->getName()])) {
                 self::$tasks[$player->getName()] = new ClosureTask(function () use ($player): void {

@@ -81,7 +81,7 @@ class MeditationEnchant extends ReactiveEnchantment
                 if (!$event->isCancelled()) {
                     $player->heal($event);
                 }
-                $player->setFood($player->getFood() + $level > 20 ? 20 : $player->getFood() + $level);
+                $player->setFood($player->getFood() + $level > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level);
             }
         }
     }

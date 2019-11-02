@@ -41,8 +41,7 @@ class HealingEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
-            $player->setHealth($player->getHealth() + $event->getFinalDamage() + $level);
-            if ($player->getHealth() > $player->getMaxHealth()) $player->setHealth($player->getMaxHealth());
+            $player->setHealth($player->getHealth() + $event->getFinalDamage() + $level > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + $event->getFinalDamage() + $level);
             foreach ($event->getModifiers() as $modifier => $damage) {
                 $event->setModifier(0, $modifier);
             }

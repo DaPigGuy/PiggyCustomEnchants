@@ -32,8 +32,7 @@ class LifestealEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $player->setHealth($player->getHealth() + 2 + $level);
-            if ($player->getHealth() > $player->getMaxHealth()) $player->setHealth($player->getMaxHealth());
+            $player->setHealth($player->getHealth() + 2 + $level > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + 2 + $level);
         }
     }
 }
