@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\boots;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
@@ -66,7 +67,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {
-                    if (!$player->isOnGround()) {
+                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantIds::PARACHUTE) === null) {
                         $player->sendPopup(TextFormat::RED . "It is unsafe to disable your jetpack while in the air.");
                     } else {
                         $this->powerActiveJetpack($player, false);

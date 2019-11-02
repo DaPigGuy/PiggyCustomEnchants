@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
@@ -33,7 +35,7 @@ class ParachuteEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        if ($this->isInAir($player)) {
+        if ($this->isInAir($player) && ($player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantIds::JETPACK) === null || !Enchantment::getEnchantment(CustomEnchantIds::JETPACK)->hasActiveJetpack($player))) {
             $player->addEffect(new EffectInstance(Effect::getEffect(Effect::LEVITATION), 30, -5, false)); //Hack to make the Parachute CE feel like a parachute
         }
         $player->resetFallDistance();
