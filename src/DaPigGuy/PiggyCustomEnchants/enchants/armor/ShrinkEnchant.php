@@ -85,6 +85,7 @@ class ShrinkEnchant extends ToggleableEnchantment
         if (isset($this->shrunk[$player->getName()])) {
             $this->shrinkPower[$player->getName()]--;
             if ($this->equippedArmorStack[$player->getName()] < 4 || $this->shrinkPower[$player->getName()] <= 0) {
+                unset($this->shrunk[$player->getName()]);
                 if ($this->shrinkPower[$player->getName()] <= 0) {
                     $this->setCooldown($player, 75);
                     $this->shrinkPower[$player->getName()] = 60 * 20;

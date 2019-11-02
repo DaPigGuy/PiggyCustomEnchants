@@ -83,6 +83,7 @@ class GrowEnchant extends ToggleableEnchantment
         if (isset($this->grew[$player->getName()])) {
             $this->growPower[$player->getName()]--;
             if ($this->equippedArmorStack[$player->getName()] < 4 || $this->growPower[$player->getName()] <= 0) {
+                unset($this->grew[$player->getName()]);
                 if ($this->growPower[$player->getName()] <= 0) {
                     $this->setCooldown($player, 75);
                     $this->growPower[$player->getName()] = 60 * 20;

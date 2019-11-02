@@ -11,6 +11,7 @@ use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Living;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
+use pocketmine\level\particle\DustParticle;
 use pocketmine\Player;
 
 /**
@@ -39,19 +40,19 @@ class PoisonousCloudEnchant extends TickingEnchantment
                 $effect = new EffectInstance(Effect::getEffect(Effect::POISON), $level * 100, $level - 1, false);
                 $entity->addEffect($effect);
             }
-        }/*
+        }
         if ($player->getServer()->getTick() % 20 === 0) {
             for ($x = -$radius; $x <= $radius; $x += 0.25) {
                 for ($y = -$radius; $y <= $radius; $y += 0.25) {
                     for ($z = -$radius; $z <= $radius; $z += 0.25) {
                         $random = mt_rand(1, 800 * $level);
                         if ($random === 800 * $level) {
-                            $player->getLevel()->addParticle(new GenericParticle($player->add($x, $y, $z), //ID));
+                            $player->getLevel()->addParticle(new DustParticle($player->add($x, $y, $z), 34, 139, 34));
                         }
                     }
                 }
             }
-        }*/
+        }
     }
 
     /**
