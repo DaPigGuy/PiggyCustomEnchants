@@ -25,14 +25,6 @@ class MoltenEnchant extends ReactiveEnchantment
     public $name = "Molten";
 
     /**
-     * @return array
-     */
-    public function getReagent(): array
-    {
-        return [EntityDamageByEntityEvent::class];
-    }
-
-    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -46,7 +38,7 @@ class MoltenEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
-                CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function (int $currentTick) use ($damager, $level): void {
+                CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($damager, $level): void {
                     $damager->setOnFire(3 * $level);
                 }), 1);
             }

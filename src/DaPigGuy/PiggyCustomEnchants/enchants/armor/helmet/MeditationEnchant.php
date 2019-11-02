@@ -5,19 +5,16 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
-use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\utils\TextFormat;
-use ReflectionException;
 
 /**
  * Class MeditationEnchant
@@ -25,6 +22,8 @@ use ReflectionException;
  */
 class MeditationEnchant extends ReactiveEnchantment
 {
+    use TickingTrait;
+
     /** @var string */
     public $name = "Meditation";
     /** @var int */
@@ -34,41 +33,9 @@ class MeditationEnchant extends ReactiveEnchantment
     private $taskHandler;
 
     /** @var Player[] */
-    public static $meditating = [];
+    public $meditating = [];
     /** @var array */
-    public static $meditationTick;
-
-    /**
-     * CustomEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param int $rarity
-     * @throws ReflectionException
-     */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
-    {
-        parent::__construct($plugin, $id, $rarity);
-        $this->taskHandler = $plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick): void {
-            foreach (self::$meditating as $meditating) {
-                if ($meditating->isOnline() && ($enchantment = $meditating->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantIds::MEDITATION)) !== null) {
-                    self::$meditationTick[$meditating->getName()]++;
-                    $time = (int)(self::$meditationTick[$meditating->getName()] / 40);
-                    $meditating->sendTip(TextFormat::DARK_GREEN . "Meditating...\n" . TextFormat::GREEN . str_repeat("▌", $time) . TextFormat::GRAY . str_repeat("▌", (20 * 20 / 40) - $time));
-                    if (self::$meditationTick[$meditating->getName()] >= 20 * 20) {
-                        self::$meditationTick[$meditating->getName()] = 0;
-                        $event = new EntityRegainHealthEvent($meditating, $enchantment->getLevel(), EntityRegainHealthEvent::CAUSE_MAGIC);
-                        if (!$event->isCancelled()) {
-                            $meditating->heal($event);
-                        }
-                        $meditating->setFood($meditating->getFood() + $enchantment->getLevel() > 20 ? 20 : $meditating->getFood() + $enchantment->getLevel());
-                    }
-                } else {
-                    unset(self::$meditating[$meditating->getName()]);
-                    unset(self::$meditationTick[$meditating->getName()]);
-                }
-            }
-        }), 1);
-    }
+    public $meditationTick;
 
     /**
      * @return array
@@ -90,8 +57,32 @@ class MeditationEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerMoveEvent) {
-            self::$meditating[$player->getName()] = $player;
-            self::$meditationTick[$player->getName()] = 0;
+            $this->meditating[$player->getName()] = $player;
+            $this->meditationTick[$player->getName()] = 0;
+        }
+    }
+
+    /**
+     * @param Player $player
+     * @param Item $item
+     * @param Inventory $inventory
+     * @param int $slot
+     * @param int $level
+     */
+    public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
+    {
+        if (isset($this->meditationTick[$player->getName()])) {
+            $this->meditationTick[$player->getName()]++;
+            $time = (int)($this->meditationTick[$player->getName()] / 40);
+            $player->sendTip(TextFormat::DARK_GREEN . "Meditating...\n" . TextFormat::GREEN . str_repeat("▌", $time) . TextFormat::GRAY . str_repeat("▌", (20 * 20 / 40) - $time));
+            if ($this->meditationTick[$player->getName()] >= 20 * 20) {
+                $this->meditationTick[$player->getName()] = 0;
+                $event = new EntityRegainHealthEvent($player, $level, EntityRegainHealthEvent::CAUSE_MAGIC);
+                if (!$event->isCancelled()) {
+                    $player->heal($event);
+                }
+                $player->setFood($player->getFood() + $level > 20 ? 20 : $player->getFood() + $level);
+            }
         }
     }
 

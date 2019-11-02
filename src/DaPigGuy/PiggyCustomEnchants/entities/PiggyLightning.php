@@ -34,7 +34,6 @@ class PiggyLightning extends Entity
     /**
      * @param int $tickDiff
      * @return bool
-     * @throws \ReflectionException
      */
     public function entityBaseTick(int $tickDiff = 1): bool
     {

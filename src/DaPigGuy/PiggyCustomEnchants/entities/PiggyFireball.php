@@ -8,7 +8,6 @@ use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\math\RayTraceResult;
-use ReflectionException;
 
 /**
  * Class PiggyFireball
@@ -36,7 +35,6 @@ class PiggyFireball extends PiggyProjectile
     /**
      * @param Entity $entityHit
      * @param RayTraceResult $hitResult
-     * @throws ReflectionException
      */
     public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void
     {

@@ -4,28 +4,37 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use pocketmine\block\Block;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use pocketmine\scheduler\ClosureTask;
-use pocketmine\scheduler\TaskHandler;
 
 /**
  * Class SpiderEnchant
  */
 class SpiderEnchant extends ToggleableEnchantment
 {
+    use TickingTrait;
+
     /** @var string */
     public $name = "Spider";
     /** @var int */
     public $maxLevel = 1;
 
-    /** @var TaskHandler[] */
-    public $tasks;
+    /**
+     * @param Player $player
+     * @param Item $item
+     * @param Inventory $inventory
+     * @param int $slot
+     * @param int $level
+     */
+    public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
+    {
+        $player->setCanClimbWalls($this->canClimb($player));
+    }
 
     /**
      * @param Player $player
@@ -37,16 +46,8 @@ class SpiderEnchant extends ToggleableEnchantment
      */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
     {
-        if ($toggle) {
-            $this->tasks[$player->getName()] = CustomEnchantManager::getPlugin()->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick) use ($player): void {
-                $player->setCanClimbWalls($this->canClimb($player));
-            }), 1);
-        } else {
+        if (!$toggle) {
             $player->setCanClimbWalls(false);
-            if (isset($this->tasks[$player->getName()])) {
-                $this->tasks[$player->getName()]->cancel();
-                unset($this->tasks[$player->getName()]);
-            }
         }
     }
 

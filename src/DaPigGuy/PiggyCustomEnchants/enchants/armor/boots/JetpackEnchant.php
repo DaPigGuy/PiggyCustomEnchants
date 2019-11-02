@@ -6,18 +6,17 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\boots;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use DaPigGuy\PiggyCustomEnchants\utils\Utils;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
+use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\level\particle\GenericParticle;
 use pocketmine\Player;
-use pocketmine\scheduler\ClosureTask;
 use pocketmine\scheduler\TaskHandler;
 use pocketmine\utils\TextFormat;
-use ReflectionException;
 
 /**
  * Class JetpackEnchant
@@ -25,6 +24,9 @@ use ReflectionException;
  */
 class JetpackEnchant extends ReactiveEnchantment
 {
+    use TickingTrait;
+    use ToggleTrait;
+
     /** @var string */
     public $name = "Jetpack";
     /** @var int */
@@ -34,60 +36,19 @@ class JetpackEnchant extends ReactiveEnchantment
     private $taskHandler;
 
     /** @var Player[] */
-    public static $activeJetpacks = [];
+    public $activeJetpacks = [];
 
     /** @var array */
-    public static $powerRemaining;
+    public $powerRemaining;
     /** @var array */
-    public static $lastActivated;
-
-    /**
-     * JetpackEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param int $rarity
-     * @throws ReflectionException
-     */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
-    {
-        parent::__construct($plugin, $id, $rarity);
-        $this->taskHandler = $plugin->getScheduler()->scheduleRepeatingTask(new ClosureTask(function (int $currentTick) use ($id): void {
-            foreach (self::$activeJetpacks as $activeJetpack) {
-                if (!$activeJetpack->isOnline()) {
-                    $this->powerActiveJetpack($activeJetpack, false);
-                    continue;
-                }
-                $enchantment = $activeJetpack->getArmorInventory()->getBoots()->getEnchantment($id);
-                if ($enchantment === null) {
-                    $this->powerActiveJetpack($activeJetpack, false);
-                    continue;
-                }
-                $activeJetpack->setMotion($activeJetpack->getDirectionVector()->multiply($enchantment->getLevel()));
-                $activeJetpack->resetFallDistance();
-                $activeJetpack->getLevel()->addParticle(new GenericParticle($activeJetpack, 63));
-
-                $time = ceil(self::$powerRemaining[$activeJetpack->getName()] / 10);
-                $activeJetpack->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
-                if ($time <= 2) $activeJetpack->sendTip(TextFormat::RED . "Jetpack low on power.");
-                if ($currentTick % 20 === 0) {
-                    self::$powerRemaining[$activeJetpack->getName()]--;
-                    if (self::$powerRemaining[$activeJetpack->getName()] <= 0) {
-                        $this->powerActiveJetpack($activeJetpack, false);
-                        continue;
-                    }
-                }
-
-                Utils::setShouldTakeFallDamage($activeJetpack, false);
-            }
-        }), 1);
-    }
+    public $lastActivated;
 
     /**
      * @return array
      */
     public function getReagent(): array
     {
-        return [PlayerToggleSneakEvent::class];
+        return [PlayerToggleSneakEvent::class, EntityDamageEvent::class];
     }
 
     /**
@@ -101,6 +62,7 @@ class JetpackEnchant extends ReactiveEnchantment
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
+        if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL) $event->setCancelled();
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {
@@ -118,11 +80,51 @@ class JetpackEnchant extends ReactiveEnchantment
 
     /**
      * @param Player $player
+     * @param Item $item
+     * @param Inventory $inventory
+     * @param int $slot
+     * @param int $level
+     */
+    public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
+    {
+        if ($this->hasActiveJetpack($player)) {
+            $player->setMotion($player->getDirectionVector()->multiply($level));
+            $player->resetFallDistance();
+            $player->getLevel()->addParticle(new GenericParticle($player, 63));
+
+            $time = ceil($this->powerRemaining[$player->getName()] / 10);
+            $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
+            if ($time <= 2) $player->sendTip(TextFormat::RED . "Jetpack low on power.");
+            if ($player->getServer()->getTick() % 20 === 0) {
+                $this->powerRemaining[$player->getName()]--;
+                if ($this->powerRemaining[$player->getName()] <= 0) {
+                    $this->powerActiveJetpack($player, false);
+                    return;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param Player $player
+     * @param Item $item
+     * @param Inventory $inventory
+     * @param int $slot
+     * @param int $level
+     * @param bool $toggle
+     */
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    {
+        if (!$toggle && $this->hasActiveJetpack($player)) $this->powerActiveJetpack($player, false);
+    }
+
+    /**
+     * @param Player $player
      * @return bool
      */
     public function hasActiveJetpack(Player $player): bool
     {
-        return isset(self::$activeJetpacks[$player->getName()]);
+        return isset($this->activeJetpacks[$player->getName()]);
     }
 
     /**
@@ -132,16 +134,16 @@ class JetpackEnchant extends ReactiveEnchantment
     public function powerActiveJetpack(Player $player, bool $power = true): void
     {
         if ($power) {
-            self::$activeJetpacks[$player->getName()] = $player;
-            if (!isset(self::$powerRemaining[$player->getName()])) {
-                self::$powerRemaining[$player->getName()] = 300;
+            $this->activeJetpacks[$player->getName()] = $player;
+            if (!isset($this->powerRemaining[$player->getName()])) {
+                $this->powerRemaining[$player->getName()] = 300;
             } else {
-                self::$powerRemaining[$player->getName()] += (time() - self::$lastActivated[$player->getName()]) / 1.5;
-                if (self::$powerRemaining[$player->getName()] > 300) self::$powerRemaining[$player->getName()] = 300;
+                $this->powerRemaining[$player->getName()] += (time() - $this->lastActivated[$player->getName()]) / 1.5;
+                if ($this->powerRemaining[$player->getName()] > 300) $this->powerRemaining[$player->getName()] = 300;
             }
         } else {
-            unset(self::$activeJetpacks[$player->getName()]);
-            self::$lastActivated[$player->getName()] = time();
+            unset($this->activeJetpacks[$player->getName()]);
+            $this->lastActivated[$player->getName()] = time();
         }
     }
 

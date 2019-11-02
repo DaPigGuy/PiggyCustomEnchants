@@ -52,7 +52,7 @@ class ImplantsEnchant extends ReactiveEnchantment
                 $player->setFood($player->getFood() + $level > 20 ? 20 : $player->getFood() + $level);
             }
             if ($player->getAirSupplyTicks() < $player->getMaxAirSupplyTicks() && !isset(self::$tasks[$player->getName()])) {
-                self::$tasks[$player->getName()] = new ClosureTask(function (int $currentTick) use ($player): void {
+                self::$tasks[$player->getName()] = new ClosureTask(function () use ($player): void {
                     if ($player->isOnline() && $player->isAlive() && ($enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantIds::IMPLANTS)) !== null) {
                         if (!$player->getLevel()->getBlock($player->add(0, 1)) instanceof Water ||
                             $player->getAirSupplyTicks() >= $player->getMaxAirSupplyTicks()) {

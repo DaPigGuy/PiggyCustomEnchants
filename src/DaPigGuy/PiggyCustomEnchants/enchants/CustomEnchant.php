@@ -92,6 +92,30 @@ class CustomEnchant extends Enchantment
     }
 
     /**
+     * @return bool
+     */
+    public function canReact(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canTick(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canToggle(): bool
+    {
+        return false;
+    }
+
+    /**
      * @param Player $player
      * @return int
      */
