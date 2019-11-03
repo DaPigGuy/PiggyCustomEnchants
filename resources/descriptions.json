@@ -10,6 +10,7 @@
   "blessed": "Grants a chance to remove harmful effects during combat.",
   "blaze": "Shoots blazing fireballs.",
   "blind": "Inflicts Blindness upon hitting enemies.",
+  "bombardment": "Bombard enemies with TNT when shot",
   "bountyhunter": "Grants chance to obtain treasure from hitting enemies.",
   "cactus": "Deal damage to nearby enemies.",
   "charge": "Damage increases while sprinting.",
