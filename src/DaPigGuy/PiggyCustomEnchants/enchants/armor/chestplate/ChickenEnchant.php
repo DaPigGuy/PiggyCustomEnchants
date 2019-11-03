@@ -31,7 +31,7 @@ class ChickenEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if (mt_rand(0, 100) <= 5 * $level) {
-            $drops = CustomEnchantManager::getPlugin()->getConfig()->getNested("chicken.drops");
+            $drops = CustomEnchantManager::getPlugin()->getConfig()->getNested("chicken.drops", []);
             if (!is_array($drops)) {
                 $drops = [$drops];
             }

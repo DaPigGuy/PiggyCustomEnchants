@@ -54,7 +54,7 @@ class SelfDestructEnchant extends ReactiveEnchantment
                 $random = new Random();
                 /** @var PiggyTNT $tnt */
                 $tnt = Entity::createEntity("PiggyTNT", $player->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $player->x), new DoubleTag("", $player->y), new DoubleTag("", $player->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
-                $tnt->worldDamage = CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.self-destruct");
+                $tnt->worldDamage = CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.self-destruct", false);
                 $tnt->setOwningEntity($player);
                 $tnt->spawnToAll();
             }

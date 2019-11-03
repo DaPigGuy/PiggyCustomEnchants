@@ -102,6 +102,6 @@ class PiggyCustomEnchants extends PluginBase
      */
     public function areFormsEnabled(): bool
     {
-        return $this->getConfig()->getNested("forms.enabled");
+        return $this->getConfig()->getNested("forms.enabled", true);
     }
 }

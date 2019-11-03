@@ -75,7 +75,7 @@ trait ReactiveTrait
      */
     public function getChance(int $level): int
     {
-        return (CustomEnchantManager::getPlugin()->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName()))) ?? 100) * $level;
+        return (CustomEnchantManager::getPlugin()->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName())), 100)) * $level;
     }
 
     /**
