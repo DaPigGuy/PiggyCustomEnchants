@@ -54,6 +54,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\tools\SmeltingEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\tools\TelepathyEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\BlessedEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows\AutoAimEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows\BombardmentEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows\BountyHunterEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows\GrapplingEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows\HeadhunterEnchant;
@@ -150,6 +151,7 @@ class CustomEnchantManager
         self::registerEnchantment(new ArmoredEnchant($plugin, CustomEnchantIds::ARMORED));
         self::registerEnchantment(new BerserkerEnchant($plugin, CustomEnchantIds::BERSERKER));
         self::registerEnchantment(new BlessedEnchant($plugin, CustomEnchantIds::BLESSED, CustomEnchant::RARITY_UNCOMMON));
+        self::registerEnchantment(new BombardmentEnchant($plugin, CustomEnchantIds::BOMBARDMENT));
         self::registerEnchantment(new BountyHunterEnchant($plugin, CustomEnchantIds::BOUNTYHUNTER, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new CactusEnchant($plugin, CustomEnchantIds::CACTUS));
         self::registerEnchantment(new ChickenEnchant($plugin, CustomEnchantIds::CHICKEN, CustomEnchant::RARITY_UNCOMMON));

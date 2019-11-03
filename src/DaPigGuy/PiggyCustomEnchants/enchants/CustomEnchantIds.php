@@ -50,7 +50,7 @@ class CustomEnchantIds
      */
     const AUTOAIM = 306;
     const BLAZE = 311;
-    //const BOMBARDMENT = 300;
+    const BOMBARDMENT = 300;
     const BOUNTYHUNTER = 309;
     //const FIREWORK = 302;
     const GRAPPLING = 313;

@@ -24,6 +24,7 @@ remote-disable: true
 # Whether or not an enchant damages world
 world-damage:
   blaze: true
+  bombardment: true
   lightning: true
   missile: true
   self-destruct: true
