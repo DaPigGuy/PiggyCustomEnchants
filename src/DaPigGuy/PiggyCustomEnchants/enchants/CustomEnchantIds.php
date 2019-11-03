@@ -38,7 +38,6 @@ class CustomEnchantIds
     const LIGHTNING = 123;
     const POISON = 104;
     //const SHOCKWAVE = 107;
-    //const THUNDERBLOW = 110;
     const VAMPIRE = 111;
     const WITHER = 115;
 
