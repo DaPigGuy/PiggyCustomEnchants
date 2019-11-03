@@ -16,7 +16,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\level\particle\GenericParticle;
 use pocketmine\Player;
-use pocketmine\scheduler\TaskHandler;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -32,9 +31,6 @@ class JetpackEnchant extends ReactiveEnchantment
     public $name = "Jetpack";
     /** @var int */
     public $maxLevel = 3;
-
-    /** @var TaskHandler */
-    private $taskHandler;
 
     /** @var Player[] */
     public $activeJetpacks = [];
@@ -162,10 +158,5 @@ class JetpackEnchant extends ReactiveEnchantment
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOOTS;
-    }
-
-    public function unregister(): void
-    {
-        $this->taskHandler->cancel();
     }
 }

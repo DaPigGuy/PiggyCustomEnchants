@@ -15,7 +15,6 @@ use pocketmine\item\Item;
 use pocketmine\level\particle\EnchantmentTableParticle;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use pocketmine\scheduler\TaskHandler;
 
 /**
  * Class ForcefieldEnchant
@@ -27,9 +26,6 @@ class ForcefieldEnchant extends ToggleableEnchantment
 
     /** @var string */
     public $name = "Forcefield";
-
-    /** @var TaskHandler */
-    private $taskHandler;
 
     /**
      * @param Player $player
@@ -79,10 +75,5 @@ class ForcefieldEnchant extends ToggleableEnchantment
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_ARMOR;
-    }
-
-    public function unregister(): void
-    {
-        $this->taskHandler->cancel();
     }
 }

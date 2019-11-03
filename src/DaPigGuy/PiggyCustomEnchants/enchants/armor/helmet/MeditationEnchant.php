@@ -13,7 +13,6 @@ use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use pocketmine\scheduler\TaskHandler;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -28,9 +27,6 @@ class MeditationEnchant extends ReactiveEnchantment
     public $name = "Meditation";
     /** @var int */
     public $maxLevel = 2;
-
-    /** @var TaskHandler */
-    private $taskHandler;
 
     /** @var Player[] */
     public $meditating = [];
@@ -100,10 +96,5 @@ class MeditationEnchant extends ReactiveEnchantment
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HELMET;
-    }
-
-    public function unregister(): void
-    {
-        $this->taskHandler->cancel();
     }
 }
