@@ -9,7 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
 use pocketmine\entity\object\FallingBlock;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
@@ -26,6 +26,14 @@ class BombardmentEnchant extends ReactiveEnchantment
     public $name = "Bombardment";
 
     /**
+     * @return array
+     */
+    public function getReagent(): array
+    {
+        return [EntityDamageByChildEntityEvent::class];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -36,7 +44,7 @@ class BombardmentEnchant extends ReactiveEnchantment
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if ($event instanceof EntityDamageByEntityEvent) {
+        if ($event instanceof EntityDamageByChildEntityEvent) {
             $entity = $event->getEntity();
 
             $nbt = Entity::createBaseNBT($entity->add(0, 255 - $entity->y), new Vector3(0, -5));
