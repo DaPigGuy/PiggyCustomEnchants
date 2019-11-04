@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\block\Block;
 use pocketmine\entity\Entity;
@@ -47,5 +48,13 @@ class BombardmentEnchant extends ReactiveEnchantment
             $entity->setOwningEntity($player);
             $entity->spawnToAll();
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getItemType(): int
+    {
+        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }
