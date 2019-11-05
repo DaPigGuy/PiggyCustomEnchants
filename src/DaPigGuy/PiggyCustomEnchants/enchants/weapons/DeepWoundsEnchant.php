@@ -7,7 +7,6 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\block\Block;
-use pocketmine\entity\Zombie;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -44,7 +43,7 @@ class DeepWoundsEnchant extends ReactiveEnchantment
             if (!isset(self::$tasks[$entity->getId()])) {
                 $endTime = time() + 20 * $level;
                 self::$tasks[$entity->getId()] = new ClosureTask(function () use ($entity, $endTime): void {
-                    if ($entity->isClosed() || $entity->isFlaggedForDespawn() || $endTime < time()) {
+                    if (!$entity->isAlive() || $entity->isClosed() || $entity->isFlaggedForDespawn() || $endTime < time()) {
                         self::$tasks[$entity->getId()]->getHandler()->cancel();
                         unset(self::$tasks[$entity->getId()]);
                         return;
