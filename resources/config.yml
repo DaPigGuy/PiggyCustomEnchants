@@ -39,6 +39,7 @@ miscellaneous:
 # Please keep enchantment names LOWERCASE
 chances:
   blessed: 15
+  deepwounds: 20
   disarmor: 10
   disarming: 10
   hallucination: 5

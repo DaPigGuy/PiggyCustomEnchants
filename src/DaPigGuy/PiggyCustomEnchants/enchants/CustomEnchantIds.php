@@ -27,7 +27,7 @@ class CustomEnchantIds
     const CHARGE = 113;
     const CRIPPLE = 109;
     const DEATHBRINGER = 102;
-    //const DEEPWOUNDS = 112;
+    const DEEPWOUNDS = 112;
     const DISARMING = 117;
     const DISARMOR = 121;
     const GOOEY = 103;

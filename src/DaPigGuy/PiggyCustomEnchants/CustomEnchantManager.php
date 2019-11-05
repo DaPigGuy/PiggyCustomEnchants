@@ -68,6 +68,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows\ShuffleEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows\VolleyEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\ConditionalDamageMultiplierEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\DeathbringerEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\weapons\DeepWoundsEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\DisarmingEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\DisarmorEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\GooeyEnchant;
@@ -157,6 +158,7 @@ class CustomEnchantManager
         self::registerEnchantment(new ChickenEnchant($plugin, CustomEnchantIds::CHICKEN, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new CloakingEnchant($plugin, CustomEnchantIds::CLOAKING, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new DeathbringerEnchant($plugin, CustomEnchantIds::DEATHBRINGER));
+        self::registerEnchantment(new DeepWoundsEnchant($plugin, CustomEnchantIds::DEEPWOUNDS));
         self::registerEnchantment(new DisarmingEnchant($plugin, CustomEnchantIds::DISARMING, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new DisarmorEnchant($plugin, CustomEnchantIds::DISARMOR, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new DrillerEnchant($plugin, CustomEnchantIds::DRILLER, CustomEnchant::RARITY_UNCOMMON));
