@@ -38,11 +38,13 @@ class AutoAimEnchant extends TickingEnchantment
                 $position = $target->subtract($player);
                 $yaw = atan2($position->z, $position->x) * 180 / M_PI - 90;
                 $length = (new Vector2($position->x, $position->z))->length();
-                $g = 0.006;
-                $tmp = 1 - $g * ($g * ($length * $length) + 2 * $position->y);
-                $pitch = 180 / M_PI * -(atan((1 - sqrt($tmp)) / ($g * $length)));
-                $player->setRotation($yaw, $pitch);
-                $player->sendPosition($player);
+                if ($length !== 0) {
+                    $g = 0.006;
+                    $tmp = 1 - $g * ($g * ($length * $length) + 2 * $position->y);
+                    $pitch = 180 / M_PI * -(atan((1 - sqrt($tmp)) / ($g * $length)));
+                    $player->setRotation($yaw, $pitch);
+                    $player->sendPosition($player);
+                }
             }
         }
     }

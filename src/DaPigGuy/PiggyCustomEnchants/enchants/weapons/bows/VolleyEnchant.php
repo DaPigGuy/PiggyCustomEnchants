@@ -63,7 +63,7 @@ class VolleyEnchant extends ReactiveEnchantment
 
                 $newDirection = new Vector3(sin($pitch) * cos($yaw + $anglesBetweenArrows * $i), cos($pitch), sin($pitch) * sin($yaw + $anglesBetweenArrows * $i));
                 $newProjectile->setMotion($newDirection->normalize()->multiply($projectile->getMotion()->multiply($event->getForce())->length()));
-                if ($projectile->isOnFire()) $newProjectile->setOnFire($projectile->getFireTicks() * 20);
+                if ($projectile->isOnFire()) $newProjectile->setOnFire($projectile->getFireTicks() / 20);
             }
             ProjectileTracker::removeProjectile($projectile);
             $projectile->close();
