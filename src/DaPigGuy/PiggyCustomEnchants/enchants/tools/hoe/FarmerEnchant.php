@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\block\Crops;
@@ -51,7 +50,7 @@ class FarmerEnchant extends ReactiveEnchantment
             if ($block instanceof Crops) {
                 $seed = $block->getPickedItem();
                 if ($player->getInventory()->contains($seed)) {
-                    CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player, $seed, $block): void {
+                    $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player, $seed, $block): void {
                         $block->getLevel()->useItemOn($block->subtract(0, 1), $seed, Vector3::SIDE_UP, $block->subtract(0, 1), $player);
                         $player->getInventory()->removeItem($seed->setCount(1));
                     }), 1);

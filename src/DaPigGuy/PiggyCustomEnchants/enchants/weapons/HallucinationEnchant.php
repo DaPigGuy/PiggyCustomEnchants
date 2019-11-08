@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -51,7 +50,7 @@ class HallucinationEnchant extends ReactiveEnchantment
             if ($entity instanceof Player && !isset(self::$hallucinating[$entity->getName()])) {
                 $originalPosition = $entity->getPosition();
                 self::$hallucinating[$entity->getName()] = true;
-                CustomEnchantManager::getPlugin()->getScheduler()->scheduleRepeatingTask(($task = new ClosureTask(function () use ($entity, $originalPosition): void {
+                $this->plugin->getScheduler()->scheduleRepeatingTask(($task = new ClosureTask(function () use ($entity, $originalPosition): void {
                     for ($x = $originalPosition->x - 1; $x <= $originalPosition->x + 1; $x++) {
                         for ($y = $originalPosition->y - 1; $y <= $originalPosition->y + 2; $y++) {
                             for ($z = $originalPosition->z - 1; $z <= $originalPosition->z + 1; $z++) {
@@ -83,7 +82,7 @@ class HallucinationEnchant extends ReactiveEnchantment
                         }
                     }
                 })), 1);
-                CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($originalPosition, $entity, $task): void {
+                $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($originalPosition, $entity, $task): void {
                     $task->getHandler()->cancel();
                     for ($y = -1; $y <= 3; $y++) {
                         $startBlock = $entity->getLevel()->getBlock($originalPosition->add(0, $y));

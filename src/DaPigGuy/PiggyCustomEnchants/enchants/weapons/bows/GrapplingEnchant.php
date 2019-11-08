@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\entity\projectile\Projectile;
@@ -62,7 +61,7 @@ class GrapplingEnchant extends ReactiveEnchantment
                     }
                 }
             });
-            CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask($task, 1);
+            $this->plugin->getScheduler()->scheduleDelayedTask($task, 1);
             Utils::setShouldTakeFallDamage($player, false);
         }
         if ($event instanceof ProjectileHitBlockEvent) {

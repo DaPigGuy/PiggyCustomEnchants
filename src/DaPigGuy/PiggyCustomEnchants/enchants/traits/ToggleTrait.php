@@ -4,7 +4,6 @@
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
 
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
@@ -38,7 +37,7 @@ trait ToggleTrait
      */
     public function onToggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
     {
-        $perWorldDisabledEnchants = CustomEnchantManager::getPlugin()->getConfig()->get("per-world-disabled-enchants");
+        $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
         if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
         if ($toggle) {

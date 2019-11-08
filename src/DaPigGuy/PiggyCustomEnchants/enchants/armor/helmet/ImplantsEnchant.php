@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
@@ -66,7 +65,7 @@ class ImplantsEnchant extends ReactiveEnchantment
                         unset(self::$tasks[$player->getName()]);
                     }
                 });
-                CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedRepeatingTask(self::$tasks[$player->getName()], 20, 60);
+                $this->plugin->getScheduler()->scheduleDelayedRepeatingTask(self::$tasks[$player->getName()], 20, 60);
             }
             $this->setCooldown($player, 1);
         }

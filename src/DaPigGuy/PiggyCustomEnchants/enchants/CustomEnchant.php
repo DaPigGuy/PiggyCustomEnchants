@@ -17,7 +17,7 @@ use ReflectionException;
 class CustomEnchant extends Enchantment
 {
     /** @var PiggyCustomEnchants */
-    private $plugin;
+    protected $plugin;
 
     /** @var string */
     public $name = "";

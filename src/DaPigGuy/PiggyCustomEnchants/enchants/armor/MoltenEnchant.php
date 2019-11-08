@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\entity\Living;
@@ -38,7 +37,7 @@ class MoltenEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
-                CustomEnchantManager::getPlugin()->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($damager, $level): void {
+                $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($damager, $level): void {
                     $damager->setOnFire(3 * $level);
                 }), 1);
             }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use pocketmine\inventory\Inventory;
@@ -31,7 +30,7 @@ class ChickenEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if (mt_rand(0, 100) <= 5 * $level) {
-            $drops = CustomEnchantManager::getPlugin()->getConfig()->getNested("chicken.drops", []);
+            $drops = $this->plugin->getConfig()->getNested("chicken.drops", []);
             if (!is_array($drops)) {
                 $drops = [$drops];
             }

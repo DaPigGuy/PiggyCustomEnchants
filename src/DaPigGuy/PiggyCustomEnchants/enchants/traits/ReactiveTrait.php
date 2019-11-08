@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
@@ -45,7 +44,7 @@ trait ReactiveTrait
      */
     public function onReaction(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        $perWorldDisabledEnchants = CustomEnchantManager::getPlugin()->getConfig()->get("per-world-disabled-enchants");
+        $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
         if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
         if ($event instanceof EntityDamageByEntityEvent) {
@@ -75,7 +74,7 @@ trait ReactiveTrait
      */
     public function getChance(int $level): int
     {
-        return (CustomEnchantManager::getPlugin()->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName())), 100)) * $level;
+        return ($this->plugin->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName())), 100)) * $level;
     }
 
     /**

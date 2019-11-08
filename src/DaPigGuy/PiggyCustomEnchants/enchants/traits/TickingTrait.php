@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
 
-use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
@@ -40,7 +39,7 @@ trait TickingTrait
      */
     public function onTick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        $perWorldDisabledEnchants = CustomEnchantManager::getPlugin()->getConfig()->get("per-world-disabled-enchants");
+        $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
         if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
         $this->tick($player, $item, $inventory, $slot, $level);
