@@ -61,6 +61,7 @@ class Utils
         CustomEnchantIds::BLAZE => [CustomEnchantIds::PORKIFIED, CustomEnchantIds::WITHERSKULL],
         CustomEnchantIds::GRAPPLING => [CustomEnchantIds::VOLLEY],
         CustomEnchantIds::GROW => [CustomEnchantIds::SHRINK],
+        CustomEnchantIds::HOMING => [CustomEnchantIds::BLAZE, CustomEnchantIds::PORKIFIED, CustomEnchantIds::WITHERSKULL],
         CustomEnchantIds::PORKIFIED => [CustomEnchantIds::WITHERSKULL]
     ];
 

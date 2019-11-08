@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use pocketmine\entity\Entity;
@@ -56,7 +57,7 @@ class VolleyEnchant extends ReactiveEnchantment
                 $entityType = substr($class, strrpos($class, "\\") + 1);
 
                 $nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight()), $player->getDirectionVector(), $player->yaw, $player->pitch);
-                $newProjectile = Entity::createEntity($entityType, $player->getLevel(), $nbt, $player, ($projectile instanceof Arrow ? $projectile->isCritical() : ($projectile instanceof PigProjectile ? $projectile->getPorkLevel() : null)));
+                $newProjectile = Entity::createEntity($entityType, $player->getLevel(), $nbt, $player, ($projectile instanceof Arrow ? $projectile->isCritical() : ($projectile instanceof PigProjectile ? $projectile->getPorkLevel() : null)), ($projectile instanceof HomingArrow ? $projectile->getEnchantmentLevel() : null));
                 if ($newProjectile instanceof Arrow) $newProjectile->setPickupMode(Arrow::PICKUP_NONE);
                 $newProjectile->spawnToAll();
                 ProjectileTracker::addProjectile($newProjectile, $item);

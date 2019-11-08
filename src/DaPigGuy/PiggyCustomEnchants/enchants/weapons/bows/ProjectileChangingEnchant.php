@@ -9,6 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use pocketmine\entity\Entity;
+use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Event;
@@ -67,9 +68,8 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
             /** @var Projectile $projectile */
             $projectile = $event->getProjectile();
             ProjectileTracker::removeProjectile($projectile);
-            $nbt = Entity::createBaseNBT($projectile, $player->getDirectionVector(), $projectile->yaw, $projectile->pitch);
-            $projectile = Entity::createEntity($this->projectileType, $player->getLevel(), $nbt, $player, $level);
-            $projectile->setMotion($projectile->getMotion()->multiply($event->getForce()));
+            $nbt = Entity::createBaseNBT($projectile, $projectile->getMotion(), $projectile->yaw, $projectile->pitch);
+            $projectile = Entity::createEntity($this->projectileType, $player->getLevel(), $nbt, $player, $projectile instanceof Arrow && $this->projectileType === "HomingArrow" ? $projectile->isCritical() : $level, $level);
             $projectile->spawnToAll();
             $event->setProjectile($projectile);
             ProjectileTracker::addProjectile($projectile, $item);

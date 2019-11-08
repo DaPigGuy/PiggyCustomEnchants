@@ -134,6 +134,7 @@ class CustomEnchantManager
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::WITHER, "Wither", CustomEnchant::RARITY_UNCOMMON, [Effect::WITHER]));
 
         self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::BLAZE, "Blaze", "PiggyFireball"));
+        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::HOMING, "Homing", "HomingArrow", 3, CustomEnchant::RARITY_MYTHIC));
         self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::PORKIFIED, "Porkified", "PigProjectile", 3, CustomEnchant::RARITY_MYTHIC));
         self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::WITHERSKULL, "Wither Skull", "PiggyWitherSkull", 1, CustomEnchant::RARITY_MYTHIC));
 

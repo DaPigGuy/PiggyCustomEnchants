@@ -8,6 +8,7 @@ use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
+use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
@@ -44,6 +45,7 @@ class PiggyCustomEnchants extends PluginBase
 
         BlockFactory::registerBlock(new PiggyObsidian(), true);
 
+        Entity::registerEntity(HomingArrow::class, true);
         Entity::registerEntity(PigProjectile::class, true);
         Entity::registerEntity(PiggyFireball::class, true);
         Entity::registerEntity(PiggyWitherSkull::class, true);

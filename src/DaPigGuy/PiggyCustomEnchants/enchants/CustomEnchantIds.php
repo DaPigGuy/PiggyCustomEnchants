@@ -56,6 +56,7 @@ class CustomEnchantIds
     const GRAPPLING = 313;
     const HEADHUNTER = 312;
     const HEALING = 310;
+    const HOMING = 316;
     const MISSILE = 315;
     const MOLOTOV = 304;
     const PARALYZE = 303;

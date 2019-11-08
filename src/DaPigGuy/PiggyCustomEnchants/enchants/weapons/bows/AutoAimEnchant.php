@@ -38,7 +38,7 @@ class AutoAimEnchant extends TickingEnchantment
                 $position = $target->subtract($player);
                 $yaw = atan2($position->z, $position->x) * 180 / M_PI - 90;
                 $length = (new Vector2($position->x, $position->z))->length();
-                if ($length !== 0) {
+                if ((int)$length !== 0) {
                     $g = 0.006;
                     $tmp = 1 - $g * ($g * ($length * $length) + 2 * $position->y);
                     $pitch = 180 / M_PI * -(atan((1 - sqrt($tmp)) / ($g * $length)));
@@ -64,15 +64,15 @@ class AutoAimEnchant extends TickingEnchantment
      */
     public function findNearestEntity(Player $player, int $range): ?Living
     {
-        $nearestPlayer = null;
-        $nearestPlayerDistance = $range;
-        foreach ($player->getLevel()->getEntities() as $p) {
-            $distance = $player->distance($p);
-            if ($p instanceof Living && $distance <= $range && $distance < $nearestPlayerDistance && $player !== $p && $p->isAlive() && !$p->isClosed() && !$p->isFlaggedForDespawn()) {
-                $nearestPlayer = $p;
-                $nearestPlayerDistance = $distance;
+        $nearestEntity = null;
+        $nearestEntityDistance = $range;
+        foreach ($player->getLevel()->getEntities() as $entity) {
+            $distance = $player->distance($entity);
+            if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && $player !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn()) {
+                $nearestEntity = $entity;
+                $nearestEntityDistance = $distance;
             }
         }
-        return $nearestPlayer;
+        return $nearestEntity;
     }
 }
