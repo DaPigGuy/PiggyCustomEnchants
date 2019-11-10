@@ -7,6 +7,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\block\Block;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
@@ -21,6 +22,8 @@ use pocketmine\Player;
  */
 class ParachuteEnchant extends TickingEnchantment
 {
+    use ToggleTrait;
+
     /** @var string */
     public $name = "Parachute";
     /** @var int */
@@ -41,6 +44,21 @@ class ParachuteEnchant extends TickingEnchantment
             if ($this->isInAir($player) || $player->getLevel()->getBlock($player->subtract(0, 1))->getId() !== Block::AIR) $player->removeEffect($effect->getId());
         }
         $player->resetFallDistance();
+    }
+
+    /**
+     * @param Player $player
+     * @param Item $item
+     * @param Inventory $inventory
+     * @param int $slot
+     * @param int $level
+     * @param bool $toggle
+     */
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    {
+        if (!$toggle && ($effect = $player->getEffect(Effect::LEVITATION)) !== null && $effect->getAmplifier() === -5) {
+            $player->removeEffect($effect->getId());
+        }
     }
 
     /**

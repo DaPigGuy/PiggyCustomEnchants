@@ -23,7 +23,6 @@ class CustomEnchantIds
     const BACKSTAB = 122;
     const BLESSED = 120;
     const BLIND = 101;
-    //const BLOCK = 105;
     const CHARGE = 113;
     const CRIPPLE = 109;
     const DEATHBRINGER = 102;
