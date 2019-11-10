@@ -85,8 +85,8 @@ class HallucinationEnchant extends ReactiveEnchantment
                 $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($originalPosition, $entity, $task): void {
                     $task->getHandler()->cancel();
                     for ($y = -1; $y <= 3; $y++) {
-                        $startBlock = $entity->getLevel()->getBlock($originalPosition->add(0, $y));
-                        $entity->getLevel()->sendBlocks([$entity], array_merge([$startBlock], $startBlock->getHorizontalSides(), [
+                        $startBlock = $originalPosition->getLevel()->getBlock($originalPosition->add(0, $y));
+                        $originalPosition->getLevel()->sendBlocks([$entity], array_merge([$startBlock], $startBlock->getHorizontalSides(), [
                             $startBlock->getSide(Vector3::SIDE_NORTH)->getSide(Vector3::SIDE_EAST),
                             $startBlock->getSide(Vector3::SIDE_NORTH)->getSide(Vector3::SIDE_WEST),
                             $startBlock->getSide(Vector3::SIDE_SOUTH)->getSide(Vector3::SIDE_EAST),
