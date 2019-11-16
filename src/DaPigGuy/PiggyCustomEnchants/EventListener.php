@@ -134,6 +134,7 @@ class EventListener implements Listener
             $newItem = $event->getNewItem();
             $inventory = $entity->getArmorInventory();
             $slot = $event->getSlot();
+            if ($oldItem->equals($newItem, false, true)) return;
             foreach ($oldItem->getEnchantments() as $enchantmentInstance) {
                 /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
@@ -302,6 +303,7 @@ class EventListener implements Listener
                     $player->getArmorInventory()->setItem($slot, $item);
                     $player->getInventory()->setItemInHand(Item::get(Item::AIR));
                 }
+                $event->setCancelled();
             }
         }
     }
