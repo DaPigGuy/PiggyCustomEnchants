@@ -45,13 +45,9 @@ class PiggyCustomEnchants extends PluginBase
 
         BlockFactory::registerBlock(new PiggyObsidian(), true);
 
-        Entity::registerEntity(HomingArrow::class, true);
-        Entity::registerEntity(PigProjectile::class, true);
-        Entity::registerEntity(PiggyFireball::class, true);
-        Entity::registerEntity(PiggyWitherSkull::class, true);
-
-        Entity::registerEntity(PiggyLightning::class, true);
-        Entity::registerEntity(PiggyTNT::class, true);
+        foreach ([HomingArrow::class, PigProjectile::class, PiggyFireball::class, PiggyWitherSkull::class, PiggyLightning::class, PiggyTNT::class] as $entityClassName) {
+            Entity::registerEntity($entityClassName, true);
+        }
 
         foreach ($this->getConfig()->get("disabled-enchants") as $enchant) {
             $e = CustomEnchantManager::getEnchantmentByName($enchant);
