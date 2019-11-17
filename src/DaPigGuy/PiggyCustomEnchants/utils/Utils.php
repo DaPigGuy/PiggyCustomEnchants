@@ -68,9 +68,6 @@ class Utils
     /** @var array */
     public static $shouldTakeFallDamage;
 
-    /** @var array */
-    public static $exemptFromReactions;
-
     /**
      * @param int $integer
      * @return string
@@ -148,6 +145,7 @@ class Utils
      */
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
+        if ($item->getId() === Item::BOOK) return true;
         switch ($itemType) {
             case CustomEnchant::ITEM_TYPE_GLOBAL:
                 return true;
