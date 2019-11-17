@@ -9,6 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
+use pocketmine\scheduler\ClosureTask;
 
 /**
  * Class OverloadEnchant
@@ -32,7 +33,9 @@ class OverloadEnchant extends ToggleableEnchantment
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
     {
         $player->setMaxHealth($player->getMaxHealth() + 2 * $level * ($toggle ? 1 : -1));
-        $player->setHealth($player->getHealth() + 2 * $level * ($toggle ? 1 : -1));
+        $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player, $level, $toggle): void {
+            $player->setHealth($player->getHealth() + 2 * $level * ($toggle ? 1 : -1));
+        }), 1);
         if ($player->getHealth() > $player->getMaxHealth()) $player->setHealth($player->getMaxHealth());
     }
 
