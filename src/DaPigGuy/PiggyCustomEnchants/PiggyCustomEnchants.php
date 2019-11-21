@@ -54,7 +54,7 @@ class PiggyCustomEnchants extends PluginBase
             if ($e instanceof CustomEnchant) CustomEnchantManager::unregisterEnchantment($e->getId());
         }
 
-        $this->getServer()->getCommandMap()->register("piggycustomenchants", new CustomEnchantsCommand($this, "customenchant", "Manage Custom Enchants", ["ce", "customenchant"]));
+        $this->getServer()->getCommandMap()->register("piggycustomenchants", new CustomEnchantsCommand($this, "customenchants", "Manage Custom Enchants", ["ce", "customenchant"]));
 
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getScheduler()->scheduleRepeatingTask(new TickEnchantmentsTask($this), 1);
