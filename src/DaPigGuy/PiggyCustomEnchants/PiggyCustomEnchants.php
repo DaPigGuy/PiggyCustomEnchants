@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants;
 
+use CortexPE\Commando\BaseCommand;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
@@ -17,6 +18,7 @@ use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use DaPigGuy\PiggyCustomEnchants\tasks\CheckDisabledEnchantsTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\CheckUpdatesTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
+use jojoe77777\FormAPI\Form;
 use pocketmine\block\BlockFactory;
 use pocketmine\entity\Entity;
 use pocketmine\plugin\PluginBase;
@@ -37,6 +39,17 @@ class PiggyCustomEnchants extends PluginBase
      */
     public function onEnable(): void
     {
+        if (!class_exists(BaseCommand::class)) {
+            $this->getLogger()->error("Commando virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return;
+        }
+        if (!class_exists(Form::class)) {
+            $this->getLogger()->error("libformapi virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
+            $this->getServer()->getPluginManager()->disablePlugin($this);
+            return;
+        }
+
         $this->saveResource("descriptions.json");
         $this->descriptions = new Config($this->getDataFolder() . "descriptions.json");
         $this->saveDefaultConfig();
