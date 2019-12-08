@@ -231,7 +231,7 @@ class Utils
      */
     public static function filterDisplayedEnchants(Item $item): Item
     {
-        $item->removeNamedTagEntry(Item::TAG_DISPLAY);
+        if (count($item->getEnchantments()) > 0) $item->removeNamedTagEntry(Item::TAG_DISPLAY);
         if ($item->getNamedTagEntry("OriginalDisplayTag") instanceof CompoundTag) {
             $item->setNamedTagEntry(new CompoundTag(Item::TAG_DISPLAY, $item->getNamedTagEntry("OriginalDisplayTag")->getValue()));
             $item->removeNamedTagEntry("OriginalDisplayTag");
