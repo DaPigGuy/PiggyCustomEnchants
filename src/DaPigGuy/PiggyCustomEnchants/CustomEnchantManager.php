@@ -102,7 +102,7 @@ class CustomEnchantManager
     public static function init(PiggyCustomEnchants $plugin)
     {
         self::$plugin = $plugin;
-        $vanillaEnchantments = [];
+        $vanillaEnchantments = new \SplFixedArray(1024);
 
         $property = new ReflectionProperty(Enchantment::class, "enchantments");
         $property->setAccessible(true);

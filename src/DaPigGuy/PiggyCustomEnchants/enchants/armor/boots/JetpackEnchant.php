@@ -63,7 +63,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {
-                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantIds::PARACHUTE) === null) {
+                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantIds::PARACHUTE) === null && !$player->getAllowFlight()) {
                         $player->sendPopup(TextFormat::RED . "It is unsafe to disable your jetpack while in the air.");
                     } else {
                         $this->powerActiveJetpack($player, false);
@@ -87,7 +87,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($this->hasActiveJetpack($player)) {
             $player->setMotion($player->getDirectionVector()->multiply($level));
             $player->resetFallDistance();
-            $player->getLevel()->addParticle(new GenericParticle($player, 63));
+            $player->getLevel()->addParticle(new GenericParticle($player, 64)); //TODO: Change to Particle::TYPE_CAMPFIRE_SMOKE on next PMMP release
 
             $time = ceil($this->powerRemaining[$player->getName()] / 10);
             $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
