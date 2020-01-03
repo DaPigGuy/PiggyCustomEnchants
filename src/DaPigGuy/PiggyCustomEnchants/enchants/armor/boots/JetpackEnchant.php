@@ -15,6 +15,7 @@ use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\level\particle\GenericParticle;
+use pocketmine\level\particle\Particle;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
@@ -87,7 +88,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($this->hasActiveJetpack($player)) {
             $player->setMotion($player->getDirectionVector()->multiply($level));
             $player->resetFallDistance();
-            $player->getLevel()->addParticle(new GenericParticle($player, 64)); //TODO: Change to Particle::TYPE_CAMPFIRE_SMOKE on next PMMP release
+            $player->getLevel()->addParticle(new GenericParticle($player, Particle::TYPE_CAMPFIRE_SMOKE));
 
             $time = ceil($this->powerRemaining[$player->getName()] / 10);
             $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
