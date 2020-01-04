@@ -13,6 +13,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 use ReflectionException;
+use function array_search;
 
 /**
  * Class SmeltingEnchant
