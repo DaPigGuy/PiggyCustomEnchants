@@ -67,7 +67,8 @@ class SmeltingEnchant extends ReactiveEnchantment
     {
         if ($event instanceof BlockBreakEvent) {
             $event->setDrops(array_map(function (Item $item) {
-                if (($key = array_search($item, $this->inputTable)) || ($key = array_search($item->setDamage(-1), $this->inputTable))) {
+                $clonedItem = clone $item;
+                if (($key = array_search($clonedItem, $this->inputTable)) || ($key = array_search($clonedItem->setDamage(-1), $this->inputTable))) {
                     return $this->outputTable[$key];
                 }
                 return $item;
