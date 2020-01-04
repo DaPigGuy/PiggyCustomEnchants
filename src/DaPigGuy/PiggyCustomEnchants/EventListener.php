@@ -33,7 +33,7 @@ use pocketmine\event\player\cheat\PlayerIllegalMoveEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
-use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -335,9 +335,9 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerJoinEvent $event
+     * @param PlayerLoginEvent $event
      */
-    public function onJoin(PlayerJoinEvent $event): void
+    public function onJoin(PlayerLoginEvent $event): void
     {
         $player = $event->getPlayer();
         foreach ($player->getInventory()->getItemInHand()->getEnchantments() as $enchantmentInstance) {
