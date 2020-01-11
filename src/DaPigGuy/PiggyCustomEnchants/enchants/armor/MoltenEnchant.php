@@ -41,7 +41,7 @@ class MoltenEnchant extends ReactiveEnchantment
                     if($damager instanceof Player){
                         if($damager->isOnline()) $damager->setOnFire(3 * $level);
                     }else{
-                        if(!$damager->isClosed() and $damager !== null) $damager->setOnFire(3 * $level);
+                        if($damager !== null and !$damager->isClosed()) $damager->setOnFire(3 * $level);
                     }
                 }), 1);
             }
