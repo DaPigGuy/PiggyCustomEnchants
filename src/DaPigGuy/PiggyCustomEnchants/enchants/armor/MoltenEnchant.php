@@ -38,11 +38,7 @@ class MoltenEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
                 $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($damager, $level): void {
-                    if($damager instanceof Player){
-                        if($damager->isOnline()) $damager->setOnFire(3 * $level);
-                    }else{
-                        if($damager !== null and !$damager->isClosed()) $damager->setOnFire(3 * $level);
-                    }
+                    if($damager !== null and !$damager->isClosed()) $damager->setOnFire(3 * $level);
                 }), 1);
             }
         }
