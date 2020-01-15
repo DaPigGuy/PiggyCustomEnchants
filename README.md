@@ -22,9 +22,6 @@ All custom enchantments in v1.4.6 have also been ported to v2.0.0.
 **Q:** `'CortexPE\Commando\BaseCommand' not found in ...\PiggyCustomEnchants-master\src\DaPigGuy\PiggyCustomEnchants\commands\CustomEnchants` </br>
 **A:** You MUST use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants/~) instead of downloading directly from GitHub.
 
-**Q:** `TypeError: "json_decode() expects parameter 1 to be string, bool given" (EXCEPTION) in "plugins/PiggyCustomEnchants.phar/src/DaPigGuy/PiggyCustomEnchants/tasks/CheckUpdatesTask" at line 38` </br>
-**A:** This is due to the server's operating system being on Android. Consider switching to Windows, MacOS, or Linux to resolve this error.
-
 ## Information
 * We do not support any spoons. Anything to do with spoons (Issues or PRs) will be ignored.
 * You can find a list of the current custom enchants at [wiki](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
