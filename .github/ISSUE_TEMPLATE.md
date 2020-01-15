@@ -16,10 +16,15 @@ Please make sure your issue complies with these guidelines:
 - PiggyCustomEnchants:
 <!-- Do /version to check, do not input "latest". -->
 - PMMP:
+<!-- The operating system your server is running on. -->
+- OS:
 
 #### **Steps to Reproduce the Issue**
 <!-- How do you reproduce the issue? -->
 1.
 
 #### **Extra Information**
-<!-- Anything else we should know? -->
+<!--
+  Anything else we should know?
+  If possible, please include either crashdump data or a link to https://crash.pmmp.io.
+-->
