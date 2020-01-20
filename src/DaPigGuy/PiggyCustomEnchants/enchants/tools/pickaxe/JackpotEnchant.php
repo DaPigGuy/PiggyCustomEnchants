@@ -51,7 +51,7 @@ class JackpotEnchant extends ReactiveEnchantment
     {
         if ($event instanceof BlockBreakEvent) {
             $key = array_search($event->getBlock()->getId(), self::ORE_TIERS);
-            if ($key !== null) {
+            if ($key !== false) {
                 if (isset(self::ORE_TIERS[$key + 1])) {
                     $drops = $event->getDrops();
                     foreach ($drops as $k => $drop) {
