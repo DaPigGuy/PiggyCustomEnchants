@@ -111,7 +111,7 @@ class JetpackEnchant extends ReactiveEnchantment
      * @param int $level
      * @param bool $toggle
      */
-    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if (!$toggle && $this->hasActiveJetpack($player)) $this->powerActiveJetpack($player, false);
     }

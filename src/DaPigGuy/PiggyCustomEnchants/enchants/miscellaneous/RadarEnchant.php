@@ -65,7 +65,7 @@ class RadarEnchant extends TickingEnchantment
      * @param int $level
      * @param bool $toggle
      */
-    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if (!$toggle && $player->isOnline()) {
             $pk = new SetSpawnPositionPacket();

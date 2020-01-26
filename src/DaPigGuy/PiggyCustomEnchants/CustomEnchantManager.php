@@ -99,7 +99,7 @@ class CustomEnchantManager
      * @param PiggyCustomEnchants $plugin
      * @throws ReflectionException
      */
-    public static function init(PiggyCustomEnchants $plugin)
+    public static function init(PiggyCustomEnchants $plugin): void
     {
         self::$plugin = $plugin;
         $vanillaEnchantments = new \SplFixedArray(1024);
@@ -234,7 +234,7 @@ class CustomEnchantManager
     }
 
     /**
-     * @param $id
+     * @param int|Enchantment $id
      * @throws ReflectionException
      */
     public static function unregisterEnchantment($id): void
