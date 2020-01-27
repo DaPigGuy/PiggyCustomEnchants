@@ -59,7 +59,7 @@ class PiggyObsidian extends Obsidian
                     $pos = $this->add($x, 0, $z);
                     if (!$this->equals($pos)) {
                         $block = $this->getLevel()->getBlock($pos);
-                        if ($block->getId() === $this->getId() && $block->isMagmaWalker()) {
+                        if ($block instanceof PiggyObsidian && $block->isMagmaWalker()) {
                             $count++;
                         }
                     }

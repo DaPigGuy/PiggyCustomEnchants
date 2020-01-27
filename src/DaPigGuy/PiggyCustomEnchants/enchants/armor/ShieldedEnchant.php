@@ -34,7 +34,7 @@ class ShieldedEnchant extends ToggleableEnchantment
      * @param int $level
      * @param bool $toggle
      */
-    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if ($toggle) {
             if ($player->hasEffect(Effect::RESISTANCE) && $player->getEffect(Effect::RESISTANCE)->getAmplifier() > $this->stack[$player->getName()] - 1) $this->previousEffect[$player->getName()] = $player->getEffect(Effect::RESISTANCE);

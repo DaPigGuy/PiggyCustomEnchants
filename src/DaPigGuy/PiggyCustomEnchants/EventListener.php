@@ -9,6 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\tools\DrillerEnchant;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\block\Block;
@@ -143,6 +144,7 @@ class EventListener implements Listener
                 }
             }
             foreach ($newItem->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() &&
                     (
@@ -171,6 +173,7 @@ class EventListener implements Listener
                 $nbt = Entity::createBaseNBT($entity);
                 $nbt->setShort("Fuse", 0);
 
+                /** @var PiggyTNT $tnt */
                 $tnt = Entity::createEntity("PiggyTNT", $entity->getLevel(), $nbt);
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.bombardment", false);
                 $tnt->setOwningEntity($entity->getOwningEntity());
@@ -241,6 +244,7 @@ class EventListener implements Listener
             }
             if ($oldItem->getId() === Item::AIR) {
                 foreach ($newItem->getEnchantments() as $enchantmentInstance) {
+                    /** @var ToggleableEnchantment $enchantment */
                     $enchantment = $enchantmentInstance->getType();
                     if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
                         $enchantment->onToggle($entity, $newItem, $inventory, $slot, $enchantmentInstance->getLevel(), true);
@@ -275,7 +279,7 @@ class EventListener implements Listener
     /**
      * @param PlayerIllegalMoveEvent $event
      */
-    public function onIllegalMove(PlayerIllegalMoveEvent $event)
+    public function onIllegalMove(PlayerIllegalMoveEvent $event): void
     {
         $player = $event->getPlayer();
         if ($player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantIds::SPIDER) !== null) {
@@ -327,6 +331,7 @@ class EventListener implements Listener
             }
         }
         foreach ($newItem->getEnchantments() as $enchantmentInstance) {
+            /** @var ToggleableEnchantment $enchantment */
             $enchantment = $enchantmentInstance->getType();
             if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_HAND || $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
                 $enchantment->onToggle($player, $newItem, $inventory, $event->getSlot(), $enchantmentInstance->getLevel(), true);
@@ -349,6 +354,7 @@ class EventListener implements Listener
         }
         foreach ($player->getInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
                     $enchantment->onToggle($player, $content, $player->getInventory(), $slot, $enchantmentInstance->getLevel(), true);
@@ -357,6 +363,7 @@ class EventListener implements Listener
         }
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && (
                         $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
@@ -375,7 +382,7 @@ class EventListener implements Listener
     /**
      * @param PlayerKickEvent $event
      */
-    public function onKick(PlayerKickEvent $event)
+    public function onKick(PlayerKickEvent $event): void
     {
         $player = $event->getPlayer();
         if ($event->getReason() === "Flying is not enabled on this server") {
@@ -429,6 +436,7 @@ class EventListener implements Listener
         }
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() &&
                     (
@@ -490,7 +498,7 @@ class EventListener implements Listener
      */
     public function attemptReaction(Player $player, Event $event): void
     {
-        if ($player->getInventory() === null) return;
+        if ($player->isClosed()) return;
         if ($event instanceof EntityDamageByChildEntityEvent || $event instanceof ProjectileHitBlockEvent) {
             $projectile = $event instanceof EntityDamageByEntityEvent ? $event->getChild() : $event->getEntity();
             if ($projectile instanceof Projectile && ProjectileTracker::isTrackedProjectile($projectile)) {
@@ -537,6 +545,7 @@ class EventListener implements Listener
         }
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach (Utils::sortEnchantmentsByPriority($content->getEnchantments()) as $enchantmentInstance) {
+                /** @var ReactiveEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canReact()) {
                     if ((

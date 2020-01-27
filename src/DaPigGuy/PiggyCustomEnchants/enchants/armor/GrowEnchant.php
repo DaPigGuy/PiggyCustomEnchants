@@ -33,7 +33,7 @@ class GrowEnchant extends ToggleableEnchantment
     public $growPower;
 
     /**
-     * @return Event[]
+     * @return array
      */
     public function getReagent(): array
     {

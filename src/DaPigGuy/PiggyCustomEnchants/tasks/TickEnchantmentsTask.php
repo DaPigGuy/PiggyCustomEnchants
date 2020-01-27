@@ -71,6 +71,7 @@ class TickEnchantmentsTask extends Task
             foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
                 if ($content->getNamedTagEntry("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getArmorInventory()->setItem($slot, $this->cleanOldItems($content));
                 foreach ($content->getEnchantments() as $enchantmentInstance) {
+                    /** @var TickingEnchantment $enchantment */
                     $enchantment = $enchantmentInstance->getType();
                     if ($enchantment instanceof CustomEnchant && $enchantment->canTick()) {
                         if (!in_array($enchantment, $successfulEnchantments) || $enchantment->supportsMultipleItems()) {

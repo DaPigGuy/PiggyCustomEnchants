@@ -11,6 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use pocketmine\entity\Entity;
 use pocketmine\entity\projectile\Arrow;
+use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -51,12 +52,14 @@ class VolleyEnchant extends ReactiveEnchantment
             $anglesBetweenArrows = (45 / ($amount - 1)) * M_PI / 180;
             $pitch = ($player->pitch + 90) * M_PI / 180;
             $yaw = ($player->yaw + 90 - 45 / 2) * M_PI / 180;
+            /** @var Projectile $projectile */
             $projectile = $event->getProjectile();
             for ($i = 0; $i < $amount; $i++) {
                 $class = get_class($projectile);
                 $entityType = substr($class, strrpos($class, "\\") + 1);
 
                 $nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight()), $player->getDirectionVector(), $player->yaw, $player->pitch);
+                /** @var Projectile $newProjectile */
                 $newProjectile = Entity::createEntity($entityType, $player->getLevel(), $nbt, $player, ($projectile instanceof Arrow ? $projectile->isCritical() : ($projectile instanceof PigProjectile ? $projectile->getPorkLevel() : null)), ($projectile instanceof HomingArrow ? $projectile->getEnchantmentLevel() : null));
                 if ($newProjectile instanceof Arrow) $newProjectile->setPickupMode(Arrow::PICKUP_NONE);
                 $newProjectile->spawnToAll();

@@ -50,6 +50,7 @@ class JackpotEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
+            /** @var int $key */
             $key = array_search($event->getBlock()->getId(), self::ORE_TIERS);
             if ($key !== false) {
                 if (isset(self::ORE_TIERS[$key + 1])) {

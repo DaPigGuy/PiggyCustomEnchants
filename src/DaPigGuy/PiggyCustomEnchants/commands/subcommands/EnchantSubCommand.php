@@ -56,8 +56,8 @@ class EnchantSubCommand extends BaseSubCommand
             return;
         }
         $args["level"] = empty($args["level"]) ? 1 : $args["level"];
-        if (!is_numeric($args["level"])) {
-            $sender->sendMessage(TextFormat::RED . "Enchantment level must be numeric");
+        if (!is_int($args["level"])) {
+            $sender->sendMessage(TextFormat::RED . "Enchantment level must be an integer");
             return;
         }
         $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayer($args["player"]);
@@ -144,7 +144,7 @@ class EnchantSubCommand extends BaseSubCommand
             });
             $form->setTitle(TextFormat::GREEN . "Apply Custom Enchantment");
             $form->addInput("Enchantment");
-            $form->addInput("Level", "", 1);
+            $form->addInput("Level", "", "1");
             $form->addInput("Player", "", $sender->getName());
             $sender->sendForm($form);
         }

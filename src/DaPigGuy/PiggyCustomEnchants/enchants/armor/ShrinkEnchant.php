@@ -35,7 +35,7 @@ class ShrinkEnchant extends ToggleableEnchantment
     public $shrinkPower;
 
     /**
-     * @return Event[]
+     * @return array
      */
     public function getReagent(): array
     {

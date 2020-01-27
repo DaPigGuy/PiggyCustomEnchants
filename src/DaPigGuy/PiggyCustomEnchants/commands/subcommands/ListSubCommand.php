@@ -51,7 +51,7 @@ class ListSubCommand extends BaseSubCommand
     }
 
     /**
-     * @return CustomEnchant[]
+     * @return CustomEnchant[][]
      */
     public function getEnchantmentsByType(): array
     {

@@ -59,7 +59,7 @@ class LumberjackEnchant extends ReactiveEnchantment
      * @param Player $player
      * @param int $mined
      */
-    public function breakTree(Block $block, Player $player, int $mined = 0)
+    public function breakTree(Block $block, Player $player, int $mined = 0): void
     {
         $item = $player->getInventory()->getItemInHand();
         for ($i = 0; $i <= 5; $i++) {
