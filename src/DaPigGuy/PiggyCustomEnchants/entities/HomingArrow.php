@@ -10,7 +10,6 @@ use pocketmine\entity\projectile\Arrow;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
 
 /**
  * Class HomingArrow
@@ -60,7 +59,6 @@ class HomingArrow extends Arrow
     }
 
     /**
-     * @param Player $player
      * @param int $range
      * @return Living|null
      */
