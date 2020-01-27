@@ -84,7 +84,7 @@ class PiggyExplosion extends Explosion
         $item = $this->what->getInventory()->getItemInHand();
         foreach ($this->affectedBlocks as $key => $block) {
             $drops = $this->what->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
-            $t = $this->level->getTileAt($block->x, $block->y, $block->z);
+            $t = $this->level->getTileAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ());
             if ($t instanceof Container) {
                 $drops = array_merge($drops, $t->getInventory()->getContents());
             }
@@ -111,17 +111,17 @@ class PiggyExplosion extends Explosion
                 }
             }
 
-            $this->level->setBlockIdAt($block->x, $block->y, $block->z, 0);
-            $this->level->setBlockDataAt($block->x, $block->y, $block->z, 0);
+            $this->level->setBlockIdAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ(), 0);
+            $this->level->setBlockDataAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ(), 0);
 
             $pos = new Vector3($block->x, $block->y, $block->z);
             for ($side = 0; $side <= 5; $side++) {
                 $sideBlock = $pos->getSide($side);
-                if (!$this->level->isInWorld($sideBlock->x, $sideBlock->y, $sideBlock->z)) {
+                if (!$this->level->isInWorld($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ())) {
                     continue;
                 }
                 if (!isset($this->affectedBlocks[$index = ((($sideBlock->x) & 0xFFFFFFF) << 36) | ((($sideBlock->y) & 0xff) << 28) | (($sideBlock->z) & 0xFFFFFFF)]) and !isset($updateBlocks[$index])) {
-                    $ev = new BlockUpdateEvent($this->level->getBlockAt($sideBlock->x, $sideBlock->y, $sideBlock->z));
+                    $ev = new BlockUpdateEvent($this->level->getBlockAt($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ()));
                     $ev->call();
                     if (!$ev->isCancelled()) {
                         foreach ($this->level->getNearbyEntities(new AxisAlignedBB($sideBlock->x - 1, $sideBlock->y - 1, $sideBlock->z - 1, $sideBlock->x + 2, $sideBlock->y + 2, $sideBlock->z + 2)) as $entity) {
