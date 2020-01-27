@@ -26,7 +26,7 @@ trait ReactiveTrait
     }
 
     /**
-     * @return Event[]
+     * @return array[]
      */
     public function getReagent(): array
     {
