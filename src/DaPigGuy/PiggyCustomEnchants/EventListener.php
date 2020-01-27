@@ -144,6 +144,7 @@ class EventListener implements Listener
                 }
             }
             foreach ($newItem->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() &&
                     (
@@ -243,6 +244,7 @@ class EventListener implements Listener
             }
             if ($oldItem->getId() === Item::AIR) {
                 foreach ($newItem->getEnchantments() as $enchantmentInstance) {
+                    /** @var ToggleableEnchantment $enchantment */
                     $enchantment = $enchantmentInstance->getType();
                     if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
                         $enchantment->onToggle($entity, $newItem, $inventory, $slot, $enchantmentInstance->getLevel(), true);
@@ -329,6 +331,7 @@ class EventListener implements Listener
             }
         }
         foreach ($newItem->getEnchantments() as $enchantmentInstance) {
+            /** @var ToggleableEnchantment $enchantment */
             $enchantment = $enchantmentInstance->getType();
             if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_HAND || $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
                 $enchantment->onToggle($player, $newItem, $inventory, $event->getSlot(), $enchantmentInstance->getLevel(), true);
@@ -350,6 +353,7 @@ class EventListener implements Listener
             }
         }
         foreach ($player->getInventory()->getContents() as $slot => $content) {
+            /** @var ToggleableEnchantment $enchantmentInstance */
             foreach ($content->getEnchantments() as $enchantmentInstance) {
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
@@ -359,6 +363,7 @@ class EventListener implements Listener
         }
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && (
                         $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
@@ -431,6 +436,7 @@ class EventListener implements Listener
         }
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() &&
                     (
@@ -539,6 +545,7 @@ class EventListener implements Listener
         }
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach (Utils::sortEnchantmentsByPriority($content->getEnchantments()) as $enchantmentInstance) {
+                /** @var ReactiveEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canReact()) {
                     if ((
