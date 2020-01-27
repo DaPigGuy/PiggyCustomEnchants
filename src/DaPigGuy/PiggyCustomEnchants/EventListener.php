@@ -498,7 +498,7 @@ class EventListener implements Listener
      */
     public function attemptReaction(Player $player, Event $event): void
     {
-        if ($player->isClosed()) return;
+        if ($player->getInventory() === null) return;
         if ($event instanceof EntityDamageByChildEntityEvent || $event instanceof ProjectileHitBlockEvent) {
             $projectile = $event instanceof EntityDamageByEntityEvent ? $event->getChild() : $event->getEntity();
             if ($projectile instanceof Projectile && ProjectileTracker::isTrackedProjectile($projectile)) {
