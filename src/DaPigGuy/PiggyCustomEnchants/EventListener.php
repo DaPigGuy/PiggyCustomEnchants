@@ -353,8 +353,8 @@ class EventListener implements Listener
             }
         }
         foreach ($player->getInventory()->getContents() as $slot => $content) {
-            /** @var ToggleableEnchantment $enchantmentInstance */
             foreach ($content->getEnchantments() as $enchantmentInstance) {
+                /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
                     $enchantment->onToggle($player, $content, $player->getInventory(), $slot, $enchantmentInstance->getLevel(), true);
