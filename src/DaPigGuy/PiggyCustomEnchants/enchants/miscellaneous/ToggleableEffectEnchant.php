@@ -69,7 +69,7 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
      * @param int $level
      * @param bool $toggle
      */
-    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if ($toggle) {
             if ($this->effect === Effect::JUMP) Utils::setShouldTakeFallDamage($player, false, 2147483647);
