@@ -60,6 +60,7 @@ class HallucinationEnchant extends ReactiveEnchantment
                                 if ($position->equals($originalPosition->add(0, 1))) {
                                     $block = Block::get(Block::WALL_SIGN, 0, $position);
                                     $nbtWriter = new NetworkLittleEndianNBTStream();
+                                    /** @var string $nbt */
                                     $nbt = $nbtWriter->write(new CompoundTag("", [
                                         new StringTag("id", Tile::SIGN),
                                         new StringTag("Text1", TextFormat::RED . "You seem to be"),

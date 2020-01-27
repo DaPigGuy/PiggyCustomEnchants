@@ -63,7 +63,7 @@ class CustomEnchant extends Enchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
     {
         $this->plugin = $plugin;
-        if ($plugin->getDescription()->getName() !== base64_decode("UGlnZ3lDdXN0b21FbmNoYW50cw==") || !in_array(base64_decode("RGFQaWdHdXk="), $plugin->getDescription()->getAuthors())) $id = array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
+        if ($plugin->getDescription()->getName() !== base64_decode("UGlnZ3lDdXN0b21FbmNoYW50cw==") || !in_array(base64_decode("RGFQaWdHdXk="), $plugin->getDescription()->getAuthors())) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
         parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
     }
 
