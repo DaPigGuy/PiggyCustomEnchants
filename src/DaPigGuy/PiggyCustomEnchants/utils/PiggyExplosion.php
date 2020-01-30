@@ -35,7 +35,7 @@ class PiggyExplosion extends Explosion
      * @param float $size
      * @param Player $what
      */
-    public function __construct(Position $center, float $size, Player $what = null)
+    public function __construct(Position $center, float $size, Player $what)
     {
         parent::__construct($center, $size, $what);
         $this->what = $what;
