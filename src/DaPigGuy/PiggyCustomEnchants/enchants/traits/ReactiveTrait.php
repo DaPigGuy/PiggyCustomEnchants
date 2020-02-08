@@ -17,8 +17,8 @@ use pocketmine\Player;
  */
 trait ReactiveTrait
 {
-
     public $chanceMultiplier = 1;
+
     /**
      * @return bool
      */
@@ -87,8 +87,7 @@ trait ReactiveTrait
     {
         $base = $this->getBaseChance($level);
         $multiplier = $this->getChanceMultiplier();
-        $chance = $base * $multiplier;
-        return $chance;
+        return $base * $multiplier;
     }
 
     /**
