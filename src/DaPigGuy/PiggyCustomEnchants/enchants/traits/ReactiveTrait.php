@@ -67,7 +67,7 @@ trait ReactiveTrait
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-
+        $this->setChanceMultiplier(1);
     }
 
     /**
