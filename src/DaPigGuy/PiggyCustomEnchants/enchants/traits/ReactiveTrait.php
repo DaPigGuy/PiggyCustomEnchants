@@ -17,6 +17,8 @@ use pocketmine\Player;
  */
 trait ReactiveTrait
 {
+
+    public $chanceMultiplier = 1;
     /**
      * @return bool
      */
@@ -72,9 +74,37 @@ trait ReactiveTrait
      * @param int $level
      * @return int
      */
-    public function getChance(int $level): int
+    public function getBaseChance(int $level): int
     {
         return ($this->plugin->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName())), 100)) * $level;
+    }
+
+    /**
+     * @param int $level
+     * @return int
+     */
+    public function getChance(int $level): int
+    {
+        $base = $this->getBaseChance($level);
+        $multiplier = $this->getChanceMultiplier();
+        $chance = $base * $multiplier;
+        return $chance;
+    }
+
+    /**
+     * @return int
+     */
+    public function getChanceMultiplier(): int
+    {
+        return $this->chanceMultiplier;
+    }
+
+    /**
+     * @param int $multiplier
+     */
+    public function setChanceMultiplier(int $multiplier): void
+    {
+        $this->chanceMultiplier = $multiplier;
     }
 
     /**
