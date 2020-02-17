@@ -53,7 +53,7 @@ trait ReactiveTrait
             if ($event->getEntity() === $player && $event->getDamager() !== $player && $this->shouldReactToDamage()) return;
             if ($event->getEntity() !== $player && $this->shouldReactToDamaged()) return;
         }
-        if (mt_rand(0, 100) <= $this->getChance($level)) $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
+        if (mt_rand(0, 100) <= $this->getChance($player, $level)) $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
     }
 
     /**
@@ -65,9 +65,17 @@ trait ReactiveTrait
      * @param int $level
      * @param int $stack
      */
-    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void {}
+
+    /**
+     * @param int $level
+     * @return int
+     */
+    public function getChance(Player $player, int $level): int
     {
-        $this->setChanceMultiplier(1);
+        $base = $this->getBaseChance($level);
+        $multiplier = $this->getChanceMultiplier($player);
+        return $base * $multiplier;
     }
 
     /**
@@ -80,30 +88,21 @@ trait ReactiveTrait
     }
 
     /**
-     * @param int $level
+     * @param Player $player
      * @return int
      */
-    public function getChance(int $level): int
+    public function getChanceMultiplier(Player $player): int
     {
-        $base = $this->getBaseChance($level);
-        $multiplier = $this->getChanceMultiplier();
-        return $base * $multiplier;
+        return $this->chanceMultiplier[$player->getName()] ?? 1;
     }
 
     /**
-     * @return int
-     */
-    public function getChanceMultiplier(): int
-    {
-        return $this->chanceMultiplier;
-    }
-
-    /**
+     * @param Player $player
      * @param int $multiplier
      */
-    public function setChanceMultiplier(int $multiplier): void
+    public function setChanceMultiplier(Player $player, int $multiplier): void
     {
-        $this->chanceMultiplier = $multiplier;
+        $this->chanceMultiplier[$player->getName()] = $multiplier;
     }
 
     /**
