@@ -34,7 +34,7 @@ class CheckUpdatesTask extends AsyncTask
     public function onRun(): void
     {
         $releases = Internet::getURL("https://poggit.pmmp.io/releases.json?name=PiggyCustomEnchants");
-        if ($releases !== null) {
+        if (is_string($releases)) {
             $data = json_decode($releases, true);
             if ($this->isLatestVersion($data[0]["version"])) {
                 if ($this->isAPICompatible($data[0]["api"][0])) {
