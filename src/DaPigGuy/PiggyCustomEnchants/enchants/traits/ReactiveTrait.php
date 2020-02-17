@@ -17,7 +17,7 @@ use pocketmine\Player;
  */
 trait ReactiveTrait
 {
-    /** @var int[] $chanceMultiplier */
+    /** @var int[] */
     public $chanceMultiplier;
 
     /**
@@ -66,9 +66,12 @@ trait ReactiveTrait
      * @param int $level
      * @param int $stack
      */
-    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void {}
+    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    {
+    }
 
     /**
+     * @param Player $player
      * @param int $level
      * @return int
      */
