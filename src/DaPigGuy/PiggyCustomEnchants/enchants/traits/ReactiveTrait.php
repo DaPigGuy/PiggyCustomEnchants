@@ -17,7 +17,8 @@ use pocketmine\Player;
  */
 trait ReactiveTrait
 {
-    public $chanceMultiplier = 1;
+    /** @var int[] $chanceMultiplier */
+    public $chanceMultiplier;
 
     /**
      * @return bool
