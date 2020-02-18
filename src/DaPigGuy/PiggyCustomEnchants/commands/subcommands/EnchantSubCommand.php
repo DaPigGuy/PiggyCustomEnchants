@@ -69,7 +69,7 @@ class EnchantSubCommand extends BaseSubCommand
         if ($enchant === null) {
             $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
             return;
-        };
+        }
         $item = $target->getInventory()->getItemInHand();
         if (!$sender->hasPermission("piggycustomenchants.overridecheck")) {
             if (!Utils::itemMatchesItemType($item, $enchant->getItemType())) {

@@ -82,6 +82,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
 use ReflectionException;
 use ReflectionProperty;
+use SplFixedArray;
 
 /**
  * Class CustomEnchantManager
@@ -102,7 +103,7 @@ class CustomEnchantManager
     public static function init(PiggyCustomEnchants $plugin): void
     {
         self::$plugin = $plugin;
-        $vanillaEnchantments = new \SplFixedArray(1024);
+        $vanillaEnchantments = new SplFixedArray(1024);
 
         $property = new ReflectionProperty(Enchantment::class, "enchantments");
         $property->setAccessible(true);
