@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants;
 
 use CortexPE\Commando\BaseCommand;
+use CortexPE\Commando\exception\HookAlreadyRegistered;
+use CortexPE\Commando\PacketHooker;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
@@ -38,6 +40,7 @@ class PiggyCustomEnchants extends PluginBase
 
     /**
      * @throws ReflectionException
+     * @throws HookAlreadyRegistered
      */
     public function onEnable(): void
     {
@@ -71,6 +74,7 @@ class PiggyCustomEnchants extends PluginBase
             if ($e instanceof CustomEnchant) CustomEnchantManager::unregisterEnchantment($e->getId());
         }
 
+        if (!PacketHooker::isRegistered()) PacketHooker::register($this);
         $this->getServer()->getCommandMap()->register("piggycustomenchants", new CustomEnchantsCommand($this, "customenchants", "Manage Custom Enchants", ["ce", "customenchant"]));
 
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
@@ -123,8 +127,8 @@ class PiggyCustomEnchants extends PluginBase
     }
 
     /**
-     * @internal
      * @return bool
+     * @internal
      */
     public function areFormsEnabled(): bool
     {
