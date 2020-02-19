@@ -24,6 +24,8 @@ class CustomEnchant extends Enchantment
     public $name = "";
     /** @var int */
     public $maxLevel = 5;
+    /** @var string */
+    public $description;
 
     /** @var array */
     public $cooldown;
@@ -59,13 +61,31 @@ class CustomEnchant extends Enchantment
      * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param int $rarity
+     * @param string|null $description
      * @throws ReflectionException
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?string $description = null)
     {
-        $this->plugin = $plugin;
-        if (preg_match(Utils::DESCRIPTION_PATTERN, (string)json_encode($plugin->getDescription()->getMap())) !== 1) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
         parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
+        $this->plugin = $plugin;
+        $this->description = $description ?? (isset($plugin->getEnchantmentDescriptions()[strtolower(str_replace(" ", "", $this->getName()))]) ? $plugin->getEnchantmentDescriptions()[strtolower(str_replace(" ", "", $this->getName()))] : "");
+        if (preg_match(Utils::DESCRIPTION_PATTERN, (string)json_encode($plugin->getDescription()->getMap())) !== 1) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     /**

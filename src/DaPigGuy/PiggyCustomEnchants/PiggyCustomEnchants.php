@@ -31,8 +31,8 @@ use ReflectionException;
  */
 class PiggyCustomEnchants extends PluginBase
 {
-    /** @var Config */
-    public $descriptions;
+    /** @var array */
+    private $enchantmentDescriptions;
 
     /**
      * @throws ReflectionException
@@ -51,7 +51,7 @@ class PiggyCustomEnchants extends PluginBase
         }
 
         $this->saveResource("descriptions.json");
-        $this->descriptions = new Config($this->getDataFolder() . "descriptions.json");
+        $this->enchantmentDescriptions = (new Config($this->getDataFolder() . "descriptions.json"))->getAll();
         $this->saveDefaultConfig();
 
         CustomEnchantManager::init($this);
@@ -101,15 +101,18 @@ class PiggyCustomEnchants extends PluginBase
     }
 
     /**
-     * @param CustomEnchant $enchant
-     * @return string
+     * @return array
+     * @internal
+     *
      */
-    public function getEnchantmentDescription(CustomEnchant $enchant): string
+    public function getEnchantmentDescriptions(): array
     {
-        return (string)$this->descriptions->get(strtolower(str_replace(" ", "", $enchant->getName())));
+        return $this->enchantmentDescriptions;
     }
 
     /**
+     * @internal
+     *
      * @return bool
      */
     public function areFormsEnabled(): bool
