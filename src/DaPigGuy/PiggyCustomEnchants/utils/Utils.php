@@ -32,6 +32,8 @@ use pocketmine\utils\TextFormat;
  */
 class Utils
 {
+    const DESCRIPTION_PATTERN = '/"name":"PiggyCustomEnchants","main":"DaPigGuy\\\\\\\\PiggyCustomEnchants\\\\\\\\PiggyCustomEnchants","version":"(?:.*?)","api":"\d+\.\d+\.\d+","load":"(?:STARTUP|POSTWORLD)","(?:author|authors)":(?:\[|")(?:.*?(?:DaPigGuy))(?:\]|")/';
+
     const TYPE_NAMES = [
         CustomEnchant::ITEM_TYPE_ARMOR => "Armor",
         CustomEnchant::ITEM_TYPE_HELMET => "Helmet",

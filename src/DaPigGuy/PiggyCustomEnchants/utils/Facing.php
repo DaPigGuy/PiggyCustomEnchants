@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\utils;
 
+use InvalidArgumentException;
 use function in_array;
 
 /**
@@ -124,15 +125,15 @@ class Facing
      * @param bool $clockwise
      *
      * @return int
-     * @throws \InvalidArgumentException if not possible to rotate $direction around $axis
+     * @throws InvalidArgumentException if not possible to rotate $direction around $axis
      */
     public static function rotate(int $direction, int $axis, bool $clockwise): int
     {
         if (!isset(self::CLOCKWISE[$axis])) {
-            throw new \InvalidArgumentException("Invalid axis $axis");
+            throw new InvalidArgumentException("Invalid axis $axis");
         }
         if (!isset(self::CLOCKWISE[$axis][$direction])) {
-            throw new \InvalidArgumentException("Cannot rotate direction $direction around axis $axis");
+            throw new InvalidArgumentException("Cannot rotate direction $direction around axis $axis");
         }
         $rotated = self::CLOCKWISE[$axis][$direction];
         return $clockwise ? $rotated : self::opposite($rotated);
@@ -143,7 +144,7 @@ class Facing
      * @param bool $clockwise
      *
      * @return int
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function rotateY(int $direction, bool $clockwise): int
     {
@@ -155,7 +156,7 @@ class Facing
      * @param bool $clockwise
      *
      * @return int
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function rotateZ(int $direction, bool $clockwise): int
     {
@@ -167,7 +168,7 @@ class Facing
      * @param bool $clockwise
      *
      * @return int
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function rotateX(int $direction, bool $clockwise): int
     {
@@ -178,12 +179,12 @@ class Facing
      * Validates the given integer as a Facing direction.
      *
      * @param int $facing
-     * @throws \InvalidArgumentException if the argument is not a valid Facing constant
+     * @throws InvalidArgumentException if the argument is not a valid Facing constant
      */
     public static function validate(int $facing): void
     {
         if (!in_array($facing, self::ALL, true)) {
-            throw new \InvalidArgumentException("Invalid direction $facing");
+            throw new InvalidArgumentException("Invalid direction $facing");
         }
     }
 }
