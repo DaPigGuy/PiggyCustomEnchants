@@ -32,6 +32,8 @@ use ReflectionException;
 class PiggyCustomEnchants extends PluginBase
 {
     /** @var array */
+    private $enchantmentDisplayNames;
+    /** @var array */
     private $enchantmentDescriptions;
 
     /**
@@ -52,6 +54,8 @@ class PiggyCustomEnchants extends PluginBase
 
         $this->saveResource("descriptions.json");
         $this->enchantmentDescriptions = (new Config($this->getDataFolder() . "descriptions.json"))->getAll();
+        $this->saveResource("display_names.json");
+        $this->enchantmentDisplayNames = (new Config($this->getDataFolder() . "display_names.json"))->getAll();
         $this->saveDefaultConfig();
 
         CustomEnchantManager::init($this);
@@ -103,7 +107,15 @@ class PiggyCustomEnchants extends PluginBase
     /**
      * @return array
      * @internal
-     *
+     */
+    public function getEnchantmentDisplayNames(): array
+    {
+        return $this->enchantmentDisplayNames;
+    }
+
+    /**
+     * @return array
+     * @internal
      */
     public function getEnchantmentDescriptions(): array
     {
@@ -112,7 +124,6 @@ class PiggyCustomEnchants extends PluginBase
 
     /**
      * @internal
-     *
      * @return bool
      */
     public function areFormsEnabled(): bool

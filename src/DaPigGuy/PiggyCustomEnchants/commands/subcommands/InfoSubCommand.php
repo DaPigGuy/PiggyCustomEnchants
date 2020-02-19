@@ -78,7 +78,7 @@ class InfoSubCommand extends BaseSubCommand
             $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
             return;
         }
-        $sender->sendMessage(TextFormat::GREEN . $enchantment->getName() . "\n" . TextFormat::RESET . "ID: " . $enchantment->getId() . "\nDescription: " . $enchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . "\nRarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . "\nMax Level: " . $enchantment->getMaxLevel());
+        $sender->sendMessage(TextFormat::GREEN . $enchantment->getDisplayName() . "\n" . TextFormat::RESET . "ID: " . $enchantment->getId() . "\nDescription: " . $enchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . "\nRarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . "\nMax Level: " . $enchantment->getMaxLevel());
     }
 
     /**
@@ -91,7 +91,7 @@ class InfoSubCommand extends BaseSubCommand
             if ($data !== null) $this->plugin->getServer()->dispatchCommand($player, "ce");
         });
         $infoForm->setTitle(TextFormat::GREEN . $enchantment->getName() . " Enchantment");
-        $infoForm->setContent(TextFormat::GREEN . $enchantment->getName() . "\n" . TextFormat::RESET . "ID: " . $enchantment->getId() . "\nDescription: " . $enchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . "\nRarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . "\nMax Level: " . $enchantment->getMaxLevel());
+        $infoForm->setContent(TextFormat::GREEN . $enchantment->getDisplayName() . "\n" . TextFormat::RESET . "ID: " . $enchantment->getId() . "\nDescription: " . $enchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . "\nRarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . "\nMax Level: " . $enchantment->getMaxLevel());
         $infoForm->addButton("Back");
         $player->sendForm($infoForm);
     }

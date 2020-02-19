@@ -25,6 +25,8 @@ class CustomEnchant extends Enchantment
     /** @var int */
     public $maxLevel = 5;
     /** @var string */
+    private $displayName;
+    /** @var string */
     public $description;
 
     /** @var array */
@@ -61,15 +63,33 @@ class CustomEnchant extends Enchantment
      * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param int $rarity
+     * @param string|null $displayName
      * @param string|null $description
      * @throws ReflectionException
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?string $description = null)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?string $displayName = null, ?string $description = null)
     {
         parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
         $this->plugin = $plugin;
+        $this->displayName = $displayName ?? (isset($plugin->getEnchantmentDisplayNames()[strtolower(str_replace(" ", "", $this->getName()))]) ? $plugin->getEnchantmentDisplayNames()[strtolower(str_replace(" ", "", $this->getName()))] : $this->name);
         $this->description = $description ?? (isset($plugin->getEnchantmentDescriptions()[strtolower(str_replace(" ", "", $this->getName()))]) ? $plugin->getEnchantmentDescriptions()[strtolower(str_replace(" ", "", $this->getName()))] : "");
         if (preg_match(Utils::DESCRIPTION_PATTERN, (string)json_encode($plugin->getDescription()->getMap())) !== 1) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName(): string
+    {
+        return $this->displayName;
+    }
+
+    /**
+     * @param string $displayName
+     */
+    public function setDisplayName(string $displayName): void
+    {
+        $this->displayName = $displayName;
     }
 
     /**

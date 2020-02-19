@@ -276,7 +276,10 @@ class CustomEnchantManager
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
         foreach (self::$enchants as $enchant) {
-            if (strtolower(str_replace(" ", "", $enchant->getName())) === strtolower(str_replace(" ", "", $name))) return $enchant;
+            if (
+                strtolower(str_replace(" ", "", $enchant->getName())) === strtolower(str_replace(" ", "", $name)) ||
+                strtolower(str_replace(" ", "", $enchant->getDisplayName())) === strtolower(str_replace(" ", "", $name))
+            ) return $enchant;
         }
         return null;
     }
