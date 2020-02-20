@@ -119,7 +119,7 @@ class Utils
      */
     public static function isChestplate(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE]);
+        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE, Item::ELYTRA]);
     }
 
     /**
@@ -170,7 +170,7 @@ class Utils
             case CustomEnchant::ITEM_TYPE_HOE:
                 return $item instanceof Hoe;
             case CustomEnchant::ITEM_TYPE_ARMOR:
-                return $item instanceof Armor;
+                return $item instanceof Armor || $item->getId() === Item::ELYTRA;
             case CustomEnchant::ITEM_TYPE_HELMET:
                 return self::isHelmet($item);
             case CustomEnchant::ITEM_TYPE_CHESTPLATE:
