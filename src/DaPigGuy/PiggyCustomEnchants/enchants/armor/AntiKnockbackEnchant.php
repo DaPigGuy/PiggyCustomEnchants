@@ -35,6 +35,7 @@ class AntiKnockbackEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
+            $stack = $stack > 4 ? 4 : $stack;
             $event->setKnockBack($event->getKnockBack() * (4 - $stack) / (5 - $stack));
         }
     }
