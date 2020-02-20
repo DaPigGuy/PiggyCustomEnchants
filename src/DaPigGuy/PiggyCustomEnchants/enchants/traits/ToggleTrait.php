@@ -4,6 +4,7 @@
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
 
 
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
@@ -14,6 +15,9 @@ use pocketmine\Player;
  */
 trait ToggleTrait
 {
+    /** @var PiggyCustomEnchants */
+    protected $plugin;
+
     /** @var array */
     public $stack;
     /** @var array */
