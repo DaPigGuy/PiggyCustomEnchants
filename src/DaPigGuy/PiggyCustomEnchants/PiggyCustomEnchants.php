@@ -33,10 +33,8 @@ use ReflectionException;
  */
 class PiggyCustomEnchants extends PluginBase
 {
-    /** @var array */
-    private $enchantmentDisplayNames;
-    /** @var array */
-    private $enchantmentDescriptions;
+    /** @var array[] */
+    private $enchantmentData;
 
     /**
      * @throws ReflectionException
@@ -55,10 +53,12 @@ class PiggyCustomEnchants extends PluginBase
             return;
         }
 
-        $this->saveResource("descriptions.json");
-        $this->enchantmentDescriptions = (new Config($this->getDataFolder() . "descriptions.json"))->getAll();
-        $this->saveResource("display_names.json");
-        $this->enchantmentDisplayNames = (new Config($this->getDataFolder() . "display_names.json"))->getAll();
+        foreach (["max_levels", "display_names", "descriptions"] as $file) {
+            $this->saveResource($file . ".json");
+            foreach ((new Config($this->getDataFolder() . $file . ".json"))->getAll() as $enchant => $data) {
+                $this->enchantmentData[$enchant][$file] = $data;
+            }
+        }
         $this->saveDefaultConfig();
 
         CustomEnchantManager::init($this);
@@ -109,21 +109,15 @@ class PiggyCustomEnchants extends PluginBase
     }
 
     /**
-     * @return array
+     * @param string $enchant
+     * @param string $data
+     * @param int|string $default
+     * @return int|string
      * @internal
      */
-    public function getEnchantmentDisplayNames(): array
+    public function getEnchantmentData(string $enchant, string $data, $default = "")
     {
-        return $this->enchantmentDisplayNames;
-    }
-
-    /**
-     * @return array
-     * @internal
-     */
-    public function getEnchantmentDescriptions(): array
-    {
-        return $this->enchantmentDescriptions;
+        return $this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data] ?? $default;
     }
 
     /**

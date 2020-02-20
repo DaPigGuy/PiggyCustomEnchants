@@ -63,16 +63,18 @@ class CustomEnchant extends Enchantment
      * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param int $rarity
+     * @param int|null $maxLevel
      * @param string|null $displayName
      * @param string|null $description
      * @throws ReflectionException
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?string $displayName = null, ?string $description = null)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?int $maxLevel = null, ?string $displayName = null, ?string $description = null)
     {
-        parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
         $this->plugin = $plugin;
-        $this->displayName = $displayName ?? (isset($plugin->getEnchantmentDisplayNames()[strtolower(str_replace(" ", "", $this->getName()))]) ? $plugin->getEnchantmentDisplayNames()[strtolower(str_replace(" ", "", $this->getName()))] : $this->name);
-        $this->description = $description ?? (isset($plugin->getEnchantmentDescriptions()[strtolower(str_replace(" ", "", $this->getName()))]) ? $plugin->getEnchantmentDescriptions()[strtolower(str_replace(" ", "", $this->getName()))] : "");
+        $this->maxLevel = $maxLevel ?? $plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
+        $this->displayName = $displayName ?? $plugin->getEnchantmentData($this->name, "display_names", $this->name);
+        $this->description = $description ?? $plugin->getEnchantmentData($this->name, "descriptions");
+        parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
         if (preg_match(Utils::DESCRIPTION_PATTERN, (string)json_encode($plugin->getDescription()->getMap())) !== 1) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
     }
 
