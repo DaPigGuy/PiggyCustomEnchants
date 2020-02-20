@@ -86,7 +86,7 @@ class JetpackEnchant extends ReactiveEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($this->hasActiveJetpack($player)) {
-            $player->setMotion($player->getDirectionVector()->multiply($level));
+            $player->setMotion($player->getDirectionVector()->multiply($level * ($player->isSprinting() ? 1.25 : 1)));
             $player->resetFallDistance();
             $player->getLevel()->addParticle(new GenericParticle($player, Particle::TYPE_CAMPFIRE_SMOKE));
 
@@ -94,7 +94,7 @@ class JetpackEnchant extends ReactiveEnchantment
             $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
             if ($time <= 2) $player->sendTip(TextFormat::RED . "Jetpack low on power.");
             if ($player->getServer()->getTick() % 20 === 0) {
-                $this->powerRemaining[$player->getName()]--;
+                $this->powerRemaining[$player->getName()] -= ($player->isSprinting() ? 1.25 : 1);
                 if ($this->powerRemaining[$player->getName()] <= 0) {
                     $this->powerActiveJetpack($player, false);
                     return;
