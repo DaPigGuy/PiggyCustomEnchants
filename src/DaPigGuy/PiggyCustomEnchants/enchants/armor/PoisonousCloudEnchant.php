@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
+use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Living;
@@ -36,7 +37,7 @@ class PoisonousCloudEnchant extends TickingEnchantment
     {
         $radius = $level * 3;
         foreach ($player->getLevel()->getEntities() as $entity) {
-            if ($entity !== $player && $entity instanceof Living && $entity->distance($player) <= $radius) {
+            if ($entity !== $player && $entity instanceof Living && !AllyChecks::isAlly($player, $entity) && $entity->distance($player) <= $radius) {
                 $effect = new EffectInstance(Effect::getEffect(Effect::POISON), $level * 100, $level - 1, false);
                 $entity->addEffect($effect);
             }

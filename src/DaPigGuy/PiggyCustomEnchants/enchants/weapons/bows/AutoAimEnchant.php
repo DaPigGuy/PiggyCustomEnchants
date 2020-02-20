@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
+use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\entity\Living;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
@@ -69,7 +70,7 @@ class AutoAimEnchant extends TickingEnchantment
         $nearestEntityDistance = $range;
         foreach ($player->getLevel()->getEntities() as $entity) {
             $distance = $player->distance($entity);
-            if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && $player !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn()) {
+            if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && $player !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn() && !AllyChecks::isAlly($player, $entity)) {
                 $nearestEntity = $entity;
                 $nearestEntityDistance = $distance;
             }
