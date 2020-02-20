@@ -39,7 +39,7 @@ trait ToggleTrait
      * @param int $level
      * @param bool $toggle
      */
-    public function onToggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    public function onToggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
         if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
@@ -60,7 +60,7 @@ trait ToggleTrait
      * @param int $level
      * @param bool $toggle
      */
-    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle)
+    public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
     }
 
