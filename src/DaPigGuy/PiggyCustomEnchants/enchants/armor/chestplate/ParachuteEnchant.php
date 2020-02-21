@@ -38,7 +38,7 @@ class ParachuteEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (!($enchant = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantIds::JETPACK)->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
+        if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantIds::JETPACK)) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
             $player->addEffect(new EffectInstance(Effect::getEffect(Effect::LEVITATION), 2147483647, -5, false)); //Hack to make the Parachute CE feel like a parachute
         } elseif (($effect = $player->getEffect(Effect::LEVITATION)) !== null && $effect->getAmplifier() === -5) {
             if ($this->isInAir($player) || $player->getLevel()->getBlock($player->subtract(0, 1))->getId() !== Block::AIR) $player->removeEffect($effect->getId());
