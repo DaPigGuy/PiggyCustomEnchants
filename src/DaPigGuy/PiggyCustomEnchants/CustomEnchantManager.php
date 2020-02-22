@@ -229,7 +229,9 @@ class CustomEnchantManager
     public static function registerEnchantment(CustomEnchant $enchant): void
     {
         Enchantment::registerEnchantment($enchant);
-        self::$enchants[$enchant->getId()] = Enchantment::getEnchantment($enchant->getId());
+        /** @var CustomEnchant $enchant */
+        $enchant = Enchantment::getEnchantment($enchant->getId());
+        self::$enchants[$enchant->getId()] = $enchant;
 
         self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
     }
