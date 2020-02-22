@@ -119,7 +119,7 @@ class Utils
      */
     public static function isChestplate(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE]);
+        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE, Item::ELYTRA]);
     }
 
     /**
@@ -170,7 +170,7 @@ class Utils
             case CustomEnchant::ITEM_TYPE_HOE:
                 return $item instanceof Hoe;
             case CustomEnchant::ITEM_TYPE_ARMOR:
-                return $item instanceof Armor;
+                return $item instanceof Armor || $item->getId() === Item::ELYTRA;
             case CustomEnchant::ITEM_TYPE_HELMET:
                 return self::isHelmet($item);
             case CustomEnchant::ITEM_TYPE_CHESTPLATE:
@@ -211,7 +211,7 @@ class Utils
             foreach ($item->getEnchantments() as $enchantmentInstance) {
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant) {
-                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
+                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
                 }
             }
             if ($item->getNamedTagEntry(Item::TAG_DISPLAY) instanceof CompoundTag) $item->setNamedTagEntry(new CompoundTag("OriginalDisplayTag", $item->getNamedTagEntry(Item::TAG_DISPLAY)->getValue()));

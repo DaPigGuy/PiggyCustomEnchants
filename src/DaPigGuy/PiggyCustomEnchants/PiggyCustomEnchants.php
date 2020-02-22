@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants;
 
 use CortexPE\Commando\BaseCommand;
+use CortexPE\Commando\exception\HookAlreadyRegistered;
+use CortexPE\Commando\PacketHooker;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
@@ -31,11 +33,12 @@ use ReflectionException;
  */
 class PiggyCustomEnchants extends PluginBase
 {
-    /** @var Config */
-    public $descriptions;
+    /** @var array[] */
+    private $enchantmentData;
 
     /**
      * @throws ReflectionException
+     * @throws HookAlreadyRegistered
      */
     public function onEnable(): void
     {
@@ -50,8 +53,12 @@ class PiggyCustomEnchants extends PluginBase
             return;
         }
 
-        $this->saveResource("descriptions.json");
-        $this->descriptions = new Config($this->getDataFolder() . "descriptions.json");
+        foreach (["max_levels", "display_names", "descriptions"] as $file) {
+            $this->saveResource($file . ".json");
+            foreach ((new Config($this->getDataFolder() . $file . ".json"))->getAll() as $enchant => $data) {
+                $this->enchantmentData[$enchant][$file] = $data;
+            }
+        }
         $this->saveDefaultConfig();
 
         CustomEnchantManager::init($this);
@@ -67,6 +74,7 @@ class PiggyCustomEnchants extends PluginBase
             if ($e instanceof CustomEnchant) CustomEnchantManager::unregisterEnchantment($e->getId());
         }
 
+        if (!PacketHooker::isRegistered()) PacketHooker::register($this);
         $this->getServer()->getCommandMap()->register("piggycustomenchants", new CustomEnchantsCommand($this, "customenchants", "Manage Custom Enchants", ["ce", "customenchant"]));
 
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
@@ -101,16 +109,20 @@ class PiggyCustomEnchants extends PluginBase
     }
 
     /**
-     * @param CustomEnchant $enchant
-     * @return string
+     * @param string $enchant
+     * @param string $data
+     * @param int|string $default
+     * @return int|string
+     * @internal
      */
-    public function getEnchantmentDescription(CustomEnchant $enchant): string
+    public function getEnchantmentData(string $enchant, string $data, $default = "")
     {
-        return (string)$this->descriptions->get(strtolower(str_replace(" ", "", $enchant->getName())));
+        return $this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data] ?? $default;
     }
 
     /**
      * @return bool
+     * @internal
      */
     public function areFormsEnabled(): bool
     {

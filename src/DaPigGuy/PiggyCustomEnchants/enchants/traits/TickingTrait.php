@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
 
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
@@ -14,6 +15,9 @@ use pocketmine\Player;
  */
 trait TickingTrait
 {
+    /** @var PiggyCustomEnchants */
+    protected $plugin;
+
     /**
      * @return bool
      */

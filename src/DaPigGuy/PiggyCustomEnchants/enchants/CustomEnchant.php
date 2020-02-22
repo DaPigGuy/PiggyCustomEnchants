@@ -24,6 +24,10 @@ class CustomEnchant extends Enchantment
     public $name = "";
     /** @var int */
     public $maxLevel = 5;
+    /** @var string */
+    private $displayName;
+    /** @var string */
+    public $description;
 
     /** @var array */
     public $cooldown;
@@ -59,13 +63,51 @@ class CustomEnchant extends Enchantment
      * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param int $rarity
+     * @param int|null $maxLevel
+     * @param string|null $displayName
+     * @param string|null $description
      * @throws ReflectionException
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?int $maxLevel = null, ?string $displayName = null, ?string $description = null)
     {
         $this->plugin = $plugin;
+        $this->maxLevel = $maxLevel ?? (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
+        $this->displayName = $displayName ?? (string)$plugin->getEnchantmentData($this->name, "display_names", $this->name);
+        $this->description = $description ?? (string)$plugin->getEnchantmentData($this->name, "descriptions");
         if (preg_match(Utils::DESCRIPTION_PATTERN, (string)json_encode($plugin->getDescription()->getMap())) !== 1) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
         parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayName(): string
+    {
+        return $this->displayName;
+    }
+
+    /**
+     * @param string $displayName
+     */
+    public function setDisplayName(string $displayName): void
+    {
+        $this->displayName = $displayName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     */
+    public function setDescription(string $description): void
+    {
+        $this->description = $description;
     }
 
     /**

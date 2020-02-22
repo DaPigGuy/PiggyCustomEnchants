@@ -129,7 +129,7 @@ class ListSubCommand extends BaseSubCommand
                 /** @var CustomEnchant $selectedEnchantment */
                 $selectedEnchantment = array_values($enchantmentsByType[$type])[$data];
                 $infoForm->setTitle(TextFormat::GREEN . $selectedEnchantment->getName() . " Enchantment");
-                $infoForm->setContent(TextFormat::GREEN . $selectedEnchantment->getName() . "\n" . TextFormat::RESET . "ID: " . $selectedEnchantment->getId() . "\nDescription: " . $this->plugin->getEnchantmentDescription($selectedEnchantment) . "\nType: " . Utils::TYPE_NAMES[$type] . "\nRarity: " . Utils::RARITY_NAMES[$selectedEnchantment->getRarity()] . "\nMax Level: " . $selectedEnchantment->getMaxLevel());
+                $infoForm->setContent(TextFormat::GREEN . $selectedEnchantment->getDisplayName() . "\n" . TextFormat::RESET . "ID: " . $selectedEnchantment->getId() . "\nDescription: " . $selectedEnchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$type] . "\nRarity: " . Utils::RARITY_NAMES[$selectedEnchantment->getRarity()] . "\nMax Level: " . $selectedEnchantment->getMaxLevel());
                 $infoForm->addButton("Back");
                 $player->sendForm($infoForm);
             }

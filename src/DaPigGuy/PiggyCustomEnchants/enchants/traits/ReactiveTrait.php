@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -17,6 +18,12 @@ use pocketmine\Player;
  */
 trait ReactiveTrait
 {
+    /** @var PiggyCustomEnchants */
+    protected $plugin;
+
+    /** @var int[] */
+    public $chanceMultiplier;
+
     /**
      * @return bool
      */
@@ -51,7 +58,7 @@ trait ReactiveTrait
             if ($event->getEntity() === $player && $event->getDamager() !== $player && $this->shouldReactToDamage()) return;
             if ($event->getEntity() !== $player && $this->shouldReactToDamaged()) return;
         }
-        if (mt_rand(0, 100) <= $this->getChance($level)) $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
+        if (mt_rand(0, 100) <= $this->getChance($player, $level)) $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
     }
 
     /**
@@ -65,16 +72,45 @@ trait ReactiveTrait
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
+    }
 
+    /**
+     * @param Player $player
+     * @param int $level
+     * @return int
+     */
+    public function getChance(Player $player, int $level): int
+    {
+        $base = $this->getBaseChance($level);
+        $multiplier = $this->getChanceMultiplier($player);
+        return $base * $multiplier;
     }
 
     /**
      * @param int $level
      * @return int
      */
-    public function getChance(int $level): int
+    public function getBaseChance(int $level): int
     {
         return ($this->plugin->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName())), 100)) * $level;
+    }
+
+    /**
+     * @param Player $player
+     * @return int
+     */
+    public function getChanceMultiplier(Player $player): int
+    {
+        return $this->chanceMultiplier[$player->getName()] ?? 1;
+    }
+
+    /**
+     * @param Player $player
+     * @param int $multiplier
+     */
+    public function setChanceMultiplier(Player $player, int $multiplier): void
+    {
+        $this->chanceMultiplier[$player->getName()] = $multiplier;
     }
 
     /**
