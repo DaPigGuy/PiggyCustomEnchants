@@ -48,7 +48,6 @@ use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
-use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\Player;
 
 /**
@@ -95,14 +94,14 @@ class EventListener implements Listener
             if (isset($packet->trData->itemInHand)) {
                 Utils::filterDisplayedEnchants($packet->trData->itemInHand);
             }
+            if ($packet->transactionType === InventoryTransactionPacket::TYPE_USE_ITEM) {
+                if ($packet->trData->actionType === InventoryTransactionPacket::USE_ITEM_ACTION_BREAK_BLOCK) {
+                    DrillerEnchant::$lastBreakFace[$event->getPlayer()->getName()] = $packet->trData->face;
+                }
+            }
         }
         if ($packet instanceof MobEquipmentPacket) {
             Utils::filterDisplayedEnchants($packet->item);
-        }
-        if ($packet instanceof PlayerActionPacket) {
-            if ($packet->action === PlayerActionPacket::ACTION_CONTINUE_BREAK) {
-                DrillerEnchant::$lastBreakFace[$event->getPlayer()->getName()] = $packet->face;
-            }
         }
     }
 
