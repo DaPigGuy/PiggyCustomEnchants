@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
+use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\Player;
 
 /**
  * Class HomingArrow
@@ -68,9 +70,11 @@ class HomingArrow extends Arrow
         $nearestEntityDistance = $range;
         foreach ($this->getLevel()->getEntities() as $entity) {
             $distance = $this->distance($entity);
-            if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && $this->getOwningEntity() !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn()) {
-                $nearestEntity = $entity;
-                $nearestEntityDistance = $distance;
+            if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && ($owner = $this->getOwningEntity()) !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn()) {
+                if (!$owner instanceof Player || !AllyChecks::isAlly($owner, $entity)) {
+                    $nearestEntity = $entity;
+                    $nearestEntityDistance = $distance;
+                }
             }
         }
         return $nearestEntity;
