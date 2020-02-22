@@ -21,7 +21,7 @@ trait ReactiveTrait
     /** @var PiggyCustomEnchants */
     protected $plugin;
 
-    /** @var int[] */
+    /** @var float[] */
     public $chanceMultiplier;
 
     /**
@@ -77,9 +77,9 @@ trait ReactiveTrait
     /**
      * @param Player $player
      * @param int $level
-     * @return int
+     * @return float
      */
-    public function getChance(Player $player, int $level): int
+    public function getChance(Player $player, int $level): float
     {
         $base = $this->getBaseChance($level);
         $multiplier = $this->getChanceMultiplier($player);
@@ -88,27 +88,27 @@ trait ReactiveTrait
 
     /**
      * @param int $level
-     * @return int
+     * @return float
      */
-    public function getBaseChance(int $level): int
+    public function getBaseChance(int $level): float
     {
         return ($this->plugin->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName())), 100)) * $level;
     }
 
     /**
      * @param Player $player
-     * @return int
+     * @return float
      */
-    public function getChanceMultiplier(Player $player): int
+    public function getChanceMultiplier(Player $player): float
     {
         return $this->chanceMultiplier[$player->getName()] ?? 1;
     }
 
     /**
      * @param Player $player
-     * @param int $multiplier
+     * @param float $multiplier
      */
-    public function setChanceMultiplier(Player $player, int $multiplier): void
+    public function setChanceMultiplier(Player $player, float $multiplier): void
     {
         $this->chanceMultiplier[$player->getName()] = $multiplier;
     }
