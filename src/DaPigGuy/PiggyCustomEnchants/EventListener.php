@@ -140,6 +140,9 @@ class EventListener implements Listener
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && in_array($enchantment->getUsageType(), [CustomEnchant::TYPE_ARMOR_INVENTORY, CustomEnchant::TYPE_HELMET, CustomEnchant::TYPE_CHESTPLATE, CustomEnchant::TYPE_LEGGINGS, CustomEnchant::TYPE_BOOTS])) {
                     $enchantment->onToggle($entity, $oldItem, $inventory, $slot, $enchantmentInstance->getLevel(), false);
+                    if ($enchantment->equippedArmorStack[$entity->getName()] > 0) {
+                        $enchantment->toggle($entity, $oldItem, $inventory, $slot, $enchantmentInstance->getLevel(), true);
+                    }
                 }
             }
             foreach ($newItem->getEnchantments() as $enchantmentInstance) {
@@ -323,14 +326,14 @@ class EventListener implements Listener
         foreach ($oldItem->getEnchantments() as $enchantmentInstance) {
             /** @var ToggleableEnchantment $enchantment */
             $enchantment = $enchantmentInstance->getType();
-            if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_HAND || $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
+            if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && $enchantment->getUsageType() === CustomEnchant::TYPE_HAND) {
                 $enchantment->onToggle($player, $oldItem, $inventory, $inventory->getHeldItemIndex(), $enchantmentInstance->getLevel(), false);
             }
         }
         foreach ($newItem->getEnchantments() as $enchantmentInstance) {
             /** @var ToggleableEnchantment $enchantment */
             $enchantment = $enchantmentInstance->getType();
-            if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_HAND || $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
+            if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && $enchantment->getUsageType() === CustomEnchant::TYPE_HAND) {
                 $enchantment->onToggle($player, $newItem, $inventory, $event->getSlot(), $enchantmentInstance->getLevel(), true);
             }
         }
@@ -342,18 +345,11 @@ class EventListener implements Listener
     public function onJoin(PlayerJoinEvent $event): void
     {
         $player = $event->getPlayer();
-        foreach ($player->getInventory()->getItemInHand()->getEnchantments() as $enchantmentInstance) {
-            /** @var ToggleableEnchantment $enchantment */
-            $enchantment = $enchantmentInstance->getType();
-            if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_HAND || $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
-                $enchantment->onToggle($player, $player->getInventory()->getItemInHand(), $player->getInventory(), $player->getInventory()->getHeldItemIndex(), $enchantmentInstance->getLevel(), true);
-            }
-        }
         foreach ($player->getInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) {
                 /** @var ToggleableEnchantment $enchantment */
                 $enchantment = $enchantmentInstance->getType();
-                if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
+                if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && (($enchantment->getUsageType() === CustomEnchant::TYPE_HAND && $slot === $player->getInventory()->getHeldItemIndex()) || $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY)) {
                     $enchantment->onToggle($player, $content, $player->getInventory(), $slot, $enchantmentInstance->getLevel(), true);
                 }
             }
