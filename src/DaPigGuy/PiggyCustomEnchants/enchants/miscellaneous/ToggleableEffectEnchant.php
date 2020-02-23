@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
@@ -74,16 +75,19 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
         if ($toggle) {
             if ($this->effect === Effect::JUMP) Utils::setShouldTakeFallDamage($player, false, 2147483647);
             if ($player->hasEffect($this->effect) && $player->getEffect($this->effect)->getAmplifier() > $this->baseAmplifier + $this->amplifierMultiplier * $level) $this->previousEffect[$player->getName()] = $player->getEffect($this->effect);
-            $player->removeEffect($this->effect);
-            $player->addEffect(new EffectInstance(Effect::getEffect($this->effect), 2147483647, $this->baseAmplifier + $this->amplifierMultiplier * $level, false));
         } else {
-            if ($this->effect === Effect::JUMP) Utils::setShouldTakeFallDamage($player, true);
-            $player->removeEffect($this->effect);
-            if (isset($this->previousEffect[$player->getName()])) {
-                $player->addEffect($this->previousEffect[$player->getName()]);
-                unset($this->previousEffect[$player->getName()]);
+            if ($this->usageType !== CustomEnchant::TYPE_ARMOR_INVENTORY || $this->equippedArmorStack[$player->getName()] === 0) {
+                if ($this->effect === Effect::JUMP) Utils::setShouldTakeFallDamage($player, true);
+                $player->removeEffect($this->effect);
+                if (isset($this->previousEffect[$player->getName()])) {
+                    $player->addEffect($this->previousEffect[$player->getName()]);
+                    unset($this->previousEffect[$player->getName()]);
+                }
+                return;
             }
         }
+        $player->removeEffect($this->effect);
+        $player->addEffect(new EffectInstance(Effect::getEffect($this->effect), 2147483647, $this->baseAmplifier + $this->amplifierMultiplier * $level, false));
     }
 
     /**
