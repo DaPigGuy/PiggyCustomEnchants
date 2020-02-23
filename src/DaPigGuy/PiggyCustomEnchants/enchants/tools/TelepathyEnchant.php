@@ -44,7 +44,9 @@ class TelepathyEnchant extends ReactiveEnchantment
     {
         if ($event instanceof BlockBreakEvent) {
             $player->getInventory()->addItem(...$event->getDrops());
+            $player->addXp($event->getXpDropAmount());
             $event->setDrops([]);
+            $event->setXpDropAmount(0);
         }
     }
 
