@@ -140,9 +140,6 @@ class EventListener implements Listener
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant && $enchantment->canToggle() && in_array($enchantment->getUsageType(), [CustomEnchant::TYPE_ARMOR_INVENTORY, CustomEnchant::TYPE_HELMET, CustomEnchant::TYPE_CHESTPLATE, CustomEnchant::TYPE_LEGGINGS, CustomEnchant::TYPE_BOOTS])) {
                     $enchantment->onToggle($entity, $oldItem, $inventory, $slot, $enchantmentInstance->getLevel(), false);
-                    if ($enchantment->equippedArmorStack[$entity->getName()] > 0) {
-                        $enchantment->toggle($entity, $oldItem, $inventory, $slot, $enchantmentInstance->getLevel(), true);
-                    }
                 }
             }
             foreach ($newItem->getEnchantments() as $enchantmentInstance) {

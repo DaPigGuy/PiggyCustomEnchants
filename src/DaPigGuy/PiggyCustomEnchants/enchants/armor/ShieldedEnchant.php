@@ -36,17 +36,20 @@ class ShieldedEnchant extends ToggleableEnchantment
      */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
-        if ($toggle) {
-            if ($player->hasEffect(Effect::RESISTANCE) && $player->getEffect(Effect::RESISTANCE)->getAmplifier() > $this->stack[$player->getName()] - 1) $this->previousEffect[$player->getName()] = $player->getEffect(Effect::RESISTANCE);
-            $player->removeEffect(Effect::RESISTANCE);
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::RESISTANCE), 2147483647, $this->stack[$player->getName()] - 1, false));
-        } else {
-            $player->removeEffect(Effect::RESISTANCE);
-            if (isset($this->previousEffect[$player->getName()])) {
-                $player->addEffect($this->previousEffect[$player->getName()]);
-                unset($this->previousEffect[$player->getName()]);
+        if (!$toggle) {
+            if ($this->equippedArmorStack[$player->getName()] === 0) {
+                if (isset($this->previousEffect[$player->getName()])) {
+                    $player->addEffect($this->previousEffect[$player->getName()]);
+                    unset($this->previousEffect[$player->getName()]);
+                }
+                return;
             }
+        } else {
+            if ($player->hasEffect(Effect::RESISTANCE) && $player->getEffect(Effect::RESISTANCE)->getAmplifier() > $this->stack[$player->getName()] - 1) $this->previousEffect[$player->getName()] = $player->getEffect(Effect::RESISTANCE);
         }
+        $player->removeEffect(Effect::RESISTANCE);
+        $player->addEffect(new EffectInstance(Effect::getEffect(Effect::RESISTANCE), 2147483647, $this->stack[$player->getName()] - 1, false));
+
     }
 
     /**
