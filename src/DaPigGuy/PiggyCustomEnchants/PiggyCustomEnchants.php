@@ -88,22 +88,10 @@ class PiggyCustomEnchants extends PluginBase
     {
         foreach ($this->getServer()->getOnlinePlayers() as $player) {
             foreach ($player->getInventory()->getContents() as $slot => $content) {
-                foreach ($content->getEnchantments() as $enchantmentInstance) {
-                    /** @var ToggleableEnchantment $enchantment */
-                    $enchantment = $enchantmentInstance->getType();
-                    if ($enchantment instanceof CustomEnchant && $enchantment->canToggle()) {
-                        $enchantment->onToggle($player, $content, $player->getInventory(), $slot, $enchantmentInstance->getLevel(), false);
-                    }
-                }
+                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
             }
             foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
-                foreach ($content->getEnchantments() as $enchantmentInstance) {
-                    /** @var ToggleableEnchantment $enchantment */
-                    $enchantment = $enchantmentInstance->getType();
-                    if ($enchantment instanceof CustomEnchant && $enchantment->canToggle()) {
-                        $enchantment->onToggle($player, $content, $player->getArmorInventory(), $slot, $enchantmentInstance->getLevel(), false);
-                    }
-                }
+                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
             }
         }
     }

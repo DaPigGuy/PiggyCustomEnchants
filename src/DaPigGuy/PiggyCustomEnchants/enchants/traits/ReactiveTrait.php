@@ -5,8 +5,14 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
+use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
+use DaPigGuy\PiggyCustomEnchants\utils\Utils;
+use pocketmine\entity\projectile\Projectile;
+use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
@@ -127,5 +133,81 @@ trait ReactiveTrait
     public function shouldReactToDamaged(): bool
     {
         return $this->getUsageType() === CustomEnchant::TYPE_ARMOR_INVENTORY;
+    }
+
+    /**
+     * @param Player $player
+     * @param Event $event
+     */
+    public static function attemptReaction(Player $player, Event $event): void
+    {
+        if ($player->getInventory() === null) return;
+        if ($event instanceof EntityDamageByChildEntityEvent || $event instanceof ProjectileHitBlockEvent) {
+            $projectile = $event instanceof EntityDamageByEntityEvent ? $event->getChild() : $event->getEntity();
+            if ($projectile instanceof Projectile && ProjectileTracker::isTrackedProjectile($projectile)) {
+                if (!$event instanceof EntityDamageByEntityEvent || $event->getDamager() === $player) {
+                    foreach (Utils::sortEnchantmentsByPriority(ProjectileTracker::getEnchantments($projectile)) as $enchantmentInstance) {
+                        /** @var ReactiveEnchantment $enchantment */
+                        $enchantment = $enchantmentInstance->getType();
+                        if ($enchantment instanceof CustomEnchant && $enchantment->canReact()) {
+                            if ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_HAND) {
+                                foreach ($enchantment->getReagent() as $reagent) {
+                                    if ($event instanceof $reagent) {
+                                        $item = ProjectileTracker::getItem($projectile);
+                                        $slot = 0;
+                                        foreach ($player->getInventory()->getContents() as $s => $content) {
+                                            if ($content->equalsExact($item)) $slot = $s;
+                                        }
+                                        $enchantment->onReaction($player, $item, $player->getInventory(), $slot, $event, $enchantmentInstance->getLevel(), 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    ProjectileTracker::removeProjectile($projectile);
+                    return;
+                }
+            }
+        }
+        $enchantmentStacks = [];
+        foreach ($player->getInventory()->getContents() as $slot => $content) {
+            foreach (Utils::sortEnchantmentsByPriority($content->getEnchantments()) as $enchantmentInstance) {
+                /** @var ReactiveEnchantment $enchantment */
+                $enchantment = $enchantmentInstance->getType();
+                if ($enchantment instanceof CustomEnchant && $enchantment->canReact()) {
+                    if ($enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY || $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY || ($enchantment->getUsageType() === CustomEnchant::TYPE_HAND && $player->getInventory()->getHeldItemIndex() === $slot)) {
+                        foreach ($enchantment->getReagent() as $reagent) {
+                            if ($event instanceof $reagent) {
+                                $enchantmentStacks[$enchantment->getId()] = ($enchantmentStacks[$enchantment->getId()] ?? 0) + $enchantmentInstance->getLevel();
+                                $enchantment->onReaction($player, $content, $player->getInventory(), $slot, $event, $enchantmentInstance->getLevel(), $enchantmentStacks[$enchantment->getId()]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
+            foreach (Utils::sortEnchantmentsByPriority($content->getEnchantments()) as $enchantmentInstance) {
+                /** @var ReactiveEnchantment $enchantment */
+                $enchantment = $enchantmentInstance->getType();
+                if ($enchantment instanceof CustomEnchant && $enchantment->canReact()) {
+                    if ((
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_ARMOR_INVENTORY ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_HELMET && Utils::isHelmet($content) ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_CHESTPLATE && Utils::isChestplate($content) ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_LEGGINGS && Utils::isLeggings($content) ||
+                        $enchantment->getUsageType() === CustomEnchant::TYPE_BOOTS && Utils::isBoots($content)
+                    )) {
+                        foreach ($enchantment->getReagent() as $reagent) {
+                            if ($event instanceof $reagent) {
+                                $enchantmentStacks[$enchantment->getId()] = ($enchantmentStacks[$enchantment->getId()] ?? 0) + $enchantmentInstance->getLevel();
+                                $enchantment->onReaction($player, $content, $player->getArmorInventory(), $slot, $event, $enchantmentInstance->getLevel(), $enchantmentStacks[$enchantment->getId()]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
