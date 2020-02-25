@@ -64,7 +64,7 @@ trait ReactiveTrait
             if ($event->getEntity() === $player && $event->getDamager() !== $player && $this->shouldReactToDamage()) return;
             if ($event->getEntity() !== $player && $this->shouldReactToDamaged()) return;
         }
-        if (mt_rand(0, 100) <= $this->getChance($player, $level)) $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
+        if (mt_rand(0 * 100000, 100 * 100000) / 100000 <= $this->getChance($player, $level)) $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
     }
 
     /**
