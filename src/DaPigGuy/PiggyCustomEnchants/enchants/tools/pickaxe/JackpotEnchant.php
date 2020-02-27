@@ -12,8 +12,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 
 /**
@@ -63,7 +62,7 @@ class JackpotEnchant extends ReactiveEnchantment
                             unset($drops[$k]);
                         }
                     }
-                    $drops = array_merge($drops, BlockFactory::get(self::ORE_TIERS[$key + 1])->getDrops(ItemFactory::get(ItemIds::DIAMOND_PICKAXE)));
+                    $drops = array_merge($drops, BlockFactory::get(self::ORE_TIERS[$key + 1])->getDrops(VanillaItems::DIAMOND_PICKAXE()));
                     $event->setDrops($drops);
                 }
             }

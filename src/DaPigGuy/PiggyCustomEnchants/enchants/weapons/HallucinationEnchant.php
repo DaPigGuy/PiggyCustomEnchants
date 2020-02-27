@@ -9,6 +9,7 @@ use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\tile\Sign;
 use pocketmine\block\tile\Tile;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -60,8 +61,8 @@ class HallucinationEnchant extends ReactiveEnchantment
                         for ($y = $originalPosition->y - 1; $y <= $originalPosition->y + 2; $y++) {
                             for ($z = $originalPosition->z - 1; $z <= $originalPosition->z + 1; $z++) {
                                 $position = new Position($x, $y, $z, $originalPosition->getWorld());
-                                $block = BlockFactory::get(BlockLegacyIds::BEDROCK);
-                                if ($position->equals($originalPosition)) $block = BlockFactory::get(BlockLegacyIds::LAVA);
+                                $block = VanillaBlocks::BEDROCK();
+                                if ($position->equals($originalPosition)) $block = VanillaBlocks::LAVA();
                                 if ($position->equals($originalPosition->add(0, 1))) {
                                     $block = BlockFactory::get(BlockLegacyIds::WALL_SIGN, 2);
                                     if ($this->nbtWriter === null) $this->nbtWriter = new NetworkNbtSerializer();

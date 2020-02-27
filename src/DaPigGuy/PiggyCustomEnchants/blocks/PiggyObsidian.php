@@ -4,9 +4,9 @@ namespace DaPigGuy\PiggyCustomEnchants\blocks;
 
 use pocketmine\block\Block;
 use pocketmine\block\BlockBreakInfo;
-use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockIdentifier;
 use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -72,7 +72,7 @@ class PiggyObsidian extends Block
      */
     public function onBreak(Item $item, Player $player = null): bool
     {
-        $this->getPos()->getWorld()->setBlock($this->getPos(), BlockFactory::get(BlockLegacyIds::LAVA));
+        $this->getPos()->getWorld()->setBlock($this->getPos(), VanillaBlocks::LAVA());
         return true;
     }
 

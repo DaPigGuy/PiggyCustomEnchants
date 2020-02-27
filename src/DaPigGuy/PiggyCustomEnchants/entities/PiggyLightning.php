@@ -6,8 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
@@ -63,7 +62,7 @@ class PiggyLightning extends Entity
             }
         }
         if ($this->getWorld()->getBlock($this->location)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false)) {
-            $this->getWorld()->setBlock($this->location, BlockFactory::get(BlockLegacyIds::FIRE));
+            $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());
         }
         if ($this->age > 20) {
             $this->flagForDespawn();

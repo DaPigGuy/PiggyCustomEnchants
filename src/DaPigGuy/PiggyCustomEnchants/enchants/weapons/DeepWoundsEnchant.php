@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
@@ -50,7 +49,7 @@ class DeepWoundsEnchant extends ReactiveEnchantment
                         return;
                     }
                     $entity->attack(new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_MAGIC, 1 + $entity->getHealth() / 15));
-                    $entity->getWorld()->addParticle($entity->getPosition()->add(0, 1), new DestroyBlockParticle(BlockFactory::get(BlockLegacyIds::REDSTONE_BLOCK)));
+                    $entity->getWorld()->addParticle($entity->getPosition()->add(0, 1), new DestroyBlockParticle(VanillaBlocks::REDSTONE()));
                 });
                 $this->plugin->getScheduler()->scheduleRepeatingTask(self::$tasks[$entity->getId()], 20);
                 $this->setCooldown($player, 7);

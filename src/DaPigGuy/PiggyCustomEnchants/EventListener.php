@@ -30,7 +30,6 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
@@ -71,7 +70,6 @@ class EventListener implements Listener
     /**
      * @param BlockBreakEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onBreak(BlockBreakEvent $event): void
     {
@@ -144,7 +142,6 @@ class EventListener implements Listener
     /**
      * @param EntityDamageEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onDamage(EntityDamageEvent $event): void
     {
@@ -168,7 +165,6 @@ class EventListener implements Listener
     /**
      * @param EntityEffectAddEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onEffectAdd(EntityEffectAddEvent $event): void
     {
@@ -181,7 +177,6 @@ class EventListener implements Listener
     /**
      * @param EntityShootBowEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onShootBow(EntityShootBowEvent $event): void
     {
@@ -203,7 +198,6 @@ class EventListener implements Listener
     /**
      * @param PlayerInteractEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onInteract(PlayerInteractEvent $event): void
     {
@@ -213,7 +207,6 @@ class EventListener implements Listener
     /**
      * @param PlayerItemHeldEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onItemHold(PlayerItemHeldEvent $event): void
     {
@@ -228,7 +221,6 @@ class EventListener implements Listener
     /**
      * @param PlayerItemUseEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onItemUse(PlayerItemUseEvent $event): void
     {
@@ -264,22 +256,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerKickEvent $event
-     */
-    public function onKick(PlayerKickEvent $event): void
-    {
-        $player = $event->getPlayer();
-        if ($event->getReason() === "Flying is not enabled on this server") {
-            if ($player->getArmorInventory()->getChestplate()->getEnchantment(Enchantment::get(CustomEnchantIds::SPIDER)) !== null) {
-                $event->setCancelled();
-            }
-        }
-    }
-
-    /**
      * @param PlayerMoveEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onMove(PlayerMoveEvent $event): void
     {
@@ -314,7 +292,6 @@ class EventListener implements Listener
     /**
      * @param PlayerToggleSneakEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onSneak(PlayerToggleSneakEvent $event): void
     {
@@ -325,7 +302,6 @@ class EventListener implements Listener
     /**
      * @param ProjectileHitBlockEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onProjectileHitBlock(ProjectileHitBlockEvent $event): void
     {
@@ -339,7 +315,6 @@ class EventListener implements Listener
     /**
      * @param ProjectileLaunchEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onProjectileLaunch(ProjectileLaunchEvent $event): void
     {
@@ -353,7 +328,6 @@ class EventListener implements Listener
     /**
      * @param InventoryTransactionEvent $event
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onTransaction(InventoryTransactionEvent $event): void
     {
