@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\block\BlockLegacyIds;
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\effect\EffectInstance;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
+use pocketmine\utils\Color;
 
 /**
  * Class ParachuteEnchant
@@ -34,13 +39,12 @@ class ParachuteEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        /*
-        if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantIds::JETPACK)) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::LEVITATION), 2147483647, -5, false)); //Hack to make the Parachute CE feel like a parachute
-        } elseif (($effect = $player->getEffect(Effect::LEVITATION)) !== null && $effect->getAmplifier() === -5) {
-            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->subtract(0, 1))->getId() !== BlockLegacyIds::AIR) $player->removeEffect($effect->getId());
+        $slowFall = new Effect(27, "%potion.slowFalling", new Color(206, 255, 255));
+        if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(Enchantment::get(CustomEnchantIds::JETPACK))) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
+            $player->getEffects()->add(new EffectInstance($slowFall, 2147483647, 1, false));
+        } elseif (($effect = $player->getEffects()->get($slowFall)) !== null) {
+            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1))->getId() !== BlockLegacyIds::AIR) $player->getEffects()->remove($slowFall);
         }
-       */
         $player->resetFallDistance();
     }
 
@@ -54,9 +58,10 @@ class ParachuteEnchant extends TickingEnchantment
      */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
-        //if (!$toggle && ($effect = $player->getEffect(Effect::LEVITATION)) !== null && $effect->getAmplifier() === -5) {
-        //    $player->removeEffect($effect->getId());
-        //}
+        $slowFall = new Effect(27, "%potion.slowFalling", new Color(206, 255, 255));
+        if (!$toggle && ($effect = $player->getEffects()->get($slowFall)) !== null && $effect->getAmplifier() === -5) {
+            $player->getEffects()->remove($slowFall);
+        }
     }
 
     /**
