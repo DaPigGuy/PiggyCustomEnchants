@@ -8,10 +8,13 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\tools\DrillerEnchant;
+use DaPigGuy\PiggyCustomEnchants\entities\BombardmentTNT;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use DaPigGuy\PiggyCustomEnchants\inventory\CustomEnchantToggleListener;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\block\BlockLegacyIds;
+use pocketmine\entity\EntityFactory;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityBlockChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -125,17 +128,17 @@ class EventListener implements Listener
      */
     public function onBlockChange(EntityBlockChangeEvent $event): void
     {
-        /*$entity = $event->getEntity();
-        if ($entity instanceof FallingBlock && ($bombardmentLevel = $entity->namedtag->getInt("Bombardment", 0)) > 0) {
-            for ($i = 0; $i < 3 + $bombardmentLevel; $i++) {
-                /** @var PiggyTNT $tnt *//*
-                $tnt = EntityFactory::create("PiggyTNT", $entity->getWorld(), EntityFactory::createBaseNBT($entity->getPosition())->setShort("Fuse", 0));
+        $entity = $event->getEntity();
+        if ($entity instanceof BombardmentTNT) {
+            for ($i = 0; $i < 3 + $entity->getEnchantmentLevel(); $i++) {
+                /** @var PiggyTNT $tnt */
+                $tnt = EntityFactory::create(PiggyTNT::class, $entity->getWorld(), EntityFactory::createBaseNBT($entity->getPosition())->setShort("Fuse", 0));
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.bombardment", false);
                 $tnt->setOwningEntity($entity->getOwningEntity());
                 $tnt->spawnToAll();
             }
             $event->setCancelled();
-        }*/
+        }
     }
 
     /**
