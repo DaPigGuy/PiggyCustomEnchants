@@ -8,6 +8,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\tools\DrillerEnchant;
+use DaPigGuy\PiggyCustomEnchants\inventory\CustomEnchantToggleListener;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\block\BlockLegacyIds;
@@ -119,21 +120,6 @@ class EventListener implements Listener
         }
     }
 
-    /*
-    public function onArmorChange(EntityArmorChangeEvent $event): void
-    {
-        $entity = $event->getEntity();
-        if ($entity instanceof Player) {
-            $oldItem = $event->getOldItem();
-            $newItem = $event->getNewItem();
-            $inventory = $entity->getArmorInventory();
-            $slot = $event->getSlot();
-            if ($oldItem->equals($newItem, false, true)) return;
-            foreach ($oldItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $oldItem, $enchantmentInstance, $inventory, $slot, false);
-            foreach ($newItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $newItem, $enchantmentInstance, $inventory, $slot);
-        }
-    }*/
-
     /**
      * @param EntityBlockChangeEvent $event
      */
@@ -189,24 +175,6 @@ class EventListener implements Listener
         }
     }
 
-    /*
-    public function onInventoryChange(EntityInventoryChangeEvent $event): void
-    {
-        $entity = $event->getEntity();
-        if ($entity instanceof Player) {
-            $oldItem = $event->getOldItem();
-            $newItem = $event->getNewItem();
-            $inventory = $entity->getInventory();
-            $slot = $event->getSlot();
-            if ($newItem->getId() === ItemIds::AIR) {
-                foreach ($oldItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $oldItem, $enchantmentInstance, $inventory, $slot, false);
-            }
-            if ($oldItem->getId() === ItemIds::AIR) {
-                foreach ($newItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $newItem, $enchantmentInstance, $inventory, $slot);
-            }
-        }
-    }*/
-
     /**
      * @param EntityShootBowEvent $event
      * @priority HIGHEST
@@ -237,7 +205,6 @@ class EventListener implements Listener
     public function onInteract(PlayerInteractEvent $event): void
     {
         ReactiveEnchantment::attemptReaction($event->getPlayer(), $event);
-
     }
 
     /**
@@ -289,6 +256,8 @@ class EventListener implements Listener
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot);
         }
+        $player->getInventory()->addChangeListeners(new CustomEnchantToggleListener());
+        $player->getArmorInventory()->addChangeListeners(new CustomEnchantToggleListener());
     }
 
     /**
