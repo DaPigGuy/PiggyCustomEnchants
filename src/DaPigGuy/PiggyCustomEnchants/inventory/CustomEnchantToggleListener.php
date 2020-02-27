@@ -11,6 +11,7 @@ use pocketmine\inventory\InventoryChangeListener;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\player\Player;
 
 /**
  * Class CustomEnchantToggleListener
@@ -28,11 +29,13 @@ class CustomEnchantToggleListener implements InventoryChangeListener
     public function onSlotChange(Inventory $inventory, int $slot): void
     {
         if ($inventory instanceof PlayerInventory || $inventory instanceof ArmorInventory) {
-            $player = $inventory->getHolder();
-            if (!($oldItem = ($this->currentItems[$player->getName()][get_class($inventory)][$slot] ?? ItemFactory::get(ItemIds::AIR)))->equals(($newItem = $inventory->getItem($slot)), !$inventory instanceof ArmorInventory)) {
-                if ($newItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($oldItem->getEnchantments() as $oldEnchantment) ToggleableEnchantment::attemptToggle($player, $oldItem, $oldEnchantment, $inventory, $slot, false);
-                if ($oldItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($newItem->getEnchantments() as $newEnchantment) ToggleableEnchantment::attemptToggle($player, $newItem, $newEnchantment, $inventory, $slot);
-                $this->currentItems[$inventory->getHolder()->getName()][get_class($inventory)][$slot] = $inventory->getItem($slot);
+            $holder = $inventory->getHolder();
+            if ($holder instanceof Player) {
+                if (!($oldItem = ($this->currentItems[$holder->getName()][get_class($inventory)][$slot] ?? ItemFactory::get(ItemIds::AIR)))->equals(($newItem = $inventory->getItem($slot)), !$inventory instanceof ArmorInventory)) {
+                    if ($newItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($oldItem->getEnchantments() as $oldEnchantment) ToggleableEnchantment::attemptToggle($holder, $oldItem, $oldEnchantment, $inventory, $slot, false);
+                    if ($oldItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($newItem->getEnchantments() as $newEnchantment) ToggleableEnchantment::attemptToggle($holder, $newItem, $newEnchantment, $inventory, $slot);
+                    $this->currentItems[$inventory->getHolder()->getName()][get_class($inventory)][$slot] = $inventory->getItem($slot);
+                }
             }
         }
     }
