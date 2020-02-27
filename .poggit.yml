@@ -1,13 +1,14 @@
 --- # Poggit-CI Manifest. Open the CI at https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants
 branches:
 - master
+- pmmp-4.0.0
 projects:
   PiggyCustomEnchants:
     path: ""
     icon: "resources/PCE_Icon.png"
     libs:
-    - src: jojoe77777/FormAPI/libFormAPI
-      version: ^1.3
-    - src: CortexPE/Commando/Commando
-      version: ^0.5
+      - src: DaPigGuy/FormAPI-4.0.0/libFormAPI
+        version: ^1.3
+      - src: DaPigGuy/Commando-4.0.0/Commando
+        version: ^0.5
 ...
