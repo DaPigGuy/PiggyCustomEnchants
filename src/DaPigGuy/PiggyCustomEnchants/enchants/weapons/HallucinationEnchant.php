@@ -5,10 +5,23 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\tile\Sign;
+use pocketmine\block\tile\Tile;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\nbt\TreeRoot;
+use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
+use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
+use pocketmine\network\mcpe\serializer\NetworkNbtSerializer;
 use pocketmine\player\Player;
+use pocketmine\scheduler\ClosureTask;
+use pocketmine\utils\TextFormat;
+use pocketmine\world\Position;
 
 /**
  * Class HallucinationEnchant
@@ -18,6 +31,9 @@ class HallucinationEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Hallucination";
+
+    /** @var NetworkNbtSerializer */
+    public $nbtWriter = null;
 
     /** @var array */
     public static $hallucinating;
@@ -33,58 +49,52 @@ class HallucinationEnchant extends ReactiveEnchantment
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        /*if ($event instanceof EntityDamageByEntityEvent) {
-              $entity = $event->getEntity();
-              if ($entity instanceof Player && !isset(self::$hallucinating[$entity->getName()])) {
-                  $originalPosition = $entity->getPosition();
-                  self::$hallucinating[$entity->getName()] = true;
-                  $this->plugin->getScheduler()->scheduleRepeatingTask(($task = new ClosureTask(function () use ($entity, $originalPosition): void {
-                      for ($x = $originalPosition->x - 1; $x <= $originalPosition->x + 1; $x++) {
-                          for ($y = $originalPosition->y - 1; $y <= $originalPosition->y + 2; $y++) {
-                              for ($z = $originalPosition->z - 1; $z <= $originalPosition->z + 1; $z++) {
-                                  $position = new Position($x, $y, $z, $originalPosition->getLevel());
-                                  $block = BlockFactory::get(BlockLegacyIds::BEDROCK, 0, $position);
-                                  if ($position->equals($originalPosition)) $block = BlockFactory::get(BlockLegacyIds::LAVA, 0, $position);
-                                  if ($position->equals($originalPosition->add(0, 1))) {
-                                      $block = BlockFactory::get(BlockLegacyIds::WALL_SIGN, 0, $position);
-                                      $nbtWriter = new NetworkLittleEndianNBTStream();
-                                      /** @var string $nbt *//*
-                                    $nbt = $nbtWriter->write(new CompoundTag("", [
-                                        new StringTag("id", Tile::SIGN),
-                                        new StringTag("Text1", TextFormat::RED . "You seem to be"),
-                                        new StringTag("Text2", TextFormat::RED . "hallucinating..."),
-                                        new StringTag("Text3", ""),
-                                        new StringTag("Text4", ""),
-                                        new IntTag("x", (int)$position->x),
-                                        new IntTag("y", (int)$position->y),
-                                        new IntTag("z", (int)$position->z)
-                                    ]));
-                                    $pk = new BlockActorDataPacket();
-                                    $pk->x = (int)$position->x;
-                                    $pk->y = (int)$position->y;
-                                    $pk->z = (int)$position->z;
-                                    $pk->namedtag = $nbt;
-                                    $entity->sendDataPacket($pk);
+        if ($event instanceof EntityDamageByEntityEvent) {
+            $entity = $event->getEntity();
+            if ($entity instanceof Player && !isset(self::$hallucinating[$entity->getName()])) {
+                $originalPosition = Position::fromObject($entity->getPosition()->round(), $entity->getWorld());
+                self::$hallucinating[$entity->getName()] = true;
+                $this->plugin->getScheduler()->scheduleRepeatingTask(($task = new ClosureTask(function () use ($entity, $originalPosition): void {
+                    $packets = [];
+                    for ($x = $originalPosition->x - 1; $x <= $originalPosition->x + 1; $x++) {
+                        for ($y = $originalPosition->y - 1; $y <= $originalPosition->y + 2; $y++) {
+                            for ($z = $originalPosition->z - 1; $z <= $originalPosition->z + 1; $z++) {
+                                $position = new Position($x, $y, $z, $originalPosition->getWorld());
+                                $block = BlockFactory::get(BlockLegacyIds::BEDROCK);
+                                if ($position->equals($originalPosition)) $block = BlockFactory::get(BlockLegacyIds::LAVA);
+                                if ($position->equals($originalPosition->add(0, 1))) {
+                                    $block = BlockFactory::get(BlockLegacyIds::WALL_SIGN, 2);
+                                    if ($this->nbtWriter === null) $this->nbtWriter = new NetworkNbtSerializer();
+                                    $packets[] = BlockActorDataPacket::create((int)$position->x, (int)$position->y, (int)$position->z, $this->nbtWriter->write(new TreeRoot(
+                                        CompoundTag::create()->
+                                        setString(Tile::TAG_ID, "Sign")->
+                                        setInt(Tile::TAG_X, (int)$position->x)->
+                                        setInt(Tile::TAG_Y, (int)$position->y)->
+                                        setInt(Tile::TAG_Z, (int)$position->z)->
+                                        setString(Sign::TAG_TEXT_BLOB, implode("\n", [
+                                            TextFormat::RED . "You seem to be",
+                                            TextFormat::RED . "hallucinating..."
+                                        ]))
+                                    )));
                                 }
-                                $position->getLevel()->sendBlocks([$entity], [$block]);
+                                $packets[] = UpdateBlockPacket::create((int)$position->x, (int)$position->y, (int)$position->z, $block->getRuntimeId());
                             }
                         }
                     }
+                    $entity->getServer()->broadcastPackets([$entity], $packets);
                 })), 1);
                 $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($originalPosition, $entity, $task): void {
                     $task->getHandler()->cancel();
-                    for ($y = -1; $y <= 3; $y++) {
-                        $startBlock = $originalPosition->getLevel()->getBlock($originalPosition->add(0, $y));
-                        $originalPosition->getLevel()->sendBlocks([$entity], array_merge([$startBlock], $startBlock->getHorizontalSides(), [
-                            $startBlock->getSide(Vector3::SIDE_NORTH)->getSide(Vector3::SIDE_EAST),
-                            $startBlock->getSide(Vector3::SIDE_NORTH)->getSide(Vector3::SIDE_WEST),
-                            $startBlock->getSide(Vector3::SIDE_SOUTH)->getSide(Vector3::SIDE_EAST),
-                            $startBlock->getSide(Vector3::SIDE_SOUTH)->getSide(Vector3::SIDE_WEST)
-                        ]));
+                    for ($x = -1; $x <= 1; $x++) {
+                        for ($y = -1; $y <= 3; $y++) {
+                            for ($z = -1; $z <= 1; $z++) {
+                                $originalPosition->getWorld()->sendBlocks([$entity], [$originalPosition->round()->add($x, $y, $z)]);
+                            }
+                        }
                     }
                     unset(self::$hallucinating[$entity->getName()]);
                 }), 20 * 60); //Cancellable closure tasks when? :/
             }
-        }*/
+        }
     }
 }
