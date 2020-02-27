@@ -62,7 +62,7 @@ class ReviveEnchant extends ReactiveEnchantment
                 $effect = new EffectInstance(VanillaEffects::SLOWNESS(), 600, 0, false);
                 $player->getEffects()->add($effect);
 
-                for ($i = $player->getPosition(); $i <= 256; $i += 0.25) {
+                for ($i = $player->getPosition()->y; $i <= 256; $i += 0.25) {
                     $player->getWorld()->addParticle($player->getPosition()->add(0, $i - $player->getPosition()->y), new FlameParticle());
                 }
                 $player->sendTip(TextFormat::GREEN . "You were revived.");

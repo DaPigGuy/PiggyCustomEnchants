@@ -61,7 +61,7 @@ class DrillerEnchant extends ReactiveEnchantment
                              $block->getSide(Facing::opposite($faceUp))->getSide(Facing::opposite($faceLeft)) //Bottom Right
                          ] as $b) {
                     $this->setCooldown($player, 1);
-                    $player->getWorld()->useBreakOn($b, $item, $player, true);
+                    $player->getWorld()->useBreakOn($b->getPos(), $item, $player, true);
                 }
                 if (!$block->getPos()->equals($event->getBlock()->getPos())) {
                     $this->setCooldown($player, 1);
