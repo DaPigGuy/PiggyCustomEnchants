@@ -11,7 +11,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class HarvestEnchant
@@ -48,9 +48,9 @@ class HarvestEnchant extends ReactiveEnchantment
             if ($block instanceof Crops) {
                 for ($x = -$level; $x <= $level; $x++) {
                     for ($z = -$level; $z <= $level; $z++) {
-                        if ($block->getLevel()->getBlock($block->add($x, 0, $z)) instanceof Crops) {
+                        if ($block->getPos()->getWorld()->getBlock($block->getPos()->add($x, 0, $z)) instanceof Crops) {
                             $this->setCooldown($player, 1);
-                            $block->getLevel()->useBreakOn($block->add($x, 0, $z), $item, $player);
+                            $block->getPos()->getWorld()->useBreakOn($block->getPos()->add($x, 0, $z), $item, $player);
                         }
                     }
                 }

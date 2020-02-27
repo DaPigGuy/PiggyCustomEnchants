@@ -6,14 +6,15 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
-use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\entity\Entity;
-use pocketmine\entity\EntityIds;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\Player;
+use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
+use pocketmine\player\Player;
 
 /**
  * Class PiggyLightning
@@ -21,7 +22,7 @@ use pocketmine\Player;
  */
 class PiggyLightning extends Entity
 {
-    const NETWORK_ID = EntityIds::LIGHTNING_BOLT;
+    const NETWORK_ID = EntityLegacyIds::LIGHTNING_BOLT;
 
     /** @var float */
     public $width = 0.3;
@@ -44,7 +45,7 @@ class PiggyLightning extends Entity
         }
         $this->age += $tickDiff;
         $hasUpdate = parent::entityBaseTick($tickDiff);
-        foreach ($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
+        foreach ($this->getWorld()->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
             if ($entity instanceof Living && $entity->isAlive() && $this->getOwningEntity() !== $entity) {
                 $owner = $this->getOwningEntity();
                 if (!$owner instanceof Player || !AllyChecks::isAlly($owner, $entity)) {
@@ -61,8 +62,8 @@ class PiggyLightning extends Entity
                 }
             }
         }
-        if ($this->getLevel()->getBlock($this)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false)) {
-            $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
+        if ($this->getWorld()->getBlock($this->location)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false)) {
+            $this->getWorld()->setBlock($this->location, BlockFactory::get(BlockLegacyIds::FIRE));
         }
         if ($this->age > 20) {
             $this->flagForDespawn();

@@ -7,17 +7,13 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
-use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\nbt\tag\ByteTag;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\DoubleTag;
-use pocketmine\nbt\tag\FloatTag;
-use pocketmine\nbt\tag\ListTag;
-use pocketmine\Player;
+use pocketmine\math\Vector3;
+use pocketmine\player\Player;
 use pocketmine\utils\Random;
 
 /**
@@ -52,7 +48,7 @@ class SelfDestructEnchant extends ReactiveEnchantment
             for ($i = 0; $i < $level; $i++) {
                 $random = new Random();
                 /** @var PiggyTNT $tnt */
-                $tnt = Entity::createEntity("PiggyTNT", $player->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $player->x), new DoubleTag("", $player->y), new DoubleTag("", $player->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", $random->nextFloat() * 1.5 - 1), new DoubleTag("", $random->nextFloat() * 1.5), new DoubleTag("", $random->nextFloat() * 1.5 - 1)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
+                $tnt = EntityFactory::create(PiggyTNT::class, $player->getWorld(), EntityFactory::createBaseNBT($player->getPosition(), new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1),)->setShort("Fuse", 40));
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.self-destruct", false);
                 $tnt->setOwningEntity($player);
                 $tnt->spawnToAll();

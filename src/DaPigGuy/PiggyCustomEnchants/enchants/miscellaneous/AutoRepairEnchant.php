@@ -9,8 +9,9 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\Durable;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class AutoRepairEnchant
@@ -40,8 +41,8 @@ class AutoRepairEnchant extends ReactiveEnchantment
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if ($item->getDamage() === 0) return;
-        $newDir = $item->getDamage() - (1 + (1 * $level));
+        if (!$item instanceof Durable || $item->getMeta() === 0) return;
+        $newDir = $item->getMeta() - (1 + (1 * $level));
         if ($newDir < 0) {
             $item->setDamage(0);
         } else {

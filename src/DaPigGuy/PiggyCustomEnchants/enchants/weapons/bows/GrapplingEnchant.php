@@ -13,7 +13,7 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 
 /**
@@ -52,7 +52,7 @@ class GrapplingEnchant extends ReactiveEnchantment
                 if ($projectile instanceof Projectile) {
                     $damager = $event->getDamager();
                     $entity = $event->getEntity();
-                    $distance = $damager->distance($entity);
+                    $distance = $damager->getPosition()->distance($entity->getPosition());
                     if ($distance > 0) {
                         $motionX = (1.0 + 0.07 * $distance) * ($damager->x - $entity->x) / $distance;
                         $motionY = (1.0 + 0.03 * $distance) * ($damager->y - $entity->y) / $distance - 0.5 * -0.08 * $distance;
@@ -67,12 +67,12 @@ class GrapplingEnchant extends ReactiveEnchantment
         if ($event instanceof ProjectileHitBlockEvent) {
             $projectile = $event->getEntity();
             $shooter = $projectile->getOwningEntity();
-            $distance = $projectile->distance($shooter);
+            $distance = $projectile->getPosition()->distance($shooter->getPosition());
             if ($distance < 6) {
                 if ($projectile->y > $shooter->y) {
                     $shooter->setMotion(new Vector3(0, 0.25, 0));
                 } else {
-                    $v = $projectile->subtract($shooter);
+                    $v = $projectile->getPosition()->subtract($shooter->getPosition());
                     $shooter->setMotion($v);
                 }
             } else {

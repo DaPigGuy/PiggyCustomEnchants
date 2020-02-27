@@ -9,7 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -34,25 +34,25 @@ class RadarEnchant extends TickingEnchantment
         $detected = $this->findNearestPlayer($player, $level * 50);
         if (!is_null($detected)) {
             $pk = new SetSpawnPositionPacket();
-            $pk->x = (int)$detected->x;
-            $pk->y = (int)$detected->y;
-            $pk->z = (int)$detected->z;
+            $pk->x = (int)$detected->getPosition()->x;
+            $pk->y = (int)$detected->getPosition()->y;
+            $pk->z = (int)$detected->getPosition()->z;
             $pk->spawnForced = true;
             $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-            $player->sendDataPacket($pk);
+            $player->getNetworkSession()->sendDataPacket($pk);
             if ($item->equalsExact($player->getInventory()->getItemInHand())) {
-                $player->sendTip(TextFormat::GREEN . "Nearest player " . round($player->distance($detected), 1) . " blocks away.");
+                $player->sendTip(TextFormat::GREEN . "Nearest player " . round($player->getPosition()->distance($detected->getPosition()), 1) . " blocks away.");
             }
         } else {
             if ($item->equalsExact($player->getInventory()->getItemInHand())) {
                 $player->sendTip(TextFormat::RED . "No players found.");
                 $pk = new SetSpawnPositionPacket();
-                $pk->x = (int)$player->getLevel()->getSafeSpawn()->x;
-                $pk->y = (int)$player->getLevel()->getSafeSpawn()->y;
-                $pk->z = (int)$player->getLevel()->getSafeSpawn()->z;
+                $pk->x = (int)$player->getWorld()->getSafeSpawn()->x;
+                $pk->y = (int)$player->getWorld()->getSafeSpawn()->y;
+                $pk->z = (int)$player->getWorld()->getSafeSpawn()->z;
                 $pk->spawnForced = true;
                 $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-                $player->sendDataPacket($pk);
+                $player->getNetworkSession()->sendDataPacket($pk);
             }
         }
     }
@@ -69,12 +69,12 @@ class RadarEnchant extends TickingEnchantment
     {
         if (!$toggle && $player->isOnline()) {
             $pk = new SetSpawnPositionPacket();
-            $pk->x = (int)$player->getLevel()->getSafeSpawn()->x;
-            $pk->y = (int)$player->getLevel()->getSafeSpawn()->y;
-            $pk->z = (int)$player->getLevel()->getSafeSpawn()->z;
+            $pk->x = (int)$player->getWorld()->getSafeSpawn()->x;
+            $pk->y = (int)$player->getWorld()->getSafeSpawn()->y;
+            $pk->z = (int)$player->getWorld()->getSafeSpawn()->z;
             $pk->spawnForced = true;
             $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-            $player->sendDataPacket($pk);
+            $player->getNetworkSession()->sendDataPacket($pk);
         }
     }
 
@@ -87,8 +87,8 @@ class RadarEnchant extends TickingEnchantment
     {
         $nearestPlayer = null;
         $nearestPlayerDistance = $range;
-        foreach ($player->getLevel()->getPlayers() as $p) {
-            $distance = $player->distance($p);
+        foreach ($player->getWorld()->getPlayers() as $p) {
+            $distance = $player->getPosition()->distance($p->getPosition());
             if ($distance <= $range && $distance < $nearestPlayerDistance && $player !== $p && $p->isAlive() && !$p->isClosed() && !$p->isFlaggedForDespawn()) {
                 $nearestPlayer = $p;
                 $nearestPlayerDistance = $distance;

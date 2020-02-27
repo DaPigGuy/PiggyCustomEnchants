@@ -11,8 +11,8 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\math\Facing;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 
 /**
@@ -51,7 +51,7 @@ class FarmerEnchant extends ReactiveEnchantment
                 $seed = $block->getPickedItem();
                 if ($player->getInventory()->contains($seed)) {
                     $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player, $seed, $block): void {
-                        $block->getLevel()->useItemOn($block->subtract(0, 1), $seed, Vector3::SIDE_UP, $block->subtract(0, 1), $player);
+                        $block->getPos()->getWorld()->useItemOn($block->getPos()->subtract(0, 1), $seed, Facing::UP, $block->getPos()->subtract(0, 1), $player);
                         $player->getInventory()->removeItem($seed->setCount(1));
                     }), 1);
                 }

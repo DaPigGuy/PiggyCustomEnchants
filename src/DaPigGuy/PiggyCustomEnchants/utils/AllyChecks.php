@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\utils;
 
 use pocketmine\entity\Entity;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Utils as PMMPUtils;
 

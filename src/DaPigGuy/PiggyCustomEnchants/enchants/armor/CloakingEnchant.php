@@ -6,13 +6,13 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -36,7 +36,7 @@ class CloakingEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), 60 * $level, 0, false));
+            $player->getEffects()->add(new EffectInstance(VanillaEffects::INVISIBILITY(), 60 * $level, 0, false));
             $player->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
             $this->setCooldown($player, 10);
         }

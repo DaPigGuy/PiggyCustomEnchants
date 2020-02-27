@@ -7,11 +7,12 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\axes;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\block\Block;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class LumberjackEnchant
@@ -46,7 +47,7 @@ class LumberjackEnchant extends ReactiveEnchantment
         if ($event instanceof BlockBreakEvent) {
             $block = $event->getBlock();
             if ($player->isSneaking()) {
-                if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
+                if ($block->getId() == BlockLegacyIds::LOG || $block->getId() == BlockLegacyIds::LOG2) {
                     $this->breakTree($block, $player);
                 }
             }
@@ -67,11 +68,11 @@ class LumberjackEnchant extends ReactiveEnchantment
                 break;
             }
             $side = $block->getSide($i);
-            if ($side->getId() !== Block::WOOD && $side->getId() !== Block::WOOD2) {
+            if ($side->getId() !== BlockLegacyIds::LOG && $side->getId() !== BlockLegacyIds::LOG2) {
                 continue;
             }
             $this->setCooldown($player, 1);
-            $player->getLevel()->useBreakOn($side, $item, $player);
+            $player->getWorld()->useBreakOn($side->getPos(), $item, $player);
             $mined++;
             $this->breakTree($side, $player, $mined);
         }

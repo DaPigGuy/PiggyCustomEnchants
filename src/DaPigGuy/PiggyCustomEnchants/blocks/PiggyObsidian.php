@@ -3,33 +3,25 @@
 namespace DaPigGuy\PiggyCustomEnchants\blocks;
 
 use pocketmine\block\Block;
-use pocketmine\block\Obsidian;
+use pocketmine\block\BlockBreakInfo;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockIdentifier;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class PiggyObsidian
  * @package DaPigGuy\PiggyCustomEnchants\blocks
  */
-class PiggyObsidian extends Obsidian
+class PiggyObsidian extends Block
 {
     /** @var int */
     private $age = 0;
 
-    /**
-     * @return string
-     */
-    public function getName(): string
+    public function __construct()
     {
-        return $this->isMagmaWalker() ? "Magmawalker Obsidian" : "Obsidian";
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMagmaWalker(): bool
-    {
-        return $this->getDamage() === 15;
+        parent::__construct(new BlockIdentifier(BlockLegacyIds::OBSIDIAN, 15), "Magmawalker Obsidian", BlockBreakInfo::instant());
     }
 
     /**
@@ -52,27 +44,25 @@ class PiggyObsidian extends Obsidian
 
     public function onScheduledUpdate(): void
     {
-        if ($this->isMagmaWalker()) {
-            $count = 0;
-            for ($x = -1; $x <= 1; $x++) {
-                for ($z = -1; $z <= 1; $z++) {
-                    $pos = $this->add($x, 0, $z);
-                    if (!$this->equals($pos)) {
-                        $block = $this->getLevel()->getBlock($pos);
-                        if ($block instanceof PiggyObsidian && $block->isMagmaWalker()) {
-                            $count++;
-                        }
+        $count = 0;
+        for ($x = -1; $x <= 1; $x++) {
+            for ($z = -1; $z <= 1; $z++) {
+                $pos = $this->getPos()->add($x, 0, $z);
+                if (!$this->getPos()->equals($pos)) {
+                    $block = $this->getPos()->getWorld()->getBlock($pos);
+                    if ($block instanceof PiggyObsidian) {
+                        $count++;
                     }
                 }
             }
-            if (mt_rand(0, 100) <= 33.33 || $count < 4) {
-                $this->age++;
-            }
-            if ($this->age >= 4) {
-                $this->getLevel()->useBreakOn($this);
-            }
-            $this->getLevel()->scheduleDelayedBlockUpdate($this, mt_rand(1, 2) * 20);
         }
+        if (mt_rand(0, 100) <= 33.33 || $count < 4) {
+            $this->age++;
+        }
+        if ($this->age >= 4) {
+            $this->getPos()->getWorld()->useBreakOn($this->getPos());
+        }
+        $this->getPos()->getWorld()->scheduleDelayedBlockUpdate($this->getPos(), mt_rand(1, 2) * 20);
     }
 
     /**
@@ -82,7 +72,8 @@ class PiggyObsidian extends Obsidian
      */
     public function onBreak(Item $item, Player $player = null): bool
     {
-        return $this->getLevel()->setBlock($this, Block::get($this->isMagmaWalker() ? Block::LAVA : Block::AIR), true);
+        $this->getPos()->getWorld()->setBlock($this->getPos(), BlockFactory::get(BlockLegacyIds::LAVA));
+        return true;
     }
 
     /**
@@ -91,6 +82,6 @@ class PiggyObsidian extends Obsidian
      */
     public function getDrops(Item $item): array
     {
-        return $this->isMagmaWalker() ? [] : parent::getDrops($item);
+        return [];
     }
 }

@@ -6,12 +6,12 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\utils\Facing;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\math\Facing;
+use pocketmine\player\Player;
 
 /**
  * Class DrillerEnchant
@@ -61,11 +61,11 @@ class DrillerEnchant extends ReactiveEnchantment
                              $block->getSide(Facing::opposite($faceUp))->getSide(Facing::opposite($faceLeft)) //Bottom Right
                          ] as $b) {
                     $this->setCooldown($player, 1);
-                    $player->getLevel()->useBreakOn($b, $item, $player, true);
+                    $player->getWorld()->useBreakOn($b, $item, $player, true);
                 }
-                if (!$block->equals($event->getBlock())) {
+                if (!$block->getPos()->equals($event->getBlock()->getPos())) {
                     $this->setCooldown($player, 1);
-                    $player->getLevel()->useBreakOn($block, $item, $player, true);
+                    $player->getWorld()->useBreakOn($block->getPos(), $item, $player, true);
                 }
             }
         }

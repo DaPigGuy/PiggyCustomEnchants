@@ -13,8 +13,9 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -124,7 +125,7 @@ class EnchantSubCommand extends BaseSubCommand
                             Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
                             return;
                         }
-                        if (($enchantmentInstance = $item->getEnchantment($enchant->getId())) !== null && $enchantmentInstance->getLevel() > $data[1]) {
+                        if (($enchantmentInstance = $item->getEnchantment(Enchantment::get($enchant->getId()))) !== null && $enchantmentInstance->getLevel() > $data[1]) {
                             Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The enchant has already been applied with a higher level on the item.");
                             return;
                         }

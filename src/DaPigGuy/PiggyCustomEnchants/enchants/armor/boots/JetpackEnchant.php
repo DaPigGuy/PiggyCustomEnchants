@@ -9,14 +9,14 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
+use DaPigGuy\PiggyCustomEnchants\particles\JetpackParticle;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
-use pocketmine\level\particle\GenericParticle;
-use pocketmine\level\particle\Particle;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -64,7 +64,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {
-                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantIds::PARACHUTE) === null && !$player->getAllowFlight()) {
+                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(Enchantment::get(CustomEnchantIds::PARACHUTE)) === null && !$player->getAllowFlight()) {
                         $player->sendPopup(TextFormat::RED . "It is unsafe to disable your jetpack while in the air.");
                     } else {
                         $this->powerActiveJetpack($player, false);
@@ -88,8 +88,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($this->hasActiveJetpack($player)) {
             $player->setMotion($player->getDirectionVector()->multiply($level * ($player->isSprinting() ? 1.25 : 1)));
             $player->resetFallDistance();
-            $player->getLevel()->addParticle(new GenericParticle($player, Particle::TYPE_CAMPFIRE_SMOKE));
-
+            $player->getWorld()->addParticle($player->getPosition(), new JetpackParticle());
             $time = ceil($this->powerRemaining[$player->getName()] / 10);
             $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
             if ($time <= 2) $player->sendTip(TextFormat::RED . "Jetpack low on power.");

@@ -12,7 +12,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class StompEnchantment
@@ -46,7 +46,7 @@ class StompEnchantment extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageEvent) {
             if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
-                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox());
+                $entities = $player->getWorld()->getNearbyEntities($player->getBoundingBox());
                 foreach ($entities as $entity) {
                     if ($player === $entity) {
                         continue;

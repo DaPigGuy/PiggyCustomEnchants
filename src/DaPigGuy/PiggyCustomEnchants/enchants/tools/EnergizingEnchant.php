@@ -6,13 +6,13 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class EnergizingEnchant
@@ -43,9 +43,9 @@ class EnergizingEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            if ($player->hasEffect(Effect::HASTE) !== true) {
-                $effect = new EffectInstance(Effect::getEffect(Effect::HASTE), 20, 1 + $level - 2, false);
-                $player->addEffect($effect);
+            if (!$player->getEffects()->has(VanillaEffects::HASTE())) {
+                $effect = new EffectInstance(VanillaEffects::HASTE(), 20, 1 + $level - 2, false);
+                $player->getEffects()->add($effect);
             }
         }
     }

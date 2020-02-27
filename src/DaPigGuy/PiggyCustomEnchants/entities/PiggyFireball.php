@@ -6,10 +6,13 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\math\RayTraceResult;
-use pocketmine\Player;
+use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
+use pocketmine\player\Player;
 
 /**
  * Class PiggyFireball
@@ -17,7 +20,7 @@ use pocketmine\Player;
  */
 class PiggyFireball extends PiggyProjectile
 {
-    const NETWORK_ID = Entity::SMALL_FIREBALL;
+    const NETWORK_ID = EntityLegacyIds::SMALL_FIREBALL;
 
     /** @var float */
     public $width = 0.5;
@@ -57,7 +60,7 @@ class PiggyFireball extends PiggyProjectile
      */
     public function onHitBlock(Block $blockHit, RayTraceResult $hitResult): void
     {
-        $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
+        $this->getWorld()->setBlock($this->location, BlockFactory::get(BlockLegacyIds::FIRE));
         parent::onHitBlock($blockHit, $hitResult);
     }
 }

@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\math\RayTraceResult;
-use pocketmine\Player;
+use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
+use pocketmine\player\Player;
 
 /**
  * Class PiggyWitherSkull
@@ -18,7 +19,7 @@ use pocketmine\Player;
  */
 class PiggyWitherSkull extends PiggyProjectile
 {
-    const NETWORK_ID = Entity::WITHER_SKULL;
+    const NETWORK_ID = EntityLegacyIds::WITHER_SKULL;
 
     /** @var float */
     public $width = 0.5;
@@ -44,8 +45,8 @@ class PiggyWitherSkull extends PiggyProjectile
         if ($entityHit instanceof Living) {
             $owner = $this->getOwningEntity();
             if (!$owner instanceof Player || !AllyChecks::isAlly($owner, $entityHit)) {
-                $effect = new EffectInstance(Effect::getEffect(Effect::WITHER), 800, 1);
-                $entityHit->addEffect($effect);
+                $effect = new EffectInstance(VanillaEffects::WITHER(), 800, 1);
+                $entityHit->getEffects()->add($effect);
             }
         }
         parent::onHitEntity($entityHit, $hitResult);

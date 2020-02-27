@@ -11,7 +11,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class CactusEnchant
@@ -41,7 +41,7 @@ class CactusEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        foreach ($player->getLevel()->getNearbyEntities($player->getBoundingBox()->expandedCopy(1, 0, 1), $player) as $entity) {
+        foreach ($player->getWorld()->getNearbyEntities($player->getBoundingBox()->expandedCopy(1, 0, 1), $player) as $entity) {
             if ($entity instanceof Living && !AllyChecks::isAlly($player, $entity)) {
                 $ev = new EntityDamageByEntityEvent($player, $entity, EntityDamageEvent::CAUSE_CONTACT, 1);
                 $entity->attack($ev);

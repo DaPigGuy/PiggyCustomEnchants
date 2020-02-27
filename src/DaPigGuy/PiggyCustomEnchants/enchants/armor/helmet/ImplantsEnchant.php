@@ -11,8 +11,9 @@ use pocketmine\block\Water;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 
 /**
@@ -47,13 +48,13 @@ class ImplantsEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerMoveEvent) {
-            if ($player->getFood() < 20) {
-                $player->setFood($player->getFood() + $level > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level);
+            if ($player->getHungerManager()->getFood() < 20) {
+                $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + $level > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + $level);
             }
             if ($player->getAirSupplyTicks() < $player->getMaxAirSupplyTicks() && !isset(self::$tasks[$player->getName()])) {
                 self::$tasks[$player->getName()] = new ClosureTask(function () use ($player): void {
-                    if ($player->isOnline() && $player->isAlive() && ($enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(CustomEnchantIds::IMPLANTS)) !== null) {
-                        if (!$player->getLevel()->getBlock($player->add(0, 1)) instanceof Water ||
+                    if ($player->isOnline() && $player->isAlive() && ($enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(Enchantment::get(CustomEnchantIds::IMPLANTS))) !== null) {
+                        if (!$player->getWorld()->getBlock($player->getNextPosition()->add(0, 1)) instanceof Water ||
                             $player->getAirSupplyTicks() >= $player->getMaxAirSupplyTicks()) {
                             self::$tasks[$player->getName()]->getHandler()->cancel();
                             unset(self::$tasks[$player->getName()]);

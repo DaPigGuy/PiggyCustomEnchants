@@ -9,7 +9,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class VampireEnchant
@@ -35,7 +35,7 @@ class VampireEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByEntityEvent) {
             $player->setHealth($player->getHealth() + ($event->getFinalDamage() / 2) > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + ($event->getFinalDamage() / 2));
-            $player->setFood($player->getFood() + ($event->getFinalDamage() / 2) > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + ($event->getFinalDamage() / 2));
+            $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + ($event->getFinalDamage() / 2) > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + ($event->getFinalDamage() / 2));
             $this->setCooldown($player, 5);
         }
     }

@@ -6,7 +6,6 @@ namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use pocketmine\scheduler\AsyncTask;
-use pocketmine\Server;
 use pocketmine\utils\Internet;
 
 /**
@@ -44,10 +43,7 @@ class CheckUpdatesTask extends AsyncTask
         }
     }
 
-    /**
-     * @param Server $server
-     */
-    public function onCompletion(Server $server): void
+    public function onCompletion(): void
     {
         if ($this->getResult() !== null) {
             if (CustomEnchantManager::getPlugin()->isEnabled()) {

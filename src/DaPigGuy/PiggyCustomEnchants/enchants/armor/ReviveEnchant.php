@@ -7,16 +7,17 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\level\particle\FlameParticle;
-use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use pocketmine\world\particle\FlameParticle;
 
 /**
  * Class ReviveEnchant
@@ -48,23 +49,21 @@ class ReviveEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageEvent) {
             if ($event->getFinalDamage() >= $player->getHealth()) {
-                $level > 1 ? $item->addEnchantment($item->getEnchantment(CustomEnchantIds::REVIVE)->setLevel($level - 1)) : $item->removeEnchantment(CustomEnchantIds::REVIVE);
-                if (count($item->getEnchantments()) === 0) $item->removeNamedTagEntry(Item::TAG_ENCH);
+                $level > 1 ? $item->addEnchantment(new EnchantmentInstance(Enchantment::get(CustomEnchantIds::REVIVE), $level - 1)) : $item->removeEnchantment(Enchantment::get(CustomEnchantIds::REVIVE));
                 $player->getArmorInventory()->setItem($slot, $item);
 
-                $player->removeAllEffects();
+                $player->getEffects()->clear();
                 $player->setHealth($player->getMaxHealth());
-                $player->setFood($player->getMaxFood());
-                $player->setXpLevel(0);
-                $player->setXpProgress(0);
+                $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
+                $player->getXpManager()->setXpAndProgress(0, 0.0);
 
-                $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 600, 0, false);
-                $player->addEffect($effect);
-                $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 600, 0, false);
-                $player->addEffect($effect);
+                $effect = new EffectInstance(VanillaEffects::NAUSEA(), 600, 0, false);
+                $player->getEffects()->add($effect);
+                $effect = new EffectInstance(VanillaEffects::SLOWNESS(), 600, 0, false);
+                $player->getEffects()->add($effect);
 
-                for ($i = $player->y; $i <= 256; $i += 0.25) {
-                    $player->getLevel()->addParticle(new FlameParticle(new Vector3($player->x, $i, $player->z)));
+                for ($i = $player->getPosition(); $i <= 256; $i += 0.25) {
+                    $player->getWorld()->addParticle($player->getPosition()->add(0, $i - $player->getPosition()->y), new FlameParticle());
                 }
                 $player->sendTip(TextFormat::GREEN . "You were revived.");
 

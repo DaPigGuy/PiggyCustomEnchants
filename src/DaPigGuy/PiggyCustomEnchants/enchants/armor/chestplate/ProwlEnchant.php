@@ -7,12 +7,11 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
-use pocketmine\entity\Entity;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class ProwlEnchant
@@ -44,9 +43,9 @@ class ProwlEnchant extends ToggleableEnchantment
             foreach ($player->getServer()->getOnlinePlayers() as $p) {
                 $p->showPlayer($player);
             }
-            $player->removeEffect(Effect::SLOWNESS);
-            if (!$player->hasEffect(Effect::INVISIBILITY)) {
-                $player->setGenericFlag(Entity::DATA_FLAG_INVISIBLE, false);
+            $player->getEffects()->remove(VanillaEffects::SLOWNESS());
+            if (!$player->getEffects()->has(VanillaEffects::INVISIBILITY())) {
+                $player->setInvisible(false);
             }
             unset($this->prowled[$player->getName()]);
         }
@@ -65,18 +64,18 @@ class ProwlEnchant extends ToggleableEnchantment
             foreach ($player->getServer()->getOnlinePlayers() as $p) {
                 $p->hidePlayer($player);
             }
-            $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 2147483647, 0, false);
-            $player->setGenericFlag(Entity::DATA_FLAG_INVISIBLE, true);
-            $player->addEffect($effect);
+            $effect = new EffectInstance(VanillaEffects::SLOWNESS(), 2147483647, 0, false);
+            $player->setInvisible();
+            $player->getEffects()->add($effect);
             $this->prowled[$player->getName()] = true;
         } else {
             if (isset($this->prowled[$player->getName()])) {
                 foreach ($player->getServer()->getOnlinePlayers() as $p) {
                     $p->showPlayer($player);
                 }
-                $player->removeEffect(Effect::SLOWNESS);
-                if (!$player->hasEffect(Effect::INVISIBILITY)) {
-                    $player->setGenericFlag(Entity::DATA_FLAG_INVISIBLE, false);
+                $player->getEffects()->remove(VanillaEffects::SLOWNESS());
+                if (!$player->getEffects()->has(VanillaEffects::INVISIBILITY())) {
+                    $player->setInvisible(false);
                 }
                 unset($this->prowled[$player->getName()]);
             }

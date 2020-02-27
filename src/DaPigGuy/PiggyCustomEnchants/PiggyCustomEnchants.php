@@ -22,7 +22,7 @@ use DaPigGuy\PiggyCustomEnchants\tasks\CheckUpdatesTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
 use jojoe77777\FormAPI\Form;
 use pocketmine\block\BlockFactory;
-use pocketmine\entity\Entity;
+use pocketmine\entity\EntityFactory;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use ReflectionException;
@@ -63,10 +63,10 @@ class PiggyCustomEnchants extends PluginBase
 
         CustomEnchantManager::init($this);
 
-        BlockFactory::registerBlock(new PiggyObsidian(), true);
+        BlockFactory::register(new PiggyObsidian(), true);
 
         foreach ([HomingArrow::class, PigProjectile::class, PiggyFireball::class, PiggyWitherSkull::class, PiggyLightning::class, PiggyTNT::class] as $entityClassName) {
-            Entity::registerEntity($entityClassName, true);
+            EntityFactory::register($entityClassName, []);
         }
 
         foreach ($this->getConfig()->get("disabled-enchants") as $enchant) {

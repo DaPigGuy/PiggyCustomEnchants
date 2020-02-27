@@ -5,22 +5,10 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\Block;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\level\Position;
-use pocketmine\math\Vector3;
-use pocketmine\nbt\NetworkLittleEndianNBTStream;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\IntTag;
-use pocketmine\nbt\tag\StringTag;
-use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
-use pocketmine\Player;
-use pocketmine\scheduler\ClosureTask;
-use pocketmine\tile\Tile;
-use pocketmine\utils\TextFormat;
+use pocketmine\player\Player;
 
 /**
  * Class HallucinationEnchant
@@ -45,22 +33,22 @@ class HallucinationEnchant extends ReactiveEnchantment
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if ($event instanceof EntityDamageByEntityEvent) {
-            $entity = $event->getEntity();
-            if ($entity instanceof Player && !isset(self::$hallucinating[$entity->getName()])) {
-                $originalPosition = $entity->getPosition();
-                self::$hallucinating[$entity->getName()] = true;
-                $this->plugin->getScheduler()->scheduleRepeatingTask(($task = new ClosureTask(function () use ($entity, $originalPosition): void {
-                    for ($x = $originalPosition->x - 1; $x <= $originalPosition->x + 1; $x++) {
-                        for ($y = $originalPosition->y - 1; $y <= $originalPosition->y + 2; $y++) {
-                            for ($z = $originalPosition->z - 1; $z <= $originalPosition->z + 1; $z++) {
-                                $position = new Position($x, $y, $z, $originalPosition->getLevel());
-                                $block = Block::get(Block::BEDROCK, 0, $position);
-                                if ($position->equals($originalPosition)) $block = Block::get(Block::LAVA, 0, $position);
-                                if ($position->equals($originalPosition->add(0, 1))) {
-                                    $block = Block::get(Block::WALL_SIGN, 0, $position);
-                                    $nbtWriter = new NetworkLittleEndianNBTStream();
-                                    /** @var string $nbt */
+        /*if ($event instanceof EntityDamageByEntityEvent) {
+              $entity = $event->getEntity();
+              if ($entity instanceof Player && !isset(self::$hallucinating[$entity->getName()])) {
+                  $originalPosition = $entity->getPosition();
+                  self::$hallucinating[$entity->getName()] = true;
+                  $this->plugin->getScheduler()->scheduleRepeatingTask(($task = new ClosureTask(function () use ($entity, $originalPosition): void {
+                      for ($x = $originalPosition->x - 1; $x <= $originalPosition->x + 1; $x++) {
+                          for ($y = $originalPosition->y - 1; $y <= $originalPosition->y + 2; $y++) {
+                              for ($z = $originalPosition->z - 1; $z <= $originalPosition->z + 1; $z++) {
+                                  $position = new Position($x, $y, $z, $originalPosition->getLevel());
+                                  $block = BlockFactory::get(BlockLegacyIds::BEDROCK, 0, $position);
+                                  if ($position->equals($originalPosition)) $block = BlockFactory::get(BlockLegacyIds::LAVA, 0, $position);
+                                  if ($position->equals($originalPosition->add(0, 1))) {
+                                      $block = BlockFactory::get(BlockLegacyIds::WALL_SIGN, 0, $position);
+                                      $nbtWriter = new NetworkLittleEndianNBTStream();
+                                      /** @var string $nbt *//*
                                     $nbt = $nbtWriter->write(new CompoundTag("", [
                                         new StringTag("id", Tile::SIGN),
                                         new StringTag("Text1", TextFormat::RED . "You seem to be"),
@@ -97,6 +85,6 @@ class HallucinationEnchant extends ReactiveEnchantment
                     unset(self::$hallucinating[$entity->getName()]);
                 }), 20 * 60); //Cancellable closure tasks when? :/
             }
-        }
+        }*/
     }
 }

@@ -6,11 +6,11 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class ShieldedEnchant
@@ -37,19 +37,19 @@ class ShieldedEnchant extends ToggleableEnchantment
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if ($toggle) {
-            if ($player->hasEffect(Effect::RESISTANCE) && $player->getEffect(Effect::RESISTANCE)->getAmplifier() > $this->stack[$player->getName()] - 1) $this->previousEffect[$player->getName()] = $player->getEffect(Effect::RESISTANCE);
+            if ($player->getEffects()->has(VanillaEffects::RESISTANCE()) && $player->getEffects()->get(VanillaEffects::RESISTANCE())->getAmplifier() > $this->stack[$player->getName()] - 1) $this->previousEffect[$player->getName()] = $player->getEffects()->get(VanillaEffects::RESISTANCE());
         } else {
             if ($this->equippedArmorStack[$player->getName()] === 0) {
-                $player->removeEffect(Effect::RESISTANCE);
+                $player->getEffects()->remove(VanillaEffects::RESISTANCE());
                 if (isset($this->previousEffect[$player->getName()])) {
-                    $player->addEffect($this->previousEffect[$player->getName()]);
+                    $player->getEffects()->add($this->previousEffect[$player->getName()]);
                     unset($this->previousEffect[$player->getName()]);
                 }
                 return;
             }
         }
-        $player->removeEffect(Effect::RESISTANCE);
-        $player->addEffect(new EffectInstance(Effect::getEffect(Effect::RESISTANCE), 2147483647, $this->stack[$player->getName()] - 1, false));
+        $player->getEffects()->remove(VanillaEffects::RESISTANCE());
+        $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 2147483647, $this->stack[$player->getName()] - 1, false));
     }
 
     /**

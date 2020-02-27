@@ -6,7 +6,6 @@ namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use pocketmine\scheduler\AsyncTask;
-use pocketmine\Server;
 use pocketmine\utils\Internet;
 use ReflectionException;
 
@@ -26,10 +25,9 @@ class CheckDisabledEnchantsTask extends AsyncTask
     }
 
     /**
-     * @param Server $server
      * @throws ReflectionException
      */
-    public function onCompletion(Server $server): void
+    public function onCompletion(): void
     {
         if ($this->getResult() !== null) {
             $plugin = CustomEnchantManager::getPlugin();

@@ -9,7 +9,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class BlessedEnchant
@@ -34,9 +34,9 @@ class BlessedEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            foreach ($player->getEffects() as $effect) {
+            foreach ($player->getEffects()->all() as $effect) {
                 if ($effect->getType()->isBad()) {
-                    $player->removeEffect($effect->getId());
+                    $player->getEffects()->remove($effect->getType());
                 }
             }
         }

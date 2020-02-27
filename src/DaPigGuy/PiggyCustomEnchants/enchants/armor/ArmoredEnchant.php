@@ -12,7 +12,7 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\item\Sword;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class ArmoredEnchant

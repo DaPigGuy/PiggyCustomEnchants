@@ -6,14 +6,14 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ReflectionException;
 
 /**
@@ -23,15 +23,15 @@ use ReflectionException;
 class LacedWeaponEnchant extends ReactiveEnchantment
 {
     /** @var array */
-    private $effectIds = [Effect::POISON];
+    private $effects;
     /** @var array */
-    private $baseDuration = [0];
+    private $baseDuration;
     /** @var array */
-    private $baseAmplifier = [0];
+    private $baseAmplifier;
     /** @var int[] */
-    private $durationMultiplier = [60];
+    private $durationMultiplier;
     /** @var int[] */
-    private $amplifierMultiplier = [1];
+    private $amplifierMultiplier;
 
     /**
      * LacedWeaponEnchant constructor.
@@ -39,17 +39,17 @@ class LacedWeaponEnchant extends ReactiveEnchantment
      * @param int $id
      * @param string $name
      * @param int $rarity
-     * @param array $effectIds
+     * @param array|null $effects
      * @param array $durationMultiplier
      * @param array $amplifierMultiplier
      * @param array $baseDuration
      * @param array $baseAmplifier
      * @throws ReflectionException
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = self::RARITY_RARE, array $effectIds = [Effect::POISON], array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = self::RARITY_RARE, ?array $effects = null, array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
     {
         $this->name = $name;
-        $this->effectIds = $effectIds;
+        $this->effects = $effects ?? [VanillaEffects::POISON()];
         $this->durationMultiplier = $durationMultiplier;
         $this->amplifierMultiplier = $amplifierMultiplier;
         $this->baseDuration = $baseDuration;
@@ -71,8 +71,8 @@ class LacedWeaponEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $entity = $event->getEntity();
             if ($entity instanceof Living) {
-                foreach ($this->effectIds as $key => $effectId) {
-                    $entity->addEffect(new EffectInstance(Effect::getEffect($effectId), ($this->baseDuration[$key] ?? 0) + ($this->durationMultiplier[$key] ?? 60) * $level, ($this->baseAmplifier[$key] ?? 0) + ($this->amplifierMultiplier[$key] ?? 1) * $level));
+                foreach ($this->effects as $key => $effect) {
+                    $entity->getEffects()->add(new EffectInstance($effect, ($this->baseDuration[$key] ?? 0) + ($this->durationMultiplier[$key] ?? 60) * $level, ($this->baseAmplifier[$key] ?? 0) + ($this->amplifierMultiplier[$key] ?? 1) * $level));
                 }
             }
         }

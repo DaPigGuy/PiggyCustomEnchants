@@ -5,21 +5,22 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\utils;
 
 use pocketmine\block\TNT;
+use pocketmine\block\VanillaBlocks;
+use pocketmine\entity\Entity;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockUpdateEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
-use pocketmine\level\Explosion;
-use pocketmine\level\particle\HugeExplodeSeedParticle;
-use pocketmine\level\Position;
 use pocketmine\math\AxisAlignedBB;
+use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\Player;
-use pocketmine\tile\Chest;
-use pocketmine\tile\Container;
-use pocketmine\tile\Tile;
+use pocketmine\player\Player;
+use pocketmine\world\Explosion;
+use pocketmine\world\particle\HugeExplodeSeedParticle;
+use pocketmine\world\Position;
+use pocketmine\world\sound\ExplodeSound;
+use pocketmine\world\World;
 
 /**
  * Class PiggyExplosion
@@ -48,13 +49,16 @@ class PiggyExplosion extends Explosion
     {
         $send = [];
         $updateBlocks = [];
-        $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
 
-        $ev = new EntityExplodeEvent($this->what, $this->source, $this->affectedBlocks, (1 / $this->size) * 100);
+        $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
+        $yield = (1 / $this->size) * 100;
+
+        $ev = new EntityExplodeEvent($this->what, $this->source, $this->affectedBlocks, $yield);
         $ev->call();
         if ($ev->isCancelled()) {
             return false;
         } else {
+            $yield = $ev->getYield();
             $this->affectedBlocks = $ev->getBlockList();
         }
 
@@ -67,11 +71,15 @@ class PiggyExplosion extends Explosion
         $maxZ = (int)ceil($this->source->z + $explosionSize + 1);
 
         $explosionBB = new AxisAlignedBB($minX, $minY, $minZ, $maxX, $maxY, $maxZ);
-        $list = $this->level->getNearbyEntities($explosionBB, $this->what);
+
+        /** @var Entity[] $list */
+        $list = $this->world->getNearbyEntities($explosionBB, $this->what instanceof Entity ? $this->what : null);
         foreach ($list as $entity) {
-            $distance = $entity->distance($this->source) / $explosionSize;
+            $entityPos = $entity->getPosition();
+            $distance = $entityPos->distance($this->source) / $explosionSize;
+
             if ($distance <= 1) {
-                $motion = $entity->subtract($this->source)->normalize();
+                $motion = $entityPos->subtract($this->source)->normalize();
                 $impact = (1 - $distance) * ($exposure = 1);
                 $damage = (int)((($impact * $impact + $impact) / 2) * 8 * $explosionSize + 1);
 
@@ -81,50 +89,42 @@ class PiggyExplosion extends Explosion
             }
         }
 
+        $airBlock = VanillaBlocks::AIR();
+
         $item = $this->what->getInventory()->getItemInHand();
         foreach ($this->affectedBlocks as $key => $block) {
-            $drops = $this->what->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
-            $t = $this->level->getTileAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ());
-            if ($t instanceof Container) {
-                $drops = array_merge($drops, $t->getInventory()->getContents());
-            }
-
-            $ev = new BlockBreakEvent($this->what, $block, $item, true, $drops);
+            $ev = new BlockBreakEvent($this->what, $block, $item, true, $block->getDrops($item));
             $ev->call();
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$key]);
                 continue;
             }
-
-            if ($t instanceof Tile) {
-                if ($t instanceof Chest) {
-                    $t->unpair();
-                }
-                $t->close();
-            }
-
+            $pos = $block->getPos();
             if ($block instanceof TNT) {
                 $block->ignite(mt_rand(10, 30));
             } else {
-                foreach ($ev->getDrops() as $drop) {
-                    $this->level->dropItem($block->add(0.5, 0.5, 0.5), $drop);
+                if (mt_rand(0, 100) < $yield) {
+                    foreach ($ev->getDrops() as $drop) {
+                        $this->world->dropItem($pos->add(0.5, 0.5, 0.5), $drop);
+                    }
                 }
+                if (($t = $this->world->getTileAt($pos->x, $pos->y, $pos->z)) !== null) {
+                    $t->onBlockDestroyed(); //needed to create drops for inventories
+                }
+                $this->world->setBlockAt($pos->x, $pos->y, $pos->z, $airBlock, false); //TODO: should updating really be disabled here?
+                $this->world->updateAllLight($pos->x, $pos->y, $pos->z);
             }
 
-            $this->level->setBlockIdAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ(), 0);
-            $this->level->setBlockDataAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ(), 0);
-
-            $pos = new Vector3($block->x, $block->y, $block->z);
-            for ($side = 0; $side <= 5; $side++) {
+            foreach (Facing::ALL as $side) {
                 $sideBlock = $pos->getSide($side);
-                if (!$this->level->isInWorld($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ())) {
+                if (!$this->world->isInWorld($sideBlock->x, $sideBlock->y, $sideBlock->z)) {
                     continue;
                 }
-                if (!isset($this->affectedBlocks[$index = ((($sideBlock->x) & 0xFFFFFFF) << 36) | ((($sideBlock->y) & 0xff) << 28) | (($sideBlock->z) & 0xFFFFFFF)]) and !isset($updateBlocks[$index])) {
-                    $ev = new BlockUpdateEvent($this->level->getBlockAt($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ()));
+                if (!isset($this->affectedBlocks[$index = World::blockHash($sideBlock->x, $sideBlock->y, $sideBlock->z)]) and !isset($updateBlocks[$index])) {
+                    $ev = new BlockUpdateEvent($this->world->getBlockAt($sideBlock->x, $sideBlock->y, $sideBlock->z));
                     $ev->call();
                     if (!$ev->isCancelled()) {
-                        foreach ($this->level->getNearbyEntities(new AxisAlignedBB($sideBlock->x - 1, $sideBlock->y - 1, $sideBlock->z - 1, $sideBlock->x + 2, $sideBlock->y + 2, $sideBlock->z + 2)) as $entity) {
+                        foreach ($this->world->getNearbyEntities(AxisAlignedBB::one()->offset($sideBlock->x, $sideBlock->y, $sideBlock->z)->expand(1, 1, 1)) as $entity) {
                             $entity->onNearbyBlockChange();
                         }
                         $ev->getBlock()->onNearbyBlockChange();
@@ -132,10 +132,12 @@ class PiggyExplosion extends Explosion
                     $updateBlocks[$index] = true;
                 }
             }
-            $send[] = new Vector3($block->x - $source->x, $block->y - $source->y, $block->z - $source->z);
+            $send[] = $pos->subtract($source);
         }
-        $this->level->addParticle(new HugeExplodeSeedParticle($source));
-        $this->level->broadcastLevelSoundEvent($source, LevelSoundEventPacket::SOUND_EXPLODE);
+
+        $this->world->addParticle($source, new HugeExplodeSeedParticle());
+        $this->world->addSound($source, new ExplodeSound());
+
         return true;
     }
 }

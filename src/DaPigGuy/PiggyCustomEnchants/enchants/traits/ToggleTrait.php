@@ -13,7 +13,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Trait ToggleTrait
@@ -48,7 +48,7 @@ trait ToggleTrait
     public function onToggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
-        if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
+        if (isset($perWorldDisabledEnchants[$player->getWorld()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getWorld()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
         if ($toggle) {
             $this->addToStack($player, $level);

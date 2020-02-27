@@ -8,7 +8,9 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -36,12 +38,12 @@ class ChickenEnchant extends TickingEnchantment
             }
             $drop = array_rand($drops);
             $drop = explode(":", $drops[$drop]);
-            $item = count($drop) < 3 ? Item::get(Item::GOLD_INGOT, 0, 1) : Item::get((int)$drop[0], (int)$drop[1], (int)$drop[2]);
+            $item = count($drop) < 3 ? ItemFactory::get(ItemIds::GOLD_INGOT, 0, 1) : ItemFactory::get((int)$drop[0], (int)$drop[1], (int)$drop[2]);
             $vowels = ["a", "e", "i", "o", "u"];
-            $player->getLevel()->dropItem($player, $item, $player->getDirectionVector()->multiply(-0.4));
+            $player->getWorld()->dropItem($player->getPosition(), $item, $player->getDirectionVector()->multiply(-0.4));
             $player->sendTip(TextFormat::GREEN . "You have laid a" . (in_array(strtolower($item->getName()[0]), $vowels) ? "n " : " ") . $item->getName() . "...");
         } else {
-            $player->getLevel()->dropItem($player, Item::get(Item::EGG, 0, 1), $player->getDirectionVector()->multiply(-0.4));
+            $player->getWorld()->dropItem($player->getPosition(), ItemFactory::get(ItemIds::EGG, 0, 1), $player->getDirectionVector()->multiply(-0.4));
             $player->sendTip(TextFormat::GREEN . "You have laid an egg.");
         }
     }

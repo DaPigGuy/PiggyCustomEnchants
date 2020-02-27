@@ -10,7 +10,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class TelepathyEnchant
@@ -44,7 +44,7 @@ class TelepathyEnchant extends ReactiveEnchantment
     {
         if ($event instanceof BlockBreakEvent) {
             $player->getInventory()->addItem(...$event->getDrops());
-            $player->addXp($event->getXpDropAmount());
+            $player->getXpManager()->addXp($event->getXpDropAmount());
             $event->setDrops([]);
             $event->setXpDropAmount(0);
         }

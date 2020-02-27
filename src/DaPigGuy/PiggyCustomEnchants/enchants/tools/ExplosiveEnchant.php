@@ -11,7 +11,7 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class ExplosiveEnchant
@@ -44,7 +44,7 @@ class ExplosiveEnchant extends ReactiveEnchantment
         if ($event instanceof BlockBreakEvent) {
             $this->setCooldown($player, 2147483647);
 
-            $explosion = new PiggyExplosion($event->getBlock(), $level * 5, $player);
+            $explosion = new PiggyExplosion($event->getBlock()->getPos(), $level * 5, $player);
             $explosion->explodeA();
             $explosion->explodeB();
 

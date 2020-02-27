@@ -7,7 +7,7 @@ namespace DaPigGuy\PiggyCustomEnchants\commands\subcommands;
 use CortexPE\Commando\BaseSubCommand;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**

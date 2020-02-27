@@ -12,7 +12,7 @@ use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**

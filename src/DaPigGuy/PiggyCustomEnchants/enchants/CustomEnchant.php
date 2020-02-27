@@ -7,7 +7,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\enchantment\Enchantment;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ReflectionClass;
 use ReflectionException;
 

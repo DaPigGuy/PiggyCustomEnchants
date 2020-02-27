@@ -6,13 +6,13 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class BerserkerEnchant
@@ -44,9 +44,9 @@ class BerserkerEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageEvent) {
             if ($player->getHealth() - $event->getFinalDamage() <= 4) {
-                if (!$player->hasEffect(Effect::STRENGTH)) {
-                    $effect = new EffectInstance(Effect::getEffect(Effect::STRENGTH), 200 * $level, $level + 3, false);
-                    $player->addEffect($effect);
+                if (!$player->getEffects()->has(VanillaEffects::STRENGTH())) {
+                    $effect = new EffectInstance(VanillaEffects::STRENGTH(), 200 * $level, $level + 3, false);
+                    $player->getEffects()->add($effect);
                 }
                 $player->sendMessage("Your bloodloss makes your stronger!");
                 $this->setCooldown($player, 300);

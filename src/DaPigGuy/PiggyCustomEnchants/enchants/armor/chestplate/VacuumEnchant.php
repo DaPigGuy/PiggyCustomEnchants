@@ -8,7 +8,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class VacuumEnchant
@@ -30,11 +30,11 @@ class VacuumEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        foreach ($player->getLevel()->getEntities() as $entity) {
+        foreach ($player->getWorld()->getEntities() as $entity) {
             if ($entity instanceof ItemEntity) {
-                $distance = $player->distance($entity);
+                $distance = $player->getPosition()->distance($entity->getPosition());
                 if ($distance <= 3 * $level) {
-                    $entity->setMotion($player->subtract($entity)->divide(3 * $level)->multiply($level));
+                    $entity->setMotion($player->getPosition()->subtract($entity->getPosition())->divide(3 * $level)->multiply($level));
                 }
             }
         }

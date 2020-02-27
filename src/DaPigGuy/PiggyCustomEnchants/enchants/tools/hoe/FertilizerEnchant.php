@@ -6,12 +6,12 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\Block;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class FertilizerEnchant
@@ -45,13 +45,13 @@ class FertilizerEnchant extends ReactiveEnchantment
     {
         if ($event instanceof PlayerInteractEvent) {
             $block = $event->getBlock();
-            if ($block->getId() === Block::GRASS || ($block->getId() === Block::DIRT && $block->getDamage() === 0)) {
+            if ($block->getId() === BlockLegacyIds::GRASS || ($block->getId() === BlockLegacyIds::DIRT && $block->getMeta() === 0)) {
                 for ($x = -$level; $x <= $level; $x++) {
                     for ($z = -$level; $z <= $level; $z++) {
-                        $newBlock = $block->getLevel()->getBlock($block->add($x, 0, $z));
-                        if ($newBlock->getId() === Block::GRASS || ($newBlock->getId() === Block::DIRT && $newBlock->getDamage() === 0)) {
+                        $newBlock = $block->getPos()->getWorld()->getBlock($block->getPos()->add($x, 0, $z));
+                        if ($newBlock->getId() === BlockLegacyIds::GRASS || ($newBlock->getId() === BlockLegacyIds::DIRT && $newBlock->getMeta() === 0)) {
                             $this->setCooldown($player, 1);
-                            $block->getLevel()->useItemOn($newBlock, $item, 0, $newBlock, $player);
+                            $block->getPos()->getWorld()->useItemOn($newBlock->getPos(), $item, 0, $newBlock->getPos(), $player);
                         }
                     }
                 }

@@ -6,15 +6,15 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\Block;
-use pocketmine\entity\Entity;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\entity\EntityFactory;
 use pocketmine\entity\object\FallingBlock;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class BombardmentEnchant
@@ -47,12 +47,12 @@ class BombardmentEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $entity = $event->getEntity();
 
-            $nbt = Entity::createBaseNBT($entity->add(0, 255 - $entity->y), new Vector3(0, -5));
-            $nbt->setInt("TileID", Block::TNT);
+            $nbt = EntityFactory::createBaseNBT($entity->getPosition()->add(0, 255 - $entity->y), new Vector3(0, -5));
+            $nbt->setInt("TileID", BlockLegacyIds::TNT);
             $nbt->setInt("Bombardment", $level);
 
             /** @var FallingBlock $entity */
-            $entity = Entity::createEntity("FallingSand", $player->getLevel(), $nbt);
+            $entity = EntityFactory::create(FallingBlock::class, $player->getWorld(), $nbt);
             $entity->setOwningEntity($player);
             $entity->spawnToAll();
         }

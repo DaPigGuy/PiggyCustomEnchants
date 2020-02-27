@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\entity\Entity;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
+use pocketmine\entity\EntityFactory;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 /**
  * Class LightningEnchant
@@ -33,7 +34,7 @@ class LightningEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $lightning = Entity::createEntity("PiggyLightning", $event->getEntity()->getLevel(), Entity::createBaseNBT($event->getEntity()));
+            $lightning = EntityFactory::create(PiggyLightning::class, $event->getEntity()->getWorld(), EntityFactory::createBaseNBT($event->getEntity()->getPosition()));
             $lightning->setOwningEntity($player);
             $lightning->spawnToAll();
         }

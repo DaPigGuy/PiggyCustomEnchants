@@ -8,10 +8,10 @@ use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\entity\projectile\Arrow;
-use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
+use pocketmine\world\World;
 
 /**
  * Class HomingArrow
@@ -24,13 +24,13 @@ class HomingArrow extends Arrow
 
     /**
      * HomingArrow constructor.
-     * @param Level $level
+     * @param World $level
      * @param CompoundTag $nbt
      * @param Entity|null $shootingEntity
      * @param int $enchantmentLevel
      * @param bool $critical
      */
-    public function __construct(Level $level, CompoundTag $nbt, ?Entity $shootingEntity = null, bool $critical = false, int $enchantmentLevel = 1)
+    public function __construct(World $level, CompoundTag $nbt, ?Entity $shootingEntity = null, bool $critical = false, int $enchantmentLevel = 1)
     {
         $this->enchantmentLevel = $enchantmentLevel;
         parent::__construct($level, $nbt, $shootingEntity, $critical);
@@ -45,8 +45,8 @@ class HomingArrow extends Arrow
         if (!$this->closed && !$this->isFlaggedForDespawn() && $this->blockHit === null) {
             $target = $this->findNearestEntity($this->enchantmentLevel * 10);
             if ($target !== null) {
-                $this->setMotion($target->add(0, $target->height / 2)->subtract($this)->normalize()->multiply(1.5));
-                $this->lookAt($target->add(0, $target->height / 2));
+                $this->setMotion($target->getPosition()->add(0, $target->height / 2)->subtract($this->getPosition())->normalize()->multiply(1.5));
+                $this->lookAt($target->getPosition()->add(0, $target->height / 2));
             }
         }
         return parent::entityBaseTick($tickDiff);
@@ -68,8 +68,8 @@ class HomingArrow extends Arrow
     {
         $nearestEntity = null;
         $nearestEntityDistance = $range;
-        foreach ($this->getLevel()->getEntities() as $entity) {
-            $distance = $this->distance($entity);
+        foreach ($this->getWorld()->getEntities() as $entity) {
+            $distance = $this->location->distance($entity);
             if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && ($owner = $this->getOwningEntity()) !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn()) {
                 if (!$owner instanceof Player || !AllyChecks::isAlly($owner, $entity)) {
                     $nearestEntity = $entity;
@@ -85,15 +85,15 @@ class HomingArrow extends Arrow
      */
     public function lookAt(Vector3 $target): void
     {
-        $horizontal = sqrt(($target->x - $this->x) ** 2 + ($target->z - $this->z) ** 2);
-        $vertical = $target->y - $this->y;
-        $this->pitch = -atan2($vertical, $horizontal) / M_PI * 180;
+        $horizontal = sqrt(($target->x - $this->location->x) ** 2 + ($target->z - $this->location->z) ** 2);
+        $vertical = $target->y - $this->location->y;
+        $this->location->pitch = -atan2($vertical, $horizontal) / M_PI * 180;
 
-        $xDist = $target->x - $this->x;
-        $zDist = $target->z - $this->z;
-        $this->yaw = atan2($zDist, $xDist) / M_PI * 180 - 90;
-        if ($this->yaw < 0) {
-            $this->yaw += 360.0;
+        $xDist = $target->x - $this->location->x;
+        $zDist = $target->z - $this->location->z;
+        $this->location->yaw = atan2($zDist, $xDist) / M_PI * 180 - 90;
+        if ($this->location->yaw < 0) {
+            $this->location->yaw += 360.0;
         }
     }
 }

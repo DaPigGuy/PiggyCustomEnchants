@@ -7,14 +7,14 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use ReflectionException;
 
 /**
@@ -23,7 +23,7 @@ use ReflectionException;
  */
 class AttackerDeterrentEnchant extends ReactiveEnchantment
 {
-    /** @var array */
+    /** @var Effect[] */
     private $effects;
     /** @var array */
     private $durationMultiplier;
@@ -35,7 +35,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
      * @param PiggyCustomEnchants $plugin
      * @param int $id
      * @param string $name
-     * @param array $effects
+     * @param Effect[] $effects
      * @param array $durationMultiplier
      * @param array $amplifierMultiplier
      * @param int $rarity
@@ -65,7 +65,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
                 foreach ($this->effects as $key => $effect) {
-                    $damager->addEffect(new EffectInstance(Effect::getEffect($effect), $this->durationMultiplier[$key] * $level, $this->amplifierMultiplier[$key] * $level));
+                    $damager->getEffects()->add(new EffectInstance($effect, $this->durationMultiplier[$key] * $level, $this->amplifierMultiplier[$key] * $level));
                 }
             }
         }

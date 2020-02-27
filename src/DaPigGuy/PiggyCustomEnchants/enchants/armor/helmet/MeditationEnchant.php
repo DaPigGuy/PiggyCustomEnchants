@@ -12,7 +12,7 @@ use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -77,7 +77,7 @@ class MeditationEnchant extends ReactiveEnchantment
                 if (!$event->isCancelled()) {
                     $player->heal($event);
                 }
-                $player->setFood($player->getFood() + $level > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level);
+                $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + $level > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + $level);
             }
         }
     }

@@ -6,12 +6,15 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\pickaxe;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
+use pocketmine\player\Player;
 
 /**
  * Class JackpotEnchant
@@ -23,11 +26,11 @@ class JackpotEnchant extends ReactiveEnchantment
     public $name = "Jackpot";
 
     const ORE_TIERS = [
-        Block::COAL_ORE,
-        Block::IRON_ORE,
-        Block::GOLD_ORE,
-        Block::DIAMOND_ORE,
-        Block::EMERALD_ORE
+        BlockLegacyIds::COAL_ORE,
+        BlockLegacyIds::IRON_ORE,
+        BlockLegacyIds::GOLD_ORE,
+        BlockLegacyIds::DIAMOND_ORE,
+        BlockLegacyIds::EMERALD_ORE
     ];
 
     /**
@@ -60,7 +63,7 @@ class JackpotEnchant extends ReactiveEnchantment
                             unset($drops[$k]);
                         }
                     }
-                    $drops = array_merge($drops, Block::get(self::ORE_TIERS[$key + 1])->getDrops(Item::get(Item::DIAMOND_PICKAXE)));
+                    $drops = array_merge($drops, BlockFactory::get(self::ORE_TIERS[$key + 1])->getDrops(ItemFactory::get(ItemIds::DIAMOND_PICKAXE)));
                     $event->setDrops($drops);
                 }
             }

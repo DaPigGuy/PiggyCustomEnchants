@@ -9,8 +9,10 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 
 /**
@@ -45,8 +47,7 @@ class SoulboundEnchant extends ReactiveEnchantment
             $drops = $event->getDrops();
             unset($drops[array_search($item, $drops)]);
             $event->setDrops($drops);
-            $level > 1 ? $item->addEnchantment($item->getEnchantment(CustomEnchantIds::SOULBOUND)->setLevel($level - 1)) : $item->removeEnchantment(CustomEnchantIds::SOULBOUND);
-            if (count($item->getEnchantments()) === 0) $item->removeNamedTagEntry(Item::TAG_ENCH);
+            $level > 1 ? $item->addEnchantment(new EnchantmentInstance(Enchantment::get(CustomEnchantIds::SOULBOUND), $level - 1)) : $item->removeEnchantment(Enchantment::get(CustomEnchantIds::SOULBOUND));
             $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($inventory, $slot, $item): void {
                 $inventory->setItem($slot, $item);
             }), 1);

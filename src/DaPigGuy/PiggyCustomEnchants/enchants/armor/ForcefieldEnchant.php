@@ -13,9 +13,9 @@ use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\level\particle\EnchantmentTableParticle;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
+use pocketmine\world\particle\EnchantmentTableParticle;
 
 /**
  * Class ForcefieldEnchant
@@ -40,7 +40,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
         $forcefieldLevel = $this->stack[$player->getName()];
         if ($forcefieldLevel > 0) {
             $radius = $forcefieldLevel * 0.75;
-            $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);
+            $entities = $player->getWorld()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);
             foreach ($entities as $entity) {
                 if ($entity instanceof Projectile) {
                     if ($entity->getOwningEntity() !== $player) {
@@ -48,15 +48,15 @@ class ForcefieldEnchant extends ToggleableEnchantment
                     }
                 } else {
                     if (!$entity instanceof ItemEntity && !$entity instanceof ExperienceOrb && !isset($entity->namedtag->getValue()["SlapperVersion"]) && !AllyChecks::isAlly($player, $entity)) {
-                        $entity->setMotion(new Vector3($player->subtract($entity)->normalize()->multiply(-0.75)->x, 0, $player->subtract($entity)->normalize()->multiply(-0.75)->z));
+                        $entity->setMotion(new Vector3($player->getPosition()->subtract($entity->getPosition())->normalize()->multiply(-0.75)->x, 0, $player->getPosition()->subtract($entity->getPosition())->normalize()->multiply(-0.75)->z));
                     }
                 }
             }
             if ($player->getServer()->getTick() % 5 === 0) {
                 $diff = $radius / $forcefieldLevel;
                 for ($theta = 0; $theta <= 360; $theta += $diff) {
-                    $pos = $player->add($radius * sin($theta), 0.5, $radius * cos($theta));
-                    $player->getLevel()->addParticle(new EnchantmentTableParticle($pos));
+                    $pos = $player->getPosition()->add($radius * sin($theta), 0.5, $radius * cos($theta));
+                    $player->getWorld()->addParticle($pos, new EnchantmentTableParticle());
                 }
             }
         }

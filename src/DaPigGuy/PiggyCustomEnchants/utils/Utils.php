@@ -17,13 +17,13 @@ use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Hoe;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\item\Pickaxe;
 use pocketmine\item\Shears;
 use pocketmine\item\Shovel;
 use pocketmine\item\Sword;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\StringTag;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -110,7 +110,7 @@ class Utils
      */
     public static function isHelmet(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_CAP, Item::CHAIN_HELMET, Item::IRON_HELMET, Item::GOLD_HELMET, Item::DIAMOND_HELMET]);
+        return in_array($item->getId(), [ItemIds::LEATHER_CAP, ItemIds::CHAIN_HELMET, ItemIds::IRON_HELMET, ItemIds::GOLD_HELMET, ItemIds::DIAMOND_HELMET]);
     }
 
     /**
@@ -119,7 +119,7 @@ class Utils
      */
     public static function isChestplate(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE, Item::ELYTRA]);
+        return in_array($item->getId(), [ItemIds::LEATHER_TUNIC, ItemIds::CHAIN_CHESTPLATE, ItemIds::IRON_CHESTPLATE, ItemIds::GOLD_CHESTPLATE, ItemIds::DIAMOND_CHESTPLATE, ItemIds::ELYTRA]);
     }
 
     /**
@@ -128,7 +128,7 @@ class Utils
      */
     public static function isLeggings(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_PANTS, Item::CHAIN_LEGGINGS, Item::IRON_LEGGINGS, Item::GOLD_LEGGINGS, Item::DIAMOND_LEGGINGS]);
+        return in_array($item->getId(), [ItemIds::LEATHER_PANTS, ItemIds::CHAIN_LEGGINGS, ItemIds::IRON_LEGGINGS, ItemIds::GOLD_LEGGINGS, ItemIds::DIAMOND_LEGGINGS]);
     }
 
     /**
@@ -137,7 +137,7 @@ class Utils
      */
     public static function isBoots(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_BOOTS, Item::CHAIN_BOOTS, Item::IRON_BOOTS, Item::GOLD_BOOTS, Item::DIAMOND_BOOTS]);
+        return in_array($item->getId(), [ItemIds::LEATHER_BOOTS, ItemIds::CHAIN_BOOTS, ItemIds::IRON_BOOTS, ItemIds::GOLD_BOOTS, ItemIds::DIAMOND_BOOTS]);
     }
 
     /**
@@ -147,7 +147,7 @@ class Utils
      */
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
-        if ($item->getId() === Item::BOOK) return true;
+        if ($item->getId() === ItemIds::BOOK) return true;
         switch ($itemType) {
             case CustomEnchant::ITEM_TYPE_GLOBAL:
                 return true;
@@ -170,7 +170,7 @@ class Utils
             case CustomEnchant::ITEM_TYPE_HOE:
                 return $item instanceof Hoe;
             case CustomEnchant::ITEM_TYPE_ARMOR:
-                return $item instanceof Armor || $item->getId() === Item::ELYTRA;
+                return $item instanceof Armor || $item->getId() === ItemIds::ELYTRA;
             case CustomEnchant::ITEM_TYPE_HELMET:
                 return self::isHelmet($item);
             case CustomEnchant::ITEM_TYPE_CHESTPLATE:
@@ -214,7 +214,7 @@ class Utils
                     $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
                 }
             }
-            if ($item->getNamedTagEntry(Item::TAG_DISPLAY) instanceof CompoundTag) $item->setNamedTagEntry(new CompoundTag("OriginalDisplayTag", $item->getNamedTagEntry(Item::TAG_DISPLAY)->getValue()));
+            if ($item->getNamedTag()->getTag(Item::TAG_DISPLAY)) $item->getNamedTag()->setTag("OriginalDisplayTag", $item->getNamedTag()->getTag(Item::TAG_DISPLAY)->safeClone());
             if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position") === "lore") {
                 $lore = array_merge(explode("\n", $additionalInformation), $item->getLore());
                 array_shift($lore);
@@ -223,7 +223,7 @@ class Utils
                 $item = $item->setCustomName($additionalInformation);
             }
         }
-        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors())) $item->setNamedTagEntry(new StringTag("LolGetRekted", "Loser"));
+        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors())) $item->getNamedTag()->setString("LolGetRekted", "Loser");
         return $item;
     }
 
@@ -233,11 +233,13 @@ class Utils
      */
     public static function filterDisplayedEnchants(Item $item): Item
     {
-        if (count($item->getEnchantments()) > 0) $item->removeNamedTagEntry(Item::TAG_DISPLAY);
-        if ($item->getNamedTagEntry("OriginalDisplayTag") instanceof CompoundTag) {
-            $item->setNamedTagEntry(new CompoundTag(Item::TAG_DISPLAY, $item->getNamedTagEntry("OriginalDisplayTag")->getValue()));
-            $item->removeNamedTagEntry("OriginalDisplayTag");
+        $tag = $item->getNamedTag();
+        if (count($item->getEnchantments()) > 0) $tag->removeTag(Item::TAG_DISPLAY);
+        if ($tag->getTag("OriginalDisplayTag") instanceof CompoundTag) {
+            $tag->setTag(Item::TAG_DISPLAY, $tag->getTag("OriginalDisplayTag"));
+            $tag->removeTag("OriginalDisplayTag");
         }
+        $item->setNamedTag($tag);
         return $item;
     }
 
@@ -357,7 +359,7 @@ class Utils
     {
         return ((!$enchant instanceof CustomEnchant || self::itemMatchesItemType($item, $enchant->getItemType())) &&
             $level <= $enchant->getMaxLevel() &&
-            (($enchantmentInstance = $item->getEnchantment($enchant->getId())) === null || $enchantmentInstance->getLevel() < $level) &&
+            (($enchantmentInstance = $item->getEnchantment(Enchantment::get($enchant->getId()))) === null || $enchantmentInstance->getLevel() < $level) &&
             $item->getCount() === 1 &&
             (!$enchant instanceof CustomEnchant || self::checkEnchantIncompatibilities($item, $enchant))
         );
