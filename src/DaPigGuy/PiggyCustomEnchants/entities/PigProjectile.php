@@ -97,7 +97,7 @@ class PigProjectile extends PiggyProjectile
                         $nbt->setShort("Health", 5);
                         $nbt->setShort("PickupDelay", 10);
                         $nbt->setShort("Age", 5700);
-                        $itemEntity = EntityFactory::create("Item", $this->location->world, $nbt);
+                        $itemEntity = EntityFactory::create(ItemEntity::class, $this->location->world, $nbt);
                         if ($itemEntity instanceof ItemEntity) {
                             $itemEntity->spawnToAll();
                         }

@@ -47,7 +47,7 @@ class BombardmentEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $entity = $event->getEntity();
 
-            $nbt = EntityFactory::createBaseNBT($entity->getPosition()->add(0, 255 - $entity->y), new Vector3(0, -5));
+            $nbt = EntityFactory::createBaseNBT($entity->getPosition()->add(0, 255 - $entity->getPosition()->y), new Vector3(0, -5));
             $nbt->setInt("TileID", BlockLegacyIds::TNT);
             $nbt->setInt("Bombardment", $level);
 

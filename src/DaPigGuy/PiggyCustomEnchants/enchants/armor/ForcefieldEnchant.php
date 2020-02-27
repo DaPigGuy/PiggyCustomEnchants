@@ -47,7 +47,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
                         $entity->setMotion($entity->getMotion()->multiply(-1));
                     }
                 } else {
-                    if (!$entity instanceof ItemEntity && !$entity instanceof ExperienceOrb && !isset($entity->namedtag->getValue()["SlapperVersion"]) && !AllyChecks::isAlly($player, $entity)) {
+                    if (!$entity instanceof ItemEntity && !$entity instanceof ExperienceOrb && !AllyChecks::isAlly($player, $entity)) {
                         $entity->setMotion(new Vector3($player->getPosition()->subtract($entity->getPosition())->normalize()->multiply(-0.75)->x, 0, $player->getPosition()->subtract($entity->getPosition())->normalize()->multiply(-0.75)->z));
                     }
                 }

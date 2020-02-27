@@ -42,7 +42,7 @@ class HeadhunterEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
-            if ($event->getChild()->y > $event->getEntity()->y + $event->getEntity()->getEyeHeight()) {
+            if ($event->getChild()->getPosition()->y > $event->getEntity()->getPosition()->y + $event->getEntity()->getEyeHeight()) {
                 $event->setModifier(0.1 * $level, CustomEnchantIds::HEADHUNTER);
             }
         }

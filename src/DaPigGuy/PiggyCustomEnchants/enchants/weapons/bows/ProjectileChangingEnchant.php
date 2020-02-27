@@ -24,7 +24,10 @@ use ReflectionException;
  */
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
+    /**
+     * @var string
+     * @phpstan-var class-string<Entity>
+     */
     private $projectileType;
 
     /**

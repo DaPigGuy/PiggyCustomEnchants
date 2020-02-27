@@ -38,9 +38,9 @@ class PoisonousCloudEnchant extends TickingEnchantment
     {
         $radius = $level * 3;
         foreach ($player->getWorld()->getEntities() as $entity) {
-            if ($entity !== $player && $entity instanceof Living && !AllyChecks::isAlly($player, $entity) && $entity->distance($player) <= $radius) {
+            if ($entity !== $player && $entity instanceof Living && !AllyChecks::isAlly($player, $entity) && $entity->getPosition()->distance($player->getPosition()) <= $radius) {
                 $effect = new EffectInstance(VanillaEffects::POISON(), $level * 100, $level - 1, false);
-                $entity->addEffect($effect);
+                $entity->getEffects()->add($effect);
             }
         }
         if ($player->getServer()->getTick() % 20 === 0) {

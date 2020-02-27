@@ -73,7 +73,7 @@ class PiggyExplosion extends Explosion
         $explosionBB = new AxisAlignedBB($minX, $minY, $minZ, $maxX, $maxY, $maxZ);
 
         /** @var Entity[] $list */
-        $list = $this->world->getNearbyEntities($explosionBB, $this->what instanceof Entity ? $this->what : null);
+        $list = $this->world->getNearbyEntities($explosionBB, $this->what);
         foreach ($list as $entity) {
             $entityPos = $entity->getPosition();
             $distance = $entityPos->distance($this->source) / $explosionSize;
@@ -108,20 +108,20 @@ class PiggyExplosion extends Explosion
                         $this->world->dropItem($pos->add(0.5, 0.5, 0.5), $drop);
                     }
                 }
-                if (($t = $this->world->getTileAt($pos->x, $pos->y, $pos->z)) !== null) {
+                if (($t = $this->world->getTileAt((int)$pos->x, (int)$pos->y, (int)$pos->z)) !== null) {
                     $t->onBlockDestroyed(); //needed to create drops for inventories
                 }
-                $this->world->setBlockAt($pos->x, $pos->y, $pos->z, $airBlock, false); //TODO: should updating really be disabled here?
-                $this->world->updateAllLight($pos->x, $pos->y, $pos->z);
+                $this->world->setBlockAt((int)$pos->x, (int)$pos->y, (int)$pos->z, $airBlock, false); //TODO: should updating really be disabled here?
+                $this->world->updateAllLight((int)$pos->x, (int)$pos->y, (int)$pos->z);
             }
 
             foreach (Facing::ALL as $side) {
                 $sideBlock = $pos->getSide($side);
-                if (!$this->world->isInWorld($sideBlock->x, $sideBlock->y, $sideBlock->z)) {
+                if (!$this->world->isInWorld((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z)) {
                     continue;
                 }
-                if (!isset($this->affectedBlocks[$index = World::blockHash($sideBlock->x, $sideBlock->y, $sideBlock->z)]) and !isset($updateBlocks[$index])) {
-                    $ev = new BlockUpdateEvent($this->world->getBlockAt($sideBlock->x, $sideBlock->y, $sideBlock->z));
+                if (!isset($this->affectedBlocks[$index = World::blockHash((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z)]) and !isset($updateBlocks[$index])) {
+                    $ev = new BlockUpdateEvent($this->world->getBlockAt((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z));
                     $ev->call();
                     if (!$ev->isCancelled()) {
                         foreach ($this->world->getNearbyEntities(AxisAlignedBB::one()->offset($sideBlock->x, $sideBlock->y, $sideBlock->z)->expand(1, 1, 1)) as $entity) {
