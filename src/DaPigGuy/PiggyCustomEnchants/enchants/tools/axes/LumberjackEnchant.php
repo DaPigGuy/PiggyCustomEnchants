@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\axes;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
-use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\enchants\traits\tools\BlockBreakingTrait;
+use DaPigGuy\PiggyCustomEnchants\enchants\tools\BlockBreakingEnchant;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
@@ -18,10 +17,8 @@ use pocketmine\Player;
  * Class LumberjackEnchant
  * @package DaPigGuy\PiggyCustomEnchants\enchants\tools\axes
  */
-class LumberjackEnchant extends ReactiveEnchantment
+class LumberjackEnchant extends BlockBreakingEnchant
 {
-    use BlockBreakingTrait;
-
     /** @var string */
     public $name = "Lumberjack";
     /** @var int */

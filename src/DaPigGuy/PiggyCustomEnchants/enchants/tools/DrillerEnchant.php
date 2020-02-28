@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
-use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\enchants\traits\tools\BlockBreakingTrait;
 use DaPigGuy\PiggyCustomEnchants\utils\Facing;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
@@ -17,10 +15,8 @@ use pocketmine\Player;
  * Class DrillerEnchant
  * @package DaPigGuy\PiggyCustomEnchants\enchants\tools
  */
-class DrillerEnchant extends ReactiveEnchantment
+class DrillerEnchant extends BlockBreakingEnchant
 {
-    use BlockBreakingTrait;
-
     /** @var string */
     public $name = "Driller";
 
@@ -54,11 +50,9 @@ class DrillerEnchant extends ReactiveEnchantment
                              $block->getSide(Facing::opposite($faceUp))->getSide($faceLeft), //Bottom Left
                              $block->getSide(Facing::opposite($faceUp))->getSide(Facing::opposite($faceLeft)) //Bottom Right
                          ] as $b) {
-                    $this->setCooldown($player, 1);
                     $player->getLevel()->useBreakOn($b, $item, $player, true);
                 }
                 if (!$block->equals($event->getBlock())) {
-                    $this->setCooldown($player, 1);
                     $player->getLevel()->useBreakOn($block, $item, $player, true);
                 }
             }

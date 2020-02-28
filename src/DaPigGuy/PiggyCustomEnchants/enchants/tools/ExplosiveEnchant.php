@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
-use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\enchants\traits\tools\BlockBreakingTrait;
 use DaPigGuy\PiggyCustomEnchants\utils\PiggyExplosion;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
@@ -17,10 +15,8 @@ use pocketmine\Player;
  * Class ExplosiveEnchant
  * @package DaPigGuy\PiggyCustomEnchants\enchants\tools
  */
-class ExplosiveEnchant extends ReactiveEnchantment
+class ExplosiveEnchant extends BlockBreakingEnchant
 {
-    use BlockBreakingTrait;
-
     /** @var string */
     public $name = "Explosive";
 
@@ -36,13 +32,9 @@ class ExplosiveEnchant extends ReactiveEnchantment
     public function breakBlocks(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            $this->setCooldown($player, 2147483647);
-
             $explosion = new PiggyExplosion($event->getBlock(), $level * 5, $player);
             $explosion->explodeA();
             $explosion->explodeB();
-
-            $this->setCooldown($player, -$this->getCooldown($player));
         }
     }
 
