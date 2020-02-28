@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\axes;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\tools\BlockBreakingTrait;
 use pocketmine\block\Block;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
@@ -19,18 +20,12 @@ use pocketmine\Player;
  */
 class LumberjackEnchant extends ReactiveEnchantment
 {
+    use BlockBreakingTrait;
+
     /** @var string */
     public $name = "Lumberjack";
     /** @var int */
     public $maxLevel = 1;
-
-    /**
-     * @return array
-     */
-    public function getReagent(): array
-    {
-        return [BlockBreakEvent::class];
-    }
 
     /**
      * @param Player $player
@@ -41,7 +36,7 @@ class LumberjackEnchant extends ReactiveEnchantment
      * @param int $level
      * @param int $stack
      */
-    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    public function breakBlocks(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
             $block = $event->getBlock();
