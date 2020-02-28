@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\utils;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\tools\BlockBreakingEnchant;
 use pocketmine\block\TNT;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Entity;
@@ -92,6 +93,7 @@ class PiggyExplosion extends Explosion
         $airBlock = VanillaBlocks::AIR();
 
         $item = $this->what->getInventory()->getItemInHand();
+        BlockBreakingEnchant::$isBreaking[$this->what->getName()] = true;
         foreach ($this->affectedBlocks as $key => $block) {
             $ev = new BlockBreakEvent($this->what, $block, $item, true, $block->getDrops($item));
             $ev->call();
@@ -132,6 +134,7 @@ class PiggyExplosion extends Explosion
             }
             $send[] = $pos->subtract($source);
         }
+        unset(BlockBreakingEnchant::$isBreaking[$this->what->getName()]);
 
         $this->world->addParticle($source, new HugeExplodeSeedParticle());
         $this->world->addSound($source, new ExplodeSound());

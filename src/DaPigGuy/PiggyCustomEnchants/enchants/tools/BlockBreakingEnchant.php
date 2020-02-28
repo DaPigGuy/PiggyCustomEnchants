@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace DaPigGuy\PiggyCustomEnchants\enchants\traits\tools;
+namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -12,13 +13,13 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 
 /**
- * Trait BlockBreakingTrait
- * @package DaPigGuy\PiggyCustomEnchants\enchants\traits\tools
+ * Class BlockBreakingEnchant
+ * @package DaPigGuy\PiggyCustomEnchants\enchants\tools
  */
-trait BlockBreakingTrait
+class BlockBreakingEnchant extends ReactiveEnchantment
 {
     /** @var array */
-    public $isBreaking;
+    public static $isBreaking;
 
     /**
      * @return array
@@ -47,10 +48,10 @@ trait BlockBreakingTrait
      */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if (isset($this->isBreaking[$player->getName()])) return;
-        $this->isBreaking[$player->getName()] = true;
+        if (isset(self::$isBreaking[$player->getName()])) return;
+        self::$isBreaking[$player->getName()] = true;
         $this->breakBlocks($player, $item, $inventory, $slot, $event, $level, $stack);
-        unset($this->isBreaking[$player->getName()]);
+        unset(self::$isBreaking[$player->getName()]);
     }
 
     /**
