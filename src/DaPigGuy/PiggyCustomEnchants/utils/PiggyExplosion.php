@@ -103,10 +103,8 @@ class PiggyExplosion extends Explosion
             if ($block instanceof TNT) {
                 $block->ignite(mt_rand(10, 30));
             } else {
-                if (mt_rand(0, 100) < $yield) {
-                    foreach ($ev->getDrops() as $drop) {
-                        $this->world->dropItem($pos->add(0.5, 0.5, 0.5), $drop);
-                    }
+                foreach ($ev->getDrops() as $drop) {
+                    $this->world->dropItem($pos->add(0.5, 0.5, 0.5), $drop);
                 }
                 if (($t = $this->world->getTileAt((int)$pos->x, (int)$pos->y, (int)$pos->z)) !== null) {
                     $t->onBlockDestroyed(); //needed to create drops for inventories
