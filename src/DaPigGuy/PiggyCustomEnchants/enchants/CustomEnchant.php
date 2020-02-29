@@ -8,6 +8,7 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\Player;
+use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionException;
 
@@ -28,6 +29,8 @@ class CustomEnchant extends Enchantment
     private $displayName;
     /** @var string */
     public $description;
+    /** @var array */
+    public $extraData;
 
     /** @var array */
     public $cooldown;
@@ -74,6 +77,15 @@ class CustomEnchant extends Enchantment
         $this->maxLevel = $maxLevel ?? (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
         $this->displayName = $displayName ?? (string)$plugin->getEnchantmentData($this->name, "display_names", $this->name);
         $this->description = $description ?? (string)$plugin->getEnchantmentData($this->name, "descriptions");
+        $this->extraData = $plugin->getEnchantmentData($this->name, "extra_data", $this->getDefaultExtraData());
+        if (!empty($this->extraData)) {
+            foreach ($this->getDefaultExtraData() as $key => $value) {
+                if (!isset($this->extraData[$key])) $this->extraData[$key] = $value;
+            }
+            $config = new Config($plugin->getDataFolder() . "extra_data.json");
+            $config->set(str_replace(" ", "", strtolower($this->name)), $this->extraData);
+            $config->save();
+        }
         if (preg_match(Utils::DESCRIPTION_PATTERN, (string)json_encode($plugin->getDescription()->getMap())) !== 1) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
         parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
     }
@@ -108,6 +120,22 @@ class CustomEnchant extends Enchantment
     public function setDescription(string $description): void
     {
         $this->description = $description;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExtraData(): array
+    {
+        return $this->extraData;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return [];
     }
 
     /**

@@ -26,6 +26,14 @@ class AutoAimEnchant extends TickingEnchantment
     public $maxLevel = 1;
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["radiusMultiplier" => 50];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -35,7 +43,7 @@ class AutoAimEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($player->isSneaking() && $player->isOnGround()) {
-            $target = $this->findNearestEntity($player, 50 * $level);
+            $target = $this->findNearestEntity($player, $level * $this->extraData["radiusMultiplier"]);
             if ($target !== null) {
                 $position = $target->subtract($player);
                 $yaw = atan2($position->z, $position->x) * 180 / M_PI - 90;

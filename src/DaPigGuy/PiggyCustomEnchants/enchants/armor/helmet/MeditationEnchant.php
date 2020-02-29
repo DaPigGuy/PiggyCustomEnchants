@@ -42,6 +42,14 @@ class MeditationEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["duration" => 20 * 20, "healthReplenishAmountMultiplier" => 1, "foodReplenishAmountMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -71,13 +79,13 @@ class MeditationEnchant extends ReactiveEnchantment
             $this->meditationTick[$player->getName()]++;
             $time = (int)($this->meditationTick[$player->getName()] / 40);
             $player->sendTip(TextFormat::DARK_GREEN . "Meditating...\n" . TextFormat::GREEN . str_repeat("▌", $time) . TextFormat::GRAY . str_repeat("▌", (20 * 20 / 40) - $time));
-            if ($this->meditationTick[$player->getName()] >= 20 * 20) {
+            if ($this->meditationTick[$player->getName()] >= $this->extraData["duration"]) {
                 $this->meditationTick[$player->getName()] = 0;
-                $event = new EntityRegainHealthEvent($player, $level, EntityRegainHealthEvent::CAUSE_MAGIC);
+                $event = new EntityRegainHealthEvent($player, $level * $this->extraData["healthReplenishAmountMultiplier"], EntityRegainHealthEvent::CAUSE_MAGIC);
                 if (!$event->isCancelled()) {
                     $player->heal($event);
                 }
-                $player->setFood($player->getFood() + $level > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level);
+                $player->setFood($player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"] > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"]);
             }
         }
     }

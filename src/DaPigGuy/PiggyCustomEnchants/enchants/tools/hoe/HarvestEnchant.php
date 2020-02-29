@@ -33,6 +33,14 @@ class HarvestEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["radiusMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -46,8 +54,9 @@ class HarvestEnchant extends ReactiveEnchantment
         if ($event instanceof BlockBreakEvent) {
             $block = $event->getBlock();
             if ($block instanceof Crops) {
-                for ($x = -$level; $x <= $level; $x++) {
-                    for ($z = -$level; $z <= $level; $z++) {
+                $radius = $level * $this->extraData["radiusMultiplier"];
+                for ($x = -$radius; $x <= $radius; $x++) {
+                    for ($z = -$radius; $z <= $radius; $z++) {
                         if ($block->getLevel()->getBlock($block->add($x, 0, $z)) instanceof Crops) {
                             $this->setCooldown($player, 1);
                             $block->getLevel()->useBreakOn($block->add($x, 0, $z), $item, $player);

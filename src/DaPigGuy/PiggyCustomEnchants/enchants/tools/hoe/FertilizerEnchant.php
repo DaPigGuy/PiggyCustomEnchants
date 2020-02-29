@@ -33,6 +33,14 @@ class FertilizerEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["radiusMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -46,8 +54,9 @@ class FertilizerEnchant extends ReactiveEnchantment
         if ($event instanceof PlayerInteractEvent) {
             $block = $event->getBlock();
             if ($block->getId() === Block::GRASS || ($block->getId() === Block::DIRT && $block->getDamage() === 0)) {
-                for ($x = -$level; $x <= $level; $x++) {
-                    for ($z = -$level; $z <= $level; $z++) {
+                $radius = $level * $this->extraData["radiusMultiplier"];
+                for ($x = -$radius; $x <= $radius; $x++) {
+                    for ($z = -$radius; $z <= $radius; $z++) {
                         $newBlock = $block->getLevel()->getBlock($block->add($x, 0, $z));
                         if ($newBlock->getId() === Block::GRASS || ($newBlock->getId() === Block::DIRT && $newBlock->getDamage() === 0)) {
                             $this->setCooldown($player, 1);

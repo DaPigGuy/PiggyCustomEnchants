@@ -36,6 +36,14 @@ class ImplantsEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["foodReplenishAmountMultiplier" => 1, "airTicksReplenishAmountMultiplier" => 40, "airReplenishInterval" => 60];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -48,7 +56,7 @@ class ImplantsEnchant extends ReactiveEnchantment
     {
         if ($event instanceof PlayerMoveEvent) {
             if ($player->getFood() < 20) {
-                $player->setFood($player->getFood() + $level > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level);
+                $player->setFood($player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"] > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"]);
             }
             if ($player->getAirSupplyTicks() < $player->getMaxAirSupplyTicks() && !isset(self::$tasks[$player->getName()])) {
                 self::$tasks[$player->getName()] = new ClosureTask(function () use ($player): void {
@@ -59,13 +67,13 @@ class ImplantsEnchant extends ReactiveEnchantment
                             unset(self::$tasks[$player->getName()]);
                             return;
                         }
-                        $player->setAirSupplyTicks($player->getAirSupplyTicks() + ($enchantment->getLevel() * 40) > $player->getMaxAirSupplyTicks() ? $player->getMaxAirSupplyTicks() : $player->getAirSupplyTicks() + ($enchantment->getLevel() * 40));
+                        $player->setAirSupplyTicks($player->getAirSupplyTicks() + ($enchantment->getLevel() * $this->extraData["airTicksReplenishAmountMultiplier"]) > $player->getMaxAirSupplyTicks() ? $player->getMaxAirSupplyTicks() : $player->getAirSupplyTicks() + ($enchantment->getLevel() * $this->extraData["airTicksReplenishAmountMultiplier"]));
                     } else {
                         self::$tasks[$player->getName()]->getHandler()->cancel();
                         unset(self::$tasks[$player->getName()]);
                     }
                 });
-                $this->plugin->getScheduler()->scheduleDelayedRepeatingTask(self::$tasks[$player->getName()], 20, 60);
+                $this->plugin->getScheduler()->scheduleDelayedRepeatingTask(self::$tasks[$player->getName()], 20, $this->extraData["airReplenishInterval"]);
             }
             $this->setCooldown($player, 1);
         }

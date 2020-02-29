@@ -30,6 +30,14 @@ class HealingEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["healthReplenishMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -41,7 +49,7 @@ class HealingEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
-            $player->setHealth($player->getHealth() + $event->getFinalDamage() + $level > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + $event->getFinalDamage() + $level);
+            $player->setHealth($player->getHealth() + $event->getFinalDamage() + $level * $this->extraData["healthReplenishMultiplier"] > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + $event->getFinalDamage() + $level * $this->extraData["healthReplenishMultiplier"]);
             foreach ($event->getModifiers() as $modifier => $damage) {
                 $event->setModifier(0, $modifier);
             }

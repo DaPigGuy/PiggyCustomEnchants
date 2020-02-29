@@ -50,6 +50,14 @@ class JetpackEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["power" => 300, "rechargeAmount" => 0.66, "drainMultiplier" => 1, "sprintDrainMultiplier" => 1.25, "speedMultiplier" => 1, "sprintSpeedMultiplier" => 1.25];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -86,7 +94,7 @@ class JetpackEnchant extends ReactiveEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($this->hasActiveJetpack($player)) {
-            $player->setMotion($player->getDirectionVector()->multiply($level * ($player->isSprinting() ? 1.25 : 1)));
+            $player->setMotion($player->getDirectionVector()->multiply($level * ($player->isSprinting() ? $this->extraData["sprintSpeedMultiplier"] : $this->extraData["speedMultiplier"])));
             $player->resetFallDistance();
             $player->getLevel()->addParticle(new GenericParticle($player, Particle::TYPE_CAMPFIRE_SMOKE));
 
@@ -94,7 +102,7 @@ class JetpackEnchant extends ReactiveEnchantment
             $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
             if ($time <= 2) $player->sendTip(TextFormat::RED . "Jetpack low on power.");
             if ($player->getServer()->getTick() % 20 === 0) {
-                $this->powerRemaining[$player->getName()] -= ($player->isSprinting() ? 1.25 : 1);
+                $this->powerRemaining[$player->getName()] -= ($player->isSprinting() ? $this->extraData["sprintDrainMultiplier"] : $this->extraData["drainMultiplier"]);
                 if ($this->powerRemaining[$player->getName()] <= 0) {
                     $this->powerActiveJetpack($player, false);
                     return;
@@ -134,10 +142,10 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($power) {
             $this->activeJetpacks[$player->getName()] = $player;
             if (!isset($this->powerRemaining[$player->getName()])) {
-                $this->powerRemaining[$player->getName()] = 300;
+                $this->powerRemaining[$player->getName()] = $this->extraData["power"];
             } else {
-                $this->powerRemaining[$player->getName()] += (time() - $this->lastActivated[$player->getName()]) / 1.5;
-                if ($this->powerRemaining[$player->getName()] > 300) $this->powerRemaining[$player->getName()] = 300;
+                $this->powerRemaining[$player->getName()] += (time() - $this->lastActivated[$player->getName()]) * $this->extraData["rechargeAmount"];
+                if ($this->powerRemaining[$player->getName()] > $this->extraData["power"]) $this->powerRemaining[$player->getName()] = $this->extraData["power"];
             }
         } else {
             unset($this->activeJetpacks[$player->getName()]);

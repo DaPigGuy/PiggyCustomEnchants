@@ -23,6 +23,14 @@ class RadarEnchant extends TickingEnchantment
     public $name = "Radar";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["radiusMultiplier" => 50];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -31,7 +39,7 @@ class RadarEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        $detected = $this->findNearestPlayer($player, $level * 50);
+        $detected = $this->findNearestPlayer($player, $level * $this->extraData["radiusMultiplier"]);
         if (!is_null($detected)) {
             $pk = new SetSpawnPositionPacket();
             $pk->x = (int)$detected->x;

@@ -58,6 +58,14 @@ class LacedWeaponEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["durationMultiplier" => $this->durationMultiplier, "amplifierMultiplier" => $this->amplifierMultiplier, "baseDuration" => $this->baseDuration, "baseAmplifier" => $this->baseAmplifier];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -72,7 +80,7 @@ class LacedWeaponEnchant extends ReactiveEnchantment
             $entity = $event->getEntity();
             if ($entity instanceof Living) {
                 foreach ($this->effectIds as $key => $effectId) {
-                    $entity->addEffect(new EffectInstance(Effect::getEffect($effectId), ($this->baseDuration[$key] ?? 0) + ($this->durationMultiplier[$key] ?? 60) * $level, ($this->baseAmplifier[$key] ?? 0) + ($this->amplifierMultiplier[$key] ?? 1) * $level));
+                    $entity->addEffect(new EffectInstance(Effect::getEffect($effectId), ($this->extraData["baseDuration"][$key] ?? 0) + ($this->extraData["durationMultiplier"][$key] ?? 60) * $level, ($this->extraData["baseAmplifier"][$key] ?? 0) + ($this->extraData["amplifierMultiplier"][$key] ?? 1) * $level));
                 }
             }
         }
