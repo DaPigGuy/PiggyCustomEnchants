@@ -30,7 +30,7 @@ class AutoRepairEnchant extends ReactiveEnchantment
     }
 
     /**
-     * @return int[]
+     * @return array
      */
     public function getDefaultExtraData(): array
     {
@@ -49,7 +49,7 @@ class AutoRepairEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($item->getDamage() === 0) return;
-        $newDir = $item->getDamage() - ($this->extraData["baseRepair"] + ($this->extraData["repairMultiplier"] * $level));
+        $newDir = $item->getDamage() - ((int)$this->extraData["baseRepair"] + ((int)$this->extraData["repairMultiplier"] * $level));
         if ($newDir < 0) {
             $item->setDamage(0);
         } else {
