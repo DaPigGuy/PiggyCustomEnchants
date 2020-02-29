@@ -23,6 +23,14 @@ class VampireEnchant extends ReactiveEnchantment
     public $maxLevel = 1;
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["cooldown" => 5, "healthMultiplier" => 0.5, "foodMultiplier" => 0.5];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -34,9 +42,9 @@ class VampireEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $player->setHealth($player->getHealth() + ($event->getFinalDamage() / 2) > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + ($event->getFinalDamage() / 2));
-            $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + ($event->getFinalDamage() / 2) > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + ($event->getFinalDamage() / 2));
-            $this->setCooldown($player, 5);
+            $player->setHealth($player->getHealth() + ($event->getFinalDamage() * $this->extraData["healthMultiplier"]) > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + ($event->getFinalDamage() * $this->extraData["healthMultiplier"]));
+            $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + ($event->getFinalDamage() * $this->extraData["foodMultiplier"]) > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + ($event->getFinalDamage() * $this->extraData["foodMultiplier"]));
+            $this->setCooldown($player, $this->extraData["cooldown"]);
         }
     }
 }

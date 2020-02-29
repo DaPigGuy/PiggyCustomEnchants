@@ -29,6 +29,14 @@ class ForcefieldEnchant extends ToggleableEnchantment
     public $name = "Forcefield";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["radiusMultiplier" => 0.75];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -39,7 +47,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
     {
         $forcefieldLevel = $this->stack[$player->getName()];
         if ($forcefieldLevel > 0) {
-            $radius = $forcefieldLevel * 0.75;
+            $radius = $forcefieldLevel * $this->extraData["radiusMultiplier"];
             $entities = $player->getWorld()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);
             foreach ($entities as $entity) {
                 if ($entity instanceof Projectile) {

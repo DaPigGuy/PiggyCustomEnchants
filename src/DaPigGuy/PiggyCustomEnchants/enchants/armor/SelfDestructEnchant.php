@@ -34,6 +34,14 @@ class SelfDestructEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["tntAmountMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -45,7 +53,7 @@ class SelfDestructEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerDeathEvent) {
-            for ($i = 0; $i < $level; $i++) {
+            for ($i = 0; $i < $level * $this->extraData["tntAmountMultiplier"]; $i++) {
                 $random = new Random();
                 /** @var PiggyTNT $tnt */
                 $tnt = EntityFactory::create(PiggyTNT::class, $player->getWorld(), EntityFactory::createBaseNBT($player->getPosition(), new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1),)->setShort("Fuse", 40));

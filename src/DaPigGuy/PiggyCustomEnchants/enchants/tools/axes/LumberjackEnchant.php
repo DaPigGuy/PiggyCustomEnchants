@@ -26,6 +26,14 @@ class LumberjackEnchant extends BlockBreakingEnchant
     public $maxLevel = 1;
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["limit" => 800];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -56,7 +64,7 @@ class LumberjackEnchant extends BlockBreakingEnchant
     {
         $item = $player->getInventory()->getItemInHand();
         for ($i = 0; $i <= 5; $i++) {
-            if ($mined > 800) {
+            if ($mined > $this->extraData["limit"]) {
                 break;
             }
             $side = $block->getSide($i);

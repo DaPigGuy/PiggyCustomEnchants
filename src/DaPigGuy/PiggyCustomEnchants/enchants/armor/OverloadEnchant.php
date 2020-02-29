@@ -22,6 +22,14 @@ class OverloadEnchant extends ToggleableEnchantment
     public $maxLevel = 3;
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["multiplier" => 2];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -31,8 +39,8 @@ class OverloadEnchant extends ToggleableEnchantment
      */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
-        $player->setMaxHealth($player->getMaxHealth() + 2 * $level * ($toggle ? 1 : -1));
-        $player->setHealth($player->getHealth() * ($player->getMaxHealth() / ($player->getMaxHealth() - 2 * $level * ($toggle ? 1 : -1))));
+        $player->setMaxHealth($player->getMaxHealth() + $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1));
+        $player->setHealth($player->getHealth() * ($player->getMaxHealth() / ($player->getMaxHealth() - $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1))));
     }
 
     /**

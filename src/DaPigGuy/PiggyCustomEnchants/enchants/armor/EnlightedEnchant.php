@@ -23,6 +23,15 @@ class EnlightedEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Enlighted";
 
+
+    /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["durationMultiplier" => 60, "baseAmplifier" => 0, "amplifierMultiplier" => 1];
+    }
+
     /**
      * @param Player $player
      * @param Item $item
@@ -35,7 +44,7 @@ class EnlightedEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), 60 * $level, $level, false));
+            $player->getEffects()->add(new EffectInstance(VanillaEffects::REGENERATION(), $this->extraData["durationMultiplier"] * $level, $level * $this->extraData["amplifierMultiplier"] + $this->extraData["baseAmplifier"], false));
         }
     }
 

@@ -22,6 +22,14 @@ class DeathbringerEnchant extends ReactiveEnchantment
     public $name = "Deathbringer";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["base" => 2, "multiplier" => 0.1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -33,7 +41,7 @@ class DeathbringerEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $event->setModifier(2 + ($level / 10), CustomEnchantIds::DEATHBRINGER);
+            $event->setModifier($this->extraData["base"] + $level * $this->extraData["multiplier"], CustomEnchantIds::DEATHBRINGER);
         }
     }
 }

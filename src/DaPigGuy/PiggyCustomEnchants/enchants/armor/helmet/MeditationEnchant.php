@@ -42,6 +42,14 @@ class MeditationEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["duration" => 20 * 20, "healthReplenishAmountMultiplier" => 1, "foodReplenishAmountMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -77,7 +85,7 @@ class MeditationEnchant extends ReactiveEnchantment
                 if (!$event->isCancelled()) {
                     $player->heal($event);
                 }
-                $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + $level > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + $level);
+                $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"] > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"]);
             }
         }
     }

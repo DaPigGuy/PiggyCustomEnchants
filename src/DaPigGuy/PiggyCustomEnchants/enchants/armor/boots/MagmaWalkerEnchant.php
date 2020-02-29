@@ -34,6 +34,14 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["baseRadius" => 2, "radiusMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -46,7 +54,7 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
     {
         if ($event instanceof PlayerMoveEvent) {
             if (!in_array($player->getWorld()->getBlock($player->getPosition())->getId(), [BlockLegacyIds::STILL_LAVA, BlockLegacyIds::LAVA, BlockLegacyIds::FLOWING_LAVA])) {
-                $radius = $level + 2;
+                $radius = $level * $this->extraData["radiusMultiplier"] + $this->extraData["baseRadius"];
                 for ($x = -$radius; $x <= $radius; $x++) {
                     for ($z = -$radius; $z <= $radius; $z++) {
                         $b = $player->getWorld()->getBlock($player->getPosition()->add($x, -1, $z));

@@ -41,6 +41,14 @@ class GrowEnchant extends ToggleableEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["cooldown" => 75, "power" => 60 * 20, "base" => 0.3, "multiplier" => 0.0125];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -61,8 +69,8 @@ class GrowEnchant extends ToggleableEnchantment
                             $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
                         } else {
                             $this->grew[$player->getName()] = $player;
-                            if (!isset($this->growPower[$player->getName()])) $this->growPower[$player->getName()] = 60 * 20;
-                            $player->setScale($player->getScale() + 0.3 + (($this->stack[$player->getName()] / 4) * 0.05));
+                            if (!isset($this->growPower[$player->getName()])) $this->growPower[$player->getName()] = $this->extraData["power"];
+                            $player->setScale($player->getScale() + 0.3 + ($this->stack[$player->getName()] * $this->extraData["multiplier"]));
                             $player->sendTip(TextFormat::GREEN . "You have grown. Sneak again to shrink back to normal size.");
                         }
                     }
@@ -85,8 +93,8 @@ class GrowEnchant extends ToggleableEnchantment
             if ($this->equippedArmorStack[$player->getName()] < 4 || $this->growPower[$player->getName()] <= 0) {
                 unset($this->grew[$player->getName()]);
                 if ($this->growPower[$player->getName()] <= 0) {
-                    $this->setCooldown($player, 75);
-                    $this->growPower[$player->getName()] = 60 * 20;
+                    $this->setCooldown($player, $this->extraData["cooldown"]);
+                    $this->growPower[$player->getName()] = $this->extraData["power"];
                 }
                 $player->setScale(1);
                 $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");

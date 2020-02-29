@@ -32,6 +32,14 @@ class BerserkerEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["cooldown" => 300, "minimumHealth" => 4, "effectDurationMultiplier" => 200, "effectAmplifierBase" => 3, "effectAmplifierMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -43,13 +51,13 @@ class BerserkerEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageEvent) {
-            if ($player->getHealth() - $event->getFinalDamage() <= 4) {
+            if ($player->getHealth() - $event->getFinalDamage() <= $this->extraData["minimumHealth"]) {
                 if (!$player->getEffects()->has(VanillaEffects::STRENGTH())) {
-                    $effect = new EffectInstance(VanillaEffects::STRENGTH(), 200 * $level, $level + 3, false);
+                    $effect = new EffectInstance(VanillaEffects::STRENGTH(), $this->extraData["effectDurationMultiplier"] * $level, $level * $this->extraData["effectAmplifierMultiplier"] + $this->extraData["effectAmplifierBase"], false);
                     $player->getEffects()->add($effect);
                 }
                 $player->sendMessage("Your bloodloss makes your stronger!");
-                $this->setCooldown($player, 300);
+                $this->setCooldown($player, $this->extraData["cooldown"]);
             }
         }
     }

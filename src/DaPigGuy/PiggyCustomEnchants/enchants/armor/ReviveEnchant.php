@@ -37,6 +37,14 @@ class ReviveEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["nauseaDuration" => 600, "slownessDuration" => 600];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -57,9 +65,9 @@ class ReviveEnchant extends ReactiveEnchantment
                 $player->getHungerManager()->setFood($player->getHungerManager()->getMaxFood());
                 $player->getXpManager()->setXpAndProgress(0, 0.0);
 
-                $effect = new EffectInstance(VanillaEffects::NAUSEA(), 600, 0, false);
+                $effect = new EffectInstance(VanillaEffects::NAUSEA(), $this->extraData["nauseaDuration"], 0, false);
                 $player->getEffects()->add($effect);
-                $effect = new EffectInstance(VanillaEffects::SLOWNESS(), 600, 0, false);
+                $effect = new EffectInstance(VanillaEffects::SLOWNESS(), $this->extraData["slownessDuration"], 0, false);
                 $player->getEffects()->add($effect);
 
                 for ($i = $player->getPosition()->y; $i <= 256; $i += 0.25) {

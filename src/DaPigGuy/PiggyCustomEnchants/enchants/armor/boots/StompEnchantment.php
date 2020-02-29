@@ -34,6 +34,14 @@ class StompEnchantment extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["redistributedDamageMultiplier" => 0.5, "absorbedDamageMultiplier" => 0.75];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -51,10 +59,10 @@ class StompEnchantment extends ReactiveEnchantment
                     if ($player === $entity) {
                         continue;
                     }
-                    $ev = new EntityDamageByEntityEvent($player, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage() / 2);
+                    $ev = new EntityDamageByEntityEvent($player, $entity, EntityDamageEvent::CAUSE_ENTITY_ATTACK, $event->getFinalDamage() * $this->extraData["redistributedDamageMultiplier"]);
                     $entity->attack($ev);
                 }
-                $event->setModifier(-($event->getFinalDamage() * (3 / 4) * count($entities)), CustomEnchantIds::STOMP);
+                $event->setModifier(-($event->getFinalDamage() * $this->extraData["absorbedDamageMultiplier"] * count($entities)), CustomEnchantIds::STOMP);
             }
         }
     }

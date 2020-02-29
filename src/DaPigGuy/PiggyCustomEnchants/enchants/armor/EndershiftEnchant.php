@@ -32,6 +32,14 @@ class EndershiftEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["cooldown" => 300, "speedDurationMultiplier" => 200, "speedBaseAmplifier" => 3, "speedAmplifierMultiplier" => 1, "strengthDurationMultiplier" => 200, "strengthBaseAmplifier" => 3, "strengthAmplifierMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -45,15 +53,15 @@ class EndershiftEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageEvent) {
             if ($player->getHealth() - $event->getFinalDamage() <= 4) {
                 if (!$player->getEffects()->has(VanillaEffects::SPEED())) {
-                    $effect = new EffectInstance(VanillaEffects::SPEED(), 200 * $level, $level + 3, false);
+                    $effect = new EffectInstance(VanillaEffects::SPEED(), $this->extraData["speedDurationMultiplier"] * $level, $level * $this->extraData["speedAmplifierMultiplier"] + $this->extraData["speedBaseAmplifier"], false);
                     $player->getEffects()->add($effect);
                 }
                 if (!$player->getEffects()->has(VanillaEffects::ABSORPTION())) {
-                    $effect = new EffectInstance(VanillaEffects::ABSORPTION(), 200 * $level, $level + 3, false);
+                    $effect = new EffectInstance(VanillaEffects::ABSORPTION(), $this->extraData["strengthDurationMultiplier"] * $level, $level * $this->extraData["strengthAmplifierMultiplier"] + $this->extraData["strengthBaseAmplifier"], false);
                     $player->getEffects()->add($effect);
                 }
                 $player->sendMessage("You feel a rush of energy coming from your armor!");
-                $this->setCooldown($player, 300);
+                $this->setCooldown($player, $this->extraData["cooldown"]);
             }
         }
     }

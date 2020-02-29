@@ -24,6 +24,14 @@ class MoltenEnchant extends ReactiveEnchantment
     public $name = "Molten";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["durationMultiplier" => 3];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -38,7 +46,7 @@ class MoltenEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
                 $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($damager, $level): void {
-                    if (!$damager->isClosed()) $damager->setOnFire(3 * $level);
+                    if (!$damager->isClosed()) $damager->setOnFire($this->extraData["durationMultiplier"] * $level);
                 }), 1);
             }
         }

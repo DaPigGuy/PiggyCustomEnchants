@@ -21,6 +21,14 @@ class ExplosiveEnchant extends BlockBreakingEnchant
     public $name = "Explosive";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["sizeMultiplier" => 5];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -32,7 +40,7 @@ class ExplosiveEnchant extends BlockBreakingEnchant
     public function breakBlocks(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            $explosion = new PiggyExplosion($event->getBlock()->getPos(), $level * 5, $player);
+            $explosion = new PiggyExplosion($event->getBlock()->getPos(), $level * $this->extraData["sizeMultiplier"], $player);
             $explosion->explodeA();
             $explosion->explodeB();
         }

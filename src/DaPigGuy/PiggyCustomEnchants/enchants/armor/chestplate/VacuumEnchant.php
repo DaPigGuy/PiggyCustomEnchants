@@ -22,6 +22,14 @@ class VacuumEnchant extends TickingEnchantment
     public $maxLevel = 3;
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["radiusMultiplier" => 3];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -33,7 +41,7 @@ class VacuumEnchant extends TickingEnchantment
         foreach ($player->getWorld()->getEntities() as $entity) {
             if ($entity instanceof ItemEntity) {
                 $distance = $player->getPosition()->distance($entity->getPosition());
-                if ($distance <= 3 * $level) {
+                if ($distance <= $this->extraData["radiusMultiplier"] * $level) {
                     $entity->setMotion($player->getPosition()->subtract($entity->getPosition())->divide(3 * $level)->multiply($level));
                 }
             }

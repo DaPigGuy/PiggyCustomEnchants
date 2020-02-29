@@ -23,6 +23,15 @@ class HeavyEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Heavy";
 
+
+    /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["absorbedDamageMultiplier" => 0.2];
+    }
+
     /**
      * @param Player $player
      * @param Item $item
@@ -38,7 +47,7 @@ class HeavyEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Player) {
                 if ($damager->getInventory()->getItemInHand()->getId() === ItemIds::BOW) {
-                    $event->setModifier(-($event->getFinalDamage() * 0.2 * $level), CustomEnchantIds::HEAVY);
+                    $event->setModifier(-($event->getFinalDamage() * $this->extraData["absorbedDamageMultiplier"] * $level), CustomEnchantIds::HEAVY);
                 }
             }
         }

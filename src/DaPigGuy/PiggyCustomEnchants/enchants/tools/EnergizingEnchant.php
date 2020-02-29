@@ -32,6 +32,14 @@ class EnergizingEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["duration" => 20, "baseAmplifier" => -1, "amplifierMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -44,7 +52,7 @@ class EnergizingEnchant extends ReactiveEnchantment
     {
         if ($event instanceof BlockBreakEvent) {
             if (!$player->getEffects()->has(VanillaEffects::HASTE())) {
-                $effect = new EffectInstance(VanillaEffects::HASTE(), 20, 1 + $level - 2, false);
+                $effect = new EffectInstance(VanillaEffects::HASTE(), $this->extraData["duration"], $level * $this->extraData["amplifierMultiplier"] + $this->extraData["baseAmplifier"], false);
                 $player->getEffects()->add($effect);
             }
         }

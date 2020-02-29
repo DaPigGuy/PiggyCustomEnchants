@@ -37,6 +37,14 @@ class VolleyEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["base" => 1, "multiplier" => 2];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -48,7 +56,7 @@ class VolleyEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityShootBowEvent) {
-            $amount = 1 + 2 * $level;
+            $amount = $this->extraData["base"] + $this->extraData["multiplier"] * $level;
             $anglesBetweenArrows = (45 / ($amount - 1)) * M_PI / 180;
             $pitch = ($player->getLocation()->pitch + 90) * M_PI / 180;
             $yaw = ($player->getLocation()->yaw + 90 - 45 / 2) * M_PI / 180;

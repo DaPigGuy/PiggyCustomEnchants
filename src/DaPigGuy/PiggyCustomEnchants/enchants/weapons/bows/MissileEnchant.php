@@ -32,6 +32,14 @@ class MissileEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["multiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -44,7 +52,7 @@ class MissileEnchant extends ReactiveEnchantment
     {
         if ($event instanceof ProjectileHitBlockEvent) {
             $projectile = $event->getEntity();
-            for ($i = 0; $i <= $level; $i++) {
+            for ($i = 0; $i <= $level * $this->extraData["multiplier"]; $i++) {
                 /** @var PiggyTNT $tnt */
                 $tnt = EntityFactory::create(PiggyTNT::class, $projectile->getWorld(), EntityFactory::createBaseNBT($projectile->getPosition())->setShort("Fuse", 40));
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.missile", false);

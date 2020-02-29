@@ -31,6 +31,14 @@ class HeadhunterEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["additionalMultiplier" => 0.1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -43,7 +51,7 @@ class HeadhunterEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
             if ($event->getChild()->getPosition()->y > $event->getEntity()->getPosition()->y + $event->getEntity()->getEyeHeight()) {
-                $event->setModifier(0.1 * $level, CustomEnchantIds::HEADHUNTER);
+                $event->setModifier($this->extraData["additionalMultiplier"] * $level, CustomEnchantIds::HEADHUNTER);
             }
         }
     }

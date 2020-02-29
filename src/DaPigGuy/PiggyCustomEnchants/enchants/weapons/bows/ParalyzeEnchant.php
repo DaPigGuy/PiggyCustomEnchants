@@ -33,6 +33,25 @@ class ParalyzeEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return [
+            "slownessBaseDuration" => 40,
+            "slownessDurationMultiplier" => 20,
+            "slownessBaseAmplifier" => 4,
+            "slownessAmplifierMultiplier" => 1,
+            "blindnessBaseDuration" => 40,
+            "blindnessDurationMultiplier" => 20,
+            "weaknessBaseDuration" => 40,
+            "weaknessDurationMultiplier" => 20,
+            "weaknessBaseAmplifier" => 4,
+            "weaknessAmplifierMultiplier" => 1,
+        ];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -47,15 +66,15 @@ class ParalyzeEnchant extends ReactiveEnchantment
             $entity = $event->getEntity();
             if ($entity instanceof Living) {
                 if (!$entity->getEffects()->has(VanillaEffects::SLOWNESS())) {
-                    $effect = new EffectInstance(VanillaEffects::SLOWNESS(), 60 + ($level - 1) * 20, 5 + $level - 1, false);
+                    $effect = new EffectInstance(VanillaEffects::SLOWNESS(), $this->extraData["slownessBaseDuration"] + $level * $this->extraData["slownessDurationMultiplier"], $this->extraData["slownessBaseAmplifier"] + $level * $this->extraData["slownessAmplifierMultiplier"], false);
                     $entity->getEffects()->add($effect);
                 }
                 if (!$entity->getEffects()->has(VanillaEffects::BLINDNESS())) {
-                    $effect = new EffectInstance(VanillaEffects::BLINDNESS(), 60 + ($level - 1) * 20, 1, false);
+                    $effect = new EffectInstance(VanillaEffects::BLINDNESS(), $this->extraData["blindnessBaseDuration"] + $level * $this->extraData["blindnessDurationMultiplier"], 1, false);
                     $entity->getEffects()->add($effect);
                 }
                 if (!$entity->getEffects()->has(VanillaEffects::WEAKNESS())) {
-                    $effect = new EffectInstance(VanillaEffects::WEAKNESS(), 60 + ($level - 1) * 20, 5 + $level - 1, false);
+                    $effect = new EffectInstance(VanillaEffects::WEAKNESS(), $this->extraData["weaknessBaseDuration"] + $level * $this->extraData["weaknessDurationMultiplier"], $this->extraData["weaknessBaseAmplifier"] + $level * $this->extraData["weaknessAmplifierMultiplier"], false);
                     $entity->getEffects()->add($effect);
                 }
             }

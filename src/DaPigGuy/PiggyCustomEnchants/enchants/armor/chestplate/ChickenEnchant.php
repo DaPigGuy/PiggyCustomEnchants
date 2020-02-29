@@ -23,6 +23,14 @@ class ChickenEnchant extends TickingEnchantment
     public $name = "Chicken";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["treasureChanceMultiplier" => 5, "treasures" => ["266:0:1"], "interval" => 1200 * 5];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -31,8 +39,8 @@ class ChickenEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        if (mt_rand(0, 100) <= 5 * $level) {
-            $drops = $this->plugin->getConfig()->getNested("chicken.drops", []);
+        if (mt_rand(0, 100) <= $this->extraData["treasureChanceMultiplier"] * $level) {
+            $drops = $this->plugin->getConfig()->getNested("chicken.drops", $this->extraData["treasures"]);
             if (!is_array($drops)) {
                 $drops = [$drops];
             }
@@ -53,7 +61,7 @@ class ChickenEnchant extends TickingEnchantment
      */
     public function getTickingInterval(): int
     {
-        return 1200 * 5;
+        return $this->extraData["interval"];
     }
 
     /**
