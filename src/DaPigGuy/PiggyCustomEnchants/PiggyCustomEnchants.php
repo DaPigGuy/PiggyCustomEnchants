@@ -100,7 +100,7 @@ class PiggyCustomEnchants extends PluginBase
      * @param string $enchant
      * @param string $data
      * @param int|string|array $default
-     * @return int|string|array
+     * @return mixed
      * @internal
      */
     public function getEnchantmentData(string $enchant, string $data, $default = "")

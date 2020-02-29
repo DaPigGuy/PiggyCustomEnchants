@@ -30,7 +30,7 @@ class AutoRepairEnchant extends ReactiveEnchantment
     }
 
     /**
-     * @return array
+     * @return int[]
      */
     public function getDefaultExtraData(): array
     {
