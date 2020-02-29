@@ -51,6 +51,14 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["durationMultipliers" => $this->durationMultiplier, "amplifierMultipliers" => $this->amplifierMultiplier];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -65,7 +73,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
                 foreach ($this->effects as $key => $effect) {
-                    $damager->addEffect(new EffectInstance(Effect::getEffect($effect), $this->durationMultiplier[$key] * $level, $this->amplifierMultiplier[$key] * $level));
+                    $damager->addEffect(new EffectInstance(Effect::getEffect($effect), $this->extraData["durationMultipliers"][$key] * $level, $this->extraData["amplifierMultipliers"][$key] * $level));
                 }
             }
         }

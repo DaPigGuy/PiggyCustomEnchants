@@ -23,6 +23,14 @@ class GooeyEnchant extends ReactiveEnchantment
     public $name = "Gooey";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["base" => 0.75, "multiplier" => 0.15];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -36,7 +44,7 @@ class GooeyEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $entity = $event->getEntity();
             $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($entity, $level): void {
-                if (!$entity->isClosed() && !$entity->isFlaggedForDespawn()) $entity->setMotion(new Vector3($entity->getMotion()->x, (3 * $level * 0.05) + 0.75, $entity->getMotion()->z));
+                if (!$entity->isClosed() && !$entity->isFlaggedForDespawn()) $entity->setMotion(new Vector3($entity->getMotion()->x, $level * $this->extraData["multiplier"] + $this->extraData["base"], $entity->getMotion()->z));
             }), 1);
         }
     }

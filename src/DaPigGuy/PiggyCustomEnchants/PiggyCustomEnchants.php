@@ -53,7 +53,7 @@ class PiggyCustomEnchants extends PluginBase
             return;
         }
 
-        foreach (["max_levels", "display_names", "descriptions"] as $file) {
+        foreach (["max_levels", "display_names", "descriptions", "extra_data"] as $file) {
             $this->saveResource($file . ".json");
             foreach ((new Config($this->getDataFolder() . $file . ".json"))->getAll() as $enchant => $data) {
                 $this->enchantmentData[$enchant][$file] = $data;
@@ -99,8 +99,8 @@ class PiggyCustomEnchants extends PluginBase
     /**
      * @param string $enchant
      * @param string $data
-     * @param int|string $default
-     * @return int|string
+     * @param int|string|array $default
+     * @return int|string|array
      * @internal
      */
     public function getEnchantmentData(string $enchant, string $data, $default = "")

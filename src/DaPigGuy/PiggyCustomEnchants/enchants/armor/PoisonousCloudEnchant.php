@@ -27,6 +27,14 @@ class PoisonousCloudEnchant extends TickingEnchantment
     public $maxLevel = 3;
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["radiusMultiplier" => 3, "durationMultiplier" => 100, "baseAmplifier" => -1, "amplifierMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -35,10 +43,10 @@ class PoisonousCloudEnchant extends TickingEnchantment
      */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        $radius = $level * 3;
+        $radius = $level * $this->extraData["radiusMultiplier"];
         foreach ($player->getLevel()->getEntities() as $entity) {
             if ($entity !== $player && $entity instanceof Living && !AllyChecks::isAlly($player, $entity) && $entity->distance($player) <= $radius) {
-                $effect = new EffectInstance(Effect::getEffect(Effect::POISON), $level * 100, $level - 1, false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::POISON), $level * $this->extraData["durationMultiplier"], $level * $this->extraData["amplifierMultiplier"] + $this->extraData["baseAmplifier"], false);
                 $entity->addEffect($effect);
             }
         }

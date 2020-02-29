@@ -36,6 +36,14 @@ class ReviveEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["nauseaDuration" => 600, "slownessDuration" => 600];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -58,9 +66,9 @@ class ReviveEnchant extends ReactiveEnchantment
                 $player->setXpLevel(0);
                 $player->setXpProgress(0);
 
-                $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), 600, 0, false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::NAUSEA), $this->extraData["nauseaDuration"], 0, false);
                 $player->addEffect($effect);
-                $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), 600, 0, false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::SLOWNESS), $this->extraData["slownessDuration"], 0, false);
                 $player->addEffect($effect);
 
                 for ($i = $player->y; $i <= 256; $i += 0.25) {

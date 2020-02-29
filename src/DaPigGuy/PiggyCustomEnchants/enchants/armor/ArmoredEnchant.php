@@ -24,6 +24,14 @@ class ArmoredEnchant extends ReactiveEnchantment
     public $name = "Armored";
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["absorbedDamageMultiplier" => 0.2];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -38,7 +46,7 @@ class ArmoredEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Player) {
                 if ($damager->getInventory()->getItemInHand() instanceof Sword) {
-                    $event->setModifier(-($event->getFinalDamage() * 0.2 * $level), CustomEnchantIds::ARMORED);
+                    $event->setModifier(-($event->getFinalDamage() * $this->extraData["absorbedDamageMultiplier"] * $level), CustomEnchantIds::ARMORED);
                 }
             }
         }

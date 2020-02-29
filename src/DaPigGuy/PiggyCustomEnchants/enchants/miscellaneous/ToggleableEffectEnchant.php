@@ -63,6 +63,14 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["baseAmplifier" => $this->baseAmplifier, "amplifierMultiplier" => $this->amplifierMultiplier];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -74,7 +82,7 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
     {
         if ($toggle) {
             if ($this->effect === Effect::JUMP) Utils::setShouldTakeFallDamage($player, false, 2147483647);
-            if ($player->hasEffect($this->effect) && $player->getEffect($this->effect)->getAmplifier() > $this->baseAmplifier + $this->amplifierMultiplier * $level) $this->previousEffect[$player->getName()] = $player->getEffect($this->effect);
+            if ($player->hasEffect($this->effect) && $player->getEffect($this->effect)->getAmplifier() > $this->extraData["baseAmplifier"] + $this->extraData["amplifierMultiplier"] * $level) $this->previousEffect[$player->getName()] = $player->getEffect($this->effect);
         } else {
             if ($this->usageType !== CustomEnchant::TYPE_ARMOR_INVENTORY || $this->equippedArmorStack[$player->getName()] === 0) {
                 if ($this->effect === Effect::JUMP) Utils::setShouldTakeFallDamage($player, true);
@@ -87,7 +95,7 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
             }
         }
         $player->removeEffect($this->effect);
-        $player->addEffect(new EffectInstance(Effect::getEffect($this->effect), 2147483647, $this->baseAmplifier + $this->amplifierMultiplier * $level, false));
+        $player->addEffect(new EffectInstance(Effect::getEffect($this->effect), 2147483647, $this->extraData["baseAmplifier"] + $this->extraData["amplifierMultiplier"] * $level, false));
     }
 
     /**

@@ -31,6 +31,15 @@ class QuickeningEnchant extends ReactiveEnchantment
         return [BlockBreakEvent::class];
     }
 
+
+    /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["duration" => 40, "baseAmplifier" => 1, "amplifierMultiplier" => 1];
+    }
+
     /**
      * @param Player $player
      * @param Item $item
@@ -44,7 +53,7 @@ class QuickeningEnchant extends ReactiveEnchantment
     {
         if ($event instanceof BlockBreakEvent) {
             if ($player->hasEffect(Effect::SPEED) !== true) {
-                $effect = new EffectInstance(Effect::getEffect(Effect::SPEED), 40, 3 + $level - 2, false);
+                $effect = new EffectInstance(Effect::getEffect(Effect::SPEED), $this->extraData["duration"], $level * $this->extraData["amplifierMultiplier"] + $this->extraData["baseAmplifier"], false);
                 $player->addEffect($effect);
             }
         }

@@ -24,6 +24,14 @@ class DrillerEnchant extends BlockBreakingEnchant
     public static $lastBreakFace;
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["distanceMultiplier" => 1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -36,7 +44,7 @@ class DrillerEnchant extends BlockBreakingEnchant
     {
         if ($event instanceof BlockBreakEvent) {
             $breakFace = self::$lastBreakFace[$player->getName()];
-            for ($i = 0; $i <= $level; $i++) {
+            for ($i = 0; $i <= $level * $this->extraData["distanceMultiplier"]; $i++) {
                 $block = $event->getBlock()->getSide(Facing::opposite($breakFace), $i);
                 $faceLeft = Facing::rotate($breakFace, Facing::axis($breakFace) !== Facing::AXIS_Y ? Facing::AXIS_Y : Facing::AXIS_X, true);
                 $faceUp = Facing::rotate($breakFace, Facing::axis($breakFace) !== Facing::AXIS_Z ? Facing::AXIS_Z : Facing::AXIS_X, true);

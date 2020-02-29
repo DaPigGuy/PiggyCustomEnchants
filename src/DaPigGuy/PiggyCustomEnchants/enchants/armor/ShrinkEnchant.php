@@ -43,6 +43,14 @@ class ShrinkEnchant extends ToggleableEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["cooldown" => 75, "power" => 60 * 20, "base" => 0.7, "multiplier" => 0.0125];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -63,8 +71,8 @@ class ShrinkEnchant extends ToggleableEnchantment
                             $player->sendTip(TextFormat::RED . "You have grown back to normal size.");
                         } else {
                             $this->shrunk[$player->getName()] = $player;
-                            if (!isset($this->shrinkPower[$player->getName()])) $this->shrinkPower[$player->getName()] = 60 * 20;
-                            $player->setScale($player->getScale() - 0.7 - (($this->stack[$player->getName()] / 4) * 0.05));
+                            if (!isset($this->shrinkPower[$player->getName()])) $this->shrinkPower[$player->getName()] = $this->extraData["power"];
+                            $player->setScale($player->getScale() - $this->extraData["base"] - ($this->stack[$player->getName()] * $this->extraData["multiplier"]));
                             $player->sendTip(TextFormat::GREEN . "You have shrunk. Sneak again to grow back to normal size.");
                         }
                     }
@@ -87,8 +95,8 @@ class ShrinkEnchant extends ToggleableEnchantment
             if ($this->equippedArmorStack[$player->getName()] < 4 || $this->shrinkPower[$player->getName()] <= 0) {
                 unset($this->shrunk[$player->getName()]);
                 if ($this->shrinkPower[$player->getName()] <= 0) {
-                    $this->setCooldown($player, 75);
-                    $this->shrinkPower[$player->getName()] = 60 * 20;
+                    $this->setCooldown($player, $this->extraData["cooldown"]);
+                    $this->shrinkPower[$player->getName()] = $this->extraData["power"];
                 }
                 $player->setScale(1);
                 $player->sendTip(TextFormat::RED . "You have grown back to normal size.");

@@ -39,6 +39,14 @@ class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultExtraData(): array
+    {
+        return ["additionalMultiplier" => 0.1];
+    }
+
+    /**
      * @param Player $player
      * @param Item $item
      * @param Inventory $inventory
@@ -51,7 +59,7 @@ class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByEntityEvent) {
             if (($this->condition)($event)) {
-                $event->setModifier(0.1 * $level, $this->getId());
+                $event->setModifier($this->extraData["additionalMultiplier"] * $level, $this->getId());
             }
         }
     }
