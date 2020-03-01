@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\commands;
 
 use CortexPE\Commando\BaseCommand;
+use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\exception\SubCommandCollision;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\AboutSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\EnchantSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\InfoSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\ListSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\NBTSubCommand;
+use DaPigGuy\PiggyCustomEnchants\commands\subcommands\RemoveSubCommand;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
@@ -47,7 +49,9 @@ class CustomEnchantsCommand extends BaseCommand
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if ($sender instanceof Player && $this->plugin->areFormsEnabled()) {
-            $subcommands = ["about", "enchant", "info", "list"];
+            $subcommands = array_values(array_map(function (BaseSubCommand $subCommand): string {
+                return $subCommand->getName();
+            }, $this->getSubCommands()));
             $form = new SimpleForm(function (Player $player, ?int $data) use ($subcommands): void {
                 if ($data !== null && isset($subcommands[$data])) {
                     $this->plugin->getServer()->dispatchCommand($player, "ce " . $subcommands[$data]);
@@ -71,5 +75,6 @@ class CustomEnchantsCommand extends BaseCommand
         $this->registerSubCommand(new InfoSubCommand($this->plugin, "info", "Get info on a custom enchant"));
         $this->registerSubCommand(new ListSubCommand($this->plugin, "list", "Lists all registered custom enchants"));
         $this->registerSubCommand(new NBTSubCommand($this->plugin, "nbt", "Displays NBT tags of currently held item"));
+        $this->registerSubCommand(new RemoveSubCommand($this->plugin, "remove", "Remove an enchantment from an item"));
     }
 }
