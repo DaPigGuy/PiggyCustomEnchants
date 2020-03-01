@@ -33,6 +33,12 @@ permissions:
               piggycustomenchants.command.ce.list:
                 default: true
                 description: "Use /customenchant list"
+              piggycustomenchants.command.ce.nbt:
+                default: true
+                description: "Use /customenchant nbt"
+              piggycustomenchants.command.ce.remove:
+                default: op
+                description: "Use /customenchant remove"
       piggycustomenchants.overridecheck:
         default: false
         description: "Override the check and enchant any item with any enchant"
