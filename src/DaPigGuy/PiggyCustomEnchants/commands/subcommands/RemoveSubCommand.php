@@ -12,7 +12,7 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 /**
@@ -64,12 +64,11 @@ class RemoveSubCommand extends BaseSubCommand
             return;
         }
         $item = $target->getInventory()->getItemInHand();
-        if ($item->getEnchantment($enchant->getId()) === null) {
+        if ($item->getEnchantment($enchant) === null) {
             $sender->sendMessage(TextFormat::RED . "Item does not have specified enchantment.");
             return;
         }
-        $item->removeEnchantment($enchant->getId());
-        if (count($item->getEnchantments()) === 0) $item->removeEnchantments();
+        $item->removeEnchantment($enchant);
         $sender->sendMessage(TextFormat::GREEN . "Enchantment successfully removed.");
         $target->getInventory()->setItemInHand($item);
     }
@@ -95,12 +94,11 @@ class RemoveSubCommand extends BaseSubCommand
                         return;
                     }
                     $item = $target->getInventory()->getItemInHand();
-                    if ($item->getEnchantment($enchant->getId()) === null) {
+                    if ($item->getEnchantment($enchant) === null) {
                         $player->sendMessage(TextFormat::RED . "Item does not have specified enchantment.");
                         return;
                     }
-                    $item->removeEnchantment($enchant->getId());
-                    if (count($item->getEnchantments()) === 0) $item->removeEnchantments();
+                    $item->removeEnchantment($enchant);
                     $target->sendMessage(TextFormat::GREEN . "Enchantment successfully removed.");
                     $target->getInventory()->setItemInHand($item);
                 }
