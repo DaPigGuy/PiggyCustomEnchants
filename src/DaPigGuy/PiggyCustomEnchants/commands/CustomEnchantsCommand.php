@@ -48,10 +48,10 @@ class CustomEnchantsCommand extends BaseCommand
      */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
+        $subcommands = array_values(array_map(function (BaseSubCommand $subCommand): string {
+            return $subCommand->getName();
+        }, $this->getSubCommands()));
         if ($sender instanceof Player && $this->plugin->areFormsEnabled()) {
-            $subcommands = array_values(array_map(function (BaseSubCommand $subCommand): string {
-                return $subCommand->getName();
-            }, $this->getSubCommands()));
             $form = new SimpleForm(function (Player $player, ?int $data) use ($subcommands): void {
                 if ($data !== null && isset($subcommands[$data])) {
                     $this->plugin->getServer()->dispatchCommand($player, "ce " . $subcommands[$data]);
@@ -62,7 +62,7 @@ class CustomEnchantsCommand extends BaseCommand
             $sender->sendForm($form);
             return;
         }
-        $sender->sendMessage("Usage: /ce <about|enchant|info|list>");
+        $sender->sendMessage("Usage: <" . implode("|", $subcommands) . ">");
     }
 
     /**

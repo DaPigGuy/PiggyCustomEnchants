@@ -14,6 +14,6 @@ Please make sure your issue complies with these guidelines:
 - * [ ] Be detailed on what you want & make sure the idea is plausible
 
 ### Description
-<-- Describe your idea in detail below -->
+<!-- Describe your idea in detail below -->
 
 ### Extra Information
