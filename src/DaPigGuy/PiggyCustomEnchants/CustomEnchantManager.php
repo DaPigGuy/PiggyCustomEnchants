@@ -38,6 +38,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\armor\TankEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\AutoRepairEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\LuckyCharmEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RadarEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\SoulboundEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\ToggleableEffectEnchant;
@@ -185,6 +186,7 @@ class CustomEnchantManager
         self::registerEnchantment(new JetpackEnchant($plugin, CustomEnchantIds::JETPACK));
         self::registerEnchantment(new LifestealEnchant($plugin, CustomEnchantIds::LIFESTEAL, CustomEnchant::RARITY_COMMON));
         self::registerEnchantment(new LightningEnchant($plugin, CustomEnchantIds::LIGHTNING, CustomEnchant::RARITY_MYTHIC));
+        self::registerEnchantment(new LuckyCharmEnchant($plugin, CustomEnchantIds::LUCKYCHARM, CustomEnchant::RARITY_MYTHIC));
         self::registerEnchantment(new LumberjackEnchant($plugin, CustomEnchantIds::LUMBERJACK));
         self::registerEnchantment(new MagmaWalkerEnchant($plugin, CustomEnchantIds::MAGMAWALKER, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new MeditationEnchant($plugin, CustomEnchantIds::MEDITATION, CustomEnchant::RARITY_UNCOMMON));
