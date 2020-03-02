@@ -26,10 +26,6 @@ use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class Utils
- * @package DaPigGuy\PiggyCustomEnchants\utils
- */
 class Utils
 {
     const DESCRIPTION_PATTERN = '/"name":"PiggyCustomEnchants","main":"DaPigGuy\\\\\\\\PiggyCustomEnchants\\\\\\\\PiggyCustomEnchants","version":"(?:.*?)","api":"\d+\.\d+\.\d+","load":"(?:STARTUP|POSTWORLD)","(?:author|authors)":(?:\[|")(?:.*?(?:DaPigGuy))(?:\]|")/';
@@ -70,10 +66,6 @@ class Utils
     /** @var array */
     public static $shouldTakeFallDamage;
 
-    /**
-     * @param int $integer
-     * @return string
-     */
     public static function getRomanNumeral(int $integer): string
     {
         $romanString = "";
@@ -104,47 +96,26 @@ class Utils
         return $romanString;
     }
 
-    /**
-     * @param Item $item
-     * @return bool
-     */
     public static function isHelmet(Item $item): bool
     {
         return in_array($item->getId(), [Item::LEATHER_CAP, Item::CHAIN_HELMET, Item::IRON_HELMET, Item::GOLD_HELMET, Item::DIAMOND_HELMET]);
     }
 
-    /**
-     * @param Item $item
-     * @return bool
-     */
     public static function isChestplate(Item $item): bool
     {
         return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE, Item::ELYTRA]);
     }
 
-    /**
-     * @param Item $item
-     * @return bool
-     */
     public static function isLeggings(Item $item): bool
     {
         return in_array($item->getId(), [Item::LEATHER_PANTS, Item::CHAIN_LEGGINGS, Item::IRON_LEGGINGS, Item::GOLD_LEGGINGS, Item::DIAMOND_LEGGINGS]);
     }
 
-    /**
-     * @param Item $item
-     * @return bool
-     */
     public static function isBoots(Item $item): bool
     {
         return in_array($item->getId(), [Item::LEATHER_BOOTS, Item::CHAIN_BOOTS, Item::IRON_BOOTS, Item::GOLD_BOOTS, Item::DIAMOND_BOOTS]);
     }
 
-    /**
-     * @param Item $item
-     * @param int $itemType
-     * @return bool
-     */
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
         if ($item->getId() === Item::BOOK) return true;
@@ -185,11 +156,6 @@ class Utils
         return false;
     }
 
-    /**
-     * @param Item $item
-     * @param CustomEnchant $enchant
-     * @return bool
-     */
     public static function checkEnchantIncompatibilities(Item $item, CustomEnchant $enchant): bool
     {
         foreach ($item->getEnchantments() as $enchantment) {
@@ -199,10 +165,6 @@ class Utils
         return true;
     }
 
-    /**
-     * @param Item $item
-     * @return Item
-     */
     public static function displayEnchants(Item $item): Item
     {
         $plugin = CustomEnchantManager::getPlugin();
@@ -227,10 +189,6 @@ class Utils
         return $item;
     }
 
-    /**
-     * @param Item $item
-     * @return Item
-     */
     public static function filterDisplayedEnchants(Item $item): Item
     {
         if (count($item->getEnchantments()) > 0) $item->removeNamedTagEntry(Item::TAG_DISPLAY);
@@ -255,19 +213,11 @@ class Utils
         return $enchantments;
     }
 
-    /**
-     * @param int $rarity
-     * @return string
-     */
     public static function getColorFromRarity(int $rarity): string
     {
         return self::getTFConstFromString(CustomEnchantManager::getPlugin()->getConfig()->get("rarity-colors")[strtolower(self::RARITY_NAMES[$rarity])]);
     }
 
-    /**
-     * @param string $color
-     * @return string
-     */
     public static function getTFConstFromString(string $color): string
     {
         $colorConversionTable = [
@@ -291,10 +241,6 @@ class Utils
         return $colorConversionTable[strtoupper($color)] ?? TextFormat::GRAY;
     }
 
-    /**
-     * @param Player $player
-     * @param string $error
-     */
     public static function errorForm(Player $player, string $error): void
     {
         $form = new SimpleForm(function (Player $player, ?int $data) {
@@ -309,50 +255,27 @@ class Utils
         $player->sendForm($form);
     }
 
-    /**
-     * @param Player $player
-     * @return bool
-     */
     public static function shouldTakeFallDamage(Player $player): bool
     {
         return !isset(self::$shouldTakeFallDamage[$player->getName()]);
     }
 
-    /**
-     * @param Player $player
-     * @param bool $shouldTakeFallDamage
-     * @param int $duration
-     */
     public static function setShouldTakeFallDamage(Player $player, bool $shouldTakeFallDamage, int $duration = 1): void
     {
         unset(self::$shouldTakeFallDamage[$player->getName()]);
         if (!$shouldTakeFallDamage) self::$shouldTakeFallDamage[$player->getName()] = time() + $duration;
     }
 
-    /**
-     * @param Player $player
-     * @return int|mixed
-     */
-    public static function getNoFallDamageDuration(Player $player)
+    public static function getNoFallDamageDuration(Player $player): int
     {
         return (self::$shouldTakeFallDamage[$player->getName()] ?? time()) - time();
     }
 
-    /**
-     * @param Player $player
-     * @param int $duration
-     */
     public static function increaseNoFallDamageDuration(Player $player, int $duration = 1): void
     {
         self::$shouldTakeFallDamage[$player->getName()] += $duration;
     }
 
-    /**
-     * @param Item $item
-     * @param Enchantment $enchant
-     * @param int $level
-     * @return bool
-     */
     public static function canBeEnchanted(Item $item, Enchantment $enchant, int $level): bool
     {
         return ((!$enchant instanceof CustomEnchant || self::itemMatchesItemType($item, $enchant->getItemType())) &&

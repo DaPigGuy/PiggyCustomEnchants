@@ -10,10 +10,6 @@ use pocketmine\Server;
 use pocketmine\utils\Internet;
 use ReflectionException;
 
-/**
- * Class CheckDisabledEnchantsTask
- * @package DaPigGuy\PiggyCustomEnchants\tasks
- */
 class CheckDisabledEnchantsTask extends AsyncTask
 {
     public function onRun(): void
@@ -26,7 +22,6 @@ class CheckDisabledEnchantsTask extends AsyncTask
     }
 
     /**
-     * @param Server $server
      * @throws ReflectionException
      */
     public function onCompletion(Server $server): void

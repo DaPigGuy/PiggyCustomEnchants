@@ -11,10 +11,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class DrillerEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools
- */
 class DrillerEnchant extends BlockBreakingEnchant
 {
     /** @var string */
@@ -23,23 +19,11 @@ class DrillerEnchant extends BlockBreakingEnchant
     /** @var array */
     public static $lastBreakFace;
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["distanceMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function breakBlocks(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {

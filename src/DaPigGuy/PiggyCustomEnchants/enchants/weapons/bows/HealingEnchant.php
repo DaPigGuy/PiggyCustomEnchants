@@ -12,40 +12,21 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class HealingEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows
- */
 class HealingEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Healing";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["healthReplenishMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
@@ -57,9 +38,6 @@ class HealingEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOW;

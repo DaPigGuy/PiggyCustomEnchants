@@ -15,10 +15,6 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\Player;
 
-/**
- * Class PiggyLightning
- * @package DaPigGuy\PiggyCustomEnchants\entities
- */
 class PiggyLightning extends Entity
 {
     const NETWORK_ID = EntityIds::LIGHTNING_BOLT;
@@ -33,10 +29,6 @@ class PiggyLightning extends Entity
     /** @var int */
     protected $age = 0;
 
-    /**
-     * @param int $tickDiff
-     * @return bool
-     */
     public function entityBaseTick(int $tickDiff = 1): bool
     {
         if ($this->closed) {

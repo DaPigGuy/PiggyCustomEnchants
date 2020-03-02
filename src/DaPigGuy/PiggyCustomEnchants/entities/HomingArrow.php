@@ -13,33 +13,17 @@ use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\Player;
 
-/**
- * Class HomingArrow
- * @package DaPigGuy\PiggyCustomEnchants\entities
- */
 class HomingArrow extends Arrow
 {
     /** @var int */
     private $enchantmentLevel;
 
-    /**
-     * HomingArrow constructor.
-     * @param Level $level
-     * @param CompoundTag $nbt
-     * @param Entity|null $shootingEntity
-     * @param int $enchantmentLevel
-     * @param bool $critical
-     */
     public function __construct(Level $level, CompoundTag $nbt, ?Entity $shootingEntity = null, bool $critical = false, int $enchantmentLevel = 1)
     {
         $this->enchantmentLevel = $enchantmentLevel;
         parent::__construct($level, $nbt, $shootingEntity, $critical);
     }
 
-    /**
-     * @param int $tickDiff
-     * @return bool
-     */
     public function entityBaseTick(int $tickDiff = 1): bool
     {
         if (!$this->closed && !$this->isFlaggedForDespawn() && $this->blockHit === null) {
@@ -52,18 +36,11 @@ class HomingArrow extends Arrow
         return parent::entityBaseTick($tickDiff);
     }
 
-    /**
-     * @return int
-     */
     public function getEnchantmentLevel(): int
     {
         return $this->enchantmentLevel;
     }
 
-    /**
-     * @param int $range
-     * @return Living|null
-     */
     public function findNearestEntity(int $range): ?Living
     {
         $nearestEntity = null;
@@ -80,9 +57,6 @@ class HomingArrow extends Arrow
         return $nearestEntity;
     }
 
-    /**
-     * @param Vector3 $target
-     */
     public function lookAt(Vector3 $target): void
     {
         $horizontal = sqrt(($target->x - $this->x) ** 2 + ($target->z - $this->z) ** 2);

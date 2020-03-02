@@ -12,10 +12,6 @@ use pocketmine\entity\Living;
 use pocketmine\math\RayTraceResult;
 use pocketmine\Player;
 
-/**
- * Class PiggyWitherSkull
- * @package DaPigGuy\PiggyCustomEnchants\entities
- */
 class PiggyWitherSkull extends PiggyProjectile
 {
     const NETWORK_ID = Entity::WITHER_SKULL;
@@ -35,10 +31,6 @@ class PiggyWitherSkull extends PiggyProjectile
     /** @var int */
     protected $damage = 0;
 
-    /**
-     * @param Entity $entityHit
-     * @param RayTraceResult $hitResult
-     */
     public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void
     {
         if ($entityHit instanceof Living) {

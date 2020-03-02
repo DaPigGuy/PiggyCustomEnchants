@@ -11,30 +11,16 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class ChickenEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate
- */
 class ChickenEnchant extends TickingEnchantment
 {
     /** @var string */
     public $name = "Chicken";
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["treasureChanceMultiplier" => 5, "treasures" => ["266:0:1"], "interval" => 1200 * 5];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if (mt_rand(0, 100) <= $this->extraData["treasureChanceMultiplier"] * $level) {
@@ -54,25 +40,16 @@ class ChickenEnchant extends TickingEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getTickingInterval(): int
     {
         return $this->extraData["interval"];
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_CHESTPLATE;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_CHESTPLATE;

@@ -22,29 +22,17 @@ use pocketmine\tile\Chest;
 use pocketmine\tile\Container;
 use pocketmine\tile\Tile;
 
-/**
- * Class PiggyExplosion
- * @package DaPigGuy\PiggyCustomEnchants\utils
- */
 class PiggyExplosion extends Explosion
 {
     /** @var Player */
     protected $what;
 
-    /**
-     * @param Position $center
-     * @param float $size
-     * @param Player $what
-     */
     public function __construct(Position $center, float $size, Player $what)
     {
         parent::__construct($center, $size, $what);
         $this->what = $what;
     }
 
-    /**
-     * @return bool
-     */
     public function explodeB(): bool
     {
         $send = [];

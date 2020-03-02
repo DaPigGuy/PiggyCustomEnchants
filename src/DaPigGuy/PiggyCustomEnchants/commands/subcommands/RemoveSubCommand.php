@@ -15,33 +15,17 @@ use pocketmine\command\CommandSender;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class RemoveSubCommand
- * @package DaPigGuy\PiggyCustomEnchants\commands\subcommands
- */
 class RemoveSubCommand extends BaseSubCommand
 {
     /** @var PiggyCustomEnchants */
     private $plugin;
 
-    /**
-     * RemoveSubCommand constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param string $name
-     * @param string $description
-     * @param array $aliases
-     */
     public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
     {
         $this->plugin = $plugin;
         parent::__construct($name, $description, $aliases);
     }
 
-    /**
-     * @param CommandSender $sender
-     * @param string $aliasUsed
-     * @param array $args
-     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if ($sender instanceof Player && $this->plugin->areFormsEnabled() && !isset($args["enchantment"])) {
@@ -74,11 +58,6 @@ class RemoveSubCommand extends BaseSubCommand
         $target->getInventory()->setItemInHand($item);
     }
 
-    /**
-     * @param CommandSender $sender
-     * @param string $aliasUsed
-     * @param array $args
-     */
     public function onRunForm(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if ($sender instanceof Player) {

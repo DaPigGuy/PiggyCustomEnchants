@@ -20,40 +20,21 @@ use pocketmine\nbt\tag\ListTag;
 use pocketmine\Player;
 use pocketmine\utils\Random;
 
-/**
- * Class SelfDestructEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor
- */
 class SelfDestructEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Self Destruct";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [PlayerDeathEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["tntAmountMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerDeathEvent) {
@@ -68,17 +49,11 @@ class SelfDestructEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_ARMOR_INVENTORY;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_ARMOR;

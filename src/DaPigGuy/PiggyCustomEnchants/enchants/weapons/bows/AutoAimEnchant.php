@@ -14,10 +14,6 @@ use pocketmine\math\Vector2;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\Player;
 
-/**
- * Class AutoAimEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows
- */
 class AutoAimEnchant extends TickingEnchantment
 {
     /** @var string */
@@ -25,21 +21,11 @@ class AutoAimEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 1;
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 50];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($player->isSneaking() && $player->isOnGround()) {
@@ -59,19 +45,11 @@ class AutoAimEnchant extends TickingEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOW;
     }
 
-    /**
-     * @param Player $player
-     * @param int $range
-     * @return Living|null
-     */
     public function findNearestEntity(Player $player, int $range): ?Living
     {
         $nearestEntity = null;

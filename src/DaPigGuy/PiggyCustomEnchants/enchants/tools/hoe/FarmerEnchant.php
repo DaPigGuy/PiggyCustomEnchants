@@ -15,10 +15,6 @@ use pocketmine\math\Vector3;
 use pocketmine\Player;
 use pocketmine\scheduler\ClosureTask;
 
-/**
- * Class FarmerEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe
- */
 class FarmerEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -26,23 +22,11 @@ class FarmerEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -59,9 +43,6 @@ class FarmerEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HOE;

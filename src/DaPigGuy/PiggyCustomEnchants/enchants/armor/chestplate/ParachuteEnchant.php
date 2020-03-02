@@ -16,10 +16,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class ParachuteEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate
- */
 class ParachuteEnchant extends TickingEnchantment
 {
     use ToggleTrait;
@@ -29,13 +25,6 @@ class ParachuteEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 1;
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantIds::JETPACK)) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
@@ -46,14 +35,6 @@ class ParachuteEnchant extends TickingEnchantment
         $player->resetFallDistance();
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if (!$toggle && ($effect = $player->getEffect(Effect::LEVITATION)) !== null && $effect->getAmplifier() === -5) {
@@ -61,26 +42,16 @@ class ParachuteEnchant extends TickingEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_CHESTPLATE;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_CHESTPLATE;
     }
 
-    /**
-     * @param Player $player
-     * @return bool
-     */
     public function isInAir(Player $player): bool
     {
         for ($y = 1; $y <= 5; $y++) {

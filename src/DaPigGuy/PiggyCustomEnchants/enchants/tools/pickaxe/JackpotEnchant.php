@@ -13,10 +13,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class JackpotEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools\pickaxe
- */
 class JackpotEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -29,24 +25,10 @@ class JackpotEnchant extends ReactiveEnchantment
         Block::DIAMOND_ORE,
         Block::EMERALD_ORE
     ];
-
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
     }
-
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -66,18 +48,10 @@ class JackpotEnchant extends ReactiveEnchantment
             }
         }
     }
-
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_PICKAXE;
     }
-
-    /**
-     * @return int
-     */
     public function getPriority(): int
     {
         return 3;

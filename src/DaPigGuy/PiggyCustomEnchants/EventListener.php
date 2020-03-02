@@ -46,26 +46,17 @@ use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\Player;
 
-/**
- * Class EventListener
- * @package DaPigGuy\PiggyCustomEnchants
- */
 class EventListener implements Listener
 {
     /** @var PiggyCustomEnchants */
     private $plugin;
 
-    /**
-     * EventListener constructor.
-     * @param PiggyCustomEnchants $plugin
-     */
     public function __construct(PiggyCustomEnchants $plugin)
     {
         $this->plugin = $plugin;
     }
 
     /**
-     * @param BlockBreakEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -75,9 +66,6 @@ class EventListener implements Listener
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
-    /**
-     * @param DataPacketReceiveEvent $event
-     */
     public function onDataPacketReceive(DataPacketReceiveEvent $event): void
     {
         $packet = $event->getPacket();
@@ -101,9 +89,6 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param DataPacketSendEvent $event
-     */
     public function onDataPacketSend(DataPacketSendEvent $event): void
     {
         $packet = $event->getPacket();
@@ -118,7 +103,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityArmorChangeEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -136,9 +120,6 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param EntityBlockChangeEvent $event
-     */
     public function onBlockChange(EntityBlockChangeEvent $event): void
     {
         $entity = $event->getEntity();
@@ -158,7 +139,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityDamageEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -182,7 +162,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityEffectAddEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -195,7 +174,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityInventoryChangeEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -217,7 +195,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityShootBowEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -229,18 +206,12 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param PlayerDeathEvent $event
-     */
     public function onDeath(PlayerDeathEvent $event): void
     {
         $player = $event->getPlayer();
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
-    /**
-     * @param PlayerIllegalMoveEvent $event
-     */
     public function onIllegalMove(PlayerIllegalMoveEvent $event): void
     {
         $player = $event->getPlayer();
@@ -250,7 +221,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerInteractEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -273,7 +243,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerItemHeldEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -287,9 +256,6 @@ class EventListener implements Listener
         foreach ($newItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $newItem, $enchantmentInstance, $inventory, $inventory->getHeldItemIndex());
     }
 
-    /**
-     * @param PlayerJoinEvent $event
-     */
     public function onJoin(PlayerJoinEvent $event): void
     {
         $player = $event->getPlayer();
@@ -301,9 +267,6 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param PlayerKickEvent $event
-     */
     public function onKick(PlayerKickEvent $event): void
     {
         $player = $event->getPlayer();
@@ -315,7 +278,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerMoveEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -335,9 +297,6 @@ class EventListener implements Listener
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
-    /**
-     * @param PlayerQuitEvent $event
-     */
     public function onQuit(PlayerQuitEvent $event): void
     {
         $player = $event->getPlayer();
@@ -350,7 +309,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerToggleSneakEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -361,7 +319,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param ProjectileHitBlockEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -375,7 +332,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param ProjectileLaunchEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */
@@ -389,7 +345,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param InventoryTransactionEvent $event
      * @priority HIGHEST
      * @ignoreCancelled true
      */

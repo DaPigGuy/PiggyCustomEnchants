@@ -85,10 +85,6 @@ use ReflectionException;
 use ReflectionProperty;
 use SplFixedArray;
 
-/**
- * Class CustomEnchantManager
- * @package DaPigGuy\PiggyCustomEnchants
- */
 class CustomEnchantManager
 {
     /** @var PiggyCustomEnchants */
@@ -98,7 +94,6 @@ class CustomEnchantManager
     public static $enchants = [];
 
     /**
-     * @param PiggyCustomEnchants $plugin
      * @throws ReflectionException
      */
     public static function init(PiggyCustomEnchants $plugin): void
@@ -217,17 +212,11 @@ class CustomEnchantManager
         self::registerEnchantment(new VolleyEnchant($plugin, CustomEnchantIds::VOLLEY, CustomEnchant::RARITY_UNCOMMON));
     }
 
-    /**
-     * @return PiggyCustomEnchants
-     */
     public static function getPlugin(): PiggyCustomEnchants
     {
         return self::$plugin;
     }
 
-    /**
-     * @param CustomEnchant $enchant
-     */
     public static function registerEnchantment(CustomEnchant $enchant): void
     {
         Enchantment::registerEnchantment($enchant);
@@ -264,19 +253,11 @@ class CustomEnchantManager
         return self::$enchants;
     }
 
-    /**
-     * @param int $id
-     * @return CustomEnchant|null
-     */
     public static function getEnchantment(int $id): ?CustomEnchant
     {
         return self::$enchants[$id] ?? null;
     }
 
-    /**
-     * @param string $name
-     * @return CustomEnchant|null
-     */
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
         foreach (self::$enchants as $enchant) {

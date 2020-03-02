@@ -13,10 +13,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class AntitoxinEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor
- */
 class AntitoxinEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -24,23 +20,11 @@ class AntitoxinEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityEffectAddEvent::class];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityEffectAddEvent) {
@@ -48,17 +32,11 @@ class AntitoxinEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_HELMET;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HELMET;

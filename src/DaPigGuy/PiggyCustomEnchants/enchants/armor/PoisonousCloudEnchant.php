@@ -15,10 +15,6 @@ use pocketmine\item\Item;
 use pocketmine\level\particle\DustParticle;
 use pocketmine\Player;
 
-/**
- * Class PoisonousCloudEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor
- */
 class PoisonousCloudEnchant extends TickingEnchantment
 {
     /** @var string */
@@ -26,21 +22,11 @@ class PoisonousCloudEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 3;
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 3, "durationMultiplier" => 100, "baseAmplifier" => -1, "amplifierMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $radius = $level * $this->extraData["radiusMultiplier"];
@@ -64,17 +50,11 @@ class PoisonousCloudEnchant extends TickingEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_ARMOR_INVENTORY;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_ARMOR;

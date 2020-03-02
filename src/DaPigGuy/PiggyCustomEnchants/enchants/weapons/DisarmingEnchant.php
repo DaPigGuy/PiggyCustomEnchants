@@ -11,24 +11,11 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class DisarmingEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons
- */
 class DisarmingEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Disarming";
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {

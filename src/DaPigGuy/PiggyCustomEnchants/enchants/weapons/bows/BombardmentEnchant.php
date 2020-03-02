@@ -16,32 +16,16 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-/**
- * Class BombardmentEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows
- */
 class BombardmentEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Bombardment";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
@@ -58,9 +42,6 @@ class BombardmentEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOW;

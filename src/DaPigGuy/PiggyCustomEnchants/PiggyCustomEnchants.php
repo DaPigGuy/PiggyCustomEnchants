@@ -27,10 +27,6 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use ReflectionException;
 
-/**
- * Class PiggyCustomEnchants
- * @package DaPigGuy\PiggyCustomEnchants
- */
 class PiggyCustomEnchants extends PluginBase
 {
     /** @var array[] */
@@ -109,7 +105,6 @@ class PiggyCustomEnchants extends PluginBase
     }
 
     /**
-     * @return bool
      * @internal
      */
     public function areFormsEnabled(): bool

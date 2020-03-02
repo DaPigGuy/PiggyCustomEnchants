@@ -9,10 +9,6 @@ use pocketmine\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\utils\Utils as PMMPUtils;
 
-/**
- * Class AllyChecks
- * @package DaPigGuy\PiggyCustomEnchants\utils
- */
 class AllyChecks
 {
     /** @var array */
@@ -30,12 +26,7 @@ class AllyChecks
         }, $check);
         self::$checks[] = [$plugin, $check];
     }
-
-    /**
-     * @param Player $player
-     * @param Entity $entity
-     * @return bool
-     */
+    
     public static function isAlly(Player $player, Entity $entity): bool
     {
         foreach (self::$checks as $check) {
