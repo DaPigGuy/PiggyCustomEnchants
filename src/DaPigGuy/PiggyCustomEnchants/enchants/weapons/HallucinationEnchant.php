@@ -22,10 +22,6 @@ use pocketmine\scheduler\ClosureTask;
 use pocketmine\tile\Tile;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class HallucinationEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons
- */
 class HallucinationEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -34,15 +30,6 @@ class HallucinationEnchant extends ReactiveEnchantment
     /** @var array */
     public static $hallucinating;
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
@@ -95,7 +82,7 @@ class HallucinationEnchant extends ReactiveEnchantment
                         ]));
                     }
                     unset(self::$hallucinating[$entity->getName()]);
-                }), 20 * 60); //Cancellable closure tasks when? :/
+                }), 20 * 60);
             }
         }
     }

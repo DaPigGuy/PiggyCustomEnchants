@@ -15,10 +15,6 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use ReflectionException;
 
-/**
- * Class ToggleableEffectEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous
- */
 class ToggleableEffectEnchant extends ToggleableEnchantment
 {
     /** @var int */
@@ -37,17 +33,6 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
     private $previousEffect;
 
     /**
-     * ToggleableEffectEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param string $name
-     * @param int $maxLevel
-     * @param int $usageType
-     * @param int $itemType
-     * @param int $effect
-     * @param int $baseAmplifier
-     * @param int $amplifierMultiplier
-     * @param int $rarity
      * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, int $effect, int $baseAmplifier = 0, int $amplifierMultiplier = 1, int $rarity = self::RARITY_RARE)
@@ -62,22 +47,11 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
         parent::__construct($plugin, $id, $rarity);
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["baseAmplifier" => $this->baseAmplifier, "amplifierMultiplier" => $this->amplifierMultiplier];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if ($toggle) {
@@ -98,17 +72,11 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
         $player->addEffect(new EffectInstance(Effect::getEffect($this->effect), 2147483647, $this->extraData["baseAmplifier"] + $this->extraData["amplifierMultiplier"] * $level, false));
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return $this->usageType;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return $this->itemType;

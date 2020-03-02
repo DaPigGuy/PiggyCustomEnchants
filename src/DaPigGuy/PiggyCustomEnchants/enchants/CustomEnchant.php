@@ -12,10 +12,6 @@ use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionException;
 
-/**
- * Class CustomEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants
- */
 class CustomEnchant extends Enchantment
 {
     /** @var PiggyCustomEnchants */
@@ -62,13 +58,6 @@ class CustomEnchant extends Enchantment
     const ITEM_TYPE_COMPASS = 15;
 
     /**
-     * CustomEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param int $rarity
-     * @param int|null $maxLevel
-     * @param string|null $displayName
-     * @param string|null $description
      * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?int $maxLevel = null, ?string $displayName = null, ?string $description = null)
@@ -90,115 +79,71 @@ class CustomEnchant extends Enchantment
         parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
     }
 
-    /**
-     * @return string
-     */
     public function getDisplayName(): string
     {
         return $this->displayName;
     }
 
-    /**
-     * @param string $displayName
-     */
     public function setDisplayName(string $displayName): void
     {
         $this->displayName = $displayName;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     */
     public function setDescription(string $description): void
     {
         $this->description = $description;
     }
 
-    /**
-     * @return array
-     */
     public function getExtraData(): array
     {
         return $this->extraData;
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return [];
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return self::TYPE_HAND;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return self::ITEM_TYPE_WEAPON;
     }
 
-    /**
-     * @return int
-     */
     public function getPriority(): int
     {
         return 1;
     }
 
-    /**
-     * @return bool
-     */
     public function canReact(): bool
     {
         return false;
     }
 
-    /**
-     * @return bool
-     */
     public function canTick(): bool
     {
         return false;
     }
 
-    /**
-     * @return bool
-     */
     public function canToggle(): bool
     {
         return false;
     }
 
-    /**
-     * @param Player $player
-     * @return int
-     */
     public function getCooldown(Player $player): int
     {
         return ($this->cooldown[$player->getName()] ?? time()) - time();
     }
 
-    /**
-     * @param Player $player
-     * @param int $cooldown
-     */
     public function setCooldown(Player $player, int $cooldown): void
     {
         $this->cooldown[$player->getName()] = time() + $cooldown;

@@ -15,10 +15,6 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use pocketmine\scheduler\ClosureTask;
 
-/**
- * Class ImplantsEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet
- */
 class ImplantsEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -27,31 +23,16 @@ class ImplantsEnchant extends ReactiveEnchantment
     /** @var ClosureTask[] */
     public static $tasks;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [PlayerMoveEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["foodReplenishAmountMultiplier" => 1, "airTicksReplenishAmountMultiplier" => 40, "airReplenishInterval" => 60];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerMoveEvent) {
@@ -79,17 +60,11 @@ class ImplantsEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_HELMET;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HELMET;

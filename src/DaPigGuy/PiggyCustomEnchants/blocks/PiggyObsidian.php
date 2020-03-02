@@ -7,34 +7,21 @@ use pocketmine\block\Obsidian;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class PiggyObsidian
- * @package DaPigGuy\PiggyCustomEnchants\blocks
- */
 class PiggyObsidian extends Obsidian
 {
     /** @var int */
     private $age = 0;
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->isMagmaWalker() ? "Magmawalker Obsidian" : "Obsidian";
     }
 
-    /**
-     * @return bool
-     */
     public function isMagmaWalker(): bool
     {
         return $this->getDamage() === 15;
     }
 
-    /**
-     * @return bool
-     */
     public function ticksRandomly(): bool
     {
         return true;
@@ -75,20 +62,11 @@ class PiggyObsidian extends Obsidian
         }
     }
 
-    /**
-     * @param Item $item
-     * @param Player|null $player
-     * @return bool
-     */
     public function onBreak(Item $item, Player $player = null): bool
     {
         return $this->getLevel()->setBlock($this, Block::get($this->isMagmaWalker() ? Block::LAVA : Block::AIR), true);
     }
 
-    /**
-     * @param Item $item
-     * @return array
-     */
     public function getDrops(Item $item): array
     {
         return $this->isMagmaWalker() ? [] : parent::getDrops($item);

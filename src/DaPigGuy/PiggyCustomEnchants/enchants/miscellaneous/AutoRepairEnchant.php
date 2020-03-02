@@ -12,40 +12,21 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class AutoRepairEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous
- */
 class AutoRepairEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Autorepair";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [PlayerMoveEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["baseRepair" => 1, "repairMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($item->getDamage() === 0) return;
@@ -58,17 +39,11 @@ class AutoRepairEnchant extends ReactiveEnchantment
         $inventory->setItem($slot, $item);
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_ANY_INVENTORY;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_DAMAGEABLE;

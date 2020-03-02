@@ -20,22 +20,10 @@ class VacuumEnchant extends TickingEnchantment
     public $name = "Vacuum";
     /** @var int */
     public $maxLevel = 3;
-
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 3];
     }
-
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         foreach ($player->getLevel()->getEntities() as $entity) {
@@ -47,18 +35,10 @@ class VacuumEnchant extends TickingEnchantment
             }
         }
     }
-
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return self::TYPE_CHESTPLATE;
     }
-
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return self::ITEM_TYPE_CHESTPLATE;

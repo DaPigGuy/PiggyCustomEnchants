@@ -15,10 +15,6 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Trait ToggleTrait
- * @package DaPigGuy\PiggyCustomEnchants\enchants\traits
- */
 trait ToggleTrait
 {
     /** @var PiggyCustomEnchants */
@@ -29,22 +25,11 @@ trait ToggleTrait
     /** @var array */
     public $equippedArmorStack;
 
-    /**
-     * @return bool
-     */
     public function canToggle(): bool
     {
         return true;
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function onToggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
@@ -58,22 +43,10 @@ trait ToggleTrait
         $this->toggle($player, $item, $inventory, $slot, $level, $toggle);
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
     }
 
-    /**
-     * @param Player $player
-     * @param int $level
-     */
     public function addToStack(Player $player, int $level): void
     {
         if (!isset($this->stack[$player->getName()])) $this->stack[$player->getName()] = 0;
@@ -82,24 +55,12 @@ trait ToggleTrait
         $this->equippedArmorStack[$player->getName()]++;
     }
 
-    /**
-     * @param Player $player
-     * @param int $level
-     */
     public function removeFromStack(Player $player, int $level): void
     {
         if (isset($this->stack[$player->getName()])) $this->stack[$player->getName()] -= $level;
         if (isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()]--;
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param EnchantmentInstance $enchantmentInstance
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param bool $toggle
-     */
     public static function attemptToggle(Player $player, Item $item, EnchantmentInstance $enchantmentInstance, Inventory $inventory, int $slot, bool $toggle = true): void
     {
         /** @var ToggleableEnchantment $enchantment */

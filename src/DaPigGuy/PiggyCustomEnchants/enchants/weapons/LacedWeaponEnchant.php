@@ -16,10 +16,6 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use ReflectionException;
 
-/**
- * Class LacedWeaponEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons
- */
 class LacedWeaponEnchant extends ReactiveEnchantment
 {
     /** @var array */
@@ -34,16 +30,6 @@ class LacedWeaponEnchant extends ReactiveEnchantment
     private $amplifierMultiplier = [1];
 
     /**
-     * LacedWeaponEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param string $name
-     * @param int $rarity
-     * @param array $effectIds
-     * @param array $durationMultiplier
-     * @param array $amplifierMultiplier
-     * @param array $baseDuration
-     * @param array $baseAmplifier
      * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = self::RARITY_RARE, array $effectIds = [Effect::POISON], array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
@@ -57,23 +43,11 @@ class LacedWeaponEnchant extends ReactiveEnchantment
         parent::__construct($plugin, $id, $rarity);
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["durationMultiplier" => $this->durationMultiplier, "amplifierMultiplier" => $this->amplifierMultiplier, "baseDuration" => $this->baseDuration, "baseAmplifier" => $this->baseAmplifier];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {

@@ -14,10 +14,6 @@ use pocketmine\item\Item;
 use pocketmine\Player;
 use ReflectionException;
 
-/**
- * Class SmeltingEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools
- */
 class SmeltingEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -31,10 +27,6 @@ class SmeltingEnchant extends ReactiveEnchantment
     public $outputTable;
 
     /**
-     * SmeltingEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param int $rarity
      * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
@@ -46,23 +38,11 @@ class SmeltingEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -76,17 +56,11 @@ class SmeltingEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 
-    /**
-     * @return int
-     */
     public function getPriority(): int
     {
         return 2;

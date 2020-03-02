@@ -12,40 +12,21 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class BountyHunterEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows
- */
 class BountyHunterEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Bounty Hunter";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["cooldown" => 30, "base" => 7, "multiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
@@ -55,9 +36,6 @@ class BountyHunterEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getBounty(): int
     {
         $random = mt_rand(0, 75);
@@ -80,9 +58,6 @@ class BountyHunterEnchant extends ReactiveEnchantment
         return Item::COAL;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOW;

@@ -13,10 +13,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class HarvestEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe
- */
 class HarvestEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -24,31 +20,16 @@ class HarvestEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 3;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -67,9 +48,6 @@ class HarvestEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HOE;
