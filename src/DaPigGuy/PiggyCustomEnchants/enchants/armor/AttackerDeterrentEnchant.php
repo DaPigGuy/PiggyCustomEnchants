@@ -17,10 +17,6 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 use ReflectionException;
 
-/**
- * Class AttackerDeterrentEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor
- */
 class AttackerDeterrentEnchant extends ReactiveEnchantment
 {
     /** @var Effect[] */
@@ -31,14 +27,6 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
     private $amplifierMultiplier;
 
     /**
-     * CustomEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param string $name
-     * @param Effect[] $effects
-     * @param array $durationMultiplier
-     * @param array $amplifierMultiplier
-     * @param int $rarity
      * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
@@ -50,23 +38,11 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
         parent::__construct($plugin, $id, $rarity);
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["durationMultipliers" => $this->durationMultiplier, "amplifierMultipliers" => $this->amplifierMultiplier];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
@@ -79,17 +55,11 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_ARMOR_INVENTORY;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_ARMOR;

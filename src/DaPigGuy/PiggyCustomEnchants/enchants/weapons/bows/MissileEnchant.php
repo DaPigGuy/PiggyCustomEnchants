@@ -13,41 +13,21 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class MissileEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows
- */
 class MissileEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Missile";
 
-
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [ProjectileHitBlockEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["multiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof ProjectileHitBlockEvent) {
@@ -63,9 +43,6 @@ class MissileEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return self::ITEM_TYPE_BOW;

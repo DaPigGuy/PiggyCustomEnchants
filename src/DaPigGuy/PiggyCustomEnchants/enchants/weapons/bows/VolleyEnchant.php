@@ -19,40 +19,21 @@ use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 
-/**
- * Class VolleyEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows
- */
 class VolleyEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Volley";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityShootBowEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["base" => 1, "multiplier" => 2];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityShootBowEvent) {
@@ -79,9 +60,6 @@ class VolleyEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOW;

@@ -14,27 +14,16 @@ use pocketmine\item\ItemIds;
 use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class TickEnchantmentsTask
- * @package DaPigGuy\PiggyCustomEnchants\tasks
- */
 class TickEnchantmentsTask extends Task
 {
     /** @var PiggyCustomEnchants */
     private $plugin;
 
-    /**
-     * TickEnchantmentsTask constructor.
-     * @param PiggyCustomEnchants $plugin
-     */
     public function __construct(PiggyCustomEnchants $plugin)
     {
         $this->plugin = $plugin;
     }
 
-    /**
-     * @param int $currentTick
-     */
     public function onRun(int $currentTick): void
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
@@ -96,10 +85,6 @@ class TickEnchantmentsTask extends Task
         }
     }
 
-    /**
-     * @param Item $item
-     * @return Item
-     */
     public function cleanOldItems(Item $item): Item
     {
         foreach ($item->getEnchantments() as $enchantmentInstance) {

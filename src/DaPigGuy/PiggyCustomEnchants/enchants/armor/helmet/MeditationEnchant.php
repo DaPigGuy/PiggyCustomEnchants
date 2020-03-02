@@ -15,10 +15,6 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class MeditationEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet
- */
 class MeditationEnchant extends ReactiveEnchantment
 {
     use TickingTrait;
@@ -33,31 +29,16 @@ class MeditationEnchant extends ReactiveEnchantment
     /** @var array */
     public $meditationTick;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [PlayerMoveEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["duration" => 20 * 20, "healthReplenishAmountMultiplier" => 1, "foodReplenishAmountMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerMoveEvent) {
@@ -66,13 +47,6 @@ class MeditationEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if (isset($this->meditationTick[$player->getName()])) {
@@ -90,17 +64,11 @@ class MeditationEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_HELMET;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HELMET;

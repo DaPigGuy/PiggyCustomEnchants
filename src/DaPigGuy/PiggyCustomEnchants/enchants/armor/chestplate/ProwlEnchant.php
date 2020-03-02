@@ -13,10 +13,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class ProwlEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate
- */
 class ProwlEnchant extends ToggleableEnchantment
 {
     use TickingTrait;
@@ -29,14 +25,6 @@ class ProwlEnchant extends ToggleableEnchantment
     /** @var array */
     public $prowled;
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if (!$toggle && isset($this->prowled[$player->getName()])) {
@@ -51,13 +39,6 @@ class ProwlEnchant extends ToggleableEnchantment
         }
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($player->isSneaking()) {
@@ -82,17 +63,11 @@ class ProwlEnchant extends ToggleableEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_CHESTPLATE;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_CHESTPLATE;

@@ -13,10 +13,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class FertilizerEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe
- */
 class FertilizerEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -24,31 +20,16 @@ class FertilizerEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 3;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [PlayerInteractEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerInteractEvent) {
@@ -68,9 +49,6 @@ class FertilizerEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HOE;

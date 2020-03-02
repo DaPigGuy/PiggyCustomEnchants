@@ -77,7 +77,6 @@ use DaPigGuy\PiggyCustomEnchants\enchants\weapons\HallucinationEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\LacedWeaponEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\LifestealEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\LightningEnchant;
-use DaPigGuy\PiggyCustomEnchants\enchants\weapons\ReplicateEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\VampireEnchant;
 use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
@@ -89,10 +88,6 @@ use pocketmine\item\enchantment\Enchantment;
 use ReflectionException;
 use ReflectionProperty;
 
-/**
- * Class CustomEnchantManager
- * @package DaPigGuy\PiggyCustomEnchants
- */
 class CustomEnchantManager
 {
     /** @var PiggyCustomEnchants */
@@ -102,7 +97,6 @@ class CustomEnchantManager
     public static $enchants = [];
 
     /**
-     * @param PiggyCustomEnchants $plugin
      * @throws ReflectionException
      */
     public static function init(PiggyCustomEnchants $plugin): void
@@ -213,17 +207,11 @@ class CustomEnchantManager
         self::registerEnchantment(new VolleyEnchant($plugin, CustomEnchantIds::VOLLEY, CustomEnchant::RARITY_UNCOMMON));
     }
 
-    /**
-     * @return PiggyCustomEnchants
-     */
     public static function getPlugin(): PiggyCustomEnchants
     {
         return self::$plugin;
     }
 
-    /**
-     * @param CustomEnchant $enchant
-     */
     public static function registerEnchantment(CustomEnchant $enchant): void
     {
         Enchantment::register($enchant);
@@ -260,19 +248,11 @@ class CustomEnchantManager
         return self::$enchants;
     }
 
-    /**
-     * @param int $id
-     * @return CustomEnchant|null
-     */
     public static function getEnchantment(int $id): ?CustomEnchant
     {
         return self::$enchants[$id] ?? null;
     }
 
-    /**
-     * @param string $name
-     * @return CustomEnchant|null
-     */
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
         foreach (self::$enchants as $enchant) {

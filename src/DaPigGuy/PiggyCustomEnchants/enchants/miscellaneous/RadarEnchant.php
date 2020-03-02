@@ -12,9 +12,6 @@ use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class RadarEnchant
- */
 class RadarEnchant extends TickingEnchantment
 {
     use ToggleTrait;
@@ -22,21 +19,11 @@ class RadarEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Radar";
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 50];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $detected = $this->findNearestPlayer($player, $level * $this->extraData["radiusMultiplier"]);
@@ -65,14 +52,6 @@ class RadarEnchant extends TickingEnchantment
         }
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if (!$toggle && $player->isOnline()) {
@@ -86,11 +65,6 @@ class RadarEnchant extends TickingEnchantment
         }
     }
 
-    /**
-     * @param Player $player
-     * @param int $range
-     * @return Player|null
-     */
     public function findNearestPlayer(Player $player, int $range): ?Player
     {
         $nearestPlayer = null;
@@ -105,17 +79,11 @@ class RadarEnchant extends TickingEnchantment
         return $nearestPlayer;
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return self::TYPE_INVENTORY;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return self::ITEM_TYPE_COMPASS;

@@ -11,10 +11,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class VampireEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons
- */
 class VampireEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -22,23 +18,11 @@ class VampireEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["cooldown" => 5, "healthMultiplier" => 0.5, "foodMultiplier" => 0.5];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {

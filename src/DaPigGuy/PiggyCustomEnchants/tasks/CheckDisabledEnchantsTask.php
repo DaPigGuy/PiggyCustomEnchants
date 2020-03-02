@@ -9,10 +9,6 @@ use pocketmine\scheduler\AsyncTask;
 use pocketmine\utils\Internet;
 use ReflectionException;
 
-/**
- * Class CheckDisabledEnchantsTask
- * @package DaPigGuy\PiggyCustomEnchants\tasks
- */
 class CheckDisabledEnchantsTask extends AsyncTask
 {
     public function onRun(): void

@@ -23,29 +23,17 @@ use pocketmine\world\Position;
 use pocketmine\world\sound\ExplodeSound;
 use pocketmine\world\World;
 
-/**
- * Class PiggyExplosion
- * @package DaPigGuy\PiggyCustomEnchants\utils
- */
 class PiggyExplosion extends Explosion
 {
     /** @var Player */
     protected $what;
 
-    /**
-     * @param Position $center
-     * @param float $size
-     * @param Player $what
-     */
     public function __construct(Position $center, float $size, Player $what)
     {
         parent::__construct($center, $size, $what);
         $this->what = $what;
     }
 
-    /**
-     * @return bool
-     */
     public function explodeB(): bool
     {
         $send = [];

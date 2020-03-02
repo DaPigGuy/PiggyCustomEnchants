@@ -10,10 +10,6 @@ use pocketmine\block\VanillaBlocks;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class PiggyObsidian
- * @package DaPigGuy\PiggyCustomEnchants\blocks
- */
 class PiggyObsidian extends Block
 {
     /** @var int */
@@ -24,9 +20,6 @@ class PiggyObsidian extends Block
         parent::__construct(new BlockIdentifier(BlockLegacyIds::OBSIDIAN, 15), "Magmawalker Obsidian", BlockBreakInfo::instant());
     }
 
-    /**
-     * @return bool
-     */
     public function ticksRandomly(): bool
     {
         return true;
@@ -65,21 +58,12 @@ class PiggyObsidian extends Block
         $this->getPos()->getWorld()->scheduleDelayedBlockUpdate($this->getPos(), mt_rand(1, 2) * 20);
     }
 
-    /**
-     * @param Item $item
-     * @param Player|null $player
-     * @return bool
-     */
     public function onBreak(Item $item, Player $player = null): bool
     {
         $this->getPos()->getWorld()->setBlock($this->getPos(), VanillaBlocks::LAVA());
         return true;
     }
 
-    /**
-     * @param Item $item
-     * @return array
-     */
     public function getDrops(Item $item): array
     {
         return [];

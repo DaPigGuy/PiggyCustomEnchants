@@ -14,33 +14,17 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class ListSubCommand
- * @package DaPigGuy\PiggyCustomEnchants\commands\subcommands
- */
 class ListSubCommand extends BaseSubCommand
 {
     /** @var PiggyCustomEnchants */
     private $plugin;
 
-    /**
-     * ListSubCommand constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param string $name
-     * @param string $description
-     * @param array $aliases
-     */
     public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
     {
         $this->plugin = $plugin;
         parent::__construct($name, $description, $aliases);
     }
 
-    /**
-     * @param CommandSender $sender
-     * @param string $aliasUsed
-     * @param array $args
-     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
         if ($sender instanceof Player && $this->plugin->areFormsEnabled()) {
@@ -68,9 +52,6 @@ class ListSubCommand extends BaseSubCommand
         }, $enchantmentsByType);
     }
 
-    /**
-     * @return string
-     */
     public function getCustomEnchantList(): string
     {
         $enchantmentsByType = $this->getEnchantmentsByType();
@@ -86,9 +67,6 @@ class ListSubCommand extends BaseSubCommand
         return $listString;
     }
 
-    /**
-     * @param Player $player
-     */
     public function sendTypesForm(Player $player): void
     {
         $enchantmentsByType = $this->getEnchantmentsByType();
@@ -110,10 +88,6 @@ class ListSubCommand extends BaseSubCommand
         $player->sendForm($form);
     }
 
-    /**
-     * @param Player $player
-     * @param int $type
-     */
     public function sendEnchantsForm(Player $player, int $type): void
     {
         $enchantmentsByType = $this->getEnchantmentsByType();

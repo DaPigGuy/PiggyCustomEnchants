@@ -19,40 +19,21 @@ use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\particle\FlameParticle;
 
-/**
- * Class ReviveEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor
- */
 class ReviveEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Revive";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityDamageEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["nauseaDuration" => 600, "slownessDuration" => 600];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageEvent) {
@@ -83,17 +64,11 @@ class ReviveEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_ARMOR_INVENTORY;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_ARMOR;

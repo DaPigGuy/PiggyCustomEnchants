@@ -13,32 +13,16 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class FocusedEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet
- */
 class FocusedEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Focused";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityEffectAddEvent::class];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityEffectAddEvent) {
@@ -56,17 +40,11 @@ class FocusedEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_HELMET;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_HELMET;

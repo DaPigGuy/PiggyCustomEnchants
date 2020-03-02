@@ -15,10 +15,6 @@ use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\world\particle\DestroyBlockParticle;
 
-/**
- * Class DeepWoundsEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons
- */
 class DeepWoundsEnchant extends ReactiveEnchantment
 {
     /** @var string */
@@ -27,23 +23,11 @@ class DeepWoundsEnchant extends ReactiveEnchantment
     /** @var ClosureTask[] */
     public static $tasks;
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["cooldown" => 7, "interval" => 20, "durationMultiplier" => 20, "base" => 1, "multiplier" => 0.066];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {

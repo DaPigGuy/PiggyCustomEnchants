@@ -49,27 +49,19 @@ use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionD
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\player\Player;
 
-/**
- * Class EventListener
- * @package DaPigGuy\PiggyCustomEnchants
- */
 class EventListener implements Listener
 {
     /** @var PiggyCustomEnchants */
     private $plugin;
 
-    /**
-     * EventListener constructor.
-     * @param PiggyCustomEnchants $plugin
-     */
     public function __construct(PiggyCustomEnchants $plugin)
     {
         $this->plugin = $plugin;
     }
 
     /**
-     * @param BlockBreakEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onBreak(BlockBreakEvent $event): void
     {
@@ -77,9 +69,6 @@ class EventListener implements Listener
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
-    /**
-     * @param DataPacketReceiveEvent $event
-     */
     public function onDataPacketReceive(DataPacketReceiveEvent $event): void
     {
         $packet = $event->getPacket();
@@ -103,9 +92,6 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param DataPacketSendEvent $event
-     */
     public function onDataPacketSend(DataPacketSendEvent $event): void
     {
         $packets = $event->getPackets();
@@ -121,9 +107,6 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param EntityBlockChangeEvent $event
-     */
     public function onBlockChange(EntityBlockChangeEvent $event): void
     {
         $entity = $event->getEntity();
@@ -140,8 +123,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityDamageEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onDamage(EntityDamageEvent $event): void
     {
@@ -163,8 +146,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityEffectAddEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onEffectAdd(EntityEffectAddEvent $event): void
     {
@@ -175,8 +158,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param EntityShootBowEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onShootBow(EntityShootBowEvent $event): void
     {
@@ -186,9 +169,6 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param PlayerDeathEvent $event
-     */
     public function onDeath(PlayerDeathEvent $event): void
     {
         $player = $event->getPlayer();
@@ -196,8 +176,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerInteractEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onInteract(PlayerInteractEvent $event): void
     {
@@ -256,8 +236,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerMoveEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onMove(PlayerMoveEvent $event): void
     {
@@ -275,9 +255,6 @@ class EventListener implements Listener
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
-    /**
-     * @param PlayerQuitEvent $event
-     */
     public function onQuit(PlayerQuitEvent $event): void
     {
         $player = $event->getPlayer();
@@ -290,8 +267,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerToggleSneakEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onSneak(PlayerToggleSneakEvent $event): void
     {
@@ -300,8 +277,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param ProjectileHitBlockEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onProjectileHitBlock(ProjectileHitBlockEvent $event): void
     {
@@ -313,8 +290,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param ProjectileLaunchEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onProjectileLaunch(ProjectileLaunchEvent $event): void
     {
@@ -326,8 +303,8 @@ class EventListener implements Listener
     }
 
     /**
-     * @param InventoryTransactionEvent $event
      * @priority HIGHEST
+     * @ignoreCancelled true
      */
     public function onTransaction(InventoryTransactionEvent $event): void
     {

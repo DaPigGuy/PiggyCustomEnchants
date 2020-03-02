@@ -10,17 +10,11 @@ use pocketmine\event\entity\ExplosionPrimeEvent;
 use pocketmine\player\Player;
 use pocketmine\world\Position;
 
-/**
- * Class PiggyTNT
- * @package DaPigGuy\PiggyCustomEnchants\entities
- */
 class PiggyTNT extends PrimedTNT
 {
     /** @var bool */
     public $worldDamage = true;
 
-    /**
-     */
     public function explode(): void
     {
         $ownerEntity = $this->getOwningEntity();

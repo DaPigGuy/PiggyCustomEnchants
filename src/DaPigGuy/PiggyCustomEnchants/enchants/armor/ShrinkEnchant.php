@@ -15,10 +15,6 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class ShrinkEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor
- */
 class ShrinkEnchant extends ToggleableEnchantment
 {
     use ReactiveTrait;
@@ -34,31 +30,16 @@ class ShrinkEnchant extends ToggleableEnchantment
     /** @var array */
     public $shrinkPower;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [PlayerToggleSneakEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["cooldown" => 75, "power" => 60 * 20, "base" => 0.7, "multiplier" => 0.0125];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerToggleSneakEvent) {
@@ -81,13 +62,6 @@ class ShrinkEnchant extends ToggleableEnchantment
         }
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if (isset($this->shrunk[$player->getName()])) {
@@ -104,17 +78,11 @@ class ShrinkEnchant extends ToggleableEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_ARMOR_INVENTORY;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_ARMOR;

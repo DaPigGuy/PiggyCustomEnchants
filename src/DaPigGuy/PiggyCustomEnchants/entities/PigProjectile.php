@@ -18,10 +18,6 @@ use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use pocketmine\world\World;
 
-/**
- * Class PigProjectile
- * @package DaPigGuy\PiggyCustomEnchants\entities
- */
 class PigProjectile extends PiggyProjectile
 {
     const PORK_LEVELS = [
@@ -51,13 +47,6 @@ class PigProjectile extends PiggyProjectile
     /** @var bool */
     private $zombie = false;
 
-    /**
-     * PigProjectile constructor.
-     * @param World $level
-     * @param CompoundTag $nbt
-     * @param Entity|null $shootingEntity
-     * @param int $porkLevel
-     */
     public function __construct(World $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porkLevel = 1)
     {
         parent::__construct($level, $nbt, $shootingEntity);
@@ -76,11 +65,6 @@ class PigProjectile extends PiggyProjectile
         $this->zombie = $values[2];
     }
 
-    /**
-     * @param int $tickDiff
-     * @return bool
-     * @internal param $currentTick
-     */
     public function entityBaseTick(int $tickDiff = 1): bool
     {
         if ($this->closed) {
@@ -111,17 +95,11 @@ class PigProjectile extends PiggyProjectile
         return $hasUpdate;
     }
 
-    /**
-     * @return int
-     */
     public function getPorkLevel(): int
     {
         return $this->porkLevel;
     }
 
-    /**
-     * @return bool
-     */
     public function isZombie(): bool
     {
         return $this->zombie;
@@ -138,9 +116,6 @@ class PigProjectile extends PiggyProjectile
         ];
     }
 
-    /**
-     * @param Player $player
-     */
     protected function sendSpawnPacket(Player $player): void
     {
         $pk = new AddActorPacket();

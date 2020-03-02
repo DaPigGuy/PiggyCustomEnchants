@@ -19,39 +19,23 @@ use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class CustomEnchantsCommand
- * @package DaPigGuy\PiggyCustomEnchants\commands
- */
 class CustomEnchantsCommand extends BaseCommand
 {
     /** @var PiggyCustomEnchants */
     private $plugin;
 
-    /**
-     * CustomEnchantsCommand constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param string $name
-     * @param string $description
-     * @param array $aliases
-     */
     public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
     {
         $this->plugin = $plugin;
         parent::__construct($name, $description, $aliases);
     }
 
-    /**
-     * @param CommandSender $sender
-     * @param string $aliasUsed
-     * @param array $args
-     */
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
+        $subcommands = array_values(array_map(function (BaseSubCommand $subCommand): string {
+            return $subCommand->getName();
+        }, $this->getSubCommands()));
         if ($sender instanceof Player && $this->plugin->areFormsEnabled()) {
-            $subcommands = array_values(array_map(function (BaseSubCommand $subCommand): string {
-                return $subCommand->getName();
-            }, $this->getSubCommands()));
             $form = new SimpleForm(function (Player $player, ?int $data) use ($subcommands): void {
                 if ($data !== null && isset($subcommands[$data])) {
                     $this->plugin->getServer()->dispatchCommand($player, "ce " . $subcommands[$data]);
@@ -62,7 +46,7 @@ class CustomEnchantsCommand extends BaseCommand
             $sender->sendForm($form);
             return;
         }
-        $sender->sendMessage("Usage: /ce <about|enchant|info|list>");
+        $sender->sendMessage("Usage: <" . implode("|", $subcommands) . ">");
     }
 
     /**

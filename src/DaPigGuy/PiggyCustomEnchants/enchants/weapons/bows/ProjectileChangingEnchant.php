@@ -20,10 +20,6 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 use ReflectionException;
 
-/**
- * Class ProjectileChangingEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows
- */
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
     /**
@@ -33,14 +29,6 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     private $projectileType;
 
     /**
-     * ProjectileChangingEnchant constructor.
-     * @param PiggyCustomEnchants $plugin
-     * @param int $id
-     * @param string $name
-     * @param string $projectileType
-     * @phpstan-param class-string<Entity> $projectileType
-     * @param int $maxLevel
-     * @param int $rarity
      * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
@@ -51,23 +39,11 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
         parent::__construct($plugin, $id, $rarity);
     }
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [EntityShootBowEvent::class];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityShootBowEvent) {
@@ -85,17 +61,11 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getPriority(): int
     {
         return 2;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOW;

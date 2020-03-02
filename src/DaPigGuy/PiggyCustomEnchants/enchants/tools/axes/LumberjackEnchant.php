@@ -14,10 +14,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class LumberjackEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools\axes
- */
 class LumberjackEnchant extends BlockBreakingEnchant
 {
     /** @var string */
@@ -25,23 +21,11 @@ class LumberjackEnchant extends BlockBreakingEnchant
     /** @var int */
     public $maxLevel = 1;
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["limit" => 800];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function breakBlocks(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -55,11 +39,6 @@ class LumberjackEnchant extends BlockBreakingEnchant
         }
     }
 
-    /**
-     * @param Block $block
-     * @param Player $player
-     * @param int $mined
-     */
     public function breakTree(Block $block, Player $player, int $mined = 0): void
     {
         $item = $player->getInventory()->getItemInHand();
@@ -78,9 +57,6 @@ class LumberjackEnchant extends BlockBreakingEnchant
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_AXE;

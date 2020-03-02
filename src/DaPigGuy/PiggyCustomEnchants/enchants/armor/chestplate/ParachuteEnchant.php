@@ -18,10 +18,6 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\Color;
 
-/**
- * Class ParachuteEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate
- */
 class ParachuteEnchant extends TickingEnchantment
 {
     use ToggleTrait;
@@ -31,13 +27,6 @@ class ParachuteEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 1;
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $slowFall = new Effect(27, "%potion.slowFalling", new Color(206, 255, 255));
@@ -49,14 +38,6 @@ class ParachuteEnchant extends TickingEnchantment
         $player->resetFallDistance();
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         $slowFall = new Effect(27, "%potion.slowFalling", new Color(206, 255, 255));
@@ -65,26 +46,16 @@ class ParachuteEnchant extends TickingEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_CHESTPLATE;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_CHESTPLATE;
     }
 
-    /**
-     * @param Player $player
-     * @return bool
-     */
     public function isInAir(Player $player): bool
     {
         for ($y = 1; $y <= 5; $y++) {

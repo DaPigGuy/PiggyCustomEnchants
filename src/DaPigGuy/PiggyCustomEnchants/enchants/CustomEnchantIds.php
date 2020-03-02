@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants;
 
-/**
- * Class CustomEnchantIds
- * @package DaPigGuy\PiggyCustomEnchants\enchants
- */
 class CustomEnchantIds
 {
     /**

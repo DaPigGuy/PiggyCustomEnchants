@@ -13,10 +13,6 @@ use pocketmine\math\RayTraceResult;
 use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
 use pocketmine\player\Player;
 
-/**
- * Class PiggyFireball
- * @package DaPigGuy\PiggyCustomEnchants\entities
- */
 class PiggyFireball extends PiggyProjectile
 {
     const NETWORK_ID = EntityLegacyIds::SMALL_FIREBALL;
@@ -36,10 +32,6 @@ class PiggyFireball extends PiggyProjectile
     /** @var int */
     protected $damage = 5;
 
-    /**
-     * @param Entity $entityHit
-     * @param RayTraceResult $hitResult
-     */
     public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void
     {
         $owner = $this->getOwningEntity();
@@ -53,10 +45,6 @@ class PiggyFireball extends PiggyProjectile
         parent::onHitEntity($entityHit, $hitResult);
     }
 
-    /**
-     * @param Block $blockHit
-     * @param RayTraceResult $hitResult
-     */
     public function onHitBlock(Block $blockHit, RayTraceResult $hitResult): void
     {
         $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());

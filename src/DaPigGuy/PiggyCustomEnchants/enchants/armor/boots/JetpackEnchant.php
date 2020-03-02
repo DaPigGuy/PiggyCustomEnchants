@@ -19,10 +19,6 @@ use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
-/**
- * Class JetpackEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\boots
- */
 class JetpackEnchant extends ReactiveEnchantment
 {
     use TickingTrait;
@@ -41,31 +37,16 @@ class JetpackEnchant extends ReactiveEnchantment
     /** @var array */
     public $lastActivated;
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [PlayerToggleSneakEvent::class, EntityDamageEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["power" => 300, "rechargeAmount" => 0.66, "drainMultiplier" => 1, "sprintDrainMultiplier" => 1.25, "speedMultiplier" => 1, "sprintSpeedMultiplier" => 1.25];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL && $this->hasActiveJetpack($player)) $event->setCancelled();
@@ -84,13 +65,6 @@ class JetpackEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     */
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($this->hasActiveJetpack($player)) {
@@ -110,32 +84,16 @@ class JetpackEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param int $level
-     * @param bool $toggle
-     */
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         if (!$toggle && $this->hasActiveJetpack($player)) $this->powerActiveJetpack($player, false);
     }
 
-    /**
-     * @param Player $player
-     * @return bool
-     */
     public function hasActiveJetpack(Player $player): bool
     {
         return isset($this->activeJetpacks[$player->getName()]);
     }
 
-    /**
-     * @param Player $player
-     * @param bool $power
-     */
     public function powerActiveJetpack(Player $player, bool $power = true): void
     {
         if ($power) {
@@ -152,17 +110,11 @@ class JetpackEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getUsageType(): int
     {
         return CustomEnchant::TYPE_BOOTS;
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_BOOTS;

@@ -14,40 +14,21 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-/**
- * Class EnergizingEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\tools
- */
 class EnergizingEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Energizing";
 
-    /**
-     * @return array
-     */
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
     }
 
-    /**
-     * @return array
-     */
     public function getDefaultExtraData(): array
     {
         return ["duration" => 20, "baseAmplifier" => -1, "amplifierMultiplier" => 1];
     }
 
-    /**
-     * @param Player $player
-     * @param Item $item
-     * @param Inventory $inventory
-     * @param int $slot
-     * @param Event $event
-     * @param int $level
-     * @param int $stack
-     */
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -58,9 +39,6 @@ class EnergizingEnchant extends ReactiveEnchantment
         }
     }
 
-    /**
-     * @return int
-     */
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_TOOLS;

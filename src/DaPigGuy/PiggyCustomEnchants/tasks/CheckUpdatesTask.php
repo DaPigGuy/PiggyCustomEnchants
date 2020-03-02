@@ -8,10 +8,6 @@ use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\utils\Internet;
 
-/**
- * Class CheckUpdatesTask
- * @package DaPigGuy\PiggyCustomEnchants\tasks
- */
 class CheckUpdatesTask extends AsyncTask
 {
     /** @var string */
@@ -19,11 +15,6 @@ class CheckUpdatesTask extends AsyncTask
     /** @var string */
     private $api;
 
-    /**
-     * CheckUpdatesTask constructor.
-     * @param string $version
-     * @param string $api
-     */
     public function __construct(string $version, string $api)
     {
         $this->version = $version;
@@ -53,10 +44,6 @@ class CheckUpdatesTask extends AsyncTask
         }
     }
 
-    /**
-     * @param string $version
-     * @return bool
-     */
     public function isLatestVersion(string $version): bool
     {
         $versionInformation = explode(".", $version);
@@ -69,10 +56,6 @@ class CheckUpdatesTask extends AsyncTask
         return false;
     }
 
-    /**
-     * @param array $range
-     * @return bool
-     */
     public function isAPICompatible(array $range): bool
     {
         $lowestAPI = $range["from"];
