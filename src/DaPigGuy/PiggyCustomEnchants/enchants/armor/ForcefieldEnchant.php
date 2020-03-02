@@ -17,10 +17,6 @@ use pocketmine\level\particle\EnchantmentTableParticle;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
 
-/**
- * Class ForcefieldEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor
- */
 class ForcefieldEnchant extends ToggleableEnchantment
 {
     use TickingTrait;

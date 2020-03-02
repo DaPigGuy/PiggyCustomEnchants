@@ -10,10 +10,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class DisarmorEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\weapons
- */
 class DisarmorEnchant extends DisarmingEnchant
 {
     /** @var string */

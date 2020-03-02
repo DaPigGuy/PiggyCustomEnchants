@@ -10,10 +10,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-/**
- * Class VacuumEnchant
- * @package DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate
- */
 class VacuumEnchant extends TickingEnchantment
 {
     /** @var string */
