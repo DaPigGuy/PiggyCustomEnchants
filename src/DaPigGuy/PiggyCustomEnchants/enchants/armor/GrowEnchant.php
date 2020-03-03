@@ -51,7 +51,7 @@ class GrowEnchant extends ToggleableEnchantment
                         } else {
                             $this->grew[$player->getName()] = $player;
                             if (!isset($this->growPower[$player->getName()])) $this->growPower[$player->getName()] = $this->extraData["power"];
-                            $player->setScale($player->getScale() + 0.3 + ($this->stack[$player->getName()] * $this->extraData["multiplier"]));
+                            $player->setScale($player->getScale() + $this->extraData["base"] + ($this->stack[$player->getName()] * $this->extraData["multiplier"]));
                             $player->sendTip(TextFormat::GREEN . "You have grown. Sneak again to shrink back to normal size.");
                         }
                     }
