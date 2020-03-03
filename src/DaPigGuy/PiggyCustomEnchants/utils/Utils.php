@@ -24,12 +24,11 @@ use pocketmine\item\Sword;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\StringTag;
 use pocketmine\Player;
+use pocketmine\plugin\PluginDescription;
 use pocketmine\utils\TextFormat;
 
 class Utils
 {
-    const DESCRIPTION_PATTERN = '/"name":"PiggyCustomEnchants","main":"DaPigGuy\\\\\\\\PiggyCustomEnchants\\\\\\\\PiggyCustomEnchants","version":"(?:.*?)","api":"\d+\.\d+\.\d+","load":"(?:STARTUP|POSTWORLD)","(?:author|authors)":(?:\[|")(?:.*?(?:DaPigGuy))(?:\]|")/';
-
     const TYPE_NAMES = [
         CustomEnchant::ITEM_TYPE_ARMOR => "Armor",
         CustomEnchant::ITEM_TYPE_HELMET => "Helmet",
@@ -284,5 +283,10 @@ class Utils
             $item->getCount() === 1 &&
             (!$enchant instanceof CustomEnchant || self::checkEnchantIncompatibilities($item, $enchant))
         );
+    }
+
+    public static function isCoolKid(PluginDescription $description): bool
+    {
+        return $description->getName() === "PiggyCustomEnchants" && in_array("DaPigGuy", $description->getAuthors());
     }
 }
