@@ -46,5 +46,4 @@ class SoulboundEnchant extends ReactiveEnchantment
     {
         return self::ITEM_TYPE_GLOBAL;
     }
-
 }
