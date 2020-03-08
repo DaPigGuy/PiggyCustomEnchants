@@ -65,7 +65,7 @@ class PiggyCustomEnchants extends PluginBase
             Entity::registerEntity($entityClassName, true);
         }
 
-        foreach ($this->getConfig()->get("disabled-enchants") as $enchant) {
+        foreach ($this->getConfig()->get("disabled-enchants", []) as $enchant) {
             $e = CustomEnchantManager::getEnchantmentByName($enchant);
             if ($e instanceof CustomEnchant) CustomEnchantManager::unregisterEnchantment($e->getId());
         }

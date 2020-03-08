@@ -26,7 +26,7 @@ class AllyChecks
         }, $check);
         self::$checks[] = [$plugin, $check];
     }
-    
+
     public static function isAlly(Player $player, Entity $entity): bool
     {
         foreach (self::$checks as $check) {
