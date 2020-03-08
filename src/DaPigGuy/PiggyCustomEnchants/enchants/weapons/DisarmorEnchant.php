@@ -14,6 +14,7 @@ class DisarmorEnchant extends DisarmingEnchant
 {
     /** @var string */
     public $name = "Disarmor";
+
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {

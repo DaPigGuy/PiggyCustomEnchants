@@ -25,10 +25,12 @@ class JackpotEnchant extends ReactiveEnchantment
         Block::DIAMOND_ORE,
         Block::EMERALD_ORE
     ];
+
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
     }
+
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -48,10 +50,12 @@ class JackpotEnchant extends ReactiveEnchantment
             }
         }
     }
+
     public function getItemType(): int
     {
         return CustomEnchant::ITEM_TYPE_PICKAXE;
     }
+
     public function getPriority(): int
     {
         return 3;
