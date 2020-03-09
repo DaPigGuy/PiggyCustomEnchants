@@ -16,6 +16,8 @@ class AutoRepairEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Autorepair";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getReagent(): array
     {

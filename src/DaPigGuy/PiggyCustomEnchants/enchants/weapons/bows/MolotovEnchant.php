@@ -19,6 +19,8 @@ class MolotovEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Molotov";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getReagent(): array
     {

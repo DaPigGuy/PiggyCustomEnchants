@@ -32,10 +32,11 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
+        $this->rarity = $rarity;
         $this->effects = $effects;
         $this->durationMultiplier = $durationMultiplier;
         $this->amplifierMultiplier = $amplifierMultiplier;
-        parent::__construct($plugin, $id, $rarity);
+        parent::__construct($plugin, $id);
     }
 
     public function getDefaultExtraData(): array

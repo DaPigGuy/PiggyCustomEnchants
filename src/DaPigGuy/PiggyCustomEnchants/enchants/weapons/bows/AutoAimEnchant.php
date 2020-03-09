@@ -19,6 +19,8 @@ class AutoAimEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Auto Aim";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    /** @var int */
     public $maxLevel = 1;
 
     public function getDefaultExtraData(): array

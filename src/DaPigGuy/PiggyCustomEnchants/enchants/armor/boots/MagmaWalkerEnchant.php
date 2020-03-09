@@ -18,6 +18,8 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Magma Walker";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 2;
 
     public function getReagent(): array

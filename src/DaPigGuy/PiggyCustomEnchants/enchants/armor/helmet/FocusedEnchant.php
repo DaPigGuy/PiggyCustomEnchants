@@ -17,6 +17,8 @@ class FocusedEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Focused";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getReagent(): array
     {

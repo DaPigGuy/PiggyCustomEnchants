@@ -23,6 +23,8 @@ class ParachuteEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Parachute";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 1;
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void

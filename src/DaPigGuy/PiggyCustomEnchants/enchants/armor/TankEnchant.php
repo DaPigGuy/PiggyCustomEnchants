@@ -18,6 +18,8 @@ class TankEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Tank";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getDefaultExtraData(): array
     {

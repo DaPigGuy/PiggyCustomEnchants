@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\utils\Facing;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
@@ -15,6 +16,8 @@ class DrillerEnchant extends BlockBreakingEnchant
 {
     /** @var string */
     public $name = "Driller";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     /** @var array */
     public static $lastBreakFace;

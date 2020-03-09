@@ -8,7 +8,6 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\Player;
-use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionException;
 
@@ -19,6 +18,8 @@ class CustomEnchant extends Enchantment
 
     /** @var string */
     public $name = "";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_RARE;
     /** @var int */
     public $maxLevel = 5;
     /** @var string */
@@ -60,23 +61,21 @@ class CustomEnchant extends Enchantment
     /**
      * @throws ReflectionException
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE, ?int $maxLevel = null, ?string $displayName = null, ?string $description = null)
+    public function __construct(PiggyCustomEnchants $plugin, int $id)
     {
         $this->plugin = $plugin;
-        $this->maxLevel = $maxLevel ?? (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
-        $this->displayName = $displayName ?? (string)$plugin->getEnchantmentData($this->name, "display_names", $this->name);
-        $this->description = $description ?? (string)$plugin->getEnchantmentData($this->name, "descriptions");
+        $this->maxLevel = (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
+        $this->displayName = (string)$plugin->getEnchantmentData($this->name, "display_names", $this->displayName ?? $this->name);
+        $this->description = (string)$plugin->getEnchantmentData($this->name, "descriptions", $this->description ?? "");
         $this->extraData = $plugin->getEnchantmentData($this->name, "extra_data", $this->getDefaultExtraData());
-        if (!empty($this->extraData)) {
-            foreach ($this->getDefaultExtraData() as $key => $value) {
-                if (!isset($this->extraData[$key])) $this->extraData[$key] = $value;
+        foreach ($this->getDefaultExtraData() as $key => $value) {
+            if (!isset($this->extraData[$key])) {
+                $this->extraData[$key] = $value;
+                $plugin->setEnchantmentData($this->getName(), "extra_data", $this->extraData);
             }
-            $config = new Config($plugin->getDataFolder() . "extra_data.json");
-            $config->set(str_replace(" ", "", strtolower($this->name)), $this->extraData);
-            $config->save();
         }
         if (!Utils::isCoolKid($plugin->getDescription())) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
-        parent::__construct($id, $this->name, $rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
+        parent::__construct($id, $this->name, $this->rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
     }
 
     public function getDisplayName(): string
@@ -84,19 +83,9 @@ class CustomEnchant extends Enchantment
         return $this->displayName;
     }
 
-    public function setDisplayName(string $displayName): void
-    {
-        $this->displayName = $displayName;
-    }
-
     public function getDescription(): string
     {
         return $this->description;
-    }
-
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
     }
 
     public function getExtraData(): array
@@ -149,9 +138,6 @@ class CustomEnchant extends Enchantment
         $this->cooldown[$player->getName()] = time() + $cooldown;
     }
 
-    /**
-     * @internal
-     */
     public function unregister(): void
     {
     }

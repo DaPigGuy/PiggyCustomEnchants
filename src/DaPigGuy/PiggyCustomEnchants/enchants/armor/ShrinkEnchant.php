@@ -23,6 +23,8 @@ class ShrinkEnchant extends ToggleableEnchantment
     /** @var string */
     public $name = "Shrink";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 2;
 
     /** @var array */

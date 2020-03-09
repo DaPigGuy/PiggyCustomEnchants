@@ -17,6 +17,8 @@ class JackpotEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Jackpot";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
 
     const ORE_TIERS = [
         Block::COAL_ORE,

@@ -15,6 +15,8 @@ class OverloadEnchant extends ToggleableEnchantment
     /** @var string */
     public $name = "Overload";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    /** @var int */
     public $maxLevel = 3;
 
     public function getDefaultExtraData(): array

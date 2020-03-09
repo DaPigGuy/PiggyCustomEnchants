@@ -18,6 +18,8 @@ class HarvestEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Harvest";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 3;
 
     public function getReagent(): array

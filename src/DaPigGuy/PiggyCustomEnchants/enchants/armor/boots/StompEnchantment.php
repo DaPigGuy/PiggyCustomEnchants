@@ -19,6 +19,8 @@ class StompEnchantment extends ReactiveEnchantment
     /** @var string */
     public $name = "Stomp";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 1;
 
     public function getReagent(): array

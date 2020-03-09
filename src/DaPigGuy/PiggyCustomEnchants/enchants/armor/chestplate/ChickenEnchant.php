@@ -15,6 +15,8 @@ class ChickenEnchant extends TickingEnchantment
 {
     /** @var string */
     public $name = "Chicken";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getDefaultExtraData(): array
     {

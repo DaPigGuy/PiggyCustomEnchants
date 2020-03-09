@@ -18,6 +18,8 @@ class AntitoxinEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Antitoxin";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    /** @var int */
     public $maxLevel = 1;
 
     public function getReagent(): array

@@ -22,6 +22,8 @@ class MeditationEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Meditation";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 2;
 
     /** @var Player[] */

@@ -38,13 +38,14 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, int $effect, int $baseAmplifier = 0, int $amplifierMultiplier = 1, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
+        $this->rarity = $rarity;
         $this->maxLevel = $maxLevel;
         $this->usageType = $usageType;
         $this->itemType = $itemType;
         $this->effect = $effect;
         $this->baseAmplifier = $baseAmplifier;
         $this->amplifierMultiplier = $amplifierMultiplier;
-        parent::__construct($plugin, $id, $rarity);
+        parent::__construct($plugin, $id);
     }
 
     public function getDefaultExtraData(): array

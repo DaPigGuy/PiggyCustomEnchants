@@ -18,6 +18,8 @@ class FertilizerEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Fertilizer";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 3;
 
     public function getReagent(): array

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\utils\PiggyExplosion;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
@@ -15,6 +16,8 @@ class ExplosiveEnchant extends BlockBreakingEnchant
 {
     /** @var string */
     public $name = "Explosive";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getDefaultExtraData(): array
     {

@@ -17,6 +17,8 @@ class HeadhunterEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Headhunter";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getReagent(): array
     {

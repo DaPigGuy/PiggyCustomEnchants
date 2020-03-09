@@ -18,6 +18,8 @@ class EnlightedEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Enlighted";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getDefaultExtraData(): array
     {

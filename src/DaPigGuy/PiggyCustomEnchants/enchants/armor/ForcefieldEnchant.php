@@ -23,6 +23,8 @@ class ForcefieldEnchant extends ToggleableEnchantment
 
     /** @var string */
     public $name = "Forcefield";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
 
     public function getDefaultExtraData(): array
     {

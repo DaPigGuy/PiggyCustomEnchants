@@ -28,9 +28,6 @@ world-damage:
   lightning: true
   missile: true
   self-destruct: true
-# Items the chicken enchant will drop. Formatted as "id:meta:count"
-chicken:
-  drops: ["266:0:1"]
 miscellaneous:
   # Toggles PiggyCE's implementation of the vanilla feature to hold armor to equip
   armor-hold-equip: true

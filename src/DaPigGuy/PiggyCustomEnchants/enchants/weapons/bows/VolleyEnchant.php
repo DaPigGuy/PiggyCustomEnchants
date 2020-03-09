@@ -23,6 +23,8 @@ class VolleyEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Volley";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function getReagent(): array
     {

@@ -22,6 +22,8 @@ class GrowEnchant extends ToggleableEnchantment
 
     /** @var string */
     public $name = "Grow";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     /** @var array */
     public $grew;

@@ -29,9 +29,10 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
+        $this->rarity = $rarity;
         $this->projectileType = $projectileType;
         $this->maxLevel = $maxLevel;
-        parent::__construct($plugin, $id, $rarity);
+        parent::__construct($plugin, $id);
     }
 
     public function getReagent(): array
