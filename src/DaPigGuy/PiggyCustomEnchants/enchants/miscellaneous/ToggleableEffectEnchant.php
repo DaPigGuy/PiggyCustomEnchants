@@ -24,11 +24,6 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
     /** @var int */
     private $amplifierMultiplier = 1;
 
-    /** @var int */
-    private $usageType;
-    /** @var int */
-    private $itemType;
-
     /** @var EffectInstance[] */
     private $previousEffect;
 
