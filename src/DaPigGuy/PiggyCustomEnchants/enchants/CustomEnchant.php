@@ -76,7 +76,7 @@ class CustomEnchant extends Enchantment
         foreach ($this->getDefaultExtraData() as $key => $value) {
             if (!isset($this->extraData[$key])) {
                 $this->extraData[$key] = $value;
-                $plugin->setEnchantmentData($this->getName(), "extra_data", $this->extraData);
+                $plugin->setEnchantmentData($this->name, "extra_data", $this->extraData);
             }
         }
         if (!Utils::isCoolKid($plugin->getDescription())) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
