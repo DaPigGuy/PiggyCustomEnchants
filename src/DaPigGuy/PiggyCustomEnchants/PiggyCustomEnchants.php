@@ -99,7 +99,7 @@ class PiggyCustomEnchants extends PluginBase
      */
     public function getEnchantmentData(string $enchant, string $data, $default = "")
     {
-        if (!isset($this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data])) $this->setEnchantmentData($enchant, $default, $default);
+        if (!isset($this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data])) $this->setEnchantmentData($enchant, $data, $default);
         return $this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data];
     }
 
