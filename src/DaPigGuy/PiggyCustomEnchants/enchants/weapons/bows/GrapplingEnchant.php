@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\entity\projectile\Projectile;
@@ -22,6 +23,9 @@ class GrapplingEnchant extends ReactiveEnchantment
     public $name = "Grappling";
     /** @var int */
     public $maxLevel = 1;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {
@@ -67,10 +71,5 @@ class GrapplingEnchant extends ReactiveEnchantment
             }
             Utils::setShouldTakeFallDamage($player, false);
         }
-    }
-
-    public function getItemType(): int
-    {
-        return self::ITEM_TYPE_BOW;
     }
 }

@@ -29,6 +29,11 @@ class CustomEnchant extends Enchantment
     /** @var array */
     public $extraData;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_HAND;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_WEAPON;
+
     /** @var array */
     public $cooldown;
 
@@ -100,12 +105,12 @@ class CustomEnchant extends Enchantment
 
     public function getUsageType(): int
     {
-        return self::TYPE_HAND;
+        return $this->usageType;
     }
 
     public function getItemType(): int
     {
-        return self::ITEM_TYPE_WEAPON;
+        return $this->itemType;
     }
 
     public function getPriority(): int

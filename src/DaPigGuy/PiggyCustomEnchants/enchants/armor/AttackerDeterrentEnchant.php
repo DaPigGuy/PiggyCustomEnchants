@@ -19,6 +19,11 @@ use ReflectionException;
 
 class AttackerDeterrentEnchant extends ReactiveEnchantment
 {
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     /** @var array */
     private $effects;
     /** @var array */
@@ -54,15 +59,5 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

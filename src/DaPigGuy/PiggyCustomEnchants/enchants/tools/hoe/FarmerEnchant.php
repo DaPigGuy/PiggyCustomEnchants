@@ -24,6 +24,9 @@ class FarmerEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
+
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
@@ -43,10 +46,5 @@ class FarmerEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HOE;
     }
 }

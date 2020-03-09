@@ -25,6 +25,11 @@ class GrowEnchant extends ToggleableEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     /** @var array */
     public $grew;
     /** @var array */
@@ -76,15 +81,5 @@ class GrowEnchant extends ToggleableEnchantment
                 $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

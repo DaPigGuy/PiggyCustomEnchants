@@ -26,6 +26,11 @@ class MeditationEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 2;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_HELMET;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+
     /** @var Player[] */
     public $meditating = [];
     /** @var array */
@@ -64,15 +69,5 @@ class MeditationEnchant extends ReactiveEnchantment
                 $player->setFood($player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"] > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"]);
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_HELMET;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HELMET;
     }
 }

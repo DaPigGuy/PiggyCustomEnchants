@@ -27,6 +27,11 @@ class ParachuteEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantIds::JETPACK)) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
@@ -42,16 +47,6 @@ class ParachuteEnchant extends TickingEnchantment
         if (!$toggle && ($effect = $player->getEffect(Effect::LEVITATION)) !== null && $effect->getAmplifier() === -5) {
             $player->removeEffect($effect->getId());
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_CHESTPLATE;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_CHESTPLATE;
     }
 
     public function isInAir(Player $player): bool

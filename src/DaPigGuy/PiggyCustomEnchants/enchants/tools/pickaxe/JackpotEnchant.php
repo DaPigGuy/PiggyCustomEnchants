@@ -20,6 +20,9 @@ class JackpotEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_MYTHIC;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;
+
     const ORE_TIERS = [
         Block::COAL_ORE,
         Block::IRON_ORE,
@@ -51,11 +54,6 @@ class JackpotEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_PICKAXE;
     }
 
     public function getPriority(): int

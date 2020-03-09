@@ -19,6 +19,11 @@ class AutoRepairEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ANY_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_DAMAGEABLE;
+
     public function getReagent(): array
     {
         return [PlayerMoveEvent::class];
@@ -39,15 +44,5 @@ class AutoRepairEnchant extends ReactiveEnchantment
             $item->setDamage($newDir);
         }
         $inventory->setItem($slot, $item);
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ANY_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_DAMAGEABLE;
     }
 }

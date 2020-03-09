@@ -14,17 +14,15 @@ use pocketmine\Player;
 
 class BlockBreakingEnchant extends ReactiveEnchantment
 {
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+
     /** @var array */
     public static $isBreaking;
 
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void

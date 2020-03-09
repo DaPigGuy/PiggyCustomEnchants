@@ -22,6 +22,9 @@ class HarvestEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 3;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
+
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
@@ -48,10 +51,5 @@ class HarvestEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HOE;
     }
 }

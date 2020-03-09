@@ -23,6 +23,9 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     /** @var string */
     private $projectileType;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     /**
      * @throws ReflectionException
      */
@@ -58,10 +61,5 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     public function getPriority(): int
     {
         return 2;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

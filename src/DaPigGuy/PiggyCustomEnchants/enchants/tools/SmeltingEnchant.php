@@ -23,6 +23,9 @@ class SmeltingEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+
     /** @var array */
     public $inputTable;
     /** @var array */
@@ -56,11 +59,6 @@ class SmeltingEnchant extends ReactiveEnchantment
                 return $item;
             }, $event->getDrops()));
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 
     public function getPriority(): int

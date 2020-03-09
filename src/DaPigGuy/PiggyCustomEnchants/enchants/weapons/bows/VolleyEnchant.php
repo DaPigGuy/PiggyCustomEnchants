@@ -26,6 +26,9 @@ class VolleyEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     public function getReagent(): array
     {
         return [EntityShootBowEvent::class];
@@ -63,10 +66,5 @@ class VolleyEnchant extends ReactiveEnchantment
             ProjectileTracker::removeProjectile($projectile);
             $projectile->close();
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

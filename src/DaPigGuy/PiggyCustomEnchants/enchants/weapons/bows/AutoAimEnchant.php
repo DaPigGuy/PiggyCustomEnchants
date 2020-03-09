@@ -23,6 +23,9 @@ class AutoAimEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 50];
@@ -45,11 +48,6 @@ class AutoAimEnchant extends TickingEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 
     public function findNearestEntity(Player $player, int $range): ?Living

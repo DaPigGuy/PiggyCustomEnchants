@@ -19,6 +19,9 @@ class TelepathyEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
@@ -47,10 +50,5 @@ class TelepathyEnchant extends ReactiveEnchantment
             $event->setDrops($drops);
             $event->setXpDropAmount(0);
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 }

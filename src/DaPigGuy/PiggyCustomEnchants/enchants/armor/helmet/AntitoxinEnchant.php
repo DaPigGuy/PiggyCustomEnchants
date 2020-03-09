@@ -22,6 +22,11 @@ class AntitoxinEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_HELMET;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+
     public function getReagent(): array
     {
         return [EntityEffectAddEvent::class];
@@ -32,15 +37,5 @@ class AntitoxinEnchant extends ReactiveEnchantment
         if ($event instanceof EntityEffectAddEvent) {
             if ($event->getEffect()->getId() === Effect::POISON) $event->setCancelled();
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_HELMET;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HELMET;
     }
 }

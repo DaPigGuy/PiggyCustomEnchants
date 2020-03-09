@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\inventory\Inventory;
@@ -18,6 +19,11 @@ class RadarEnchant extends TickingEnchantment
 
     /** @var string */
     public $name = "Radar";
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_COMPASS;
 
     public function getDefaultExtraData(): array
     {
@@ -77,15 +83,5 @@ class RadarEnchant extends TickingEnchantment
             }
         }
         return $nearestPlayer;
-    }
-
-    public function getUsageType(): int
-    {
-        return self::TYPE_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return self::ITEM_TYPE_COMPASS;
     }
 }

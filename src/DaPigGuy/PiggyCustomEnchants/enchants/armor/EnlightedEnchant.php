@@ -21,6 +21,11 @@ class EnlightedEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     public function getDefaultExtraData(): array
     {
         return ["durationMultiplier" => 60, "baseAmplifier" => 0, "amplifierMultiplier" => 1];
@@ -31,15 +36,5 @@ class EnlightedEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $player->addEffect(new EffectInstance(Effect::getEffect(Effect::REGENERATION), $this->extraData["durationMultiplier"] * $level, $level * $this->extraData["amplifierMultiplier"] + $this->extraData["baseAmplifier"], false));
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

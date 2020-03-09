@@ -23,6 +23,11 @@ class ProwlEnchant extends ToggleableEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+
     /** @var array */
     public $prowled;
 
@@ -62,15 +67,5 @@ class ProwlEnchant extends ToggleableEnchantment
                 unset($this->prowled[$player->getName()]);
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_CHESTPLATE;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_CHESTPLATE;
     }
 }

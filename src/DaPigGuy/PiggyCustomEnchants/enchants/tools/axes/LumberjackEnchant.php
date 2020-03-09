@@ -20,6 +20,9 @@ class LumberjackEnchant extends BlockBreakingEnchant
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_AXE;
+
     public function getDefaultExtraData(): array
     {
         return ["limit" => 800];
@@ -54,10 +57,5 @@ class LumberjackEnchant extends BlockBreakingEnchant
             $mined++;
             $this->breakTree($side, $player, $mined);
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_AXE;
     }
 }

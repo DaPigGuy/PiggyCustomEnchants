@@ -19,6 +19,9 @@ class BountyHunterEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
@@ -58,10 +61,5 @@ class BountyHunterEnchant extends ReactiveEnchantment
             return Item::IRON_INGOT;
         }
         return Item::COAL;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

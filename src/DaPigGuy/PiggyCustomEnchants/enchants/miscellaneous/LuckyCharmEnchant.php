@@ -21,6 +21,11 @@ class LuckyCharmEnchant extends ToggleableEnchantment
     /** @var int */
     public $maxLevel = 3;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_GLOBAL;
+
     public function getDefaultExtraData(): array
     {
         return ["additionalMultiplier" => 0.05];
@@ -34,15 +39,5 @@ class LuckyCharmEnchant extends ToggleableEnchantment
                 $enchantment->setChanceMultiplier($player, $enchantment->getChanceMultiplier($player) + ($toggle ? 1 : -1) * $level * $this->extraData["additionalMultiplier"]);
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return self::TYPE_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_GLOBAL;
     }
 }

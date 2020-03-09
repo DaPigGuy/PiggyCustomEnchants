@@ -21,6 +21,11 @@ class TankEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     public function getDefaultExtraData(): array
     {
         return ["absorbedDamageMultiplier" => 0.2];
@@ -36,15 +41,5 @@ class TankEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

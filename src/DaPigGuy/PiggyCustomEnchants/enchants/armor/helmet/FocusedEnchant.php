@@ -20,6 +20,11 @@ class FocusedEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_HELMET;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+
     public function getReagent(): array
     {
         return [EntityEffectAddEvent::class];
@@ -39,15 +44,5 @@ class FocusedEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_HELMET;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HELMET;
     }
 }

@@ -21,6 +21,11 @@ class SoulboundEnchant extends ReactiveEnchantment
     /** @var int */
     public $rarity = CustomEnchant::RARITY_MYTHIC;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ANY_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_GLOBAL;
+
     public function getReagent(): array
     {
         return [PlayerDeathEvent::class];
@@ -38,15 +43,5 @@ class SoulboundEnchant extends ReactiveEnchantment
                 $inventory->setItem($slot, $item);
             }), 1);
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return self::TYPE_ANY_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return self::ITEM_TYPE_GLOBAL;
     }
 }

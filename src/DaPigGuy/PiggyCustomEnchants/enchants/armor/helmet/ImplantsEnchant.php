@@ -20,6 +20,11 @@ class ImplantsEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Implants";
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_HELMET;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+
     /** @var ClosureTask[] */
     public static $tasks;
 
@@ -58,15 +63,5 @@ class ImplantsEnchant extends ReactiveEnchantment
             }
             $this->setCooldown($player, 1);
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_HELMET;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HELMET;
     }
 }
