@@ -69,6 +69,7 @@ class CustomEnchant extends Enchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id)
     {
         $this->plugin = $plugin;
+        $this->rarity = (int)array_flip(Utils::RARITY_NAMES)[ucfirst(strtolower($plugin->getEnchantmentData($this->name, "rarities", Utils::RARITY_NAMES[$this->rarity])))];
         $this->maxLevel = (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
         $this->displayName = (string)$plugin->getEnchantmentData($this->name, "display_names", $this->displayName ?? $this->name);
         $this->description = (string)$plugin->getEnchantmentData($this->name, "descriptions", $this->description ?? "");
