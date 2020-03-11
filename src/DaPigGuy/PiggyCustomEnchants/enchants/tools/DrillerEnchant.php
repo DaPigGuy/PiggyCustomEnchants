@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use DaPigGuy\PiggyCustomEnchants\utils\Facing;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
@@ -12,22 +13,30 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-class DrillerEnchant extends BlockBreakingEnchant
+class DrillerEnchant extends RecursiveEnchant
 {
     /** @var string */
     public $name = "Driller";
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+
     /** @var array */
     public static $lastBreakFace;
+
+    public function getReagent(): array
+    {
+        return [BlockBreakEvent::class];
+    }
 
     public function getDefaultExtraData(): array
     {
         return ["distanceMultiplier" => 1];
     }
 
-    public function breakBlocks(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    public function safeReact(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
             $breakFace = self::$lastBreakFace[$player->getName()];

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\helmet;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
-use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\entity\Effect;
 use pocketmine\event\entity\EntityEffectAddEvent;
 use pocketmine\event\Event;
@@ -13,7 +13,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-class FocusedEnchant extends ReactiveEnchantment
+class FocusedEnchant extends RecursiveEnchant
 {
     /** @var string */
     public $name = "Focused";
@@ -30,7 +30,7 @@ class FocusedEnchant extends ReactiveEnchantment
         return [EntityEffectAddEvent::class];
     }
 
-    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    public function safeReact(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityEffectAddEvent) {
             $effect = $event->getEffect();
@@ -39,7 +39,6 @@ class FocusedEnchant extends ReactiveEnchantment
                     $event->setCancelled();
                 } else {
                     $event->setCancelled();
-                    $this->setCooldown($player, 1);
                     $player->addEffect($effect->setAmplifier($effect->getEffectLevel() - (1 + ($level * 2))));
                 }
             }

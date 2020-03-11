@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
-use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\block\Block;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -13,7 +13,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
 
-class FertilizerEnchant extends ReactiveEnchantment
+class FertilizerEnchant extends RecursiveEnchant
 {
     /** @var string */
     public $name = "Fertilizer";
@@ -35,7 +35,7 @@ class FertilizerEnchant extends ReactiveEnchantment
         return ["radiusMultiplier" => 1];
     }
 
-    public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    public function safeReact(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerInteractEvent) {
             $block = $event->getBlock();
@@ -45,7 +45,6 @@ class FertilizerEnchant extends ReactiveEnchantment
                     for ($z = -$radius; $z <= $radius; $z++) {
                         $newBlock = $block->getLevel()->getBlock($block->add($x, 0, $z));
                         if ($newBlock->getId() === Block::GRASS || ($newBlock->getId() === Block::DIRT && $newBlock->getDamage() === 0)) {
-                            $this->setCooldown($player, 1);
                             $block->getLevel()->useItemOn($newBlock, $item, 0, $newBlock, $player);
                         }
                     }
