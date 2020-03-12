@@ -19,6 +19,11 @@ class MoltenEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Molten";
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     public function getDefaultExtraData(): array
     {
         return ["durationMultiplier" => 3];
@@ -34,15 +39,5 @@ class MoltenEnchant extends ReactiveEnchantment
                 }), 1);
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

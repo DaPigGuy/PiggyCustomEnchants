@@ -29,6 +29,11 @@ class JetpackEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 3;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_BOOTS;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
+
     /** @var Player[] */
     public $activeJetpacks = [];
 
@@ -109,15 +114,5 @@ class JetpackEnchant extends ReactiveEnchantment
             unset($this->activeJetpacks[$player->getName()]);
             $this->lastActivated[$player->getName()] = time();
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_BOOTS;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOOTS;
     }
 }

@@ -19,7 +19,12 @@ class AutoAimEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Auto Aim";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    /** @var int */
     public $maxLevel = 1;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getDefaultExtraData(): array
     {
@@ -43,11 +48,6 @@ class AutoAimEnchant extends TickingEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 
     public function findNearestEntity(Player $player, int $range): ?Living

@@ -19,7 +19,14 @@ class StompEnchantment extends ReactiveEnchantment
     /** @var string */
     public $name = "Stomp";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 1;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_BOOTS;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     public function getReagent(): array
     {
@@ -46,15 +53,5 @@ class StompEnchantment extends ReactiveEnchantment
                 $event->setModifier(-($event->getFinalDamage() * $this->extraData["absorbedDamageMultiplier"] * count($entities)), CustomEnchantIds::STOMP);
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_BOOTS;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOOTS;
     }
 }

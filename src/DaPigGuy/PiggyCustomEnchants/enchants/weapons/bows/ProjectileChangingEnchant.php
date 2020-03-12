@@ -23,15 +23,19 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     /** @var string */
     private $projectileType;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     /**
      * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
+        $this->rarity = $rarity;
         $this->projectileType = $projectileType;
         $this->maxLevel = $maxLevel;
-        parent::__construct($plugin, $id, $rarity);
+        parent::__construct($plugin, $id);
     }
 
     public function getReagent(): array
@@ -57,10 +61,5 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     public function getPriority(): int
     {
         return 2;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

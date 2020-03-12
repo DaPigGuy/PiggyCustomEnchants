@@ -23,6 +23,11 @@ class VolleyEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Volley";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {
@@ -61,10 +66,5 @@ class VolleyEnchant extends ReactiveEnchantment
             ProjectileTracker::removeProjectile($projectile);
             $projectile->close();
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

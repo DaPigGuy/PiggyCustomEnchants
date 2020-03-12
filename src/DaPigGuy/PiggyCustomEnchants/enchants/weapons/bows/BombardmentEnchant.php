@@ -21,6 +21,9 @@ class BombardmentEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Bombardment";
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
@@ -40,10 +43,5 @@ class BombardmentEnchant extends ReactiveEnchantment
             $entity->setOwningEntity($player);
             $entity->spawnToAll();
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

@@ -18,6 +18,11 @@ class QuickeningEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Quickening";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {
@@ -37,10 +42,5 @@ class QuickeningEnchant extends ReactiveEnchantment
                 $player->addEffect($effect);
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 }

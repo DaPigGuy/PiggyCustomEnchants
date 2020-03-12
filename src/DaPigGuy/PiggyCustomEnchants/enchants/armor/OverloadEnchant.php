@@ -15,7 +15,14 @@ class OverloadEnchant extends ToggleableEnchantment
     /** @var string */
     public $name = "Overload";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    /** @var int */
     public $maxLevel = 3;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {
@@ -26,15 +33,5 @@ class OverloadEnchant extends ToggleableEnchantment
     {
         $player->setMaxHealth($player->getMaxHealth() + $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1));
         $player->setHealth($player->getHealth() * ($player->getMaxHealth() / ($player->getMaxHealth() - $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1))));
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

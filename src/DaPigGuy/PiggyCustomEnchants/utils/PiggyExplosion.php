@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\utils;
 
-use DaPigGuy\PiggyCustomEnchants\enchants\tools\BlockBreakingEnchant;
+use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\block\TNT;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockUpdateEvent;
@@ -71,7 +71,7 @@ class PiggyExplosion extends Explosion
         }
 
         $item = $this->what->getInventory()->getItemInHand();
-        BlockBreakingEnchant::$isBreaking[$this->what->getName()] = true;
+        RecursiveEnchant::$isUsing[$this->what->getName()] = true;
         foreach ($this->affectedBlocks as $key => $block) {
             $drops = $this->what->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
             $t = $this->level->getTileAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ());
@@ -124,7 +124,7 @@ class PiggyExplosion extends Explosion
             }
             $send[] = new Vector3($block->x - $source->x, $block->y - $source->y, $block->z - $source->z);
         }
-        unset(BlockBreakingEnchant::$isBreaking[$this->what->getName()]);
+        unset(RecursiveEnchant::$isUsing[$this->what->getName()]);
         $this->level->addParticle(new HugeExplodeSeedParticle($source));
         $this->level->broadcastLevelSoundEvent($source, LevelSoundEventPacket::SOUND_EXPLODE);
         return true;

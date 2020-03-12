@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -14,6 +15,8 @@ class DisarmorEnchant extends DisarmingEnchant
 {
     /** @var string */
     public $name = "Disarmor";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

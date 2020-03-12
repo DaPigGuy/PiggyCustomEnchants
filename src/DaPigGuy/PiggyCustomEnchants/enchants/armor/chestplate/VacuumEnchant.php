@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\inventory\Inventory;
@@ -16,6 +17,11 @@ class VacuumEnchant extends TickingEnchantment
     public $name = "Vacuum";
     /** @var int */
     public $maxLevel = 3;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
     public function getDefaultExtraData(): array
     {
@@ -32,15 +38,5 @@ class VacuumEnchant extends TickingEnchantment
                 }
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return self::TYPE_CHESTPLATE;
-    }
-
-    public function getItemType(): int
-    {
-        return self::ITEM_TYPE_CHESTPLATE;
     }
 }

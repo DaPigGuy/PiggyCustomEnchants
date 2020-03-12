@@ -19,6 +19,11 @@ class MolotovEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Molotov";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {
@@ -41,10 +46,5 @@ class MolotovEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

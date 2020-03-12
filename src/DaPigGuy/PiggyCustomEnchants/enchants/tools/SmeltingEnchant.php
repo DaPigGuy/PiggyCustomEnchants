@@ -19,7 +19,12 @@ class SmeltingEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Smelting";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 1;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     /** @var array */
     public $inputTable;
@@ -29,9 +34,9 @@ class SmeltingEnchant extends ReactiveEnchantment
     /**
      * @throws ReflectionException
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id)
     {
-        parent::__construct($plugin, $id, $rarity);
+        parent::__construct($plugin, $id);
         foreach ($plugin->getServer()->getCraftingManager()->getFurnaceRecipes() as $furnaceRecipe) {
             $this->inputTable[] = $furnaceRecipe->getInput();
             $this->outputTable[] = $furnaceRecipe->getResult();
@@ -54,11 +59,6 @@ class SmeltingEnchant extends ReactiveEnchantment
                 return $item;
             }, $event->getDrops()));
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 
     public function getPriority(): int

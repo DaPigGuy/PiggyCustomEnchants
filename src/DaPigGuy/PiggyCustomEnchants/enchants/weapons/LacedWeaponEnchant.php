@@ -35,12 +35,13 @@ class LacedWeaponEnchant extends ReactiveEnchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = self::RARITY_RARE, array $effectIds = [Effect::POISON], array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
     {
         $this->name = $name;
+        $this->rarity = $rarity;
         $this->effectIds = $effectIds;
         $this->durationMultiplier = $durationMultiplier;
         $this->amplifierMultiplier = $amplifierMultiplier;
         $this->baseDuration = $baseDuration;
         $this->baseAmplifier = $baseAmplifier;
-        parent::__construct($plugin, $id, $rarity);
+        parent::__construct($plugin, $id);
     }
 
     public function getDefaultExtraData(): array

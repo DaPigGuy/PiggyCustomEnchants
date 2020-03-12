@@ -15,6 +15,13 @@ class ChickenEnchant extends TickingEnchantment
 {
     /** @var string */
     public $name = "Chicken";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
     public function getDefaultExtraData(): array
     {
@@ -43,15 +50,5 @@ class ChickenEnchant extends TickingEnchantment
     public function getTickingInterval(): int
     {
         return $this->extraData["interval"];
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_CHESTPLATE;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_CHESTPLATE;
     }
 }

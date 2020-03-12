@@ -20,6 +20,9 @@ class ParalyzeEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Paralyze";
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
@@ -60,10 +63,5 @@ class ParalyzeEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

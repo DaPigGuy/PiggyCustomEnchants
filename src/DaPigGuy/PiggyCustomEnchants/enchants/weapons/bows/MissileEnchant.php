@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use pocketmine\entity\Entity;
@@ -22,6 +23,9 @@ class MissileEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Missile";
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {
@@ -46,10 +50,5 @@ class MissileEnchant extends ReactiveEnchantment
                 $projectile->flagForDespawn();
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return self::ITEM_TYPE_BOW;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\block\Block;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -26,6 +27,8 @@ class HallucinationEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Hallucination";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
 
     /** @var array */
     public static $hallucinating;

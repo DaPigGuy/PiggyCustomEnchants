@@ -23,7 +23,14 @@ class ShrinkEnchant extends ToggleableEnchantment
     /** @var string */
     public $name = "Shrink";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 2;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     /** @var array */
     public $shrunk;
@@ -76,15 +83,5 @@ class ShrinkEnchant extends ToggleableEnchantment
                 $player->sendTip(TextFormat::RED . "You have grown back to normal size.");
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

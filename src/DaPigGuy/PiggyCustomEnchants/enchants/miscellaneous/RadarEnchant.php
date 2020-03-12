@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
+use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
@@ -19,6 +21,11 @@ class RadarEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Radar";
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_COMPASS;
+
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 50];
@@ -27,42 +34,30 @@ class RadarEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $detected = $this->findNearestPlayer($player, $level * $this->extraData["radiusMultiplier"]);
-        if (!is_null($detected)) {
-            $pk = new SetSpawnPositionPacket();
-            $pk->x = (int)$detected->x;
-            $pk->y = (int)$detected->y;
-            $pk->z = (int)$detected->z;
-            $pk->spawnForced = true;
-            $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-            $player->sendDataPacket($pk);
-            if ($item->equalsExact($player->getInventory()->getItemInHand())) {
-                $player->sendTip(TextFormat::GREEN . "Nearest player " . round($player->distance($detected), 1) . " blocks away.");
-            }
-        } else {
-            if ($item->equalsExact($player->getInventory()->getItemInHand())) {
+        $this->setCompassPosition($player, $detected ?? $player->getLevel()->getSafeSpawn());
+        if ($item->equalsExact($player->getInventory()->getItemInHand())) {
+            if (is_null($detected)) {
                 $player->sendTip(TextFormat::RED . "No players found.");
-                $pk = new SetSpawnPositionPacket();
-                $pk->x = (int)$player->getLevel()->getSafeSpawn()->x;
-                $pk->y = (int)$player->getLevel()->getSafeSpawn()->y;
-                $pk->z = (int)$player->getLevel()->getSafeSpawn()->z;
-                $pk->spawnForced = true;
-                $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-                $player->sendDataPacket($pk);
+            } else {
+                $player->sendTip(TextFormat::GREEN . "Nearest player " . round($player->distance($detected), 1) . " blocks away.");
             }
         }
     }
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
-        if (!$toggle && $player->isOnline()) {
-            $pk = new SetSpawnPositionPacket();
-            $pk->x = (int)$player->getLevel()->getSafeSpawn()->x;
-            $pk->y = (int)$player->getLevel()->getSafeSpawn()->y;
-            $pk->z = (int)$player->getLevel()->getSafeSpawn()->z;
-            $pk->spawnForced = true;
-            $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-            $player->sendDataPacket($pk);
-        }
+        if (!$toggle && $player->isOnline()) $this->setCompassPosition($player, $player->getLevel()->getSafeSpawn());
+    }
+
+    public function setCompassPosition(Player $player, Position $position): void
+    {
+        $pk = new SetSpawnPositionPacket();
+        $pk->x = (int)$position->x;
+        $pk->y = (int)$position->y;
+        $pk->z = (int)$position->z;
+        $pk->spawnForced = true;
+        $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
+        $player->sendDataPacket($pk);
     }
 
     public function findNearestPlayer(Player $player, int $range): ?Player
@@ -77,15 +72,5 @@ class RadarEnchant extends TickingEnchantment
             }
         }
         return $nearestPlayer;
-    }
-
-    public function getUsageType(): int
-    {
-        return self::TYPE_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return self::ITEM_TYPE_COMPASS;
     }
 }
