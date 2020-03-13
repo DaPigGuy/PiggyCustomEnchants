@@ -17,6 +17,11 @@ class HeadhunterEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Headhunter";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {
@@ -35,10 +40,5 @@ class HeadhunterEnchant extends ReactiveEnchantment
                 $event->setModifier($this->extraData["additionalMultiplier"] * $level, CustomEnchantIds::HEADHUNTER);
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

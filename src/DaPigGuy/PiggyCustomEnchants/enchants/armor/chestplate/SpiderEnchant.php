@@ -21,6 +21,12 @@ class SpiderEnchant extends ToggleableEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+
+
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $player->setCanClimbWalls($this->canClimb($player));
@@ -31,16 +37,6 @@ class SpiderEnchant extends ToggleableEnchantment
         if (!$toggle) {
             $player->setCanClimbWalls(false);
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_CHESTPLATE;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_CHESTPLATE;
     }
 
     public function canClimb(Player $player): bool

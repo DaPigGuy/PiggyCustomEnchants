@@ -21,6 +21,9 @@ class ShuffleEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
@@ -44,10 +47,5 @@ class ShuffleEnchant extends ReactiveEnchantment
                 $player->sendMessage(TextFormat::DARK_PURPLE . "You have switched positions with " . $name);
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

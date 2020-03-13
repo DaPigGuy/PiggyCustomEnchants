@@ -19,6 +19,9 @@ class EnergizingEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Energizing";
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
@@ -37,10 +40,5 @@ class EnergizingEnchant extends ReactiveEnchantment
                 $player->getEffects()->add($effect);
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 }

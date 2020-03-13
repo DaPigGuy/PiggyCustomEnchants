@@ -24,6 +24,11 @@ class ReviveEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Revive";
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     public function getReagent(): array
     {
         return [EntityDamageEvent::class];
@@ -62,15 +67,5 @@ class ReviveEnchant extends ReactiveEnchantment
                 $event->setBaseDamage(0);
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

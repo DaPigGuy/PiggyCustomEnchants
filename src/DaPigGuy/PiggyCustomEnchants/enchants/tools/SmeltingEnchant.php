@@ -17,7 +17,12 @@ class SmeltingEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Smelting";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 1;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {
@@ -33,11 +38,6 @@ class SmeltingEnchant extends ReactiveEnchantment
                 return $item;
             }, $event->getDrops()));
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 
     public function getPriority(): int

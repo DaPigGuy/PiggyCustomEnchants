@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
@@ -15,6 +16,8 @@ class LifestealEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Lifesteal";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_COMMON;
 
     public function getDefaultExtraData(): array
     {

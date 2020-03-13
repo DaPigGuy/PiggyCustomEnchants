@@ -23,6 +23,11 @@ class PoisonousCloudEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 3;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 3, "durationMultiplier" => 100, "baseAmplifier" => -1, "amplifierMultiplier" => 1];
@@ -49,15 +54,5 @@ class PoisonousCloudEnchant extends TickingEnchantment
                 }
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

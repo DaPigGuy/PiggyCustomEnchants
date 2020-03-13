@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\entity\Living;
@@ -20,6 +21,11 @@ class CactusEnchant extends TickingEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     public function getTickingInterval(): int
     {
         return 10;
@@ -33,15 +39,5 @@ class CactusEnchant extends TickingEnchantment
                 $entity->attack($ev);
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return self::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return self::ITEM_TYPE_ARMOR;
     }
 }

@@ -18,7 +18,14 @@ class AntitoxinEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Antitoxin";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    /** @var int */
     public $maxLevel = 1;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_HELMET;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     public function getReagent(): array
     {
@@ -30,15 +37,5 @@ class AntitoxinEnchant extends ReactiveEnchantment
         if ($event instanceof EntityEffectAddEvent) {
             if ($event->getEffect()->getType() === VanillaEffects::POISON()) $event->setCancelled();
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_HELMET;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HELMET;
     }
 }

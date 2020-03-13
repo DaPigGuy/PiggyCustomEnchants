@@ -19,6 +19,9 @@ class TelepathyEnchant extends ReactiveEnchantment
     /** @var int */
     public $maxLevel = 1;
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
@@ -27,15 +30,25 @@ class TelepathyEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            $player->getInventory()->addItem(...$event->getDrops());
+            $drops = $event->getDrops();
+            foreach ($drops as $key => $drop) {
+                if ($player->getInventory()->canAddItem($drop)) {
+                    unset($drops[$key]);
+                    $player->getInventory()->addItem($drop);
+                    continue;
+                }
+                foreach ($player->getInventory()->all($drop) as $item) {
+                    if ($item->getCount() < $item->getMaxStackSize()) {
+                        $newDrop = clone $drop->setCount($drop->getCount() - ($item->getMaxStackSize() - $item->getCount()));
+                        $player->getInventory()->addItem($drop->setCount($item->getMaxStackSize() - $item->getCount()));
+                        $drop = $newDrop;
+                    }
+                }
+                $drops[$key] = $drop;
+            }
             $player->getXpManager()->addXp($event->getXpDropAmount());
-            $event->setDrops([]);
+            $event->setDrops($drops);
             $event->setXpDropAmount(0);
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_TOOLS;
     }
 }

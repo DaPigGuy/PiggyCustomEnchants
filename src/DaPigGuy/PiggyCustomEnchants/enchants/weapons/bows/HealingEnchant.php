@@ -17,6 +17,9 @@ class HealingEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Healing";
 
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+
     public function getReagent(): array
     {
         return [EntityDamageByChildEntityEvent::class];
@@ -36,10 +39,5 @@ class HealingEnchant extends ReactiveEnchantment
             }
             $event->setBaseDamage(0);
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOW;
     }
 }

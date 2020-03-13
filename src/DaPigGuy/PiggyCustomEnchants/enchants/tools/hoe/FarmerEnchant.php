@@ -20,7 +20,12 @@ class FarmerEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Farmer";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 1;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
 
     public function getReagent(): array
     {
@@ -41,10 +46,5 @@ class FarmerEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_HOE;
     }
 }

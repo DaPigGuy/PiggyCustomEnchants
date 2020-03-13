@@ -23,10 +23,19 @@ class ForcefieldEnchant extends ToggleableEnchantment
 
     /** @var string */
     public $name = "Forcefield";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     public function getDefaultExtraData(): array
     {
         return ["radiusMultiplier" => 0.75];
     }
+
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $forcefieldLevel = $this->stack[$player->getName()];
@@ -52,13 +61,5 @@ class ForcefieldEnchant extends ToggleableEnchantment
                 }
             }
         }
-    }
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 }

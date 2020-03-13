@@ -24,8 +24,9 @@ class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, callable $condition, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
+        $this->rarity = $rarity;
         $this->condition = $condition;
-        parent::__construct($plugin, $id, $rarity);
+        parent::__construct($plugin, $id);
     }
 
     public function getDefaultExtraData(): array

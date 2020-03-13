@@ -19,6 +19,11 @@ class JackpotEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Jackpot";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
+
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;
 
     const ORE_TIERS = [
         BlockLegacyIds::COAL_ORE,
@@ -27,10 +32,12 @@ class JackpotEnchant extends ReactiveEnchantment
         BlockLegacyIds::DIAMOND_ORE,
         BlockLegacyIds::EMERALD_ORE
     ];
+
     public function getReagent(): array
     {
         return [BlockBreakEvent::class];
     }
+
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
@@ -50,10 +57,7 @@ class JackpotEnchant extends ReactiveEnchantment
             }
         }
     }
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_PICKAXE;
-    }
+
     public function getPriority(): int
     {
         return 3;

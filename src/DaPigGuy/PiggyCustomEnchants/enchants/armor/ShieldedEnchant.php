@@ -19,6 +19,11 @@ class ShieldedEnchant extends ToggleableEnchantment
     /** @var int */
     public $maxLevel = 3;
 
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+
     /** @var EffectInstance[] */
     private $previousEffect;
 
@@ -38,16 +43,6 @@ class ShieldedEnchant extends ToggleableEnchantment
         }
         $player->getEffects()->remove(VanillaEffects::RESISTANCE());
         $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 2147483647, $this->stack[$player->getName()] - 1, false));
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_ARMOR_INVENTORY;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_ARMOR;
     }
 
     public function canEffectsStack(): bool

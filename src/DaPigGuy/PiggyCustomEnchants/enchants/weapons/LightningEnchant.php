@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
 use pocketmine\entity\EntityFactory;
@@ -17,6 +18,8 @@ class LightningEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Lightning";
+    /** @var int */
+    public $rarity = CustomEnchant::RARITY_MYTHIC;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

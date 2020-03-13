@@ -19,7 +19,14 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Magma Walker";
     /** @var int */
+    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
     public $maxLevel = 2;
+
+    /** @var int */
+    public $usageType = CustomEnchant::TYPE_BOOTS;
+    /** @var int */
+    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     public function getReagent(): array
     {
@@ -50,15 +57,5 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
                 }
             }
         }
-    }
-
-    public function getUsageType(): int
-    {
-        return CustomEnchant::TYPE_BOOTS;
-    }
-
-    public function getItemType(): int
-    {
-        return CustomEnchant::ITEM_TYPE_BOOTS;
     }
 }
