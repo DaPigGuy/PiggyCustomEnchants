@@ -13,15 +13,15 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 ## Commands
 | Command | Description | Permissions | Aliases |
 | --- | --- | --- | --- |
-| /customenchant | Main command for PiggyCustomEnchants | `piggycustomenchants.command.ce` |  `/ce` |
-| /customenchant about | Shows version and author information | `piggycustomenchants.command.ce.about` | `/ce about` |
-| /customenchant enchant | Command to enchant an item with custom enchants | `piggycustomenchants.command.ce.enchant` | `/ce enchant` |
-| /customenchant help | Lists all PiggyCustomEnchant commands | `piggycustomenchants.command.ce.help` | `/ce help` |
-| /customenchant info | Gives information on a custom enchant | `piggycustomenchants.command.ce.info` | `/ce info` |
-| /customenchant list | Lists all PiggyCustomEnchants enchants | `piggycustomenchants.command.ce.list` | `/ce list` |
-| /customenchant nbt | Outputs the NBT of the held item | `piggycustomenchants.command.ce.nbt` | `/ce nbt` |
-| /customenchant remove | Removes a custom enchant from the held item | `piggycustomenchants.command.ce.remove` | `/ce remove` |
-=
+| `/customenchant` | Main command for PiggyCustomEnchants | `piggycustomenchants.command.ce` |  `/ce` |
+| `/customenchant about` | Shows version and author information | `piggycustomenchants.command.ce.about` | `/ce about` |
+| `/customenchant enchant` | Command to enchant an item with custom enchants | `piggycustomenchants.command.ce.enchant` | `/ce enchant` |
+| `/customenchant help` | Lists all PiggyCustomEnchant commands | `piggycustomenchants.command.ce.help` | `/ce help` |
+| `/customenchant info` | Gives information on a custom enchant | `piggycustomenchants.command.ce.info` | `/ce info` |
+| `/customenchant list` | Lists all PiggyCustomEnchants enchants | `piggycustomenchants.command.ce.list` | `/ce list` |
+| `/customenchant nbt` | Outputs the NBT of the held item | `piggycustomenchants.command.ce.nbt` | `/ce nbt` |
+| `/customenchant remove` | Removes a custom enchant from the held item | `piggycustomenchants.command.ce.remove` | `/ce remove` |
+
 ## Permissions
 | Permissions | Description | Default |
 | --- | --- | --- |
