@@ -4,6 +4,6 @@ about: Please do not create an issue for this. Join our Discord for support (lin
 title: ''
 labels: 'invalid'
 assignees: ''
-
 ---
+
 Please do not create an issue for this. Join our Discord for support (link in README).

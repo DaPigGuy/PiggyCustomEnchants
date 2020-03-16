@@ -4,6 +4,6 @@ about: Please do not create an issue for this. The plugin will be updated to the
 title: 'Outdated API Version'
 labels: 'invalid'
 assignees: ''
-
 ---
+
 Please do not create an issue. Doing so will only delay an update.
