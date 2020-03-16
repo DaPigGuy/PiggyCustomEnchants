@@ -49,7 +49,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 ## Information
 * We do not support any spoons. Anything to do with spoons (Issues or PRs) will be ignored.
 * We are using the following virions: [Commando](https://github.com/CortexPE/Commando) and [libFormAPI](https://github.com/jojoe77777/FormAPI).
-    * **You MUST use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyAuctions/~) instead of GitHub.**
+    * **You MUST use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants/~) instead of GitHub.**
     * If you wish to run it via source, check out [DEVirion](https://github.com/poggit/devirion).
 * Plugin setup/configuration information & API Documentation available at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
 * You can find a list of custom enchants at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
