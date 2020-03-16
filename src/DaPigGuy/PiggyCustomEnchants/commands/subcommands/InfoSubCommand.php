@@ -62,7 +62,7 @@ class InfoSubCommand extends BaseSubCommand
             $sender->sendMessage(TextFormat::RED . "Invalid enchantment.");
             return;
         }
-        $sender->sendMessage(TextFormat::GREEN . $enchantment->getDisplayName() . "\n" . TextFormat::RESET . "ID: " . $enchantment->getId() . "\nDescription: " . $enchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . "\nRarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . "\nMax Level: " . $enchantment->getMaxLevel());
+        $sender->sendMessage(TextFormat::GREEN . $enchantment->getDisplayName() . TextFormat::EOL . TextFormat::RESET . "ID: " . $enchantment->getId() . TextFormat::EOL . "Description: " . $enchantment->getDescription() . TextFormat::EOL . "Type: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . TextFormat::EOL . "Rarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . TextFormat::EOL . "Max Level: " . $enchantment->getMaxLevel());
     }
 
     public function showInfo(Player $player, CustomEnchant $enchantment): void
@@ -71,7 +71,7 @@ class InfoSubCommand extends BaseSubCommand
             if ($data !== null) $this->plugin->getServer()->dispatchCommand($player, "ce");
         });
         $infoForm->setTitle(TextFormat::GREEN . $enchantment->getName() . " Enchantment");
-        $infoForm->setContent(TextFormat::GREEN . $enchantment->getDisplayName() . "\n" . TextFormat::RESET . "ID: " . $enchantment->getId() . "\nDescription: " . $enchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . "\nRarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . "\nMax Level: " . $enchantment->getMaxLevel());
+        $infoForm->setContent(TextFormat::GREEN . $enchantment->getDisplayName() . TextFormat::EOL . TextFormat::RESET . "ID: " . $enchantment->getId() . TextFormat::EOL . "Description: " . $enchantment->getDescription() . TextFormat::EOL . "Type: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . TextFormat::EOL . "Rarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . TextFormat::EOL . "Max Level: " . $enchantment->getMaxLevel());
         $infoForm->addButton("Back");
         $player->sendForm($infoForm);
     }

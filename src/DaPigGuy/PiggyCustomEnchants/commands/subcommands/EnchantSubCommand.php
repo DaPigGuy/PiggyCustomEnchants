@@ -57,19 +57,19 @@ class EnchantSubCommand extends BaseSubCommand
         $item = $target->getInventory()->getItemInHand();
         if (!$sender->hasPermission("piggycustomenchants.overridecheck")) {
             if (!Utils::itemMatchesItemType($item, $enchant->getItemType())) {
-                $sender->sendMessage(TextFormat::RED . TextFormat::RED . "The item is not compatible with this enchant.");
+                $sender->sendMessage(TextFormat::RED . "The item is not compatible with this enchant.");
                 return;
             }
             if ($args["level"] > $enchant->getMaxLevel()) {
-                $sender->sendMessage(TextFormat::RED . TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
+                $sender->sendMessage(TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
                 return;
             }
             if ($item->getCount() > 1) {
-                $sender->sendMessage(TextFormat::RED . TextFormat::RED . "You can only enchant one item at a time.");
+                $sender->sendMessage(TextFormat::RED . "You can only enchant one item at a time.");
                 return;
             }
             if (!Utils::checkEnchantIncompatibilities($item, $enchant)) {
-                $sender->sendMessage(TextFormat::RED . TextFormat::RED . "This enchant is not compatible with another enchant.");
+                $sender->sendMessage(TextFormat::RED . "This enchant is not compatible with another enchant.");
                 return;
             }
         }
@@ -96,23 +96,23 @@ class EnchantSubCommand extends BaseSubCommand
                     $item = $target->getInventory()->getItemInHand();
                     if (!$player->hasPermission("piggycustomenchants.overridecheck")) {
                         if (!Utils::itemMatchesItemType($item, $enchant->getItemType())) {
-                            Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The item is not compatible with this enchant.");
+                            Utils::errorForm($player, TextFormat::RED . "The item is not compatible with this enchant.");
                             return;
                         }
                         if ($data[1] > $enchant->getMaxLevel()) {
-                            Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
+                            Utils::errorForm($player, TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
                             return;
                         }
                         if (($enchantmentInstance = $item->getEnchantment($enchant->getId())) !== null && $enchantmentInstance->getLevel() > $data[1]) {
-                            Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "The enchant has already been applied with a higher level on the item.");
+                            Utils::errorForm($player, TextFormat::RED . "The enchant has already been applied with a higher level on the item.");
                             return;
                         }
                         if ($item->getCount() > 1) {
-                            Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "You can only enchant one item at a time.");
+                            Utils::errorForm($player, TextFormat::RED . "You can only enchant one item at a time.");
                             return;
                         }
                         if (!Utils::checkEnchantIncompatibilities($item, $enchant)) {
-                            Utils::errorForm($player, TextFormat::RED . TextFormat::RED . "This enchant is not compatible with another enchant.");
+                            Utils::errorForm($player, TextFormat::RED . "This enchant is not compatible with another enchant.");
                             return;
                         }
                     }
