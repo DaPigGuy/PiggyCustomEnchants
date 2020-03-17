@@ -1,4 +1,4 @@
-# PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/ci.badge/DaPigGuy/PiggyCustomEnchants/PiggyCustomEnchants/master)](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants) 
+# PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/shield.dl/PiggyCustomEnchants)](https://poggit.pmmp.io/p/PiggyCustomEnchants) [![Discord](https://img.shields.io/discord/330850307607363585?logo=discord)](https://discord.gg/qmnDsSD)
 
 PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP](https://github.com/pmmp/PocketMine-MP) featuring over 90 custom enchantments.
 
@@ -53,7 +53,6 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
     * If you wish to run it via source, check out [DEVirion](https://github.com/poggit/devirion).
 * Plugin setup/configuration information & API Documentation available at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
 * You can find a list of custom enchants at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
-* Check out our [Discord Server](https://discord.gg/qmnDsSD) for additional plugin support.
 
 ## License
 ```
