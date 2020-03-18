@@ -10,7 +10,6 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\tools\DrillerEnchant;
 use DaPigGuy\PiggyCustomEnchants\entities\BombardmentTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
-use DaPigGuy\PiggyCustomEnchants\inventory\CustomEnchantToggleListener;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\block\BlockLegacyIds;
@@ -35,9 +34,14 @@ use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\DataPacketSendEvent;
+use pocketmine\inventory\ArmorInventory;
+use pocketmine\inventory\CallbackInventoryChangeListener;
+use pocketmine\inventory\Inventory;
+use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Armor;
 use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\network\mcpe\protocol\InventoryContentPacket;
@@ -61,7 +65,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onBreak(BlockBreakEvent $event): void
     {
@@ -124,7 +127,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onDamage(EntityDamageEvent $event): void
     {
@@ -147,7 +149,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onEffectAdd(EntityEffectAddEvent $event): void
     {
@@ -159,7 +160,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onShootBow(EntityShootBowEvent $event): void
     {
@@ -177,7 +177,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onInteract(PlayerInteractEvent $event): void
     {
@@ -231,13 +230,34 @@ class EventListener implements Listener
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
             foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot);
         }
-        $player->getInventory()->addChangeListeners(new CustomEnchantToggleListener());
-        $player->getArmorInventory()->addChangeListeners(new CustomEnchantToggleListener());
+
+        $onSlot = function (Inventory $inventory, int $slot, Item $oldItem): void {
+            if ($inventory instanceof PlayerInventory || $inventory instanceof ArmorInventory) {
+                $holder = $inventory->getHolder();
+                if ($holder instanceof Player) {
+                    if (!$oldItem->equals(($newItem = $inventory->getItem($slot)), !$inventory instanceof ArmorInventory)) {
+                        if ($newItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($oldItem->getEnchantments() as $oldEnchantment) ToggleableEnchantment::attemptToggle($holder, $oldItem, $oldEnchantment, $inventory, $slot, false);
+                        if ($oldItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($newItem->getEnchantments() as $newEnchantment) ToggleableEnchantment::attemptToggle($holder, $newItem, $newEnchantment, $inventory, $slot);
+                    }
+                }
+            }
+        };
+        /**
+         * @param Item[] $oldContents
+         */
+        $onContent = function (Inventory $inventory, array $oldContents) use ($onSlot): void {
+            foreach ($oldContents as $slot => $oldItem) {
+                if (!($oldItem ?? ItemFactory::get(ItemIds::AIR))->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
+                    $onSlot($inventory, $slot, $oldItem);
+                }
+            }
+        };
+        $player->getInventory()->addChangeListeners(new CallbackInventoryChangeListener($onSlot, $onContent));
+        $player->getArmorInventory()->addChangeListeners(new CallbackInventoryChangeListener($onSlot, $onContent));
     }
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onMove(PlayerMoveEvent $event): void
     {
@@ -268,7 +288,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onSneak(PlayerToggleSneakEvent $event): void
     {
@@ -278,7 +297,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onProjectileHitBlock(ProjectileHitBlockEvent $event): void
     {
@@ -291,7 +309,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onProjectileLaunch(ProjectileLaunchEvent $event): void
     {
@@ -304,7 +321,6 @@ class EventListener implements Listener
 
     /**
      * @priority HIGHEST
-     * @ignoreCancelled true
      */
     public function onTransaction(InventoryTransactionEvent $event): void
     {
