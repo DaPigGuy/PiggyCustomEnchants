@@ -2,7 +2,7 @@
 name: Crash
 about: Report a crash in PiggyCustomEnchants
 title: ''
-labels: 'bug'
+labels: 'Type: Bug'
 assignees: 'DaPigGuy'
 ---
 

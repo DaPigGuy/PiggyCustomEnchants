@@ -350,6 +350,7 @@ class EventListener implements Listener
      */
     public function onTransaction(InventoryTransactionEvent $event): void
     {
+        if (!$this->plugin->getConfig()->getNested("enchants.books", true)) return;
         $transaction = $event->getTransaction();
         $actions = $transaction->getActions();
         $oldToNew = isset(array_keys($actions)[0]) ? $actions[array_keys($actions)[0]] : null;
