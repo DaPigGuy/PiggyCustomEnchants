@@ -6,10 +6,7 @@ parameters:
     - phar:///pocketmine/PocketMine-MP.phar/vendor/autoload.php
   autoload_directories:
     - /source/src
-    - phar:///source/vendor/FormAPI.phar/src/
-    - phar:///source/vendor/Commando.phar/src/
-  excludes_analyse:
-    - source/vendor
+    - /deps
   reportUnmatchedIgnoredErrors: false
   checkMissingIterableValueType: false
   ignoreErrors:
