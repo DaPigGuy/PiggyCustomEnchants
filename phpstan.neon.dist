@@ -6,7 +6,8 @@ parameters:
     - phar:///pocketmine/PocketMine-MP.phar/vendor/autoload.php
   autoload_directories:
     - /source/src
-    - /deps
+  excludes_analysis:
+    - /source/src/DaPigGuy/PiggyCustomEnchants/libs
   reportUnmatchedIgnoredErrors: false
   checkMissingIterableValueType: false
   ignoreErrors:
