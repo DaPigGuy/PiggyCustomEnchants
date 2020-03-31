@@ -8,7 +8,7 @@ parameters:
     - /source/src
     - /deps
   excludes_analyse:
-    - /deps
+    - /source/src/DaPigGuy/PiggyCustomEnchants/libs
   reportUnmatchedIgnoredErrors: false
   checkMissingIterableValueType: false
   ignoreErrors:
