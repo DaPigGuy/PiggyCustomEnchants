@@ -1,14 +1,15 @@
 parameters:
   paths:
-    - src
+    - /source/src
   level: 7
   autoload_files:
     - phar:///pocketmine/PocketMine-MP.phar/vendor/autoload.php
   autoload_directories:
-    - src
-    - src/DaPigGuy/PiggyCustomEnchants/libs
+    - /source/src
+    - phar:///source/vendor/FormAPI.phar/src/
+    - phar:///source/vendor/Commando.phar/src/
   excludes_analyse:
-    - src/DaPigGuy/PiggyCustomEnchants/libs
+    - source/vendor
   reportUnmatchedIgnoredErrors: false
   checkMissingIterableValueType: false
   ignoreErrors:
