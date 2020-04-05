@@ -58,7 +58,7 @@ class ListSubCommand extends BaseSubCommand
         $listString = "";
         foreach (Utils::TYPE_NAMES as $type => $name) {
             if (isset($enchantmentsByType[$type])) {
-                $listString .= "\n" . TextFormat::GREEN . TextFormat::BOLD . Utils::TYPE_NAMES[$type] . "\n" . TextFormat::RESET;
+                $listString .= TextFormat::EOL . TextFormat::GREEN . TextFormat::BOLD . Utils::TYPE_NAMES[$type] . TextFormat::EOL . TextFormat::RESET;
                 $listString .= implode(", ", array_map(function (CustomEnchant $enchant) {
                     return $enchant->getName();
                 }, $enchantmentsByType[$type]));
@@ -103,7 +103,7 @@ class ListSubCommand extends BaseSubCommand
                 /** @var CustomEnchant $selectedEnchantment */
                 $selectedEnchantment = array_values($enchantmentsByType[$type])[$data];
                 $infoForm->setTitle(TextFormat::GREEN . $selectedEnchantment->getName() . " Enchantment");
-                $infoForm->setContent(TextFormat::GREEN . $selectedEnchantment->getDisplayName() . "\n" . TextFormat::RESET . "ID: " . $selectedEnchantment->getId() . "\nDescription: " . $selectedEnchantment->getDescription() . "\nType: " . Utils::TYPE_NAMES[$type] . "\nRarity: " . Utils::RARITY_NAMES[$selectedEnchantment->getRarity()] . "\nMax Level: " . $selectedEnchantment->getMaxLevel());
+                $infoForm->setContent(TextFormat::GREEN . $selectedEnchantment->getDisplayName() . TextFormat::EOL . TextFormat::RESET . "ID: " . $selectedEnchantment->getId() . TextFormat::EOL . "Description: " . $selectedEnchantment->getDescription() . TextFormat::EOL . "Type: " . Utils::TYPE_NAMES[$type] . TextFormat::EOL . "Rarity: " . Utils::RARITY_NAMES[$selectedEnchantment->getRarity()] . TextFormat::EOL . "Max Level: " . $selectedEnchantment->getMaxLevel());
                 $infoForm->addButton("Back");
                 $player->sendForm($infoForm);
             }

@@ -10,6 +10,8 @@ enchants:
   position: "name"
   # Toggles roman numerals for displaying enchantment levels
   roman-numerals: true
+  # Toggles PiggyCE enchantment books
+  books: true
 # Toggles forms for /ce command
 forms:
   enabled: false

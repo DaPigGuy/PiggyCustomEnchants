@@ -2,13 +2,11 @@
 name: Bug Report
 about: Unexpected non-crash behavior with PiggyCustomEnchants
 title: ''
-labels: 'bug'
+labels: 'Type: Bug'
 assignees: 'DaPigGuy'
-
 ---
-<!-- DO NOT REMOVE THIS:
-failing to complete the required fields will result in the issue being closed due to insufficient information.
--->
+
+<!-- Failure to complete the required fields will result in the issue being closed. -->
 Please make sure your issue complies with these guidelines:
 - * [ ] Server Software must be the official PMMP w/o vanilla patching plugins (i.e. TeaSpoon)
 - * [ ] Issue must have not been reported previously

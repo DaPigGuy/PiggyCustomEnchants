@@ -24,6 +24,10 @@ class AboutSubCommand extends BaseSubCommand
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
+        $message = TextFormat::GREEN . "PiggyCustomEnchants version " . TextFormat::GOLD . $this->plugin->getDescription()->getVersion() . TextFormat::EOL .
+            TextFormat::GREEN . "PiggyCustomEnchants is a versatile custom enchantments plugin developed by DaPigGuy (MCPEPIG) and Aericio." . TextFormat::EOL .
+            "More information about our plugin can be found at " . TextFormat::GOLD . "https://piggydocs.aericio.net/" . TextFormat::GREEN . "." . TextFormat::EOL .
+            TextFormat::GRAY . "Copyright 2017-2020 DaPigGuy; Licensed under the Apache License.";
         if ($sender instanceof Player && $this->plugin->areFormsEnabled()) {
             $form = new SimpleForm(function (Player $player, ?int $data): void {
                 if ($data !== null) {
@@ -31,12 +35,12 @@ class AboutSubCommand extends BaseSubCommand
                 }
             });
             $form->setTitle(TextFormat::GREEN . "About PiggyCustomEnchants");
-            $form->setContent(TextFormat::GREEN . "PiggyCustomEnchants v" . $this->plugin->getDescription()->getVersion() . " is a custom enchants plugin made by DaPigGuy (IGN: MCPEPIG) & Aericio. You can find it at https://github.com/DaPigGuy/PiggyCustomEnchants.");
+            $form->setContent($message);
             $form->addButton("Back");
             $sender->sendForm($form);
             return;
         }
-        $sender->sendMessage(TextFormat::GREEN . "PiggyCustomEnchants v" . $this->plugin->getDescription()->getVersion() . " is a custom enchants plugin made by DaPigGuy (IGN: MCPEPIG) & Aericio. You can find it at https://github.com/DaPigGuy/PiggyCustomEnchants.");
+        $sender->sendMessage($message);
     }
 
     public function prepare(): void

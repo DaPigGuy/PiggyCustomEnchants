@@ -184,7 +184,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerItemHeldEvent $event
      * @priority HIGHEST
      */
     public function onItemHold(PlayerItemHeldEvent $event): void
@@ -198,7 +197,6 @@ class EventListener implements Listener
     }
 
     /**
-     * @param PlayerItemUseEvent $event
      * @priority HIGHEST
      */
     public function onItemUse(PlayerItemUseEvent $event): void
@@ -324,25 +322,24 @@ class EventListener implements Listener
      */
     public function onTransaction(InventoryTransactionEvent $event): void
     {
+        if (!$this->plugin->getConfig()->getNested("enchants.books", true)) return;
         $transaction = $event->getTransaction();
-        $actions = $transaction->getActions();
-        $oldToNew = isset(array_keys($actions)[0]) ? $actions[array_keys($actions)[0]] : null;
-        $newToOld = isset(array_keys($actions)[1]) ? $actions[array_keys($actions)[1]] : null;
-        if ($oldToNew instanceof SlotChangeAction && $newToOld instanceof SlotChangeAction) {
-            $itemClicked = $newToOld->getSourceItem();
-            $itemClickedWith = $oldToNew->getSourceItem();
-            if ($itemClickedWith->getId() === ItemIds::ENCHANTED_BOOK && $itemClicked->getId() !== ItemIds::AIR) {
-                if (count($itemClickedWith->getEnchantments()) < 1) return;
-                $enchantmentSuccessful = false;
-                foreach ($itemClickedWith->getEnchantments() as $enchantment) {
-                    if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $enchantment->getLevel())) continue;
-                    $itemClicked->addEnchantment($enchantment);
-                    $newToOld->getInventory()->setItem($newToOld->getSlot(), $itemClicked);
-                    $enchantmentSuccessful = true;
-                }
-                if ($enchantmentSuccessful) {
-                    $event->setCancelled();
-                    $oldToNew->getInventory()->setItem($oldToNew->getSlot(), ItemFactory::get(ItemIds::AIR));
+        $actions = array_values($transaction->getActions());
+        if (count($actions) === 2) {
+            foreach ($actions as $i => $action) {
+                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR) {
+                    if (count($itemClickedWith->getEnchantments()) < 1) return;
+                    $enchantmentSuccessful = false;
+                    foreach ($itemClickedWith->getEnchantments() as $enchantment) {
+                        if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $enchantment->getLevel())) continue;
+                        $itemClicked->addEnchantment($enchantment);
+                        $action->getInventory()->setItem($action->getSlot(), $itemClicked);
+                        $enchantmentSuccessful = true;
+                    }
+                    if ($enchantmentSuccessful) {
+                        $event->setCancelled();
+                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::get(ItemIds::AIR));
+                    }
                 }
             }
         }

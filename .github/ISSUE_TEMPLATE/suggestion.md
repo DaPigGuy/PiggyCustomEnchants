@@ -2,13 +2,11 @@
 name: Feature Suggestion
 about: Suggest features you would like added to PiggyCustomEnchants
 title: ''
-labels: 'suggestion'
+labels: 'Type: Enhancement'
 assignees: 'DaPigGuy'
-
 ---
-<!-- DO NOT REMOVE THIS:
-failing to complete the required fields will result in the issue being closed due to insufficient information.
--->
+
+<!-- Failure to complete the required fields will result in the issue being closed. -->
 Please make sure your issue complies with these guidelines:
 - * [ ] Idea must have not been suggested previously
 - * [ ] Be detailed on what you want & make sure the idea is plausible

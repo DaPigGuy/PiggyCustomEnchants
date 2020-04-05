@@ -19,8 +19,3 @@ $RECYCLE.BIN/
 
 # JetBrains IDE
 \.idea/
-.idea/workspace.xml
-
-# Floobits
-\.floo
-\.flooignore
