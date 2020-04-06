@@ -9,7 +9,7 @@ projects:
       - src: jojoe77777/FormAPI/libFormAPI
         version: ^1.3
       - src: CortexPE/Commando/Commando
-        version: ^0.5
+        version: ^0.6
     lint:
       phpstan: false
 ...
