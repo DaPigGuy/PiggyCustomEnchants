@@ -7,8 +7,43 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 **Q:** How do I create/use an enchanted book? </br>
 **A:** If you want to create an enchanted book, use the /ce enchant command on a normal book. Afterwards, you place the item you want to enchant on top of the enchanted book. It will then enchant your item.
 
-**Q:** `ErrorException: "Invalid argument supplied for foreach()" (EXCEPTION) in "plugins/PiggyCustomEnchants.phar/src/DaPigGuy/PiggyCustomEnchants/PiggyCustomEnchants" at line 54` </br>
-**A:** This is due to an outdated configuration from Version 1.0.0. You should delete your old configuration to allow PiggyCE to re-generate a new configuration.
+## Prerequisites
+* Basic knowledge on how to install plugins from Poggit Releases and/or Poggit CI
+* PMMP 3.2.0 or greater
+
+## Installation & Setup
+1. Install the plugin from Poggit.
+2. (Optional) Configure your PiggyCE
+   * Enchantment rarities, max levels, names, & descriptions can be configured in their respective JSON files (rarities, max_levels, display_names, descriptions)
+   * Extra enchantment settings can be found under `extra_data.json`
+   * The config.yml has many options. Some that you should pay attention to are:
+     * `disabled-enchants`: Allows certain enchants to be disabled
+         ```yaml
+            disabled-enchants:
+              - Porkified
+         ```
+     * `per-world-disabled-enchants`: Allows certain enchants to be disabled in specific worlds
+         ```yaml
+            per-world-disabled-enchants:
+              # Disables Porkified & Volley in PlotWorld
+              PlotWorld:
+                - Porkified
+                - Volley
+              # Disables Jetpack in SurvivalWorld
+              SurvivalWorld:
+                - Jetpack
+         ```
+     * `world-damage`: Toggles world damage for explosive enchantments
+     * `chances`: Allow chances of reactive enchantments to be configured
+3. (Optional) Install additional plugins supporting PiggyCE:
+   * [PiggyCustomEnchantsShop](https://poggit.pmmp.io/p/PiggyCustomEnchantsShop) (Official)
+   * [PCEAllyChecks](https://poggit.pmmp.io/p/PCEAllyChecks) (Official)
+   * [EasyKits](https://poggit.pmmp.io/p/EasyKits) (Recommended)
+   * [AdvancedKits](https://poggit.pmmp.io/p/AdvancedKits) 
+   * [KitUI](https://poggit.pmmp.io/p/KitUI)
+   * [KitsPlus](https://poggit.pmmp.io/p/KitsPlus)
+   * [EnchantShopUI](https://poggit.pmmp.io/p/EnchantShopUI)
+6. You're done! Start your server.
 
 ## Commands
 | Command | Description | Permissions | Aliases |
@@ -46,13 +81,12 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 * We do not support any spoons of PocketMine-MP. Anything to do with spoons (Issues or PRs) will be ignored.
   * This includes plugins that modify PocketMine-MP's behavior directly, such as TeaSpoon.
 
-## Information
+## Additional Information
 * We do not support any spoons. Anything to do with spoons (Issues or PRs) will be ignored.
 * We are using the following virions: [Commando](https://github.com/CortexPE/Commando) and [libFormAPI](https://github.com/jojoe77777/FormAPI).
-    * **You MUST use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants/~) instead of GitHub.**
+    * **Unless you know what you are doing, use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants/~) and not GitHub.**
     * If you wish to run it via source, check out [DEVirion](https://github.com/poggit/devirion).
-* Plugin setup/configuration information & API Documentation available at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
-* You can find a list of custom enchants at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
+* Detailed Plugin Setup, Custom Enchantment List, & API Documentation available at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
 
 ## License
 ```
