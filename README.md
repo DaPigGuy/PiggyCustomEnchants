@@ -42,7 +42,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
    * [AdvancedKits](https://poggit.pmmp.io/p/AdvancedKits) 
    * [KitUI](https://poggit.pmmp.io/p/KitUI)
    * [KitsPlus](https://poggit.pmmp.io/p/KitsPlus)
-   * [EnchantShopUI](https://poggit.pmmp.io/p/EnchantShopUI)
+   * [EnchantUI](https://poggit.pmmp.io/p/EnchantUI)
 6. You're done! Start your server.
 
 ## Commands
