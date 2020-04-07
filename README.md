@@ -18,11 +18,13 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
    * Extra enchantment settings can be found under `extra_data.json`
    * The config.yml has many options. Some that you should pay attention to are:
      * `disabled-enchants`: Allows certain enchants to be disabled
+     
          ```yaml
             disabled-enchants:
               - Porkified
          ```
      * `per-world-disabled-enchants`: Allows certain enchants to be disabled in specific worlds
+     
          ```yaml
             per-world-disabled-enchants:
               # Disables Porkified & Volley in PlotWorld
@@ -38,10 +40,12 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 3. (Optional) Install additional plugins supporting PiggyCE:
    * [PiggyCustomEnchantsShop](https://poggit.pmmp.io/p/PiggyCustomEnchantsShop) (Official)
    * [PCEAllyChecks](https://poggit.pmmp.io/p/PCEAllyChecks) (Official)
-   * [EasyKits](https://poggit.pmmp.io/p/EasyKits) (Recommended)
-   * [AdvancedKits](https://poggit.pmmp.io/p/AdvancedKits) 
-   * [KitUI](https://poggit.pmmp.io/p/KitUI)
-   * [KitsPlus](https://poggit.pmmp.io/p/KitsPlus)
+   * [PCEBookShop](https://poggit.pmmp.io/p/PCEBookShop) (Official)
+   * Kits
+      * [EasyKits](https://poggit.pmmp.io/p/EasyKits) (Recommended)
+      * [AdvancedKits](https://poggit.pmmp.io/p/AdvancedKits) 
+      * [KitUI](https://poggit.pmmp.io/p/KitUI)
+      * [KitsPlus](https://poggit.pmmp.io/p/KitsPlus)
    * [EnchantUI](https://poggit.pmmp.io/p/EnchantUI)
 6. You're done! Start your server.
 
