@@ -19,13 +19,15 @@ class DeepWoundsEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Deep Wounds";
+    /** @var int */
+    public $cooldownDuration = 7;
 
     /** @var ClosureTask[] */
     public static $tasks;
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 7, "interval" => 20, "durationMultiplier" => 20, "base" => 1, "multiplier" => 0.066];
+        return ["interval" => 20, "durationMultiplier" => 20, "base" => 1, "multiplier" => 0.066];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void

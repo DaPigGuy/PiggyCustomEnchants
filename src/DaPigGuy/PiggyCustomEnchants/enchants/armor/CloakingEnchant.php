@@ -21,6 +21,8 @@ class CloakingEnchant extends ReactiveEnchantment
     public $name = "Cloaking";
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
+    public $cooldownDuration = 10;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
@@ -29,7 +31,7 @@ class CloakingEnchant extends ReactiveEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 10, "durationMultiplier" => 60];
+        return ["durationMultiplier" => 60];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void

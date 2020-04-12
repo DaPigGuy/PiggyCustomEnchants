@@ -18,6 +18,8 @@ class EndershiftEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Endershift";
+    /** @var int */
+    public $cooldownDuration = 300;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
@@ -31,7 +33,7 @@ class EndershiftEnchant extends ReactiveEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 300, "speedDurationMultiplier" => 200, "speedBaseAmplifier" => 3, "speedAmplifierMultiplier" => 1, "strengthDurationMultiplier" => 200, "strengthBaseAmplifier" => 3, "strengthAmplifierMultiplier" => 1];
+        return ["speedDurationMultiplier" => 200, "speedBaseAmplifier" => 3, "speedAmplifierMultiplier" => 1, "strengthDurationMultiplier" => 200, "strengthBaseAmplifier" => 3, "strengthAmplifierMultiplier" => 1];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void

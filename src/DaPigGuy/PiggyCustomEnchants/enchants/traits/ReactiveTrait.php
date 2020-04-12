@@ -45,7 +45,10 @@ trait ReactiveTrait
             if ($event->getEntity() === $player && $event->getDamager() !== $player && $this->shouldReactToDamage()) return;
             if ($event->getEntity() !== $player && $this->shouldReactToDamaged()) return;
         }
-        if (mt_rand(0 * 100000, 100 * 100000) / 100000 <= $this->getChance($player, $level)) $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
+        if (mt_rand(0 * 100000, 100 * 100000) / 100000 <= $this->getChance($player, $level)) {
+            $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
+            $this->setCooldown($player, $this->cooldownDuration);
+        }
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
@@ -72,6 +75,11 @@ trait ReactiveTrait
     public function setChanceMultiplier(Player $player, float $multiplier): void
     {
         $this->chanceMultiplier[$player->getName()] = $multiplier;
+    }
+
+    public function getCooldownDuration(): int
+    {
+        return $this->cooldownDuration;
     }
 
     public function shouldReactToDamage(): bool
