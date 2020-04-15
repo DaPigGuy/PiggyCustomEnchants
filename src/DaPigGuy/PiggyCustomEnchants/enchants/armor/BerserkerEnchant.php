@@ -45,7 +45,6 @@ class BerserkerEnchant extends ReactiveEnchantment
                     $player->addEffect($effect);
                 }
                 $player->sendMessage("Your bloodloss makes your stronger!");
-                $this->setCooldown($player, $this->extraData["cooldown"]);
             }
         }
     }

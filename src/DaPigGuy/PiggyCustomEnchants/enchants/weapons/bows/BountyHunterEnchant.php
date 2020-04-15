@@ -39,7 +39,6 @@ class BountyHunterEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $bountyDrop = $this->getBounty();
             $player->getInventory()->addItem(Item::get($bountyDrop, 0, mt_rand(1, $this->extraData["base"] + $level * $this->extraData["multiplier"])));
-            $this->setCooldown($player, $this->extraData["cooldown"]);
         }
     }
 

@@ -49,7 +49,6 @@ class EndershiftEnchant extends ReactiveEnchantment
                     $player->addEffect($effect);
                 }
                 $player->sendMessage("You feel a rush of energy coming from your armor!");
-                $this->setCooldown($player, $this->extraData["cooldown"]);
             }
         }
     }

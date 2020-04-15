@@ -39,7 +39,6 @@ class CloakingEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $player->addEffect(new EffectInstance(Effect::getEffect(Effect::INVISIBILITY), $this->extraData["durationMultiplier"] * $level, 0, false));
             $player->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
-            $this->setCooldown($player, $this->extraData["cooldown"]);
         }
     }
 }

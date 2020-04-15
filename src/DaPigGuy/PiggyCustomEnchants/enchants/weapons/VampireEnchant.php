@@ -33,7 +33,6 @@ class VampireEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $player->setHealth($player->getHealth() + ($event->getFinalDamage() * $this->extraData["healthMultiplier"]) > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + ($event->getFinalDamage() * $this->extraData["healthMultiplier"]));
             $player->setFood($player->getFood() + ($event->getFinalDamage() * $this->extraData["foodMultiplier"]) > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + ($event->getFinalDamage() * $this->extraData["foodMultiplier"]));
-            $this->setCooldown($player, $this->extraData["cooldown"]);
         }
     }
 }
