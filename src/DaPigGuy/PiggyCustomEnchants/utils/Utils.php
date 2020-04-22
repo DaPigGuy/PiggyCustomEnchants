@@ -117,7 +117,7 @@ class Utils
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
-        if ($item->getId() === Item::BOOK) return true;
+        if ($item->getId() === Item::BOOK || $item->getId() === Item::ENCHANTED_BOOK) return true;
         switch ($itemType) {
             case CustomEnchant::ITEM_TYPE_GLOBAL:
                 return true;
