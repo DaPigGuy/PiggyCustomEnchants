@@ -298,14 +298,19 @@ class EventListener implements Listener
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
+    /**
+     * @priority MONITOR
+     */
     public function onQuit(PlayerQuitEvent $event): void
     {
         $player = $event->getPlayer();
-        foreach ($player->getInventory()->getContents() as $slot => $content) {
-            foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
-        }
-        foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
-            foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+        if ($player->isClosed()) {
+            foreach ($player->getInventory()->getContents() as $slot => $content) {
+                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
+            }
+            foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
+                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+            }
         }
     }
 
