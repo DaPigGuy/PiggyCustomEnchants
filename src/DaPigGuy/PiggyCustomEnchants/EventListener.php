@@ -304,7 +304,7 @@ class EventListener implements Listener
     public function onQuit(PlayerQuitEvent $event): void
     {
         $player = $event->getPlayer();
-        if ($player->isClosed()) {
+        if (!$player->isClosed()) {
             foreach ($player->getInventory()->getContents() as $slot => $content) {
                 foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
             }
