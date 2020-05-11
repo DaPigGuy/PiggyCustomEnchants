@@ -38,15 +38,17 @@ class PiggyCustomEnchants extends PluginBase
      */
     public function onEnable(): void
     {
-        if (!class_exists(BaseCommand::class)) {
-            $this->getLogger()->error("Commando virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return;
-        }
-        if (!class_exists(Form::class)) {
-            $this->getLogger()->error("libformapi virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return;
+        foreach (
+            [
+                "Commando" => BaseCommand::class,
+                "libformapi" => Form::class
+            ] as $virion => $class
+        ) {
+            if (!class_exists($class)) {
+                $this->getLogger()->error($virion . " virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
+                $this->getServer()->getPluginManager()->disablePlugin($this);
+                return;
+            }
         }
 
         foreach (["rarities", "max_levels", "display_names", "descriptions", "extra_data", "cooldowns"] as $file) {
