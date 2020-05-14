@@ -7,7 +7,7 @@ If you are submitting an issue ticket, you must:
 * Must be PMMP w/o vanilla patching plugins (i.e. TeaSpoon)
 * Issue must have not been reported previously
 * Must be on latest version of PMMP & PiggyCustomEnchants
-* Have a detailed title, like "Poison enchant does not apply effect"
+* Have a detailed title.
 * If possible, provide crashdumps/errors related to the issue.
 
 ### Pull Requests

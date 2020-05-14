@@ -24,6 +24,8 @@ class GrowEnchant extends ToggleableEnchantment
     public $name = "Grow";
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
+    public $cooldownDuration = 75;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
@@ -42,7 +44,7 @@ class GrowEnchant extends ToggleableEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 75, "power" => 60 * 20, "base" => 0.3, "multiplier" => 0.0125];
+        return ["power" => 60 * 20, "base" => 0.3, "multiplier" => 0.0125];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
@@ -74,7 +76,6 @@ class GrowEnchant extends ToggleableEnchantment
             if ($this->equippedArmorStack[$player->getName()] < 4 || $this->growPower[$player->getName()] <= 0) {
                 unset($this->grew[$player->getName()]);
                 if ($this->growPower[$player->getName()] <= 0) {
-                    $this->setCooldown($player, $this->extraData["cooldown"]);
                     $this->growPower[$player->getName()] = $this->extraData["power"];
                 }
                 $player->setScale(1);

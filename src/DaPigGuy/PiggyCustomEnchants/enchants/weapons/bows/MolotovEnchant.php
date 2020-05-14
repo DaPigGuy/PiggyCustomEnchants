@@ -38,7 +38,7 @@ class MolotovEnchant extends ReactiveEnchantment
             $boundaries = 0.1 * $level;
             for ($x = $boundaries; $x >= -$boundaries; $x -= 0.1) {
                 for ($z = $boundaries; $z >= -$boundaries; $z -= 0.1) {
-                    $fire = EntityFactory::create(FallingBlock::class, $entity->getWorld(), EntityFactory::createBaseNBT($entity->getPosition()->add(0.5, 1, 0.5), new Vector3($x, 0.1, $z))->setInt("TileID", BlockLegacyIds::FIRE)->setByte("Data", 0));
+                    $fire = EntityFactory::getInstance()->create(FallingBlock::class, $entity->getWorld(), EntityFactory::createBaseNBT($entity->getPosition()->add(0.5, 1, 0.5), new Vector3($x, 0.1, $z))->setInt("TileID", BlockLegacyIds::FIRE)->setByte("Data", 0));
                     $fire->setOnFire(1638); //Falling Sand with block id of fire not rendered by game
                     $fire->spawnToAll();
                 }

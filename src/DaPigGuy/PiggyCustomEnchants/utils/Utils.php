@@ -23,6 +23,8 @@ use pocketmine\item\Shears;
 use pocketmine\item\Shovel;
 use pocketmine\item\Sword;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\network\mcpe\convert\TypeConverter;
+use pocketmine\network\mcpe\protocol\types\inventory\ItemStack;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginDescription;
 use pocketmine\utils\TextFormat;
@@ -117,7 +119,7 @@ class Utils
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
-        if ($item->getId() === ItemIds::BOOK) return true;
+        if ($item->getId() === ItemIds::BOOK || $item->getId() === ItemIds::ENCHANTED_BOOK) return true;
         switch ($itemType) {
             case CustomEnchant::ITEM_TYPE_GLOBAL:
                 return true;
@@ -164,9 +166,10 @@ class Utils
         return true;
     }
 
-    public static function displayEnchants(Item $item): Item
+    public static function displayEnchants(ItemStack $itemStack): ItemStack
     {
         $plugin = CustomEnchantManager::getPlugin();
+        $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
         if (count($item->getEnchantments()) > 0) {
             $additionalInformation = $plugin->getConfig()->getNested("enchants.position") === "name" ? TextFormat::RESET . TextFormat::WHITE . $item->getName() : "";
             foreach ($item->getEnchantments() as $enchantmentInstance) {
@@ -185,11 +188,12 @@ class Utils
             }
         }
         if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors())) $item->getNamedTag()->setString("LolGetRekted", "Loser");
-        return $item;
+        return TypeConverter::getInstance()->coreItemStackToNet($item);
     }
 
-    public static function filterDisplayedEnchants(Item $item): Item
+    public static function filterDisplayedEnchants(ItemStack $itemStack): ItemStack
     {
+        $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
         $tag = $item->getNamedTag();
         if (count($item->getEnchantments()) > 0) $tag->removeTag(Item::TAG_DISPLAY);
         if ($tag->getTag("OriginalDisplayTag") instanceof CompoundTag) {
@@ -197,7 +201,7 @@ class Utils
             $tag->removeTag("OriginalDisplayTag");
         }
         $item->setNamedTag($tag);
-        return $item;
+        return TypeConverter::getInstance()->coreItemStackToNet($item);
     }
 
     /**

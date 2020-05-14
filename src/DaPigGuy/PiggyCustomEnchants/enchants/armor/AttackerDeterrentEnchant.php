@@ -55,7 +55,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
                 foreach ($this->effects as $key => $effect) {
-                    $damager->getEffects()->add(new EffectInstance($effect, $this->extraData["durationMultipliers"][$key] * $level, $this->$this->extraData["amplifierMultipliers"][$key] * $level));
+                    $damager->getEffects()->add(new EffectInstance($effect, $this->extraData["durationMultipliers"][$key] * $level, $this->extraData["amplifierMultipliers"][$key] * $level));
                 }
             }
         }

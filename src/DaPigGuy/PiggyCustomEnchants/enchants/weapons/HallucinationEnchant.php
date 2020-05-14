@@ -16,8 +16,8 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\TreeRoot;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
+use pocketmine\network\mcpe\protocol\types\CacheableNbt;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
 use pocketmine\network\mcpe\serializer\NetworkNbtSerializer;
 use pocketmine\player\Player;
@@ -54,19 +54,19 @@ class HallucinationEnchant extends ReactiveEnchantment
                                 $block = VanillaBlocks::BEDROCK();
                                 if ($position->equals($originalPosition)) $block = VanillaBlocks::LAVA();
                                 if ($position->equals($originalPosition->add(0, 1))) {
-                                    $block = BlockFactory::get(BlockLegacyIds::WALL_SIGN, 2);
+                                    $block = BlockFactory::getInstance()->get(BlockLegacyIds::WALL_SIGN, 2);
                                     if ($this->nbtWriter === null) $this->nbtWriter = new NetworkNbtSerializer();
-                                    $packets[] = BlockActorDataPacket::create((int)$position->x, (int)$position->y, (int)$position->z, $this->nbtWriter->write(new TreeRoot(
+                                    $packets[] = BlockActorDataPacket::create((int)$position->x, (int)$position->y, (int)$position->z, new CacheableNbt(
                                         CompoundTag::create()->
                                         setString(Tile::TAG_ID, "Sign")->
                                         setInt(Tile::TAG_X, (int)$position->x)->
                                         setInt(Tile::TAG_Y, (int)$position->y)->
                                         setInt(Tile::TAG_Z, (int)$position->z)->
                                         setString(Sign::TAG_TEXT_BLOB, implode("\n", [
-                                            TextFormat::RED . "You seem to be",
-                                            TextFormat::RED . "hallucinating..."
-                                        ]))
-                                    )));
+                                                TextFormat::RED . "You seem to be",
+                                                TextFormat::RED . "hallucinating..."
+                                            ])
+                                        )));
                                 }
                                 $packets[] = UpdateBlockPacket::create((int)$position->x, (int)$position->y, (int)$position->z, $block->getRuntimeId());
                             }

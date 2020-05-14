@@ -24,7 +24,7 @@ class LightningEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByEntityEvent) {
-            $lightning = EntityFactory::create(PiggyLightning::class, $event->getEntity()->getWorld(), EntityFactory::createBaseNBT($event->getEntity()->getPosition()));
+            $lightning = EntityFactory::getInstance()->create(PiggyLightning::class, $event->getEntity()->getWorld(), EntityFactory::createBaseNBT($event->getEntity()->getPosition()));
             $lightning->setOwningEntity($player);
             $lightning->spawnToAll();
         }

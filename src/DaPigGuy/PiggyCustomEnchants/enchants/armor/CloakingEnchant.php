@@ -21,6 +21,8 @@ class CloakingEnchant extends ReactiveEnchantment
     public $name = "Cloaking";
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
+    public $cooldownDuration = 10;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
@@ -29,7 +31,7 @@ class CloakingEnchant extends ReactiveEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 10, "durationMultiplier" => 60];
+        return ["durationMultiplier" => 60];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
@@ -37,7 +39,6 @@ class CloakingEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $player->getEffects()->add(new EffectInstance(VanillaEffects::INVISIBILITY(), $this->extraData["durationMultiplier"] * $level, 0, false));
             $player->sendMessage(TextFormat::DARK_GRAY . "You have become invisible!");
-            $this->setCooldown($player, $this->extraData["cooldown"]);
         }
     }
 }

@@ -57,7 +57,7 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
             ProjectileTracker::removeProjectile($projectile);
             $nbt = EntityFactory::createBaseNBT($projectile->getPosition(), $projectile->getMotion(), $projectile->getLocation()->yaw, $projectile->getLocation()->pitch);
             /** @var Entity $projectile */
-            $projectile = EntityFactory::create($this->projectileType, $player->getWorld(), $nbt, $player, $projectile instanceof Arrow && $this->projectileType === HomingArrow::class ? $projectile->isCritical() : $level, $level);
+            $projectile = EntityFactory::getInstance()->create($this->projectileType, $player->getWorld(), $nbt, $player, $projectile instanceof Arrow && $this->projectileType === HomingArrow::class ? $projectile->isCritical() : $level, $level);
             $projectile->spawnToAll();
             if ($projectile instanceof Projectile) {
                 $event->setProjectile($projectile);

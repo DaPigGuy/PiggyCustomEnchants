@@ -20,6 +20,8 @@ class BountyHunterEnchant extends ReactiveEnchantment
     public $name = "Bounty Hunter";
     /** @var int */
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    /** @var int */
+    public $cooldownDuration = 30;
 
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_BOW;
@@ -31,15 +33,14 @@ class BountyHunterEnchant extends ReactiveEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 30, "base" => 7, "multiplier" => 1];
+        return ["base" => 7, "multiplier" => 1];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $bountyDrop = $this->getBounty();
-            $player->getInventory()->addItem(ItemFactory::get($bountyDrop, 0, mt_rand(1, $this->extraData["base"] + $level * $this->extraData["multiplier"])));
-            $this->setCooldown($player, $this->extraData["cooldown"]);
+            $player->getInventory()->addItem(ItemFactory::getInstance()->get($bountyDrop, 0, mt_rand(1, $this->extraData["base"] + $level * $this->extraData["multiplier"])));
         }
     }
 

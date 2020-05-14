@@ -46,7 +46,7 @@ class CustomEnchantsCommand extends BaseCommand
             $sender->sendForm($form);
             return;
         }
-        $sender->sendMessage("Usage: <" . implode("|", $subcommands) . ">");
+        $sender->sendMessage("Usage: /ce <" . implode("|", $subcommands) . ">");
     }
 
     /**

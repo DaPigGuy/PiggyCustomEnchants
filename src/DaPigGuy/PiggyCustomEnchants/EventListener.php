@@ -35,12 +35,13 @@ use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\server\DataPacketSendEvent;
 use pocketmine\inventory\ArmorInventory;
-use pocketmine\inventory\CallbackInventoryChangeListener;
+use pocketmine\inventory\CallbackInventoryListener;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\Armor;
 use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
@@ -48,8 +49,6 @@ use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
-use pocketmine\network\mcpe\protocol\types\inventory\ReleaseItemTransactionData;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemOnEntityTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\player\Player;
 
@@ -78,11 +77,8 @@ class EventListener implements Listener
         if ($packet instanceof InventoryTransactionPacket) {
             $transaction = $packet->trData;
             foreach ($transaction->getActions() as $key => $action) {
-                Utils::filterDisplayedEnchants($action->oldItem);
-                Utils::filterDisplayedEnchants($action->newItem);
-            }
-            if ($transaction instanceof UseItemTransactionData || $transaction instanceof UseItemOnEntityTransactionData || $transaction instanceof ReleaseItemTransactionData) {
-                Utils::filterDisplayedEnchants($transaction->getItemInHand());
+                $action->oldItem = Utils::filterDisplayedEnchants($action->oldItem);
+                $action->newItem = Utils::filterDisplayedEnchants($action->newItem);
             }
             if ($transaction instanceof UseItemTransactionData) {
                 if ($transaction->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK) {
@@ -100,7 +96,7 @@ class EventListener implements Listener
         $packets = $event->getPackets();
         foreach ($packets as $packet) {
             if ($packet instanceof InventorySlotPacket) {
-                Utils::displayEnchants($packet->item);
+                $packet->item = Utils::displayEnchants($packet->item);
             }
             if ($packet instanceof InventoryContentPacket) {
                 foreach ($packet->items as $key => $item) {
@@ -116,7 +112,7 @@ class EventListener implements Listener
         if ($entity instanceof BombardmentTNT) {
             for ($i = 0; $i < 3 + $entity->getEnchantmentLevel(); $i++) {
                 /** @var PiggyTNT $tnt */
-                $tnt = EntityFactory::create(PiggyTNT::class, $entity->getWorld(), EntityFactory::createBaseNBT($entity->getPosition())->setShort("Fuse", 0));
+                $tnt = EntityFactory::getInstance()->create(PiggyTNT::class, $entity->getWorld(), EntityFactory::createBaseNBT($entity->getPosition())->setShort("Fuse", 0));
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.bombardment", false);
                 $tnt->setOwningEntity($entity->getOwningEntity());
                 $tnt->spawnToAll();
@@ -245,13 +241,13 @@ class EventListener implements Listener
          */
         $onContent = function (Inventory $inventory, array $oldContents) use ($onSlot): void {
             foreach ($oldContents as $slot => $oldItem) {
-                if (!($oldItem ?? ItemFactory::get(ItemIds::AIR))->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
+                if (!($oldItem ?? ItemFactory::getInstance()->get(ItemIds::AIR))->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
                     $onSlot($inventory, $slot, $oldItem);
                 }
             }
         };
-        $player->getInventory()->addChangeListeners(new CallbackInventoryChangeListener($onSlot, $onContent));
-        $player->getArmorInventory()->addChangeListeners(new CallbackInventoryChangeListener($onSlot, $onContent));
+        $player->getInventory()->addListeners(new CallbackInventoryListener($onSlot, $onContent));
+        $player->getArmorInventory()->addListeners(new CallbackInventoryListener($onSlot, $onContent));
     }
 
     /**
@@ -273,14 +269,19 @@ class EventListener implements Listener
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
+    /**
+     * @priority MONITOR
+     */
     public function onQuit(PlayerQuitEvent $event): void
     {
         $player = $event->getPlayer();
-        foreach ($player->getInventory()->getContents() as $slot => $content) {
-            foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
-        }
-        foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
-            foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+        if (!$player->isClosed()) {
+            foreach ($player->getInventory()->getContents() as $slot => $content) {
+                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
+            }
+            foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
+                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+            }
         }
     }
 
@@ -331,14 +332,19 @@ class EventListener implements Listener
                     if (count($itemClickedWith->getEnchantments()) < 1) return;
                     $enchantmentSuccessful = false;
                     foreach ($itemClickedWith->getEnchantments() as $enchantment) {
-                        if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $enchantment->getLevel())) continue;
-                        $itemClicked->addEnchantment($enchantment);
+                        $newLevel = $enchantment->getLevel();
+                        if (($existingEnchant = $itemClicked->getEnchantment($enchantment->getType())) !== null) {
+                            if ($existingEnchant->getLevel() > $newLevel) continue;
+                            $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
+                        }
+                        if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $newLevel)) continue;
+                        $itemClicked->addEnchantment(new EnchantmentInstance($enchantment->getType(), $enchantment->getLevel()));
                         $action->getInventory()->setItem($action->getSlot(), $itemClicked);
                         $enchantmentSuccessful = true;
                     }
                     if ($enchantmentSuccessful) {
                         $event->setCancelled();
-                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::get(ItemIds::AIR));
+                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::getInstance()->get(ItemIds::AIR));
                     }
                 }
             }

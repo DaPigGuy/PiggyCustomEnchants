@@ -39,18 +39,20 @@ class PiggyCustomEnchants extends PluginBase
      */
     public function onEnable(): void
     {
-        if (!class_exists(BaseCommand::class)) {
-            $this->getLogger()->error("Commando virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return;
-        }
-        if (!class_exists(Form::class)) {
-            $this->getLogger()->error("libformapi virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
-            $this->getServer()->getPluginManager()->disablePlugin($this);
-            return;
+        foreach (
+            [
+                "Commando" => BaseCommand::class,
+                "libformapi" => Form::class
+            ] as $virion => $class
+        ) {
+            if (!class_exists($class)) {
+                $this->getLogger()->error($virion . " virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
+                $this->getServer()->getPluginManager()->disablePlugin($this);
+                return;
+            }
         }
 
-        foreach (["rarities", "max_levels", "display_names", "descriptions", "extra_data"] as $file) {
+        foreach (["rarities", "max_levels", "display_names", "descriptions", "extra_data", "cooldowns"] as $file) {
             $this->saveResource($file . ".json");
             foreach ((new Config($this->getDataFolder() . $file . ".json"))->getAll() as $enchant => $data) {
                 $this->enchantmentData[$enchant][$file] = $data;
@@ -60,10 +62,10 @@ class PiggyCustomEnchants extends PluginBase
 
         CustomEnchantManager::init($this);
 
-        BlockFactory::register(new PiggyObsidian(), true);
+        BlockFactory::getInstance()->register(new PiggyObsidian(), true);
 
         foreach ([BombardmentTNT::class, HomingArrow::class, PigProjectile::class, PiggyFireball::class, PiggyWitherSkull::class, PiggyLightning::class, PiggyTNT::class] as $entityClassName) {
-            EntityFactory::register($entityClassName, []);
+            EntityFactory::getInstance()->register($entityClassName, []);
         }
 
         foreach ($this->getConfig()->get("disabled-enchants", []) as $enchant) {

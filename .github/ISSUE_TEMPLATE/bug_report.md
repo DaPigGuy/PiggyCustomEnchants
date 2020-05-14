@@ -11,7 +11,7 @@ Please make sure your issue complies with these guidelines:
 - * [ ] Server Software must be the official PMMP w/o vanilla patching plugins (i.e. TeaSpoon)
 - * [ ] Issue must have not been reported previously
 - * [ ] Make sure you are on the latest version of PMMP & PiggyCustomEnchants
-- * [ ] Have a detailed title (i.e "Poison enchant does not apply effect")
+- * [ ] Have a detailed title.
 
 ### Issue Description
 

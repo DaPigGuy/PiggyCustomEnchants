@@ -42,7 +42,7 @@ class SelfDestructEnchant extends ReactiveEnchantment
             for ($i = 0; $i < $level * $this->extraData["tntAmountMultiplier"]; $i++) {
                 $random = new Random();
                 /** @var PiggyTNT $tnt */
-                $tnt = EntityFactory::create(PiggyTNT::class, $player->getWorld(), EntityFactory::createBaseNBT($player->getPosition(), new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1),)->setShort("Fuse", 40));
+                $tnt = EntityFactory::getInstance()->create(PiggyTNT::class, $player->getWorld(), EntityFactory::createBaseNBT($player->getPosition(), new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1),)->setShort("Fuse", 40));
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.self-destruct", false);
                 $tnt->setOwningEntity($player);
                 $tnt->spawnToAll();

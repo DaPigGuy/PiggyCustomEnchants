@@ -39,7 +39,7 @@ class BombardmentEnchant extends ReactiveEnchantment
             $nbt->setInt("Level", $level);
 
             /** @var BombardmentTNT $entity */
-            $entity = EntityFactory::create(BombardmentTNT::class, $player->getWorld(), $nbt);
+            $entity = EntityFactory::getInstance()->create(BombardmentTNT::class, $player->getWorld(), $nbt);
             $entity->setOwningEntity($player);
             $entity->spawnToAll();
         }

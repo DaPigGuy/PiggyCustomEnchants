@@ -38,7 +38,7 @@ class MissileEnchant extends ReactiveEnchantment
             $projectile = $event->getEntity();
             for ($i = 0; $i <= $level * $this->extraData["multiplier"]; $i++) {
                 /** @var PiggyTNT $tnt */
-                $tnt = EntityFactory::create(PiggyTNT::class, $projectile->getWorld(), EntityFactory::createBaseNBT($projectile->getPosition())->setShort("Fuse", 40));
+                $tnt = EntityFactory::getInstance()->create(PiggyTNT::class, $projectile->getWorld(), EntityFactory::createBaseNBT($projectile->getPosition())->setShort("Fuse", 40));
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.missile", false);
                 $tnt->setOwningEntity($player);
                 $tnt->spawnToAll();

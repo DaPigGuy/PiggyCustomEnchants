@@ -81,7 +81,7 @@ class PigProjectile extends PiggyProjectile
                         $nbt->setShort("Health", 5);
                         $nbt->setShort("PickupDelay", 10);
                         $nbt->setShort("Age", 5700);
-                        $itemEntity = EntityFactory::create(ItemEntity::class, $this->location->world, $nbt);
+                        $itemEntity = EntityFactory::getInstance()->create(ItemEntity::class, $this->location->world, $nbt);
                         if ($itemEntity instanceof ItemEntity) {
                             $itemEntity->spawnToAll();
                         }
@@ -112,7 +112,7 @@ class PigProjectile extends PiggyProjectile
     {
         $values = self::PORK_LEVELS[$this->getPorkLevel()];
         return [
-            ItemFactory::get($values[3], 0, 1)->setCustomName(TextFormat::RESET . TextFormat::WHITE . $values[4])
+            ItemFactory::getInstance()->get($values[3], 0, 1)->setCustomName(TextFormat::RESET . TextFormat::WHITE . $values[4])
         ];
     }
 

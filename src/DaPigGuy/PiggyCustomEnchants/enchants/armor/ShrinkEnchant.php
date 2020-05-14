@@ -26,6 +26,8 @@ class ShrinkEnchant extends ToggleableEnchantment
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
     /** @var int */
     public $maxLevel = 2;
+    /** @var int */
+    public $cooldownDuration = 75;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
@@ -44,7 +46,7 @@ class ShrinkEnchant extends ToggleableEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 75, "power" => 60 * 20, "base" => 0.7, "multiplier" => 0.0125];
+        return ["power" => 60 * 20, "base" => 0.7, "multiplier" => 0.0125];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
@@ -76,7 +78,6 @@ class ShrinkEnchant extends ToggleableEnchantment
             if ($this->equippedArmorStack[$player->getName()] < 4 || $this->shrinkPower[$player->getName()] <= 0) {
                 unset($this->shrunk[$player->getName()]);
                 if ($this->shrinkPower[$player->getName()] <= 0) {
-                    $this->setCooldown($player, $this->extraData["cooldown"]);
                     $this->shrinkPower[$player->getName()] = $this->extraData["power"];
                 }
                 $player->setScale(1);

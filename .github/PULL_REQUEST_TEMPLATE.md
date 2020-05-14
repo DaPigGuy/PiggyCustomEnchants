@@ -3,7 +3,7 @@ Please make sure your pull request complies with these guidelines:
 - * [ ] Use same formatting
 - * [ ] Changes must have been tested on PMMP.
 - * [ ] Unless it is a minor code modification, you must use an IDE.
-- * [ ] Have a detailed title, like "Fix Poison enchant does not apply effect"
+- * [ ] Have a detailed title.
 
 #### **What does the PR change?**
 <!-- 

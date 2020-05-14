@@ -49,7 +49,7 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
                         if (in_array($b->getId(), [BlockLegacyIds::STILL_LAVA, BlockLegacyIds::LAVA, BlockLegacyIds::FLOWING_LAVA])) {
                             if (!in_array($b->getPos()->getWorld()->getBlock($b->getPos()->add(0, 1))->getId(), [BlockLegacyIds::STILL_LAVA, BlockLegacyIds::LAVA, BlockLegacyIds::FLOWING_LAVA])) {
                                 if ($b->getId() !== BlockLegacyIds::FLOWING_LAVA || $b->getMeta() === 0) {
-                                    $player->getWorld()->setBlock($b->getPos(), BlockFactory::get(BlockLegacyIds::OBSIDIAN, 15));
+                                    $player->getWorld()->setBlock($b->getPos(), BlockFactory::getInstance()->get(BlockLegacyIds::OBSIDIAN, 15));
                                 }
                             }
                         }

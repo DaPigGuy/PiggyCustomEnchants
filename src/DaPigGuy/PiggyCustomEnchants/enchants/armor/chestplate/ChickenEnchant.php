@@ -39,7 +39,7 @@ class ChickenEnchant extends TickingEnchantment
             }
             $drop = array_rand($drops);
             $drop = explode(":", $drops[$drop]);
-            $item = count($drop) < 3 ? VanillaItems::GOLD_INGOT() : ItemFactory::get((int)$drop[0], (int)$drop[1], (int)$drop[2]);
+            $item = count($drop) < 3 ? VanillaItems::GOLD_INGOT() : ItemFactory::getInstance()->get((int)$drop[0], (int)$drop[1], (int)$drop[2]);
             $vowels = ["a", "e", "i", "o", "u"];
             $player->getWorld()->dropItem($player->getPosition(), $item, $player->getDirectionVector()->multiply(-0.4));
             $player->sendTip(TextFormat::GREEN . "You have laid a" . (in_array(strtolower($item->getName()[0]), $vowels) ? "n " : " ") . $item->getName() . "...");

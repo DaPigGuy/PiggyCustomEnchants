@@ -47,7 +47,6 @@ class PiggyExplosion extends Explosion
         if ($ev->isCancelled()) {
             return false;
         } else {
-            $yield = $ev->getYield();
             $this->affectedBlocks = $ev->getBlockList();
         }
 

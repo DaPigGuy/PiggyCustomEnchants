@@ -20,10 +20,12 @@ class VampireEnchant extends ReactiveEnchantment
     public $rarity = CustomEnchant::RARITY_UNCOMMON;
     /** @var int */
     public $maxLevel = 1;
+    /** @var int */
+    public $cooldownDuration = 5;
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 5, "healthMultiplier" => 0.5, "foodMultiplier" => 0.5];
+        return ["healthMultiplier" => 0.5, "foodMultiplier" => 0.5];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
@@ -31,7 +33,6 @@ class VampireEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $player->setHealth($player->getHealth() + ($event->getFinalDamage() * $this->extraData["healthMultiplier"]) > $player->getMaxHealth() ? $player->getMaxHealth() : $player->getHealth() + ($event->getFinalDamage() * $this->extraData["healthMultiplier"]));
             $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + ($event->getFinalDamage() * $this->extraData["foodMultiplier"]) > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + ($event->getFinalDamage() * $this->extraData["foodMultiplier"]));
-            $this->setCooldown($player, $this->extraData["cooldown"]);
         }
     }
 }

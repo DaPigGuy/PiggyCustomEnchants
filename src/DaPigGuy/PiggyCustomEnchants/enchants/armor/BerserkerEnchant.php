@@ -18,6 +18,8 @@ class BerserkerEnchant extends ReactiveEnchantment
 {
     /** @var string */
     public $name = "Berserker";
+    /** @var int */
+    public $cooldownDuration = 300;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
@@ -31,7 +33,7 @@ class BerserkerEnchant extends ReactiveEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["cooldown" => 300, "minimumHealth" => 4, "effectDurationMultiplier" => 200, "effectAmplifierBase" => 3, "effectAmplifierMultiplier" => 1];
+        return ["minimumHealth" => 4, "effectDurationMultiplier" => 200, "effectAmplifierBase" => 3, "effectAmplifierMultiplier" => 1];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
@@ -43,7 +45,6 @@ class BerserkerEnchant extends ReactiveEnchantment
                     $player->getEffects()->add($effect);
                 }
                 $player->sendMessage("Your bloodloss makes your stronger!");
-                $this->setCooldown($player, $this->extraData["cooldown"]);
             }
         }
     }

@@ -51,7 +51,7 @@ class JackpotEnchant extends ReactiveEnchantment
                             unset($drops[$k]);
                         }
                     }
-                    $drops = array_merge($drops, BlockFactory::get(self::ORE_TIERS[$key + 1])->getDrops(VanillaItems::DIAMOND_PICKAXE()));
+                    $drops = array_merge($drops, BlockFactory::getInstance()->get(self::ORE_TIERS[$key + 1])->getDrops(VanillaItems::DIAMOND_PICKAXE()));
                     $event->setDrops($drops);
                 }
             }
