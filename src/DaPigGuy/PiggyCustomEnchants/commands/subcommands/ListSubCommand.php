@@ -109,7 +109,6 @@ class ListSubCommand extends BaseSubCommand
             }
         });
         $enchantForm->setTitle(TextFormat::GREEN . Utils::TYPE_NAMES[$type] . " Enchants");
-        /** @var CustomEnchant $enchantment */
         foreach ($enchantmentsByType[$type] as $enchantment) {
             $enchantForm->addButton($enchantment->getName());
         }

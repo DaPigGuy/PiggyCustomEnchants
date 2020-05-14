@@ -12,7 +12,6 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use ReflectionException;
 
 class SmeltingEnchant extends ReactiveEnchantment
 {
@@ -31,9 +30,6 @@ class SmeltingEnchant extends ReactiveEnchantment
     /** @var array */
     public $outputTable;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(PiggyCustomEnchants $plugin, int $id)
     {
         parent::__construct($plugin, $id);

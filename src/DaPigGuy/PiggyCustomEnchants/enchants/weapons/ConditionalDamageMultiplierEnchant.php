@@ -11,16 +11,12 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use ReflectionException;
 
 class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
 {
     /** @var callable */
     private $condition;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, callable $condition, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;

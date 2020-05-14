@@ -6,7 +6,6 @@ namespace DaPigGuy\PiggyCustomEnchants\commands;
 
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\BaseSubCommand;
-use CortexPE\Commando\exception\SubCommandCollision;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\AboutSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\EnchantSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\InfoSubCommand;
@@ -49,9 +48,6 @@ class CustomEnchantsCommand extends BaseCommand
         $sender->sendMessage("Usage: /ce <" . implode("|", $subcommands) . ">");
     }
 
-    /**
-     * @throws SubCommandCollision
-     */
     public function prepare(): void
     {
         $this->registerSubCommand(new AboutSubCommand($this->plugin, "about", "Displays basic information about the plugin"));

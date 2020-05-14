@@ -14,24 +14,20 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use ReflectionException;
 
 class LacedWeaponEnchant extends ReactiveEnchantment
 {
     /** @var array */
-    private $effectIds = [Effect::POISON];
+    private $effectIds;
     /** @var array */
-    private $baseDuration = [0];
+    private $baseDuration;
     /** @var array */
-    private $baseAmplifier = [0];
+    private $baseAmplifier;
     /** @var int[] */
-    private $durationMultiplier = [60];
+    private $durationMultiplier;
     /** @var int[] */
-    private $amplifierMultiplier = [1];
+    private $amplifierMultiplier;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = self::RARITY_RARE, array $effectIds = [Effect::POISON], array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
     {
         $this->name = $name;

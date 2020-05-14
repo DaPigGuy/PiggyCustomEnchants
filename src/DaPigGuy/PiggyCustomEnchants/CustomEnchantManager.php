@@ -81,7 +81,6 @@ use DaPigGuy\PiggyCustomEnchants\enchants\weapons\VampireEnchant;
 use pocketmine\entity\Effect;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
-use ReflectionException;
 use ReflectionProperty;
 use SplFixedArray;
 
@@ -93,9 +92,6 @@ class CustomEnchantManager
     /** @var CustomEnchant[] */
     public static $enchants = [];
 
-    /**
-     * @throws ReflectionException
-     */
     public static function init(PiggyCustomEnchants $plugin): void
     {
         self::$plugin = $plugin;
@@ -229,7 +225,6 @@ class CustomEnchantManager
 
     /**
      * @param int|Enchantment $id
-     * @throws ReflectionException
      */
     public static function unregisterEnchantment($id): void
     {

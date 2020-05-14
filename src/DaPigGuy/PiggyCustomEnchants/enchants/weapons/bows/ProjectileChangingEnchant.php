@@ -16,7 +16,6 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use ReflectionException;
 
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
@@ -26,9 +25,6 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;

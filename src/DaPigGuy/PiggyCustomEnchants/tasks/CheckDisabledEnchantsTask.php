@@ -8,7 +8,6 @@ use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\Server;
 use pocketmine\utils\Internet;
-use ReflectionException;
 
 class CheckDisabledEnchantsTask extends AsyncTask
 {
@@ -21,9 +20,6 @@ class CheckDisabledEnchantsTask extends AsyncTask
         }
     }
 
-    /**
-     * @throws ReflectionException
-     */
     public function onCompletion(Server $server): void
     {
         if ($this->getResult() !== null) {

@@ -9,7 +9,6 @@ use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\Player;
 use ReflectionClass;
-use ReflectionException;
 
 class CustomEnchant extends Enchantment
 {
@@ -65,9 +64,6 @@ class CustomEnchant extends Enchantment
     const ITEM_TYPE_BOOTS = 14;
     const ITEM_TYPE_COMPASS = 15;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(PiggyCustomEnchants $plugin, int $id)
     {
         $this->plugin = $plugin;
