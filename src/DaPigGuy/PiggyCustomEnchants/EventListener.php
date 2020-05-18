@@ -186,12 +186,9 @@ class EventListener implements Listener
             $newItem = $event->getNewItem();
             $inventory = $entity->getInventory();
             $slot = $event->getSlot();
-            if ($newItem->getId() === Item::AIR) {
-                foreach ($oldItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $oldItem, $enchantmentInstance, $inventory, $slot, false);
-            }
-            if ($oldItem->getId() === Item::AIR) {
-                foreach ($newItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $newItem, $enchantmentInstance, $inventory, $slot);
-            }
+            if ($oldItem->equals($newItem, false, true)) return;
+            foreach ($oldItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $oldItem, $enchantmentInstance, $inventory, $slot, false);
+            foreach ($newItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($entity, $newItem, $enchantmentInstance, $inventory, $slot);
         }
     }
 
