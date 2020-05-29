@@ -8,8 +8,8 @@ projects:
     libs:
       - src: jojoe77777/FormAPI/libFormAPI
         version: ^1.3
-      - src: CortexPE/Commando/Commando
-        version: ^0.6
+      - src: ParoxityTeam/Commando/Commando
+        version: ^2.1.0
     lint:
       phpstan: false
 ...

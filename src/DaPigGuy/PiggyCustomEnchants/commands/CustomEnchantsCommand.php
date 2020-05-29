@@ -15,26 +15,13 @@ use DaPigGuy\PiggyCustomEnchants\commands\subcommands\RemoveSubCommand;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
-use pocketmine\command\PluginIdentifiableCommand;
 use pocketmine\Player;
-use pocketmine\plugin\Plugin;
 use pocketmine\utils\TextFormat;
 
-class CustomEnchantsCommand extends BaseCommand implements PluginIdentifiableCommand
+class CustomEnchantsCommand extends BaseCommand
 {
     /** @var PiggyCustomEnchants */
-    private $plugin;
-
-    public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
-    {
-        $this->plugin = $plugin;
-        parent::__construct($name, $description, $aliases);
-    }
-
-    public function getPlugin(): Plugin
-    {
-        return $this->plugin;
-    }
+    protected $plugin;
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
