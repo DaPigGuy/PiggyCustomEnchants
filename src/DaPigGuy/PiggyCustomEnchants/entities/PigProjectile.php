@@ -117,7 +117,7 @@ class PigProjectile extends PiggyProjectile
     protected function sendSpawnPacket(Player $player): void
     {
         $pk = new AddActorPacket();
-        $pk->type = $this->isZombie() ? Entity::ZOMBIE_PIGMAN : Entity::PIG;
+        $pk->type = AddActorPacket::LEGACY_ID_MAP_BC[$this->isZombie() ? Entity::ZOMBIE_PIGMAN : Entity::PIG];
         $pk->entityRuntimeId = $this->getId();
         $pk->position = $this->asVector3();
         $pk->motion = $this->getMotion();
