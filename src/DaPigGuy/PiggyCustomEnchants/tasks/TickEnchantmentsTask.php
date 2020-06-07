@@ -24,7 +24,7 @@ class TickEnchantmentsTask extends Task
         $this->plugin = $plugin;
     }
 
-    public function onRun(int $currentTick): void
+    public function onRun(): void
     {
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $successfulEnchantments = [];

@@ -48,7 +48,7 @@ class ImplantsEnchant extends ReactiveEnchantment
             if ($player->getAirSupplyTicks() < $player->getMaxAirSupplyTicks() && !isset(self::$tasks[$player->getName()])) {
                 self::$tasks[$player->getName()] = new ClosureTask(function () use ($player): void {
                     if ($player->isOnline() && $player->isAlive() && ($enchantment = $player->getArmorInventory()->getHelmet()->getEnchantment(Enchantment::get(CustomEnchantIds::IMPLANTS))) !== null) {
-                        if (!$player->getWorld()->getBlock($player->getNextPosition()->add(0, 1)) instanceof Water ||
+                        if (!$player->getWorld()->getBlock($player->getPosition()->add(0, 1, 0)) instanceof Water ||
                             $player->getAirSupplyTicks() >= $player->getMaxAirSupplyTicks()) {
                             self::$tasks[$player->getName()]->getHandler()->cancel();
                             unset(self::$tasks[$player->getName()]);

@@ -67,7 +67,7 @@ class PiggyExplosion extends Explosion
             $distance = $entityPos->distance($this->source) / $explosionSize;
 
             if ($distance <= 1) {
-                $motion = $entityPos->subtract($this->source)->normalize();
+                $motion = $entityPos->subtractVector($this->source)->normalize();
                 $impact = (1 - $distance) * ($exposure = 1);
                 $damage = (int)((($impact * $impact + $impact) / 2) * 8 * $explosionSize + 1);
 
@@ -119,7 +119,7 @@ class PiggyExplosion extends Explosion
                     $updateBlocks[$index] = true;
                 }
             }
-            $send[] = $pos->subtract($source);
+            $send[] = $pos->subtractVector($source);
         }
         unset(RecursiveEnchant::$isUsing[$this->what->getName()]);
 

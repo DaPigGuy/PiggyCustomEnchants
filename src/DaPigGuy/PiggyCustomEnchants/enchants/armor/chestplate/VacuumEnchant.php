@@ -34,7 +34,7 @@ class VacuumEnchant extends TickingEnchantment
             if ($entity instanceof ItemEntity) {
                 $distance = $player->getPosition()->distance($entity->getPosition());
                 if ($distance <= $this->extraData["radiusMultiplier"] * $level) {
-                    $entity->setMotion($player->getPosition()->subtract($entity->getPosition())->divide(3 * $level)->multiply($level));
+                    $entity->setMotion($player->getPosition()->subtractVector($entity->getPosition())->divide(3 * $level)->multiply($level));
                 }
             }
         }

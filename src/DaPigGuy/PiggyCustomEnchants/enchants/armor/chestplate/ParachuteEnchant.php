@@ -10,13 +10,13 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\block\BlockLegacyIds;
+use pocketmine\color\Color;
 use pocketmine\entity\effect\Effect;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
-use pocketmine\utils\Color;
 
 class ParachuteEnchant extends TickingEnchantment
 {
@@ -40,7 +40,7 @@ class ParachuteEnchant extends TickingEnchantment
         if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(Enchantment::get(CustomEnchantIds::JETPACK))) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
             $player->getEffects()->add(new EffectInstance($slowFall, 2147483647, 1, false));
         } elseif (($effect = $player->getEffects()->get($slowFall)) !== null) {
-            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1))->getId() !== BlockLegacyIds::AIR) $player->getEffects()->remove($slowFall);
+            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1, 0))->getId() !== BlockLegacyIds::AIR) $player->getEffects()->remove($slowFall);
         }
         $player->resetFallDistance();
     }
@@ -56,7 +56,7 @@ class ParachuteEnchant extends TickingEnchantment
     public function isInAir(Player $player): bool
     {
         for ($y = 1; $y <= 5; $y++) {
-            if ($player->getWorld()->getBlock($player->getPosition()->subtract(0, $y))->getId() !== BlockLegacyIds::AIR) return false;
+            if ($player->getWorld()->getBlock($player->getPosition()->subtract(0, $y, 0))->getId() !== BlockLegacyIds::AIR) return false;
         }
         return true;
     }

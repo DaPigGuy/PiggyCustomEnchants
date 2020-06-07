@@ -42,7 +42,7 @@ class SpiderEnchant extends ToggleableEnchantment
     public function canClimb(Player $player): bool
     {
         /** @var Block $block */
-        foreach (array_merge($player->getWorld()->getBlock($player->getPosition()->add(0, (count($player->getWorld()->getBlock($player->getPosition())->getCollisionBoxes()) > 0 ? ceil($player->getPosition()->y) - $player->getPosition()->y + 0.01 : 0)))->getHorizontalSides(), $player->getWorld()->getBlock($player->getPosition()->add(0, 1))->getHorizontalSides()) as $block) {
+        foreach (array_merge($player->getWorld()->getBlock($player->getPosition()->add(0, (count($player->getWorld()->getBlock($player->getPosition())->getCollisionBoxes()) > 0 ? ceil($player->getPosition()->y) - $player->getPosition()->y + 0.01 : 0), 0))->getHorizontalSides(), $player->getWorld()->getBlock($player->getPosition()->add(0, 1, 0))->getHorizontalSides()) as $block) {
             if ($block->isSolid()) {
                 return true;
             }

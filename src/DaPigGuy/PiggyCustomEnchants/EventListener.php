@@ -246,8 +246,8 @@ class EventListener implements Listener
                 }
             }
         };
-        $player->getInventory()->addListeners(new CallbackInventoryListener($onSlot, $onContent));
-        $player->getArmorInventory()->addListeners(new CallbackInventoryListener($onSlot, $onContent));
+        $player->getInventory()->getListeners()->add(new CallbackInventoryListener($onSlot, $onContent));
+        $player->getArmorInventory()->getListeners()->add(new CallbackInventoryListener($onSlot, $onContent));
     }
 
     /**
@@ -257,7 +257,7 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         if (!Utils::shouldTakeFallDamage($player)) {
-            if ($player->getWorld()->getBlock($player->getPosition()->floor()->subtract(0, 1))->getId() !== BlockLegacyIds::AIR && Utils::getNoFallDamageDuration($player) <= 0) {
+            if ($player->getWorld()->getBlock($player->getPosition()->floor()->subtract(0, 1, 0))->getId() !== BlockLegacyIds::AIR && Utils::getNoFallDamageDuration($player) <= 0) {
                 Utils::setShouldTakeFallDamage($player, true);
             } else {
                 Utils::increaseNoFallDamageDuration($player);
