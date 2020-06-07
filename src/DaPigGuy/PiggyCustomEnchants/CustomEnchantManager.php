@@ -85,7 +85,6 @@ use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
-use ReflectionException;
 use ReflectionProperty;
 
 class CustomEnchantManager
@@ -96,9 +95,6 @@ class CustomEnchantManager
     /** @var CustomEnchant[] */
     public static $enchants = [];
 
-    /**
-     * @throws ReflectionException
-     */
     public static function init(PiggyCustomEnchants $plugin): void
     {
         self::$plugin = $plugin;
@@ -224,7 +220,6 @@ class CustomEnchantManager
 
     /**
      * @param int|Enchantment $id
-     * @throws ReflectionException
      */
     public static function unregisterEnchantment($id): void
     {

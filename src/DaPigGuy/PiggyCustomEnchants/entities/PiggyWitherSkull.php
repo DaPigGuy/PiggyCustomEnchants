@@ -15,8 +15,6 @@ use pocketmine\player\Player;
 
 class PiggyWitherSkull extends PiggyProjectile
 {
-    const NETWORK_ID = EntityLegacyIds::WITHER_SKULL;
-
     /** @var float */
     public $width = 0.5;
     /** @var float */
@@ -42,5 +40,10 @@ class PiggyWitherSkull extends PiggyProjectile
             }
         }
         parent::onHitEntity($entityHit, $hitResult);
+    }
+
+    public static function getNetworkTypeId(): int
+    {
+        return EntityLegacyIds::WITHER_SKULL;
     }
 }

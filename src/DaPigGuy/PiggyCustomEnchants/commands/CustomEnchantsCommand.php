@@ -6,7 +6,6 @@ namespace DaPigGuy\PiggyCustomEnchants\commands;
 
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\BaseSubCommand;
-use CortexPE\Commando\exception\SubCommandCollision;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\AboutSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\EnchantSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\InfoSubCommand;
@@ -22,13 +21,7 @@ use pocketmine\utils\TextFormat;
 class CustomEnchantsCommand extends BaseCommand
 {
     /** @var PiggyCustomEnchants */
-    private $plugin;
-
-    public function __construct(PiggyCustomEnchants $plugin, string $name, string $description = "", array $aliases = [])
-    {
-        $this->plugin = $plugin;
-        parent::__construct($name, $description, $aliases);
-    }
+    protected $plugin;
 
     public function onRun(CommandSender $sender, string $aliasUsed, array $args): void
     {
@@ -49,9 +42,6 @@ class CustomEnchantsCommand extends BaseCommand
         $sender->sendMessage("Usage: /ce <" . implode("|", $subcommands) . ">");
     }
 
-    /**
-     * @throws SubCommandCollision
-     */
     public function prepare(): void
     {
         $this->registerSubCommand(new AboutSubCommand($this->plugin, "about", "Displays basic information about the plugin"));

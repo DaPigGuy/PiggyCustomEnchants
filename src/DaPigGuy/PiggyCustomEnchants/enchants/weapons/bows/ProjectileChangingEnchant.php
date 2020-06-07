@@ -18,7 +18,6 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
-use ReflectionException;
 
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
@@ -33,7 +32,6 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
 
     /**
      * @phpstan-param class-string<Entity> $projectileType
-     * @throws ReflectionException
      */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
     {

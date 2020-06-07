@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
+use pocketmine\data\bedrock\LegacyEntityIdToStringIdMap;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityFactory;
 use pocketmine\entity\object\ItemEntity;
@@ -43,9 +44,9 @@ class PigProjectile extends PiggyProjectile
     /** @var float */
     protected $damage = 1.5;
     /** @var int */
-    private $porkLevel = 1;
+    private $porkLevel;
     /** @var bool */
-    private $zombie = false;
+    private $zombie;
 
     public function __construct(World $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porkLevel = 1)
     {
@@ -119,11 +120,16 @@ class PigProjectile extends PiggyProjectile
     protected function sendSpawnPacket(Player $player): void
     {
         $pk = new AddActorPacket();
-        $pk->type = $this->isZombie() ? EntityLegacyIds::ZOMBIE_PIGMAN : EntityLegacyIds::PIG;
+        $pk->type = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->isZombie() ? EntityLegacyIds::ZOMBIE_PIGMAN : EntityLegacyIds::PIG);
         $pk->entityRuntimeId = $this->getId();
         $pk->position = $this->getPosition();
         $pk->motion = $this->getMotion();
         $pk->metadata = $this->getSyncedNetworkData(false);
         $player->getNetworkSession()->sendDataPacket($pk);
+    }
+
+    public static function getNetworkTypeId(): int
+    {
+        return EntityLegacyIds::PIG;
     }
 }

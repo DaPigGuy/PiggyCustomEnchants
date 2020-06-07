@@ -337,7 +337,7 @@ class EventListener implements Listener
                             if ($existingEnchant->getLevel() > $newLevel) continue;
                             $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
                         }
-                        if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $newLevel)) continue;
+                        if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $newLevel) || ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0)) continue;
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantment->getType(), $enchantment->getLevel()));
                         $action->getInventory()->setItem($action->getSlot(), $itemClicked);
                         $enchantmentSuccessful = true;

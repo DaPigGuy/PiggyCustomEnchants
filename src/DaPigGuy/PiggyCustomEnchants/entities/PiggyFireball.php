@@ -15,8 +15,6 @@ use pocketmine\player\Player;
 
 class PiggyFireball extends PiggyProjectile
 {
-    const NETWORK_ID = EntityLegacyIds::SMALL_FIREBALL;
-
     /** @var float */
     public $width = 0.5;
     /** @var float */
@@ -49,5 +47,10 @@ class PiggyFireball extends PiggyProjectile
     {
         $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());
         parent::onHitBlock($blockHit, $hitResult);
+    }
+
+    public static function getNetworkTypeId(): int
+    {
+        return EntityLegacyIds::SMALL_FIREBALL;
     }
 }

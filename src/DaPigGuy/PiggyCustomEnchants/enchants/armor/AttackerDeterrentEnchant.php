@@ -15,7 +15,6 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
-use ReflectionException;
 
 class AttackerDeterrentEnchant extends ReactiveEnchantment
 {
@@ -31,9 +30,6 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
     /** @var array */
     private $amplifierMultiplier;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;

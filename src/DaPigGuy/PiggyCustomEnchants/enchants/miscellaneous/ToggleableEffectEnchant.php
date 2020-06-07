@@ -14,23 +14,19 @@ use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
-use ReflectionException;
 
 class ToggleableEffectEnchant extends ToggleableEnchantment
 {
     /** @var Effect */
     private $effect;
     /** @var int */
-    private $baseAmplifier = 0;
+    private $baseAmplifier;
     /** @var int */
-    private $amplifierMultiplier = 1;
+    private $amplifierMultiplier;
 
     /** @var EffectInstance[] */
     private $previousEffect;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, Effect $effect, int $baseAmplifier = 0, int $amplifierMultiplier = 1, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;

@@ -17,8 +17,6 @@ use pocketmine\player\Player;
 
 class PiggyLightning extends Entity
 {
-    const NETWORK_ID = EntityLegacyIds::LIGHTNING_BOLT;
-
     /** @var float */
     public $width = 0.3;
     /** @var float */
@@ -60,5 +58,10 @@ class PiggyLightning extends Entity
             $this->flagForDespawn();
         }
         return $hasUpdate;
+    }
+
+    public static function getNetworkTypeId(): int
+    {
+        return EntityLegacyIds::LIGHTNING_BOLT;
     }
 }
