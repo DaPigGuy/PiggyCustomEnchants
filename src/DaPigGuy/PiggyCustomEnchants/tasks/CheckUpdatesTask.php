@@ -28,7 +28,7 @@ class CheckUpdatesTask extends AsyncTask
 
                 $data = json_decode($results[0], true);
                 if (version_compare($plugin->getDescription()->getVersion(), $data[0]["version"]) === -1) {
-                    if ($server->getPluginManager()->isCompatibleApi($data[0]["api"][0]["from"])) {
+                    if ($plugin->getServer()->getPluginManager()->isCompatibleApi($data[0]["api"][0]["from"])) {
                         $plugin->getLogger()->info("PiggyCustomEnchants v" . $data[0]["version"] . " is available for download at " . $data[0]["artifact_url"] . "/PiggyCustomEnchants.phar");
                     }
                 }

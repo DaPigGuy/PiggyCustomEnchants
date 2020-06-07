@@ -85,6 +85,7 @@ use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
+use pocketmine\player\Player;
 use ReflectionProperty;
 
 class CustomEnchantManager
@@ -113,7 +114,9 @@ class CustomEnchantManager
             return $event->getDamager()->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0;
         }, CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->isSprinting();
+            /** @var Player $player */
+            $player = $event->getDamager();
+            return $player->isSprinting();
         }, CustomEnchant::RARITY_UNCOMMON));
 
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::BLIND, "Blind", CustomEnchant::RARITY_COMMON, [VanillaEffects::BLINDNESS()], [20], [0], [100]));

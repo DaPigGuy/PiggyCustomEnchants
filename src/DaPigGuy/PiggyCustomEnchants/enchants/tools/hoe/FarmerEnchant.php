@@ -40,7 +40,7 @@ class FarmerEnchant extends ReactiveEnchantment
                 $seed = $block->getPickedItem();
                 if ($player->getInventory()->contains($seed)) {
                     $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player, $seed, $block): void {
-                        $block->getPos()->getWorld()->useItemOn($block->getPos()->subtract(0, 1, 0), $seed, Facing::UP, $block->getPos()->subtract(0, 1), $player);
+                        $block->getPos()->getWorld()->useItemOn($block->getPos()->subtract(0, 1, 0), $seed, Facing::UP, $block->getPos()->subtract(0, 1, 0), $player);
                         $player->getInventory()->removeItem($seed->setCount(1));
                     }), 1);
                 }

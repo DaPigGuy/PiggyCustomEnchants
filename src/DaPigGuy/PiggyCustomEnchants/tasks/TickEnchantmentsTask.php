@@ -12,6 +12,7 @@ use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
 use pocketmine\scheduler\Task;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class TickEnchantmentsTask extends Task
@@ -26,6 +27,7 @@ class TickEnchantmentsTask extends Task
 
     public function onRun(): void
     {
+        $currentTick = Server::getInstance()->getTick();
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $successfulEnchantments = [];
             foreach ($player->getInventory()->getContents() as $slot => $content) {

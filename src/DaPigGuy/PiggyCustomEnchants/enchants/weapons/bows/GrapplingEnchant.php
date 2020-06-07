@@ -62,7 +62,7 @@ class GrapplingEnchant extends ReactiveEnchantment
                 if ($projectilePosition->y > $shooterPosition->y) {
                     $shooter->setMotion(new Vector3(0, 0.25, 0));
                 } else {
-                    $v = $projectilePosition->subtract($shooterPosition);
+                    $v = $projectilePosition->subtractVector($shooterPosition);
                     $shooter->setMotion($v);
                 }
             } else {

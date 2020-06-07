@@ -17,9 +17,9 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
+use pocketmine\network\mcpe\protocol\serializer\NetworkNbtSerializer;
 use pocketmine\network\mcpe\protocol\types\CacheableNbt;
 use pocketmine\network\mcpe\protocol\UpdateBlockPacket;
-use pocketmine\network\mcpe\serializer\NetworkNbtSerializer;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 use pocketmine\utils\TextFormat;
@@ -53,7 +53,7 @@ class HallucinationEnchant extends ReactiveEnchantment
                                 $position = new Position($x, $y, $z, $originalPosition->getWorld());
                                 $block = VanillaBlocks::BEDROCK();
                                 if ($position->equals($originalPosition)) $block = VanillaBlocks::LAVA();
-                                if ($position->equals($originalPosition->add(0, 1))) {
+                                if ($position->equals($originalPosition->add(0, 1, 0))) {
                                     $block = BlockFactory::getInstance()->get(BlockLegacyIds::WALL_SIGN, 2);
                                     if ($this->nbtWriter === null) $this->nbtWriter = new NetworkNbtSerializer();
                                     $packets[] = BlockActorDataPacket::create((int)$position->x, (int)$position->y, (int)$position->z, new CacheableNbt(

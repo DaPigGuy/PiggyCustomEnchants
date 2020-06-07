@@ -36,7 +36,7 @@ class AutoAimEnchant extends TickingEnchantment
         if ($player->isSneaking() && $player->isOnGround()) {
             $target = $this->findNearestEntity($player, $level * $this->extraData["radiusMultiplier"]);
             if ($target !== null) {
-                $position = $target->getPosition()->subtract($player->getPosition());
+                $position = $target->getPosition()->subtractVector($player->getPosition());
                 $yaw = atan2($position->z, $position->x) * 180 / M_PI - 90;
                 $length = (new Vector2($position->x, $position->z))->length();
                 if ((int)$length !== 0) {
