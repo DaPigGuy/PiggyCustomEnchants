@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use Exception;
+use pocketmine\plugin\ApiVersion;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\utils\Internet;
 
@@ -28,7 +29,7 @@ class CheckUpdatesTask extends AsyncTask
 
                 $data = json_decode($results[0], true);
                 if (version_compare($plugin->getDescription()->getVersion(), $data[0]["version"]) === -1) {
-                    if ($plugin->getServer()->getPluginManager()->isCompatibleApi($data[0]["api"][0]["from"])) {
+                    if (ApiVersion::isCompatible($plugin->getServer()->getApiVersion(), $data[0]["api"][0]["from"])) {
                         $plugin->getLogger()->info("PiggyCustomEnchants v" . $data[0]["version"] . " is available for download at " . $data[0]["artifact_url"] . "/PiggyCustomEnchants.phar");
                     }
                 }
