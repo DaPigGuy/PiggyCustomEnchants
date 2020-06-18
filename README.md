@@ -14,9 +14,12 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 ## Installation & Setup
 1. Install the plugin from Poggit.
 2. (Optional) Configure your PiggyCE
-   * Enchantment rarities, max levels, names, & descriptions can be configured in their respective JSON files (rarities, max_levels, display_names, descriptions)
+   * Enchantment rarities, max levels, names, descriptions, & chances can be configured in their respective JSON files.
+        * `chances.json`: Allows custom chance multipliers for any reactive enchantments.
+            * Reaction chances are calculated by `chance multiplier * enchantment level`.
+            * The chance multiplier by default is 100 for most enchantments.
    * Extra enchantment settings can be found under `extra_data.json`
-   * The config.yml has many options. Some that you should pay attention to are:
+   * The `config.yml` has many options. Some that you should pay attention to are:
      * `disabled-enchants`: Allows certain enchants to be disabled
      
          ```yaml
@@ -36,7 +39,6 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
                 - Jetpack
          ```
      * `world-damage`: Toggles world damage for explosive enchantments
-     * `chances`: Allow chances of reactive enchantments to be configured
 3. (Optional) Install additional plugins supporting PiggyCE:
    * [PiggyCustomEnchantsShop](https://poggit.pmmp.io/p/PiggyCustomEnchantsShop) (Official)
    * [PCEAllyChecks](https://poggit.pmmp.io/p/PCEAllyChecks) (Official)
@@ -87,7 +89,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 
 ## Additional Information
 * We do not support any spoons. Anything to do with spoons (Issues or PRs) will be ignored.
-* We are using the following virions: [Commando](https://github.com/CortexPE/Commando) and [libFormAPI](https://github.com/jojoe77777/FormAPI).
+* We are using the following virions: [Commando](https://github.com/ParoxityTeam/Commando) and [libFormAPI](https://github.com/jojoe77777/FormAPI).
     * **Unless you know what you are doing, use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants/~) and not GitHub.**
     * If you wish to run it via source, check out [DEVirion](https://github.com/poggit/devirion).
 * Detailed Plugin Setup, Custom Enchantment List, & API Documentation available at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).

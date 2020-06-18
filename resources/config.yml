@@ -1,5 +1,5 @@
-# Specifies the color enchants are shown depending on rarity.
-# Options: black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, and white.
+# Specifies the color enchants are shown depending on rarity
+# Options: black, dark_blue, dark_green, dark_aqua, dark_red, dark_purple, gold, gray, dark_gray, blue, green, aqua, red, light_purple, yellow, and white
 rarity-colors:
   common: yellow
   uncommon: blue
@@ -21,7 +21,10 @@ disabled-enchants: []
 per-world-disabled-enchants:
   NoJetpackWorld:
     - "jetpack"
-# If enabled, will check https://gist.github.com/DaPigGuy/9c65a998bc0aa8d6b4708796110f7d11 for extremely problematic enchantments on your version of the plugin to be disabled
+# If enabled, will check a list of extremely problematic enchantments on your version of the plugin to be disabled
+# We will ONLY remotely disable enchantments that are extremely problematic / major exploits and this functionality will not be abused in any way
+# Please update your plugin to the latest version (if available) if an enchantment on your version was disabled
+# Gist: https://gist.github.com/DaPigGuy/9c65a998bc0aa8d6b4708796110f7d11
 remote-disable: true
 # Whether or not an enchant damages world
 world-damage:
@@ -33,14 +36,3 @@ world-damage:
 miscellaneous:
   # Toggles PiggyCE's implementation of the vanilla feature to hold armor to equip
   armor-hold-equip: true
-# Reaction chances are defined as chance multiplier x enchantment level. The chance multiplier by default for most enchantments is 100.
-# Chance multipliers can be defined for any reactive enchantments. Enchantments below merely have default chance multipliers.
-# Please keep enchantment names LOWERCASE
-chances:
-  blessed: 15
-  deepwounds: 20
-  disarmor: 10
-  disarming: 10
-  hallucination: 5
-  jackpot: 10
-  lightning: 10
