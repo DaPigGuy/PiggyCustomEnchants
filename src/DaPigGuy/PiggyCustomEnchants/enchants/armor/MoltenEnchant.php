@@ -12,7 +12,6 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\Player;
-use pocketmine\scheduler\ClosureTask;
 
 class MoltenEnchant extends ReactiveEnchantment
 {
@@ -34,9 +33,7 @@ class MoltenEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
-                $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($damager, $level): void {
-                    if (!$damager->isClosed()) $damager->setOnFire($this->extraData["durationMultiplier"] * $level);
-                }), 1);
+                $damager->setOnFire(($duration = $this->extraData["durationMultiplier"] * $level) > 1638 ? 1638 : $duration);
             }
         }
     }
