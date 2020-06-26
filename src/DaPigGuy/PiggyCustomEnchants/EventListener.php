@@ -94,11 +94,11 @@ class EventListener implements Listener
     {
         $packet = $event->getPacket();
         if ($packet instanceof InventorySlotPacket) {
-            Utils::displayEnchants($packet->item);
+            Utils::displayEnchants($packet->item->getItemStack());
         }
         if ($packet instanceof InventoryContentPacket) {
-            foreach ($packet->items as $key => $item) {
-                $packet->items[$key] = Utils::displayEnchants($item);
+            foreach ($packet->items as $item) {
+                Utils::displayEnchants($item->getItemStack());
             }
         }
     }
