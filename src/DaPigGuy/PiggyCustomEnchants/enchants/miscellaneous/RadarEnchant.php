@@ -11,6 +11,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\level\Position;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
+use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\Player;
 use pocketmine\utils\TextFormat;
 
@@ -52,11 +53,11 @@ class RadarEnchant extends TickingEnchantment
     public function setCompassPosition(Player $player, Position $position): void
     {
         $pk = new SetSpawnPositionPacket();
-        $pk->x = (int)$position->x;
-        $pk->y = (int)$position->y;
-        $pk->z = (int)$position->z;
-        $pk->spawnForced = true;
+        $pk->x = $pk->x2 = $position->getFloorX();
+        $pk->y = $pk->y2 = $position->getFloorY();
+        $pk->z = $pk->z2 = $position->getFloorZ();
         $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
+        $pk->dimension = DimensionIds::OVERWORLD;
         $player->sendDataPacket($pk);
     }
 
