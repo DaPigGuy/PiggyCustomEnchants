@@ -7,7 +7,15 @@ namespace DaPigGuy\PiggyCustomEnchants\utils;
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
+use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
+use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
+use InvalidArgumentException;
 use jojoe77777\FormAPI\SimpleForm;
+use pocketmine\entity\Location;
+use pocketmine\entity\projectile\Arrow;
+use pocketmine\entity\projectile\Projectile;
 use pocketmine\item\Armor;
 use pocketmine\item\Axe;
 use pocketmine\item\Bow;
@@ -155,6 +163,23 @@ class Utils
                 return $item instanceof Compass;
         }
         return false;
+    }
+
+    public static function createNewProjectile(string $className, Location $location, Player $shooter, Projectile $previousProjectile, int $level = 1): Projectile
+    {
+        switch ($className) {
+            case Arrow::class:
+                return new Arrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null);
+            case HomingArrow::class:
+                return new HomingArrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null, $previousProjectile instanceof HomingArrow ? $previousProjectile->getEnchantmentLevel() : $level);
+            case PiggyFireball::class:
+            case PiggyWitherSkull::class:
+                return new PiggyFireball($location, $shooter, null);
+            case PigProjectile::class:
+                return new PigProjectile($location, $shooter, null, $previousProjectile instanceof PigProjectile ? $previousProjectile->getPorkLevel() : $level);
+            default:
+                throw new InvalidArgumentException("Entity $className not found");
+        }
     }
 
     public static function checkEnchantIncompatibilities(Item $item, CustomEnchant $enchant): bool

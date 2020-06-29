@@ -12,7 +12,7 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\player\Player;
 
 class PiggyLightning extends Entity
@@ -60,8 +60,8 @@ class PiggyLightning extends Entity
         return $hasUpdate;
     }
 
-    public static function getNetworkTypeId(): int
+    public static function getNetworkTypeId(): string
     {
-        return EntityLegacyIds::LIGHTNING_BOLT;
+        return EntityIds::LIGHTNING_BOLT;
     }
 }

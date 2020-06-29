@@ -5,21 +5,28 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\utils\PiggyExplosion;
+use pocketmine\entity\Location;
 use pocketmine\entity\object\PrimedTNT;
 use pocketmine\event\entity\ExplosionPrimeEvent;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\world\Position;
 
 class PiggyTNT extends PrimedTNT
 {
     /** @var bool */
-    public $worldDamage = true;
+    private $worldDamage;
+
+    public function __construct(Location $location, ?CompoundTag $nbt = null, bool $worldDamage = false)
+    {
+        parent::__construct($location, $nbt);
+        $this->worldDamage = $worldDamage;
+    }
 
     public function explode(): void
     {
         $ownerEntity = $this->getOwningEntity();
         if ($ownerEntity === null || !$ownerEntity instanceof Player) {
-            parent::explode();
             return;
         }
         $ev = new ExplosionPrimeEvent($this, 4);

@@ -7,7 +7,6 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
-use pocketmine\entity\EntityFactory;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\inventory\Inventory;
@@ -41,10 +40,10 @@ class SelfDestructEnchant extends ReactiveEnchantment
         if ($event instanceof PlayerDeathEvent) {
             for ($i = 0; $i < $level * $this->extraData["tntAmountMultiplier"]; $i++) {
                 $random = new Random();
-                /** @var PiggyTNT $tnt */
-                $tnt = EntityFactory::getInstance()->create(PiggyTNT::class, $player->getWorld(), EntityFactory::createBaseNBT($player->getPosition(), new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1),)->setShort("Fuse", 40));
-                $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.self-destruct", false);
+                $tnt = new PiggyTNT($player->getLocation(), null, $this->plugin->getConfig()->getNested("world-damage.missile", false));
+                $tnt->setFuse(40);
                 $tnt->setOwningEntity($player);
+                $tnt->setMotion(new Vector3($random->nextFloat() * 1.5 - 1, $random->nextFloat() * 1.5, $random->nextFloat() * 1.5 - 1));
                 $tnt->spawnToAll();
             }
         }

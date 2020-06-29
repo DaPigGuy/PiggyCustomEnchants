@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
-use pocketmine\data\bedrock\LegacyEntityIdToStringIdMap;
 use pocketmine\entity\Entity;
-use pocketmine\entity\EntityFactory;
+use pocketmine\entity\Location;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -14,10 +13,9 @@ use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
-use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
-use pocketmine\world\World;
 
 class PigProjectile extends PiggyProjectile
 {
@@ -48,21 +46,15 @@ class PigProjectile extends PiggyProjectile
     /** @var bool */
     private $zombie;
 
-    public function __construct(World $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porkLevel = 1)
+    public function __construct(Location $location, ?Entity $shootingEntity, ?CompoundTag $nbt = null, int $porkLevel = 1)
     {
-        parent::__construct($level, $nbt, $shootingEntity);
-        if ($porkLevel < 1) {
-            $porkLevel = 1;
-        }
-        if ($porkLevel > 6) {
-            $porkLevel = 6;
-        }
-        $values = self::PORK_LEVELS[$porkLevel];
+        parent::__construct($location, $shootingEntity, $nbt);
+        $this->porkLevel = min(1, max($porkLevel, 6));
+        $values = self::PORK_LEVELS[$this->porkLevel];
         $this->damage = $values[0];
         if ($values[1]) {
             $this->setNameTag("Dinnerbone");
         }
-        $this->porkLevel = $porkLevel;
         $this->zombie = $values[2];
     }
 
@@ -75,17 +67,11 @@ class PigProjectile extends PiggyProjectile
         if (!$this->isCollided) {
             if ($this->getPorkLevel() > 1) {
                 foreach ($this->getDrops() as $drop) {
-                    $motion = new Vector3(lcg_value() * 0.2 - 0.1, 0.2, lcg_value() * 0.2 - 0.1);
                     if (!$drop->isNull()) {
-                        $nbt = EntityFactory::createBaseNBT($this->getPosition(), $motion, lcg_value() * 360, 0);
-                        $nbt->setTag("Item", $drop->nbtSerialize());
-                        $nbt->setShort("Health", 5);
-                        $nbt->setShort("PickupDelay", 10);
-                        $nbt->setShort("Age", 5700);
-                        $itemEntity = EntityFactory::getInstance()->create(ItemEntity::class, $this->location->world, $nbt);
-                        if ($itemEntity instanceof ItemEntity) {
-                            $itemEntity->spawnToAll();
-                        }
+                        $itemEntity = new ItemEntity(Location::fromObject($this->getPosition(), $this->getWorld(), lcg_value() * 360, 0), $drop);
+                        $itemEntity->setDespawnDelay(300);
+                        $itemEntity->setMotion(new Vector3(lcg_value() * 0.2 - 0.1, 0.2, lcg_value() * 0.2 - 0.1));
+                        $itemEntity->spawnToAll();
                     }
                 }
             }
@@ -120,7 +106,7 @@ class PigProjectile extends PiggyProjectile
     protected function sendSpawnPacket(Player $player): void
     {
         $pk = new AddActorPacket();
-        $pk->type = LegacyEntityIdToStringIdMap::getInstance()->legacyToString($this->isZombie() ? EntityLegacyIds::ZOMBIE_PIGMAN : EntityLegacyIds::PIG);
+        $pk->type = $this->isZombie() ? EntityIds::ZOMBIE_PIGMAN : EntityIds::PIG;
         $pk->entityRuntimeId = $this->getId();
         $pk->position = $this->getPosition();
         $pk->motion = $this->getMotion();
@@ -128,8 +114,8 @@ class PigProjectile extends PiggyProjectile
         $player->getNetworkSession()->sendDataPacket($pk);
     }
 
-    public static function getNetworkTypeId(): int
+    public static function getNetworkTypeId(): string
     {
-        return EntityLegacyIds::PIG;
+        return EntityIds::PIG;
     }
 }

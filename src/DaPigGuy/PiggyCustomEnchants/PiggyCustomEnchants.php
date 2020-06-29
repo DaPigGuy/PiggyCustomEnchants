@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants;
 
 use CortexPE\Commando\BaseCommand;
-use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
@@ -23,20 +22,18 @@ use DaPigGuy\PiggyCustomEnchants\tasks\CheckUpdatesTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
 use jojoe77777\FormAPI\Form;
 use pocketmine\block\BlockFactory;
+use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use ReflectionException;
+use pocketmine\world\World;
 
 class PiggyCustomEnchants extends PluginBase
 {
     /** @var array[] */
     private $enchantmentData;
 
-    /**
-     * @throws ReflectionException
-     * @throws HookAlreadyRegistered
-     */
     public function onEnable(): void
     {
         foreach (
@@ -52,7 +49,7 @@ class PiggyCustomEnchants extends PluginBase
             }
         }
 
-        foreach (["rarities", "max_levels", "display_names", "descriptions", "extra_data", "cooldowns"] as $file) {
+        foreach (["rarities", "max_levels", "display_names", "descriptions", "extra_data", "cooldowns", "chances"] as $file) {
             $this->saveResource($file . ".json");
             foreach ((new Config($this->getDataFolder() . $file . ".json"))->getAll() as $enchant => $data) {
                 $this->enchantmentData[$enchant][$file] = $data;
@@ -64,9 +61,28 @@ class PiggyCustomEnchants extends PluginBase
 
         BlockFactory::getInstance()->register(new PiggyObsidian(), true);
 
-        foreach ([BombardmentTNT::class, HomingArrow::class, PigProjectile::class, PiggyFireball::class, PiggyWitherSkull::class, PiggyLightning::class, PiggyTNT::class] as $entityClassName) {
-            EntityFactory::getInstance()->register($entityClassName, []);
-        }
+        $entityFactory = EntityFactory::getInstance();
+        $entityFactory->register(BombardmentTNT::class, function (World $world, CompoundTag $nbt): BombardmentTNT {
+            return new BombardmentTNT(EntityDataHelper::parseLocation($nbt, $world), $nbt, $nbt->getInt("Level", 1));
+        }, ["BombardmentTNT"]);
+        $entityFactory->register(HomingArrow::class, function (World $world, CompoundTag $nbt): HomingArrow {
+            return new HomingArrow(EntityDataHelper::parseLocation($nbt, $world), null, false, $nbt, $nbt->getInt("Level", 1));
+        }, ["HomingArrow"]);
+        $entityFactory->register(PigProjectile::class, function (World $world, CompoundTag $nbt): PigProjectile {
+            return new PigProjectile(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ["PigProjectile"]);
+        $entityFactory->register(PiggyFireball::class, function (World $world, CompoundTag $nbt): PiggyFireball {
+            return new PiggyFireball(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ["PiggyFireball"]);
+        $entityFactory->register(PiggyLightning::class, function (World $world, CompoundTag $nbt): PiggyLightning {
+            return new PiggyLightning(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ["PiggyLightning"]);
+        $entityFactory->register(PiggyTNT::class, function (World $world, CompoundTag $nbt): PiggyTNT {
+            return new PiggyTNT(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ["PiggyTNT"]);
+        $entityFactory->register(PiggyWitherSkull::class, function (World $world, CompoundTag $nbt): PiggyWitherSkull {
+            return new PiggyWitherSkull(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ["PiggyWitherSkull"]);
 
         foreach ($this->getConfig()->get("disabled-enchants", []) as $enchant) {
             $e = CustomEnchantManager::getEnchantmentByName($enchant);

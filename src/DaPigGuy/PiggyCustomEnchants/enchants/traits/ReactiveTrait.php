@@ -64,7 +64,7 @@ trait ReactiveTrait
 
     public function getBaseChance(int $level): float
     {
-        return ($this->plugin->getConfig()->getNested("chances." . strtolower(str_replace(" ", "", $this->getName())), 100)) * $level;
+        return $this->chance * $level;
     }
 
     public function getChanceMultiplier(Player $player): float

@@ -7,7 +7,6 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
-use pocketmine\entity\EntityFactory;
 use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -37,9 +36,8 @@ class MissileEnchant extends ReactiveEnchantment
         if ($event instanceof ProjectileHitBlockEvent) {
             $projectile = $event->getEntity();
             for ($i = 0; $i <= $level * $this->extraData["multiplier"]; $i++) {
-                /** @var PiggyTNT $tnt */
-                $tnt = EntityFactory::getInstance()->create(PiggyTNT::class, $projectile->getWorld(), EntityFactory::createBaseNBT($projectile->getPosition())->setShort("Fuse", 40));
-                $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.missile", false);
+                $tnt = new PiggyTNT($projectile->getLocation(), null, $this->plugin->getConfig()->getNested("world-damage.missile", false));
+                $tnt->setFuse(40);
                 $tnt->setOwningEntity($player);
                 $tnt->spawnToAll();
                 $projectile->flagForDespawn();

@@ -6,10 +6,9 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
-use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
-use pocketmine\entity\EntityFactory;
+use DaPigGuy\PiggyCustomEnchants\utils\Utils;
+use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
@@ -49,16 +48,13 @@ class VolleyEnchant extends ReactiveEnchantment
             /** @var Projectile $projectile */
             $projectile = $event->getProjectile();
             for ($i = 0; $i < $amount; $i++) {
-                $nbt = EntityFactory::createBaseNBT($player->getPosition()->add(0, $player->getEyeHeight(), 0), $player->getDirectionVector(), $player->getLocation()->yaw, $player->getLocation()->pitch);
-                /** @var Projectile $newProjectile */
-                $newProjectile = EntityFactory::getInstance()->create(get_class($projectile), $player->getWorld(), $nbt, $player, ($projectile instanceof Arrow ? $projectile->isCritical() : ($projectile instanceof PigProjectile ? $projectile->getPorkLevel() : null)), ($projectile instanceof HomingArrow ? $projectile->getEnchantmentLevel() : null));
-                if ($newProjectile instanceof Arrow) $newProjectile->setPickupMode(Arrow::PICKUP_NONE);
-                $newProjectile->spawnToAll();
-                ProjectileTracker::addProjectile($newProjectile, $item);
-
+                $newProjectile = Utils::createNewProjectile(get_class($projectile), Location::fromObject($player->getLocation()->add(0, $player->getEyeHeight(), 0), $player->getWorld()), $player, $projectile);
                 $newDirection = new Vector3(sin($pitch) * cos($yaw + $anglesBetweenArrows * $i), cos($pitch), sin($pitch) * sin($yaw + $anglesBetweenArrows * $i));
                 $newProjectile->setMotion($newDirection->normalize()->multiply($projectile->getMotion()->multiply($event->getForce())->length()));
+                if ($newProjectile instanceof Arrow) $newProjectile->setPickupMode(Arrow::PICKUP_NONE);
                 if ($projectile->isOnFire()) $newProjectile->setOnFire($projectile->getFireTicks() / 20);
+                $newProjectile->spawnToAll();
+                ProjectileTracker::addProjectile($newProjectile, $item);
             }
             ProjectileTracker::removeProjectile($projectile);
             $projectile->close();

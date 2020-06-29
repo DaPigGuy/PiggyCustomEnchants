@@ -29,6 +29,8 @@ class CustomEnchant extends Enchantment
     public $extraData;
     /** @var int */
     public $cooldownDuration;
+    /** @var int */
+    public $chance;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_HAND;
@@ -73,6 +75,7 @@ class CustomEnchant extends Enchantment
         $this->description = (string)$plugin->getEnchantmentData($this->name, "descriptions", $this->description ?? "");
         $this->extraData = $plugin->getEnchantmentData($this->name, "extra_data", $this->getDefaultExtraData());
         $this->cooldownDuration = (int)$plugin->getEnchantmentData($this->name, "cooldowns", $this->cooldownDuration ?? 0);
+        $this->chance = (int)$plugin->getEnchantmentData($this->name, "chances", $this->chance ?? 100);
         foreach ($this->getDefaultExtraData() as $key => $value) {
             if (!isset($this->extraData[$key])) {
                 $this->extraData[$key] = $value;

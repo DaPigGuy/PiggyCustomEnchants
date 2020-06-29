@@ -13,7 +13,6 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\block\BlockLegacyIds;
-use pocketmine\entity\EntityFactory;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityBlockChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -49,6 +48,7 @@ use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
+use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\player\Player;
 
@@ -96,11 +96,11 @@ class EventListener implements Listener
         $packets = $event->getPackets();
         foreach ($packets as $packet) {
             if ($packet instanceof InventorySlotPacket) {
-                $packet->item = Utils::displayEnchants($packet->item);
+                $packet->item = new ItemStackWrapper($packet->item->getStackId(), Utils::displayEnchants($packet->item->getItemStack()));
             }
             if ($packet instanceof InventoryContentPacket) {
-                foreach ($packet->items as $key => $item) {
-                    $packet->items[$key] = Utils::displayEnchants($item);
+                foreach ($packet->items as $i => $item) {
+                    $packet->items[$i] = new ItemStackWrapper($item->getStackId(), Utils::displayEnchants($item->getItemStack()));
                 }
             }
         }
@@ -111,9 +111,8 @@ class EventListener implements Listener
         $entity = $event->getEntity();
         if ($entity instanceof BombardmentTNT) {
             for ($i = 0; $i < 3 + $entity->getEnchantmentLevel(); $i++) {
-                /** @var PiggyTNT $tnt */
-                $tnt = EntityFactory::getInstance()->create(PiggyTNT::class, $entity->getWorld(), EntityFactory::createBaseNBT($entity->getPosition())->setShort("Fuse", 0));
-                $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.bombardment", false);
+                $tnt = new PiggyTNT($entity->getLocation(), null, $this->plugin->getConfig()->getNested("world-damage.missile", false));
+                $tnt->setFuse(0);
                 $tnt->setOwningEntity($entity->getOwningEntity());
                 $tnt->spawnToAll();
             }

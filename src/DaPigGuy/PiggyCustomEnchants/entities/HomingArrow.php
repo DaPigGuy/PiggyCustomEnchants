@@ -7,21 +7,21 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
+use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
-use pocketmine\world\World;
 
 class HomingArrow extends Arrow
 {
     /** @var int */
     private $enchantmentLevel;
 
-    public function __construct(World $level, CompoundTag $nbt, ?Entity $shootingEntity = null, bool $critical = false, int $enchantmentLevel = 1)
+    public function __construct(Location $location, ?Entity $shootingEntity, bool $critical, ?CompoundTag $nbt = null, int $enchantmentLevel = 1)
     {
+        parent::__construct($location, $shootingEntity, $critical, $nbt);
         $this->enchantmentLevel = $enchantmentLevel;
-        parent::__construct($level, $nbt, $shootingEntity, $critical);
     }
 
     public function entityBaseTick(int $tickDiff = 1): bool

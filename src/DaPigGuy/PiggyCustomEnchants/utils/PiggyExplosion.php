@@ -7,7 +7,6 @@ namespace DaPigGuy\PiggyCustomEnchants\utils;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\block\TNT;
 use pocketmine\block\VanillaBlocks;
-use pocketmine\entity\Entity;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockUpdateEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -60,7 +59,6 @@ class PiggyExplosion extends Explosion
 
         $explosionBB = new AxisAlignedBB($minX, $minY, $minZ, $maxX, $maxY, $maxZ);
 
-        /** @var Entity[] $list */
         $list = $this->world->getNearbyEntities($explosionBB, $this->what);
         foreach ($list as $entity) {
             $entityPos = $entity->getPosition();

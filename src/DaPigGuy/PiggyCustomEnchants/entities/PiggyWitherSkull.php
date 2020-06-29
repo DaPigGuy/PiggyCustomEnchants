@@ -10,7 +10,7 @@ use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Living;
 use pocketmine\math\RayTraceResult;
-use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\player\Player;
 
 class PiggyWitherSkull extends PiggyProjectile
@@ -42,8 +42,8 @@ class PiggyWitherSkull extends PiggyProjectile
         parent::onHitEntity($entityHit, $hitResult);
     }
 
-    public static function getNetworkTypeId(): int
+    public static function getNetworkTypeId(): string
     {
-        return EntityLegacyIds::WITHER_SKULL;
+        return EntityIds::WITHER_SKULL;
     }
 }

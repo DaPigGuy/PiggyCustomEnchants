@@ -10,7 +10,7 @@ use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Entity;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\math\RayTraceResult;
-use pocketmine\network\mcpe\protocol\types\entity\EntityLegacyIds;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\player\Player;
 
 class PiggyFireball extends PiggyProjectile
@@ -49,8 +49,8 @@ class PiggyFireball extends PiggyProjectile
         parent::onHitBlock($blockHit, $hitResult);
     }
 
-    public static function getNetworkTypeId(): int
+    public static function getNetworkTypeId(): string
     {
-        return EntityLegacyIds::SMALL_FIREBALL;
+        return EntityIds::SMALL_FIREBALL;
     }
 }
