@@ -56,12 +56,12 @@ class HallucinationEnchant extends ReactiveEnchantment
                                 if ($position->equals($originalPosition->add(0, 1, 0))) {
                                     $block = BlockFactory::getInstance()->get(BlockLegacyIds::WALL_SIGN, 2);
                                     if ($this->nbtWriter === null) $this->nbtWriter = new NetworkNbtSerializer();
-                                    $packets[] = BlockActorDataPacket::create((int)$position->x, (int)$position->y, (int)$position->z, new CacheableNbt(
+                                    $packets[] = BlockActorDataPacket::create($position->getFloorX(), $position->getFloorY(), $position->getFloorZ(), new CacheableNbt(
                                         CompoundTag::create()->
                                         setString(Tile::TAG_ID, "Sign")->
-                                        setInt(Tile::TAG_X, (int)$position->x)->
-                                        setInt(Tile::TAG_Y, (int)$position->y)->
-                                        setInt(Tile::TAG_Z, (int)$position->z)->
+                                        setInt(Tile::TAG_X, $position->getFloorX())->
+                                        setInt(Tile::TAG_Y, $position->getFloorY())->
+                                        setInt(Tile::TAG_Z, $position->getFloorZ())->
                                         setString(Sign::TAG_TEXT_BLOB, implode("\n", [
                                                 TextFormat::RED . "You seem to be",
                                                 TextFormat::RED . "hallucinating..."

@@ -56,8 +56,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
             if ($player->getServer()->getTick() % 5 === 0) {
                 $diff = $radius / $forcefieldLevel;
                 for ($theta = 0; $theta <= 360; $theta += $diff) {
-                    $pos = $player->getPosition()->add($radius * sin($theta), 0.5, $radius * cos($theta));
-                    $player->getWorld()->addParticle($pos, new EnchantmentTableParticle());
+                    $player->getWorld()->addParticle($player->getPosition()->add($radius * sin($theta), 0.5, $radius * cos($theta)), new EnchantmentTableParticle());
                 }
             }
         }

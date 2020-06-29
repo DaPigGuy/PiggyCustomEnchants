@@ -240,7 +240,7 @@ class EventListener implements Listener
          */
         $onContent = function (Inventory $inventory, array $oldContents) use ($onSlot): void {
             foreach ($oldContents as $slot => $oldItem) {
-                if (!($oldItem ?? ItemFactory::getInstance()->get(ItemIds::AIR))->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
+                if (!($oldItem ?? ItemFactory::air())->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
                     $onSlot($inventory, $slot, $oldItem);
                 }
             }
@@ -343,7 +343,7 @@ class EventListener implements Listener
                     }
                     if ($enchantmentSuccessful) {
                         $event->setCancelled();
-                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::getInstance()->get(ItemIds::AIR));
+                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
                     }
                 }
             }

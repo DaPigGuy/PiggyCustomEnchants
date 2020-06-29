@@ -41,7 +41,7 @@ class GrapplingEnchant extends ReactiveEnchantment
                     $damagerPosition = $event->getDamager()->getPosition();
                     $entity = $event->getEntity();
                     $entityPosition = $entity->getPosition();
-                    $distance = $damagerPosition->distance($entity->getPosition());
+                    $distance = $damagerPosition->distance($entityPosition);
                     if ($distance > 0) {
                         $motionX = (1.0 + 0.07 * $distance) * ($damagerPosition->x - $entityPosition->x) / $distance;
                         $motionY = (1.0 + 0.03 * $distance) * ($damagerPosition->y - $entityPosition->y) / $distance - 0.5 * -0.08 * $distance;
