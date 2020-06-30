@@ -174,7 +174,7 @@ class Utils
                 return new HomingArrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null, $previousProjectile instanceof HomingArrow ? $previousProjectile->getEnchantmentLevel() : $level);
             case PiggyFireball::class:
             case PiggyWitherSkull::class:
-                return new PiggyFireball($location, $shooter, null);
+                return new $className($location, $shooter, null);
             case PigProjectile::class:
                 return new PigProjectile($location, $shooter, null, $previousProjectile instanceof PigProjectile ? $previousProjectile->getPorkLevel() : $level);
             default:
