@@ -49,7 +49,7 @@ class PigProjectile extends PiggyProjectile
     public function __construct(Location $location, ?Entity $shootingEntity, ?CompoundTag $nbt = null, int $porkLevel = 1)
     {
         parent::__construct($location, $shootingEntity, $nbt);
-        $this->porkLevel = min(1, max($porkLevel, 6));
+        $this->porkLevel = max(1, min($porkLevel, 6));
         $values = self::PORK_LEVELS[$this->porkLevel];
         $this->damage = $values[0];
         if ($values[1]) {
