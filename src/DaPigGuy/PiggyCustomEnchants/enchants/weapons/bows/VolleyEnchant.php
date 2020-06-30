@@ -48,7 +48,7 @@ class VolleyEnchant extends ReactiveEnchantment
             /** @var Projectile $projectile */
             $projectile = $event->getProjectile();
             for ($i = 0; $i < $amount; $i++) {
-                $newProjectile = Utils::createNewProjectile(get_class($projectile), Location::fromObject($player->getLocation()->add(0, $player->getEyeHeight(), 0), $player->getWorld()), $player, $projectile);
+                $newProjectile = Utils::createNewProjectile(get_class($projectile), Location::fromObject($player->getEyePos(), $player->getWorld()), $player, $projectile);
                 $newDirection = new Vector3(sin($pitch) * cos($yaw + $anglesBetweenArrows * $i), cos($pitch), sin($pitch) * sin($yaw + $anglesBetweenArrows * $i));
                 $newProjectile->setMotion($newDirection->normalize()->multiply($projectile->getMotion()->multiply($event->getForce())->length()));
                 if ($newProjectile instanceof Arrow) $newProjectile->setPickupMode(Arrow::PICKUP_NONE);

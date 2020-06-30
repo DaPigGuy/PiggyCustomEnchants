@@ -23,6 +23,6 @@ jobs:
         with:
           args: -O vendor/Commando.phar https://poggit.pmmp.io/r/90966/Commando_dev-2.phar
       - name: Run PHPStan
-        uses: nxtlvlsoftware/pmmp-phpstan-action@4
+        uses: nxtlvlsoftware/pmmp-phpstan-action@master
         with:
           phpstan-config: phpstan.neon.dist
