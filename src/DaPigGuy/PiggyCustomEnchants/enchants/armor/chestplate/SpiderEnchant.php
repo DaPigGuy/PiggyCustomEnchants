@@ -7,7 +7,6 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
-use pocketmine\block\Block;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
@@ -41,11 +40,11 @@ class SpiderEnchant extends ToggleableEnchantment
 
     public function canClimb(Player $player): bool
     {
-        /** @var Block $block */
-        foreach (array_merge($player->getWorld()->getBlock($player->getPosition()->add(0, (count($player->getWorld()->getBlock($player->getPosition())->getCollisionBoxes()) > 0 ? ceil($player->getPosition()->y) - $player->getPosition()->y + 0.01 : 0), 0))->getHorizontalSides(), $player->getWorld()->getBlock($player->getPosition()->add(0, 1, 0))->getHorizontalSides()) as $block) {
-            if ($block->isSolid()) {
-                return true;
-            }
+        foreach ($player->getWorld()->getBlock($player->getPosition()->add(0, (count($player->getWorld()->getBlock($player->getPosition())->getCollisionBoxes()) > 0 ? ceil($player->getPosition()->y) - $player->getPosition()->y + 0.01 : 0), 0))->getHorizontalSides() as $block) {
+            if ($block->isSolid()) return true;
+        }
+        foreach ($player->getWorld()->getBlock($player->getPosition()->add(0, 1, 0))->getHorizontalSides() as $block) {
+            if ($block->isSolid()) return true;
         }
         return false;
     }
