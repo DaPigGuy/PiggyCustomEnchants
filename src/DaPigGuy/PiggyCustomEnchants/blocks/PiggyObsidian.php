@@ -20,42 +20,13 @@ class PiggyObsidian extends Block
         parent::__construct(new BlockIdentifier(BlockLegacyIds::OBSIDIAN, 15), "Magmawalker Obsidian", BlockBreakInfo::instant());
     }
 
-    public function ticksRandomly(): bool
-    {
-        return true;
-    }
-
-    public function onRandomTick(): void
-    {
-        $this->onScheduledUpdate();
-    }
-
-    public function onNearbyBlockChange(): void
-    {
-        $this->onScheduledUpdate();
-    }
-
     public function onScheduledUpdate(): void
     {
-        $count = 0;
-        for ($x = -1; $x <= 1; $x++) {
-            for ($z = -1; $z <= 1; $z++) {
-                $pos = $this->getPos()->add($x, 0, $z);
-                if (!$this->getPos()->equals($pos)) {
-                    $block = $this->getPos()->getWorld()->getBlock($pos);
-                    if ($block instanceof PiggyObsidian) {
-                        $count++;
-                    }
-                }
-            }
+        if (mt_rand(0, 3) === 0 || $this->countNeighbors() < 4) {
+            $this->slightlyMelt(true);
+        } else {
+            $this->getPos()->getWorld()->scheduleDelayedBlockUpdate($this->getPos(), mt_rand(20, 40));
         }
-        if (mt_rand(0, 100) <= 33.33 || $count < 4) {
-            $this->age++;
-        }
-        if ($this->age >= 4) {
-            $this->getPos()->getWorld()->useBreakOn($this->getPos());
-        }
-        $this->getPos()->getWorld()->scheduleDelayedBlockUpdate($this->getPos(), mt_rand(1, 2) * 20);
     }
 
     public function onBreak(Item $item, Player $player = null): bool
@@ -67,5 +38,34 @@ class PiggyObsidian extends Block
     public function getDrops(Item $item): array
     {
         return [];
+    }
+
+    public function countNeighbors(): int
+    {
+        $i = 0;
+        foreach ($this->getAllSides() as $block) {
+            if ($block instanceof PiggyObsidian) {
+                $i++;
+                if ($i >= 4) return $i;
+            }
+        }
+        return $i;
+    }
+
+    public function slightlyMelt(bool $meltNeighbors): void
+    {
+        if ($this->age < 3) {
+            $this->age++;
+            $this->getPos()->getWorld()->scheduleDelayedBlockUpdate($this->getPos(), mt_rand(20, 40));
+        } else {
+            $this->getPos()->getWorld()->useBreakOn($this->getPos());
+            if ($meltNeighbors) {
+                foreach ($this->getAllSides() as $block) {
+                    if ($block instanceof PiggyObsidian) {
+                        $block->slightlyMelt(false);
+                    }
+                }
+            }
+        }
     }
 }
