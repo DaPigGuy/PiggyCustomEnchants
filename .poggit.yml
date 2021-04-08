@@ -8,7 +8,7 @@ projects:
     libs:
       - src: jojoe77777/FormAPI/libFormAPI
         version: ^1.3
-      - src: ParoxityTeam/Commando/Commando
+      - src: Paroxity/Commando/Commando
         version: ^2.1.0
     lint:
       phpstan: false

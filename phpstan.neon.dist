@@ -2,10 +2,10 @@ parameters:
   paths:
     - /source/src
   level: 7
-  autoload_files:
+  bootstrapFiles:
     - phar:///pocketmine/PocketMine-MP.phar/vendor/autoload.php
-  autoload_directories:
-    - /source/src
+    - phpstan/bootstrap.php
+  scanDirectories:
     - phar:///source/vendor/FormAPI.phar/src/
     - phar:///source/vendor/Commando.phar/src/
   excludes_analyse:
