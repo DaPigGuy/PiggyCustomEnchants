@@ -45,6 +45,7 @@ use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
+use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\Player;
 
 class EventListener implements Listener
@@ -71,22 +72,20 @@ class EventListener implements Listener
     {
         $packet = $event->getPacket();
         if ($packet instanceof InventoryTransactionPacket) {
-            foreach ($packet->actions as $key => $action) {
-                Utils::filterDisplayedEnchants($action->oldItem);
-                Utils::filterDisplayedEnchants($action->newItem);
-                $packet->actions[$key] = $action;
+            foreach ($packet->trData->getActions() as $key => $action) {
+                Utils::filterDisplayedEnchants($action->oldItem->getItemStack());
+                Utils::filterDisplayedEnchants($action->newItem->getItemStack());
+                $packet->trData->getActions()[$key] = $action;
             }
-            if (isset($packet->trData->itemInHand)) {
-                Utils::filterDisplayedEnchants($packet->trData->itemInHand);
-            }
-            if ($packet->transactionType === InventoryTransactionPacket::TYPE_USE_ITEM) {
-                if ($packet->trData->actionType === InventoryTransactionPacket::USE_ITEM_ACTION_BREAK_BLOCK) {
-                    DrillerEnchant::$lastBreakFace[$event->getPlayer()->getName()] = $packet->trData->face;
+            if ($packet->trData instanceof UseItemTransactionData) {
+                Utils::filterDisplayedEnchants($packet->trData->getItemInHand()->getItemStack());
+                if ($packet->trData->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK) {
+                    DrillerEnchant::$lastBreakFace[$event->getPlayer()->getName()] = $packet->trData->getFace();
                 }
             }
         }
         if ($packet instanceof MobEquipmentPacket) {
-            Utils::filterDisplayedEnchants($packet->item);
+            Utils::filterDisplayedEnchants($packet->item->getItemStack());
         }
     }
 
