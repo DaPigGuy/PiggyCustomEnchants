@@ -96,7 +96,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 
 ## License
 ```
-   Copyright 2017-2020 DaPigGuy
+   Copyright 2017 DaPigGuy
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
