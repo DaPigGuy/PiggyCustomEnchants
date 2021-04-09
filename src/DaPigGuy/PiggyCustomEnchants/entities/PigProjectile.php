@@ -46,26 +46,18 @@ class PigProjectile extends PiggyProjectile
     public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porkLevel = 1)
     {
         parent::__construct($level, $nbt, $shootingEntity);
-        if ($porkLevel < 1) {
-            $porkLevel = 1;
-        }
-        if ($porkLevel > 6) {
-            $porkLevel = 6;
-        }
+        if ($porkLevel < 1) $porkLevel = 1;
+        if ($porkLevel > 6) $porkLevel = 6;
         $values = self::PORK_LEVELS[$porkLevel];
         $this->damage = $values[0];
-        if ($values[1]) {
-            $this->setNameTag("Dinnerbone");
-        }
+        if ($values[1]) $this->setNameTag("Dinnerbone");
         $this->porkLevel = $porkLevel;
         $this->zombie = $values[2];
     }
 
     public function entityBaseTick(int $tickDiff = 1): bool
     {
-        if ($this->closed) {
-            return false;
-        }
+        if ($this->closed) return false;
         $hasUpdate = parent::entityBaseTick($tickDiff);
         if (!$this->isCollided) {
             if ($this->getPorkLevel() > 1) {

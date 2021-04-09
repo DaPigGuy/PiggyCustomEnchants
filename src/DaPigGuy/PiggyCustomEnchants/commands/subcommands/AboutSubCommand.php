@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\commands\subcommands;
-
 
 use CortexPE\Commando\BaseSubCommand;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
@@ -21,12 +21,10 @@ class AboutSubCommand extends BaseSubCommand
         $message = TextFormat::GREEN . "PiggyCustomEnchants version " . TextFormat::GOLD . $this->plugin->getDescription()->getVersion() . TextFormat::EOL .
             TextFormat::GREEN . "PiggyCustomEnchants is a versatile custom enchantments plugin developed by DaPigGuy (MCPEPIG) and Aericio." . TextFormat::EOL .
             "More information about our plugin can be found at " . TextFormat::GOLD . "https://piggydocs.aericio.net/" . TextFormat::GREEN . "." . TextFormat::EOL .
-            TextFormat::GRAY . "Copyright 2017-2020 DaPigGuy; Licensed under the Apache License.";
+            TextFormat::GRAY . "Copyright 2017 DaPigGuy; Licensed under the Apache License.";
         if ($sender instanceof Player && $this->plugin->areFormsEnabled()) {
             $form = new SimpleForm(function (Player $player, ?int $data): void {
-                if ($data !== null) {
-                    $this->plugin->getServer()->dispatchCommand($player, "ce");
-                }
+                if ($data !== null) $this->plugin->getServer()->dispatchCommand($player, "ce");
             });
             $form->setTitle(TextFormat::GREEN . "About PiggyCustomEnchants");
             $form->setContent($message);

@@ -63,9 +63,7 @@ class MeditationEnchant extends ReactiveEnchantment
             if ($this->meditationTick[$player->getName()] >= $this->extraData["duration"]) {
                 $this->meditationTick[$player->getName()] = 0;
                 $event = new EntityRegainHealthEvent($player, $level * $this->extraData["healthReplenishAmountMultiplier"], EntityRegainHealthEvent::CAUSE_MAGIC);
-                if (!$event->isCancelled()) {
-                    $player->heal($event);
-                }
+                if (!$event->isCancelled()) $player->heal($event);
                 $player->setFood($player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"] > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"]);
             }
         }

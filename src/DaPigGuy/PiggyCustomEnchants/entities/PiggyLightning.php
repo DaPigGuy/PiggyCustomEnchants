@@ -31,34 +31,26 @@ class PiggyLightning extends Entity
 
     public function entityBaseTick(int $tickDiff = 1): bool
     {
-        if ($this->closed) {
-            return false;
-        }
+        if ($this->closed) return false;
         $this->age += $tickDiff;
-        $hasUpdate = parent::entityBaseTick($tickDiff);
-        foreach ($this->getLevel()->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
+        $world = $this->getLevel();
+        foreach ($world->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
             if ($entity instanceof Living && $entity->isAlive() && $this->getOwningEntity() !== $entity) {
                 $owner = $this->getOwningEntity();
                 if (!$owner instanceof Player || !AllyChecks::isAlly($owner, $entity)) {
                     $ev = new EntityCombustByEntityEvent($this, $entity, mt_rand(3, 8));
                     $ev->call();
-                    if (!$ev->isCancelled()) {
-                        $entity->setOnFire($ev->getDuration());
-                    }
+                    if (!$ev->isCancelled()) $entity->setOnFire($ev->getDuration());
                 }
                 $ev = new EntityDamageByEntityEvent($this, $entity, EntityDamageEvent::CAUSE_CUSTOM, 5);
                 $ev->call();
-                if (!$ev->isCancelled()) {
-                    $entity->attack($ev);
-                }
+                if (!$ev->isCancelled()) $entity->attack($ev);
             }
         }
-        if ($this->getLevel()->getBlock($this)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false)) {
-            $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
+        if ($world->getBlock($this)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false)) {
+            $world->setBlock($this, Block::get(Block::FIRE));
         }
-        if ($this->age > 20) {
-            $this->flagForDespawn();
-        }
-        return $hasUpdate;
+        if ($this->age > 20) $this->flagForDespawn();
+        return parent::entityBaseTick($tickDiff);
     }
 }

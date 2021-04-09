@@ -44,9 +44,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
             $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);
             foreach ($entities as $entity) {
                 if ($entity instanceof Projectile) {
-                    if ($entity->getOwningEntity() !== $player) {
-                        $entity->setMotion($entity->getMotion()->multiply(-1));
-                    }
+                    if ($entity->getOwningEntity() !== $player) $entity->setMotion($entity->getMotion()->multiply(-1));
                 } else {
                     if (!$entity instanceof ItemEntity && !$entity instanceof ExperienceOrb && !isset($entity->namedtag->getValue()["SlapperVersion"]) && !AllyChecks::isAlly($player, $entity)) {
                         $entity->setMotion(new Vector3($player->subtract($entity)->normalize()->multiply(-0.75)->x, 0, $player->subtract($entity)->normalize()->multiply(-0.75)->z));

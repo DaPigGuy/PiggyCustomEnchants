@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\traits;
-
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
@@ -35,11 +35,7 @@ trait ToggleTrait
         $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
         if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
-        if ($toggle) {
-            $this->addToStack($player, $level);
-        } else {
-            $this->removeFromStack($player, $level);
-        }
+        $toggle ? $this->addToStack($player, $level) : $this->removeFromStack($player, $level);
         $this->toggle($player, $item, $inventory, $slot, $level, $toggle);
     }
 

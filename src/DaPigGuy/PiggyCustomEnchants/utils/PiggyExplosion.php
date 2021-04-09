@@ -75,9 +75,7 @@ class PiggyExplosion extends Explosion
         foreach ($this->affectedBlocks as $key => $block) {
             $drops = $this->what->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
             $t = $this->level->getTileAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ());
-            if ($t instanceof Container) {
-                $drops = array_merge($drops, $t->getInventory()->getContents());
-            }
+            if ($t instanceof Container) $drops = array_merge($drops, $t->getInventory()->getContents());
 
             $ev = new BlockBreakEvent($this->what, $block, $item, true, $drops);
             $ev->call();
@@ -87,9 +85,7 @@ class PiggyExplosion extends Explosion
             }
 
             if ($t instanceof Tile) {
-                if ($t instanceof Chest) {
-                    $t->unpair();
-                }
+                if ($t instanceof Chest) $t->unpair();
                 $t->close();
             }
 
@@ -107,9 +103,7 @@ class PiggyExplosion extends Explosion
             $pos = new Vector3($block->x, $block->y, $block->z);
             for ($side = 0; $side <= 5; $side++) {
                 $sideBlock = $pos->getSide($side);
-                if (!$this->level->isInWorld($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ())) {
-                    continue;
-                }
+                if (!$this->level->isInWorld($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ())) continue;
                 if (!isset($this->affectedBlocks[$index = ((($sideBlock->x) & 0xFFFFFFF) << 36) | ((($sideBlock->y) & 0xff) << 28) | (($sideBlock->z) & 0xFFFFFFF)]) and !isset($updateBlocks[$index])) {
                     $ev = new BlockUpdateEvent($this->level->getBlockAt($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ()));
                     $ev->call();

@@ -15,9 +15,7 @@ class CheckDisabledEnchantsTask extends AsyncTask
     {
         //TODO: Pass through proxy w/ API & Plugin Version for statistics on plugin
         $disabledEnchants = Internet::getURL("https://gist.githubusercontent.com/DaPigGuy/9c65a998bc0aa8d6b4708796110f7d11/raw/");
-        if ($disabledEnchants !== false) {
-            $this->setResult($disabledEnchants);
-        }
+        if ($disabledEnchants !== false) $this->setResult($disabledEnchants);
     }
 
     public function onCompletion(Server $server): void

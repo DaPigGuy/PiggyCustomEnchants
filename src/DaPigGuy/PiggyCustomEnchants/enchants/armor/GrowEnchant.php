@@ -75,9 +75,7 @@ class GrowEnchant extends ToggleableEnchantment
             $this->growPower[$player->getName()]--;
             if ($this->equippedArmorStack[$player->getName()] < 4 || $this->growPower[$player->getName()] <= 0) {
                 unset($this->grew[$player->getName()]);
-                if ($this->growPower[$player->getName()] <= 0) {
-                    $this->growPower[$player->getName()] = $this->extraData["power"];
-                }
+                if ($this->growPower[$player->getName()] <= 0) $this->growPower[$player->getName()] = $this->extraData["power"];
                 $player->setScale(1);
                 $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
             }
