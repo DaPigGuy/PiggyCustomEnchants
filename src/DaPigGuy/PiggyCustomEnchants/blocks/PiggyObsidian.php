@@ -43,7 +43,7 @@ class PiggyObsidian extends Obsidian
             $count = 0;
             for ($x = -1; $x <= 1; $x++) {
                 for ($z = -1; $z <= 1; $z++) {
-                    $pos = $this->add($x, 0, $z);
+                    $pos = $this->add((float)$x, 0.0, (float)$z);
                     if (!$this->equals($pos)) {
                         $block = $this->getLevel()->getBlock($pos);
                         if ($block instanceof PiggyObsidian && $block->isMagmaWalker()) {
@@ -52,12 +52,8 @@ class PiggyObsidian extends Obsidian
                     }
                 }
             }
-            if (mt_rand(0, 100) <= 33.33 || $count < 4) {
-                $this->age++;
-            }
-            if ($this->age >= 4) {
-                $this->getLevel()->useBreakOn($this);
-            }
+            if (mt_rand(0, 100) <= 33.33 || $count < 4) $this->age++;
+            if ($this->age >= 4) $this->getLevel()->useBreakOn($this);
             $this->getLevel()->scheduleDelayedBlockUpdate($this, mt_rand(1, 2) * 20);
         }
     }
