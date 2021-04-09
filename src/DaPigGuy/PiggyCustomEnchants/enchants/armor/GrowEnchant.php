@@ -17,7 +17,9 @@ use pocketmine\utils\TextFormat;
 
 class GrowEnchant extends ToggleableEnchantment
 {
-    use ReactiveTrait;
+    use ReactiveTrait {
+        onReaction as protected originalOnReaction;
+    }
     use TickingTrait;
 
     /** @var string */
@@ -36,6 +38,8 @@ class GrowEnchant extends ToggleableEnchantment
     public $grew;
     /** @var array */
     public $growPower;
+    /** @var array */
+    public $shiftCache;
 
     public function getReagent(): array
     {
@@ -47,20 +51,39 @@ class GrowEnchant extends ToggleableEnchantment
         return ["power" => 60 * 20, "base" => 0.3, "multiplier" => 0.0125];
     }
 
+    public function onReaction(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
+    {
+        if ($event instanceof PlayerToggleSneakEvent) {
+            $playerName = $player->getName();
+            if ($event->isSneaking()) {
+                if (!isset($this->shiftCache[$playerName])) {
+                    $this->originalOnReaction($player, $item, $inventory, $slot, $event, $level, $stack);
+                    if (isset($this->grew[$playerName])) $this->setCooldown($player, 0);
+                    $this->shiftCache[$playerName] = true;
+                } else {
+                    $player->sendTip(TextFormat::RED . "Grow is still in cooldown: " . $this->getCooldown($player) . "s");
+                }
+            } elseif (isset($this->shiftCache[$playerName])) {
+                unset($this->shiftCache[$playerName]);
+            }
+        }
+    }
+
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerToggleSneakEvent) {
-            if ($this->equippedArmorStack[$player->getName()] === 4) {
+            $playerName = $player->getName();
+            if ($this->equippedArmorStack[$playerName] === 4) {
                 if ($event->isSneaking()) {
                     if ($stack - $level === 0) {
-                        if (isset($this->grew[$player->getName()])) {
-                            unset($this->grew[$player->getName()]);
+                        if (isset($this->grew[$playerName])) {
+                            unset($this->grew[$playerName]);
                             $player->setScale(1);
                             $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
                         } else {
-                            $this->grew[$player->getName()] = $player;
-                            if (!isset($this->growPower[$player->getName()])) $this->growPower[$player->getName()] = $this->extraData["power"];
-                            $player->setScale($player->getScale() + $this->extraData["base"] + ($this->stack[$player->getName()] * $this->extraData["multiplier"]));
+                            $this->grew[$playerName] = $player;
+                            if (!isset($this->growPower[$playerName])) $this->growPower[$playerName] = $this->extraData["power"];
+                            $player->setScale($player->getScale() + $this->extraData["base"] + ($this->stack[$playerName] * $this->extraData["multiplier"]));
                             $player->sendTip(TextFormat::GREEN . "You have grown. Sneak again to shrink back to normal size.");
                         }
                     }
@@ -71,11 +94,14 @@ class GrowEnchant extends ToggleableEnchantment
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        if (isset($this->grew[$player->getName()])) {
-            $this->growPower[$player->getName()]--;
-            if ($this->equippedArmorStack[$player->getName()] < 4 || $this->growPower[$player->getName()] <= 0) {
-                unset($this->grew[$player->getName()]);
-                if ($this->growPower[$player->getName()] <= 0) $this->growPower[$player->getName()] = $this->extraData["power"];
+        $playerName = $player->getName();
+        if (isset($this->grew[$playerName])) {
+            $this->growPower[$playerName]--;
+            $player->sendTip(TextFormat::GREEN . "Grow power remaining: " . $this->growPower[$playerName]);
+            if ($this->equippedArmorStack[$playerName] < 4 || $this->growPower[$playerName] <= 0) {
+                unset($this->grew[$playerName]);
+                $this->setCooldown($player, $this->getCooldownDuration());
+                if ($this->growPower[$playerName] <= 0) $this->growPower[$playerName] = $this->extraData["power"];
                 $player->setScale(1);
                 $player->sendTip(TextFormat::RED . "You have shrunk back to normal size.");
             }
