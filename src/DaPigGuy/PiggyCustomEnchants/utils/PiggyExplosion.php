@@ -25,12 +25,12 @@ use pocketmine\tile\Tile;
 class PiggyExplosion extends Explosion
 {
     /** @var Player */
-    protected $what;
+    protected $player;
 
     public function __construct(Position $center, float $size, Player $what)
     {
         parent::__construct($center, $size, $what);
-        $this->what = $what;
+        $this->player = $what;
     }
 
     public function explodeB(): bool
@@ -39,7 +39,7 @@ class PiggyExplosion extends Explosion
         $updateBlocks = [];
         $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
 
-        $ev = new EntityExplodeEvent($this->what, $this->source, $this->affectedBlocks, (1 / $this->size) * 100);
+        $ev = new EntityExplodeEvent($this->player, $this->source, $this->affectedBlocks, (1 / $this->size) * 100);
         $ev->call();
         if ($ev->isCancelled()) {
             return false;
@@ -56,7 +56,7 @@ class PiggyExplosion extends Explosion
         $maxZ = (int)ceil($this->source->z + $explosionSize + 1);
 
         $explosionBB = new AxisAlignedBB($minX, $minY, $minZ, $maxX, $maxY, $maxZ);
-        $list = $this->level->getNearbyEntities($explosionBB, $this->what);
+        $list = $this->level->getNearbyEntities($explosionBB, $this->player);
         foreach ($list as $entity) {
             $distance = $entity->distance($this->source) / $explosionSize;
             if ($distance <= 1) {
@@ -64,29 +64,29 @@ class PiggyExplosion extends Explosion
                 $impact = (1 - $distance) * ($exposure = 1);
                 $damage = (int)((($impact * $impact + $impact) / 2) * 8 * $explosionSize + 1);
 
-                $ev = new EntityDamageByEntityEvent($this->what, $entity, EntityDamageEvent::CAUSE_ENTITY_EXPLOSION, $damage);
+                $ev = new EntityDamageByEntityEvent($this->player, $entity, EntityDamageEvent::CAUSE_ENTITY_EXPLOSION, $damage);
                 $entity->attack($ev);
                 $entity->setMotion($motion->multiply($impact));
             }
         }
 
-        $item = $this->what->getInventory()->getItemInHand();
-        RecursiveEnchant::$isUsing[$this->what->getName()] = true;
+        $item = $this->player->getInventory()->getItemInHand();
+        RecursiveEnchant::$isUsing[$this->player->getName()] = true;
         foreach ($this->affectedBlocks as $key => $block) {
-            $drops = $this->what->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
-            $t = $this->level->getTileAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ());
-            if ($t instanceof Container) $drops = array_merge($drops, $t->getInventory()->getContents());
+            $drops = $this->player->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
+            $tile = $this->level->getTileAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ());
+            if ($tile instanceof Container) $drops = array_merge($drops, $tile->getInventory()->getContents());
 
-            $ev = new BlockBreakEvent($this->what, $block, $item, true, $drops);
+            $ev = new BlockBreakEvent($this->player, $block, $item, true, $drops);
             $ev->call();
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$key]);
                 continue;
             }
 
-            if ($t instanceof Tile) {
-                if ($t instanceof Chest) $t->unpair();
-                $t->close();
+            if ($tile instanceof Tile) {
+                if ($tile instanceof Chest) $tile->unpair();
+                $tile->close();
             }
 
             if ($block instanceof TNT) {
@@ -118,7 +118,7 @@ class PiggyExplosion extends Explosion
             }
             $send[] = new Vector3($block->x - $source->x, $block->y - $source->y, $block->z - $source->z);
         }
-        unset(RecursiveEnchant::$isUsing[$this->what->getName()]);
+        unset(RecursiveEnchant::$isUsing[$this->player->getName()]);
         $this->level->addParticle(new HugeExplodeSeedParticle($source));
         $this->level->broadcastLevelSoundEvent($source, LevelSoundEventPacket::SOUND_EXPLODE);
         return true;
