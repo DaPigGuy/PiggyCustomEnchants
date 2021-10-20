@@ -10,7 +10,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 ## Prerequisites
 * Basic knowledge on how to install plugins from Poggit Releases and/or Poggit CI
 * PMMP 3.19.0+
-* MCPE protocol 431 (v1.16.220)
+* MCPE protocol 471 (v1.17.40)
 
 ## Installation & Setup
 1. Install the plugin from Poggit.
