@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\commands\subcommands;
-
 
 use CortexPE\Commando\args\IntegerArgument;
 use CortexPE\Commando\args\RawStringArgument;

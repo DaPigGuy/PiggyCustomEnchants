@@ -25,12 +25,12 @@ use pocketmine\world\World;
 class PiggyExplosion extends Explosion
 {
     /** @var Player */
-    protected $what;
+    protected $player;
 
     public function __construct(Position $center, float $size, Player $what)
     {
         parent::__construct($center, $size, $what);
-        $this->what = $what;
+        $this->player = $what;
     }
 
     public function explodeB(): bool
@@ -41,7 +41,7 @@ class PiggyExplosion extends Explosion
         $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
         $yield = (1 / $this->size) * 100;
 
-        $ev = new EntityExplodeEvent($this->what, $this->source, $this->affectedBlocks, $yield);
+        $ev = new EntityExplodeEvent($this->player, $this->source, $this->affectedBlocks, $yield);
         $ev->call();
         if ($ev->isCancelled()) {
             return false;
@@ -59,7 +59,7 @@ class PiggyExplosion extends Explosion
 
         $explosionBB = new AxisAlignedBB($minX, $minY, $minZ, $maxX, $maxY, $maxZ);
 
-        $list = $this->world->getNearbyEntities($explosionBB, $this->what);
+        $list = $this->world->getNearbyEntities($explosionBB, $this->player);
         foreach ($list as $entity) {
             $entityPos = $entity->getPosition();
             $distance = $entityPos->distance($this->source) / $explosionSize;
@@ -69,7 +69,7 @@ class PiggyExplosion extends Explosion
                 $impact = (1 - $distance) * ($exposure = 1);
                 $damage = (int)((($impact * $impact + $impact) / 2) * 8 * $explosionSize + 1);
 
-                $ev = new EntityDamageByEntityEvent($this->what, $entity, EntityDamageEvent::CAUSE_ENTITY_EXPLOSION, $damage);
+                $ev = new EntityDamageByEntityEvent($this->player, $entity, EntityDamageEvent::CAUSE_ENTITY_EXPLOSION, $damage);
                 $entity->attack($ev);
                 $entity->setMotion($motion->multiply($impact));
             }
@@ -77,8 +77,8 @@ class PiggyExplosion extends Explosion
 
         $airBlock = VanillaBlocks::AIR();
 
-        $item = $this->what->getInventory()->getItemInHand();
-        RecursiveEnchant::$isUsing[$this->what->getName()] = true;
+        $item = $this->player->getInventory()->getItemInHand();
+        RecursiveEnchant::$isUsing[$this->player->getName()] = true;
         foreach ($this->affectedBlocks as $key => $block) {
             $ev = new BlockBreakEvent($this->what, $block, $item, true, $block->getDrops($item));
             $ev->call();
@@ -102,9 +102,7 @@ class PiggyExplosion extends Explosion
 
             foreach (Facing::ALL as $side) {
                 $sideBlock = $pos->getSide($side);
-                if (!$this->world->isInWorld((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z)) {
-                    continue;
-                }
+                if (!$this->world->isInWorld((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z)) continue;
                 if (!isset($this->affectedBlocks[$index = World::blockHash((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z)]) and !isset($updateBlocks[$index])) {
                     $ev = new BlockUpdateEvent($this->world->getBlockAt((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z));
                     $ev->call();
@@ -119,7 +117,7 @@ class PiggyExplosion extends Explosion
             }
             $send[] = $pos->subtractVector($source);
         }
-        unset(RecursiveEnchant::$isUsing[$this->what->getName()]);
+        unset(RecursiveEnchant::$isUsing[$this->player->getName()]);
 
         $this->world->addParticle($source, new HugeExplodeSeedParticle());
         $this->world->addSound($source, new ExplodeSound());

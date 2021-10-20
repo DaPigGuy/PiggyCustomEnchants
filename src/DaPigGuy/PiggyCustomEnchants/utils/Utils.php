@@ -57,6 +57,7 @@ class Utils
         CustomEnchant::ITEM_TYPE_GLOBAL => "Global",
         CustomEnchant::ITEM_TYPE_COMPASS => "Compass",
     ];
+
     const RARITY_NAMES = [
         CustomEnchant::RARITY_COMMON => "Common",
         CustomEnchant::RARITY_UNCOMMON => "Uncommon",

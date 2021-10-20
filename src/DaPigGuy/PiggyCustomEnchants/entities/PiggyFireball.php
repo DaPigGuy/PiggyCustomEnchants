@@ -36,9 +36,7 @@ class PiggyFireball extends PiggyProjectile
         if (!$owner instanceof Player || !AllyChecks::isAlly($owner, $entityHit)) {
             $ev = new EntityCombustByEntityEvent($this, $entityHit, 5);
             $ev->call();
-            if (!$ev->isCancelled()) {
-                $entityHit->setOnFire($ev->getDuration());
-            }
+            if (!$ev->isCancelled()) $entityHit->setOnFire($ev->getDuration());
         }
         parent::onHitEntity($entityHit, $hitResult);
     }

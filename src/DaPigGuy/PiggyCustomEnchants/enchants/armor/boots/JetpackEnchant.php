@@ -49,7 +49,7 @@ class JetpackEnchant extends ReactiveEnchantment
 
     public function getDefaultExtraData(): array
     {
-        return ["power" => 300, "rechargeAmount" => 0.66, "drainMultiplier" => 1, "sprintDrainMultiplier" => 1.25, "speedMultiplier" => 1, "sprintSpeedMultiplier" => 1.25];
+        return ["power" => 300, "rechargeAmount" => 0.66, "enableAmount" => 25, "drainMultiplier" => 1, "sprintDrainMultiplier" => 1.25, "speedMultiplier" => 1, "sprintSpeedMultiplier" => 1.25];
     }
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
@@ -77,11 +77,13 @@ class JetpackEnchant extends ReactiveEnchantment
             $player->resetFallDistance();
             $player->getWorld()->addParticle($player->getPosition(), new JetpackParticle());
             $time = ceil($this->powerRemaining[$player->getName()] / 10);
-            $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
-            if ($time <= 2) $player->sendTip(TextFormat::RED . "Jetpack low on power.");
+            if ($time > 2) $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
+            $lowTime = ceil($this->powerRemaining[$player->getName()] / 5);
+            if ($time <= 2 && $lowTime > 0) $player->sendTip(TextFormat::RED . "Jetpack low on power: " . str_repeat("|", (int)$lowTime));
             if ($player->getServer()->getTick() % 20 === 0) {
                 $this->powerRemaining[$player->getName()] -= ($player->isSprinting() ? $this->extraData["sprintDrainMultiplier"] : $this->extraData["drainMultiplier"]);
                 if ($this->powerRemaining[$player->getName()] <= 0) {
+                    $player->sendTip(TextFormat::RED . "Jetpack has run out of power.");
                     $this->powerActiveJetpack($player, false);
                     return;
                 }
@@ -102,12 +104,17 @@ class JetpackEnchant extends ReactiveEnchantment
     public function powerActiveJetpack(Player $player, bool $power = true): void
     {
         if ($power) {
-            $this->activeJetpacks[$player->getName()] = $player;
             if (!isset($this->powerRemaining[$player->getName()])) {
                 $this->powerRemaining[$player->getName()] = $this->extraData["power"];
+                $this->activeJetpacks[$player->getName()] = $player;
             } else {
                 $this->powerRemaining[$player->getName()] += (time() - $this->lastActivated[$player->getName()]) * $this->extraData["rechargeAmount"];
                 if ($this->powerRemaining[$player->getName()] > $this->extraData["power"]) $this->powerRemaining[$player->getName()] = $this->extraData["power"];
+                if ($this->powerRemaining[$player->getName()] < $this->extraData["enableAmount"]) {
+                    $player->sendTip(TextFormat::RED . "Jetpack needs to charge up to " . $this->extraData["enableAmount"] . " before it can be re-enabled. (" . round(abs($this->powerRemaining[$player->getName()]), 2) . " / " . $this->extraData["power"] . ")");
+                    return;
+                }
+                $this->activeJetpacks[$player->getName()] = $player;
             }
         } else {
             unset($this->activeJetpacks[$player->getName()]);

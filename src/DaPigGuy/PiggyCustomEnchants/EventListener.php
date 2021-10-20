@@ -48,6 +48,7 @@ use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
+use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\player\Player;
@@ -86,9 +87,7 @@ class EventListener implements Listener
                 }
             }
         }
-        if ($packet instanceof MobEquipmentPacket) {
-            Utils::filterDisplayedEnchants($packet->item);
-        }
+        if ($packet instanceof MobEquipmentPacket) Utils::filterDisplayedEnchants($packet->item->getItemStack());
     }
 
     public function onDataPacketSend(DataPacketSendEvent $event): void
@@ -136,9 +135,7 @@ class EventListener implements Listener
         }
         if ($event instanceof EntityDamageByEntityEvent) {
             $attacker = $event->getDamager();
-            if ($attacker instanceof Player) {
-                ReactiveEnchantment::attemptReaction($attacker, $event);
-            }
+            if ($attacker instanceof Player) ReactiveEnchantment::attemptReaction($attacker, $event);
         }
     }
 
@@ -148,9 +145,7 @@ class EventListener implements Listener
     public function onEffectAdd(EntityEffectAddEvent $event): void
     {
         $entity = $event->getEntity();
-        if ($entity instanceof Player) {
-            ReactiveEnchantment::attemptReaction($entity, $event);
-        }
+        if ($entity instanceof Player) ReactiveEnchantment::attemptReaction($entity, $event);
     }
 
     /**
@@ -159,15 +154,12 @@ class EventListener implements Listener
     public function onShootBow(EntityShootBowEvent $event): void
     {
         $entity = $event->getEntity();
-        if ($entity instanceof Player) {
-            ReactiveEnchantment::attemptReaction($entity, $event);
-        }
+        if ($entity instanceof Player) ReactiveEnchantment::attemptReaction($entity, $event);
     }
 
     public function onDeath(PlayerDeathEvent $event): void
     {
-        $player = $event->getPlayer();
-        ReactiveEnchantment::attemptReaction($player, $event);
+        ReactiveEnchantment::attemptReaction($event->getPlayer(), $event);
     }
 
     /**
@@ -211,17 +203,18 @@ class EventListener implements Listener
         }
     }
 
-    /**
-     * @param PlayerJoinEvent $event
-     */
     public function onJoin(PlayerJoinEvent $event): void
     {
         $player = $event->getPlayer();
         foreach ($player->getInventory()->getContents() as $slot => $content) {
-            foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot);
+            foreach ($content->getEnchantments() as $enchantmentInstance) {
+                ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot);
+            }
         }
         foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
-            foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot);
+            foreach ($content->getEnchantments() as $enchantmentInstance) {
+                ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot);
+            }
         }
 
         $onSlot = function (Inventory $inventory, int $slot, Item $oldItem): void {
@@ -262,9 +255,7 @@ class EventListener implements Listener
                 Utils::increaseNoFallDamageDuration($player);
             }
         }
-        if ($event->getFrom()->floor()->equals($event->getTo()->floor())) {
-            return;
-        }
+        if ($event->getFrom()->floor()->equals($event->getTo()->floor())) return;
         ReactiveEnchantment::attemptReaction($player, $event);
     }
 
@@ -276,10 +267,14 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         if (!$player->isClosed()) {
             foreach ($player->getInventory()->getContents() as $slot => $content) {
-                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
+                foreach ($content->getEnchantments() as $enchantmentInstance) {
+                    ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
+                }
             }
             foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
-                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+                foreach ($content->getEnchantments() as $enchantmentInstance) {
+                    ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+                }
             }
         }
     }
@@ -289,8 +284,7 @@ class EventListener implements Listener
      */
     public function onSneak(PlayerToggleSneakEvent $event): void
     {
-        $player = $event->getPlayer();
-        ReactiveEnchantment::attemptReaction($player, $event);
+        ReactiveEnchantment::attemptReaction($event->getPlayer(), $event);
     }
 
     /**
@@ -298,11 +292,8 @@ class EventListener implements Listener
      */
     public function onProjectileHitBlock(ProjectileHitBlockEvent $event): void
     {
-        $projectile = $event->getEntity();
-        $shooter = $projectile->getOwningEntity();
-        if ($shooter instanceof Player) {
-            ReactiveEnchantment::attemptReaction($shooter, $event);
-        }
+        $shooter = $event->getEntity()->getOwningEntity();
+        if ($shooter instanceof Player) ReactiveEnchantment::attemptReaction($shooter, $event);
     }
 
     /**
@@ -312,9 +303,7 @@ class EventListener implements Listener
     {
         $projectile = $event->getEntity();
         $shooter = $projectile->getOwningEntity();
-        if ($shooter instanceof Player) {
-            ProjectileTracker::addProjectile($projectile, $shooter->getInventory()->getItemInHand());
-        }
+        if ($shooter instanceof Player)  ProjectileTracker::addProjectile($projectile, $shooter->getInventory()->getItemInHand());
     }
 
     /**

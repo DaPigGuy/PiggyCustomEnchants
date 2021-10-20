@@ -60,9 +60,7 @@ class PigProjectile extends PiggyProjectile
 
     public function entityBaseTick(int $tickDiff = 1): bool
     {
-        if ($this->closed) {
-            return false;
-        }
+        if ($this->closed) return false;
         $hasUpdate = parent::entityBaseTick($tickDiff);
         if (!$this->isCollided) {
             if ($this->getPorkLevel() > 1) {

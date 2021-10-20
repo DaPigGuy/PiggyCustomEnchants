@@ -34,9 +34,7 @@ class PiggyTNT extends PrimedTNT
         $ev->call();
         if (!$ev->isCancelled()) {
             $explosion = new PiggyExplosion(Position::fromObject($this->location->add(0, $this->height / 2, 0), $this->location->world), $ev->getForce(), $ownerEntity);
-            if ($ev->isBlockBreaking()) {
-                $explosion->explodeA();
-            }
+            if ($ev->isBlockBreaking()) $explosion->explodeA();
             $explosion->explodeB();
         }
     }

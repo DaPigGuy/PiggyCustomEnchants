@@ -43,7 +43,7 @@ class PiggyCustomEnchants extends PluginBase
             ] as $virion => $class
         ) {
             if (!class_exists($class)) {
-                $this->getLogger()->error($virion . " virion not found. Please download PiggyCustomEnchants from Poggit-CI or use DEVirion (not recommended).");
+                $this->getLogger()->error($virion . " virion not found. Download PiggyCustomEnchants at https://poggit.pmmp.io/p/PiggyCustomEnchants for a pre-compiled phar.");
                 $this->getServer()->getPluginManager()->disablePlugin($this);
                 return;
             }
@@ -103,10 +103,14 @@ class PiggyCustomEnchants extends PluginBase
     {
         foreach ($this->getServer()->getOnlinePlayers() as $player) {
             foreach ($player->getInventory()->getContents() as $slot => $content) {
-                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
+                foreach ($content->getEnchantments() as $enchantmentInstance) {
+                    ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getInventory(), $slot, false);
+                }
             }
             foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
-                foreach ($content->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+                foreach ($content->getEnchantments() as $enchantmentInstance) {
+                    ToggleableEnchantment::attemptToggle($player, $content, $enchantmentInstance, $player->getArmorInventory(), $slot, false);
+                }
             }
         }
     }

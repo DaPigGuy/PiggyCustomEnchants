@@ -26,7 +26,6 @@ class RemoveSubCommand extends BaseSubCommand
             $this->onRunForm($sender, $aliasUsed, $args);
             return;
         }
-
         if ((!$sender instanceof Player && empty($args["player"])) || !isset($args["enchantment"])) {
             $sender->sendMessage("Usage: /ce remove <enchantment> <player>");
             return;
