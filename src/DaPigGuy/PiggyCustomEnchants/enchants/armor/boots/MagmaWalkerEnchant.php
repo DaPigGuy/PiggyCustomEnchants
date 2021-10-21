@@ -20,7 +20,7 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
 {
     public string $name = "Magma Walker";
     public int $rarity = Rarity::UNCOMMON;
-    public int $maxLevel= 2;
+    public int $maxLevel = 2;
 
     public int $usageType = CustomEnchant::TYPE_BOOTS;
     public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;

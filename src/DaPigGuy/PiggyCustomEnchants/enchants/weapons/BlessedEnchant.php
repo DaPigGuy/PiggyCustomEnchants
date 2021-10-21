@@ -17,7 +17,7 @@ class BlessedEnchant extends ReactiveEnchantment
 {
     public string $name = "Blessed";
     public int $rarity = Rarity::UNCOMMON;
-    public int $maxLevel= 3;
+    public int $maxLevel = 3;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

@@ -17,7 +17,7 @@ use pocketmine\player\Player;
 class LumberjackEnchant extends RecursiveEnchant
 {
     public string $name = "Lumberjack";
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_AXE;
 

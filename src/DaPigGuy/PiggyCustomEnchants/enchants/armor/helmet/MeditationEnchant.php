@@ -22,7 +22,7 @@ class MeditationEnchant extends ReactiveEnchantment
 
     public string $name = "Meditation";
     public int $rarity = Rarity::UNCOMMON;
-    public int $maxLevel= 2;
+    public int $maxLevel = 2;
 
     public int $usageType = CustomEnchant::TYPE_HELMET;
     public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;

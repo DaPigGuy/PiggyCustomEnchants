@@ -20,7 +20,7 @@ class FarmerEnchant extends ReactiveEnchantment
 {
     public string $name = "Farmer";
     public int $rarity = Rarity::UNCOMMON;
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_HOE;
 

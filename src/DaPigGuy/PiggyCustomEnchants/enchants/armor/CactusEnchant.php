@@ -17,7 +17,7 @@ use pocketmine\player\Player;
 class CactusEnchant extends TickingEnchantment
 {
     public string $name = "Cactus";
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
     public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;

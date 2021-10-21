@@ -18,7 +18,7 @@ class AntitoxinEnchant extends ReactiveEnchantment
 {
     public string $name = "Antitoxin";
     public int $rarity = Rarity::MYTHIC;
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $usageType = CustomEnchant::TYPE_HELMET;
     public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;

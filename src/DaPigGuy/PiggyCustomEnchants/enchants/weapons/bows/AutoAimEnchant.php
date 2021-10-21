@@ -19,7 +19,7 @@ class AutoAimEnchant extends TickingEnchantment
 {
     public string $name = "Auto Aim";
     public int $rarity = Rarity::MYTHIC;
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 

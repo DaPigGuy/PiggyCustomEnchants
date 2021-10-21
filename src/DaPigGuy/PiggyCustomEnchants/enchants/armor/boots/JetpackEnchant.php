@@ -25,7 +25,7 @@ class JetpackEnchant extends ReactiveEnchantment
     use ToggleTrait;
 
     public string $name = "Jetpack";
-    public int $maxLevel= 3;
+    public int $maxLevel = 3;
 
     public int $usageType = CustomEnchant::TYPE_BOOTS;
     public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;

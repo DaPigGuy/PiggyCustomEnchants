@@ -20,7 +20,7 @@ use pocketmine\scheduler\ClosureTask;
 class GrapplingEnchant extends ReactiveEnchantment
 {
     public string $name = "Grappling";
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 

@@ -18,7 +18,7 @@ class HarvestEnchant extends RecursiveEnchant
 {
     public string $name = "Harvest";
     public int $rarity = Rarity::UNCOMMON;
-    public int $maxLevel= 3;
+    public int $maxLevel = 3;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_HOE;
 

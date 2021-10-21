@@ -25,7 +25,7 @@ class ShrinkEnchant extends ToggleableEnchantment
 
     public string $name = "Shrink";
     public int $rarity = Rarity::UNCOMMON;
-    public int $maxLevel= 2;
+    public int $maxLevel = 2;
     public int $cooldownDuration = 75;
 
     public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;

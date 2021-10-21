@@ -16,7 +16,7 @@ use pocketmine\player\Player;
 class PiercingEnchant extends ReactiveEnchantment
 {
     public string $name = "Piercing";
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 

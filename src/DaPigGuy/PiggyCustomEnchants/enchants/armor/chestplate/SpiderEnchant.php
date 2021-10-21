@@ -16,7 +16,7 @@ class SpiderEnchant extends ToggleableEnchantment
     use TickingTrait;
 
     public string $name = "Spider";
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
     public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;

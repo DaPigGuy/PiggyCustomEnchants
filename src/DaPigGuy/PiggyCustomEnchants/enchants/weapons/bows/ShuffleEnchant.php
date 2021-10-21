@@ -17,7 +17,7 @@ use pocketmine\utils\TextFormat;
 class ShuffleEnchant extends ReactiveEnchantment
 {
     public string $name = "Shuffle";
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 

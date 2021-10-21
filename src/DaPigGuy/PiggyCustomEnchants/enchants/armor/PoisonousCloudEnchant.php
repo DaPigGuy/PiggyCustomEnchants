@@ -19,7 +19,7 @@ use pocketmine\world\particle\DustParticle;
 class PoisonousCloudEnchant extends TickingEnchantment
 {
     public string $name = "Poisonous Cloud";
-    public int $maxLevel= 3;
+    public int $maxLevel = 3;
 
     public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
     public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;

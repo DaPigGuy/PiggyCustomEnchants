@@ -17,7 +17,7 @@ class SmeltingEnchant extends ReactiveEnchantment
 {
     public string $name = "Smelting";
     public int $rarity = Rarity::UNCOMMON;
-    public int $maxLevel= 1;
+    public int $maxLevel = 1;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
