@@ -37,7 +37,6 @@ use pocketmine\inventory\CallbackInventoryListener;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
@@ -123,7 +122,7 @@ class EventListener implements Listener
         $entity = $event->getEntity();
         if ($entity instanceof Player) {
             if ($event->getCause() === EntityDamageEvent::CAUSE_FALL && !Utils::shouldTakeFallDamage($entity)) {
-                if ($entity->getArmorInventory()->getBoots()->getEnchantment(Enchantment::get(CustomEnchantIds::SPRINGS)) === null) Utils::setShouldTakeFallDamage($entity, true);
+                if ($entity->getArmorInventory()->getBoots()->getEnchantment(ustomEnchantManager::getEnchantment(CustomEnchantIds::SPRINGS)) === null) Utils::setShouldTakeFallDamage($entity, true);
                 $event->cancel();
                 return;
             }

@@ -40,7 +40,7 @@ class ReviveEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageEvent) {
             if ($event->getFinalDamage() >= $player->getHealth()) {
-                $level > 1 ? $item->addEnchantment(new EnchantmentInstance(Enchantment::get(CustomEnchantIds::REVIVE), $level - 1)) : $item->removeEnchantment(Enchantment::get(CustomEnchantIds::REVIVE));
+                $level > 1 ? $item->addEnchantment(new EnchantmentInstance(CustomEnchantManager::getEnchantment(CustomEnchantIds::REVIVE), $level - 1)) : $item->removeEnchantment(CustomEnchantManager::getEnchantment(CustomEnchantIds::REVIVE));
                 $player->getArmorInventory()->setItem($slot, $item);
 
                 $player->getEffects()->clear();

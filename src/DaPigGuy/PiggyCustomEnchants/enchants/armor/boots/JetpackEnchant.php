@@ -54,7 +54,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {
-                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(Enchantment::get(CustomEnchantIds::PARACHUTE)) === null && !$player->getAllowFlight()) {
+                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantManager::getEnchantment(CustomEnchantIds::PARACHUTE)) === null && !$player->getAllowFlight()) {
                         $player->sendPopup(TextFormat::RED . "It is unsafe to disable your jetpack while in the air.");
                     } else {
                         $this->powerActiveJetpack($player, false);
