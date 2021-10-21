@@ -16,17 +16,12 @@ use pocketmine\player\Player;
 
 class AntitoxinEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Antitoxin";
-    /** @var int */
-    public $rarity = Rarity::MYTHIC;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Antitoxin";
+    public int $rarity = Rarity::MYTHIC;
+    public int $maxLevel= 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_HELMET;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+    public int $usageType = CustomEnchant::TYPE_HELMET;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     public function getReagent(): array
     {

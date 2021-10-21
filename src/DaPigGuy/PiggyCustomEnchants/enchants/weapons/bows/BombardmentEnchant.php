@@ -17,11 +17,9 @@ use pocketmine\player\Player;
 
 class BombardmentEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Bombardment";
+    public string $name = "Bombardment";
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

@@ -15,15 +15,11 @@ use pocketmine\player\Player;
 
 class SmeltingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Smelting";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Smelting";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel= 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {

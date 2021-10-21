@@ -20,8 +20,7 @@ use pocketmine\player\Player;
 
 trait ReactiveTrait
 {
-    /** @var PiggyCustomEnchants */
-    protected $plugin;
+    protected PiggyCustomEnchants $plugin;
 
     /** @var float[] */
     public $chanceMultiplier;

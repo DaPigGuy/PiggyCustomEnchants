@@ -92,8 +92,7 @@ use ReflectionProperty;
 
 class CustomEnchantManager
 {
-    /** @var PiggyCustomEnchants */
-    private static $plugin;
+    private static PiggyCustomEnchants $plugin;
 
     /** @var CustomEnchant[] */
     public static $enchants = [];

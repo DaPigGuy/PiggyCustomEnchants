@@ -11,8 +11,7 @@ use pocketmine\nbt\tag\CompoundTag;
 
 class BombardmentTNT extends FallingBlock
 {
-    /** @var int */
-    private $enchantmentLevel;
+    private int $enchantmentLevel;
 
     public function __construct(Location $location, ?CompoundTag $nbt = null, int $enchantmentLevel = 1)
     {

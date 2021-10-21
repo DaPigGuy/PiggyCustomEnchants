@@ -16,15 +16,11 @@ use pocketmine\utils\TextFormat;
 
 class ChickenEnchant extends TickingEnchantment
 {
-    /** @var string */
-    public $name = "Chicken";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
+    public string $name = "Chicken";
+    public int $rarity = Rarity::UNCOMMON;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+    public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
     public function getDefaultExtraData(): array
     {

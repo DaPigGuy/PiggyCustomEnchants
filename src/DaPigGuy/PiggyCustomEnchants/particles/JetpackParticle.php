@@ -11,11 +11,8 @@ use pocketmine\world\particle\Particle;
 
 class JetpackParticle implements Particle
 {
-    /**
-     * @return LevelEventPacket
-     */
-    public function encode(Vector3 $pos)
+    public function encode(Vector3 $pos): array
     {
-        return LevelEventPacket::standardParticle(ParticleIds::CAMPFIRE_SMOKE, 0, $pos);
+        return [LevelEventPacket::standardParticle(ParticleIds::CAMPFIRE_SMOKE, 0, $pos)];
     }
 }

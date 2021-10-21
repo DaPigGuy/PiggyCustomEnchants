@@ -17,10 +17,8 @@ use pocketmine\world\particle\DestroyBlockParticle;
 
 class DeepWoundsEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Deep Wounds";
-    /** @var int */
-    public $cooldownDuration = 7;
+    public string $name = "Deep Wounds";
+    public int $cooldownDuration = 7;
 
     /** @var ClosureTask[] */
     public static $tasks;

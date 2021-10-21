@@ -12,10 +12,6 @@ class ProjectileTracker
     /** @var Item[] */
     public static $projectile = [];
 
-    /**
-     * @param Projectile $projectile
-     * @param Item $item
-     */
     public static function addProjectile(Projectile $projectile, Item $item): void
     {
         self::$projectile[$projectile->getId()] = $item;

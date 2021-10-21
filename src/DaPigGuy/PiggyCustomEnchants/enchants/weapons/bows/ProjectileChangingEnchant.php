@@ -26,8 +26,7 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
      */
     private $projectileType;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     /**
      * @phpstan-param class-string<Entity> $projectileType

@@ -11,8 +11,7 @@ use pocketmine\player\Player;
 
 trait TickingTrait
 {
-    /** @var PiggyCustomEnchants */
-    protected $plugin;
+    protected PiggyCustomEnchants $plugin;
 
     public function canTick(): bool
     {

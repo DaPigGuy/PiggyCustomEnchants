@@ -15,8 +15,7 @@ use pocketmine\scheduler\ClosureTask;
 
 class GooeyEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Gooey";
+    public string $name = "Gooey";
 
     public function getDefaultExtraData(): array
     {

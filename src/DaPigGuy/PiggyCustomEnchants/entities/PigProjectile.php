@@ -37,10 +37,8 @@ class PigProjectile extends PiggyProjectile
 
     /** @var float */
     protected $damage = 1.5;
-    /** @var int */
-    private $porkLevel;
-    /** @var bool */
-    private $zombie;
+    private int $porkLevel;
+    private bool $zombie;
 
     public function __construct(Location $location, ?Entity $shootingEntity, ?CompoundTag $nbt = null, int $porkLevel = 1)
     {

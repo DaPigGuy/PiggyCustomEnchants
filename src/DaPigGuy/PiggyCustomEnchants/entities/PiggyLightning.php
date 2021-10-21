@@ -18,8 +18,7 @@ use pocketmine\player\Player;
 
 class PiggyLightning extends Entity
 {
-    /** @var int */
-    protected $age = 0;
+    protected int $age = 0;
 
     public function entityBaseTick(int $tickDiff = 1): bool
     {

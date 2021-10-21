@@ -14,8 +14,7 @@ use pocketmine\world\Position;
 
 class PiggyTNT extends PrimedTNT
 {
-    /** @var bool */
-    private $worldDamage;
+    private bool $worldDamage;
 
     public function __construct(Location $location, ?CompoundTag $nbt = null, bool $worldDamage = false)
     {

@@ -18,17 +18,12 @@ use pocketmine\utils\TextFormat;
 
 class CloakingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Cloaking";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $cooldownDuration = 10;
+    public string $name = "Cloaking";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $cooldownDuration = 10;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

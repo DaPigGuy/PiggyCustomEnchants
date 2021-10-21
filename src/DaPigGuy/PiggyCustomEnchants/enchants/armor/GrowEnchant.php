@@ -23,17 +23,12 @@ class GrowEnchant extends ToggleableEnchantment
     }
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Grow";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $cooldownDuration = 75;
+    public string $name = "Grow";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $cooldownDuration = 75;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     /** @var array */
     public $grew;

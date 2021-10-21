@@ -28,10 +28,8 @@ use pocketmine\world\Position;
 
 class HallucinationEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Hallucination";
-    /** @var int */
-    public $rarity = Rarity::MYTHIC;
+    public string $name = "Hallucination";
+    public int $rarity = Rarity::MYTHIC;
 
     /** @var NetworkNbtSerializer */
     public $nbtWriter = null;

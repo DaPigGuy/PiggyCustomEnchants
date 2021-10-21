@@ -16,13 +16,10 @@ use pocketmine\player\Player;
 
 class ExplosiveEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Explosive";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
+    public string $name = "Explosive";
+    public int $rarity = Rarity::UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {

@@ -18,13 +18,10 @@ use pocketmine\player\Player;
 
 class JackpotEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Jackpot";
-    /** @var int */
-    public $rarity = Rarity::MYTHIC;
+    public string $name = "Jackpot";
+    public int $rarity = Rarity::MYTHIC;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;
 
     const ORE_TIERS = [
         BlockLegacyIds::COAL_ORE,

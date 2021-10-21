@@ -15,35 +15,22 @@ use ReflectionClass;
 
 class CustomEnchant extends Enchantment
 {
-    /** @var PiggyCustomEnchants */
-    protected $plugin;
+    protected PiggyCustomEnchants $plugin;
 
-    /** @var int */
-    public $id;
-    /** @var string */
-    public $name = "";
-    /** @var int */
-    public $rarity = Rarity::RARE;
-    /** @var int */
-    public $maxLevel = 5;
-    /** @var string */
-    private $displayName;
-    /** @var string */
-    public $description;
-    /** @var array */
-    public $extraData;
-    /** @var int */
-    public $cooldownDuration;
-    /** @var int */
-    public $chance;
+    public int $id;
+    public string $name = "";
+    public int $rarity = Rarity::RARE;
+    public int $maxLevel = 5;
+    private string $displayName;
+    public string $description;
+    public array $extraData;
+    public int $cooldownDuration;
+    public int $chance;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_HAND;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_WEAPON;
+    public int $usageType = CustomEnchant::TYPE_HAND;
+    public int $itemType = CustomEnchant::ITEM_TYPE_WEAPON;
 
-    /** @var array */
-    public $cooldown;
+    public array $cooldown;
 
     const TYPE_HAND = 0;
     const TYPE_ANY_INVENTORY = 1;

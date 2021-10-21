@@ -18,13 +18,10 @@ use pocketmine\scheduler\ClosureTask;
 
 class ImplantsEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Implants";
+    public string $name = "Implants";
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_HELMET;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+    public int $usageType = CustomEnchant::TYPE_HELMET;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     /** @var ClosureTask[] */
     public static $tasks;

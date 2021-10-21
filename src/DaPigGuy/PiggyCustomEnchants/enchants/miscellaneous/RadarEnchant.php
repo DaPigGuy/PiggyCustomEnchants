@@ -19,13 +19,10 @@ class RadarEnchant extends TickingEnchantment
 {
     use ToggleTrait;
 
-    /** @var string */
-    public $name = "Radar";
+    public string $name = "Radar";
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_COMPASS;
+    public int $usageType = CustomEnchant::TYPE_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_COMPASS;
 
     public function getDefaultExtraData(): array
     {

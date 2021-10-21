@@ -17,15 +17,11 @@ use pocketmine\player\Player;
 
 class AutoAimEnchant extends TickingEnchantment
 {
-    /** @var string */
-    public $name = "Auto Aim";
-    /** @var int */
-    public $rarity = Rarity::MYTHIC;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Auto Aim";
+    public int $rarity = Rarity::MYTHIC;
+    public int $maxLevel= 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getDefaultExtraData(): array
     {

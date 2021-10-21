@@ -18,12 +18,9 @@ use pocketmine\player\Player;
 
 class ToggleableEffectEnchant extends ToggleableEnchantment
 {
-    /** @var Effect */
-    private $effect;
-    /** @var int */
-    private $baseAmplifier;
-    /** @var int */
-    private $amplifierMultiplier;
+    private Effect $effect;
+    private int $baseAmplifier;
+    private int $amplifierMultiplier;
 
     /** @var EffectInstance[] */
     private $previousEffect;

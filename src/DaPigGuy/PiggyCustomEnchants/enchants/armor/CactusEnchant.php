@@ -16,15 +16,11 @@ use pocketmine\player\Player;
 
 class CactusEnchant extends TickingEnchantment
 {
-    /** @var string */
-    public $name = "Cactus";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Cactus";
+    public int $maxLevel= 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getTickingInterval(): int
     {

@@ -15,17 +15,12 @@ use pocketmine\player\Player;
 
 class LuckyCharmEnchant extends ToggleableEnchantment
 {
-    /** @var string */
-    public $name = "Lucky Charm";
-    /** @var int */
-    public $rarity = Rarity::MYTHIC;
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Lucky Charm";
+    public int $rarity = Rarity::MYTHIC;
+    public int $maxLevel= 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_GLOBAL;
+    public int $usageType = CustomEnchant::TYPE_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_GLOBAL;
 
     public function getDefaultExtraData(): array
     {

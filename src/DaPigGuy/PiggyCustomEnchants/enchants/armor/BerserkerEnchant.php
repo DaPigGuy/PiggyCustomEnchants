@@ -16,15 +16,11 @@ use pocketmine\player\Player;
 
 class BerserkerEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Berserker";
-    /** @var int */
-    public $cooldownDuration = 300;
+    public string $name = "Berserker";
+    public int $cooldownDuration = 300;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getReagent(): array
     {

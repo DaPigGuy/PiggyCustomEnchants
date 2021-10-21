@@ -17,11 +17,9 @@ use pocketmine\player\Player;
 
 class ParalyzeEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Paralyze";
+    public string $name = "Paralyze";
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

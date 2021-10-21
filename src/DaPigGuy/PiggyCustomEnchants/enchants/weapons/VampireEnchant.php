@@ -15,14 +15,10 @@ use pocketmine\player\Player;
 
 class VampireEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Vampire";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $maxLevel = 1;
-    /** @var int */
-    public $cooldownDuration = 5;
+    public string $name = "Vampire";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel = 1;
+    public int $cooldownDuration = 5;
 
     public function getDefaultExtraData(): array
     {

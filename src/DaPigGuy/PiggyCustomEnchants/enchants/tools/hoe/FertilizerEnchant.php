@@ -16,15 +16,11 @@ use pocketmine\player\Player;
 
 class FertilizerEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Fertilizer";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Fertilizer";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel= 3;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HOE;
 
     public function getReagent(): array
     {

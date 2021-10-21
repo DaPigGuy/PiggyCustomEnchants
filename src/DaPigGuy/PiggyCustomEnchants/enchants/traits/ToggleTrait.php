@@ -17,8 +17,7 @@ use pocketmine\player\Player;
 
 trait ToggleTrait
 {
-    /** @var PiggyCustomEnchants */
-    protected $plugin;
+    protected PiggyCustomEnchants $plugin;
 
     /** @var array */
     public $stack = [];

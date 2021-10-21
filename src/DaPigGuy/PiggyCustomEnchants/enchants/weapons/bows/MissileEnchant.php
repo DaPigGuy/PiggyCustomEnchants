@@ -15,11 +15,9 @@ use pocketmine\player\Player;
 
 class MissileEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Missile";
+    public string $name = "Missile";
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

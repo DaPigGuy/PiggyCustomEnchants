@@ -15,12 +15,9 @@ use pocketmine\player\Player;
 
 class BlessedEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Blessed";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Blessed";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel= 3;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

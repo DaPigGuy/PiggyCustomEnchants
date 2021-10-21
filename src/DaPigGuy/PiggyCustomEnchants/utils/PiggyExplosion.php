@@ -24,8 +24,7 @@ use pocketmine\world\World;
 
 class PiggyExplosion extends Explosion
 {
-    /** @var Player */
-    protected $player;
+    protected Player $player;
 
     public function __construct(Position $center, float $size, Player $what)
     {

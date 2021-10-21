@@ -20,17 +20,12 @@ class MeditationEnchant extends ReactiveEnchantment
 {
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Meditation";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $maxLevel = 2;
+    public string $name = "Meditation";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel= 2;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_HELMET;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+    public int $usageType = CustomEnchant::TYPE_HELMET;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     /** @var Player[] */
     public $meditating = [];

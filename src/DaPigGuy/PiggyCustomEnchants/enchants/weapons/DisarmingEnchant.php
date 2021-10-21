@@ -15,10 +15,8 @@ use pocketmine\player\Player;
 
 class DisarmingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Disarming";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
+    public string $name = "Disarming";
+    public int $rarity = Rarity::UNCOMMON;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

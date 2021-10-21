@@ -17,15 +17,11 @@ use pocketmine\player\Player;
 
 class EnlightedEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Enlighted";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
+    public string $name = "Enlighted";
+    public int $rarity = Rarity::UNCOMMON;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

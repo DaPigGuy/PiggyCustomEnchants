@@ -16,15 +16,11 @@ use pocketmine\player\Player;
 
 class HarvestEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Harvest";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Harvest";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel= 3;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HOE;
 
     public function getReagent(): array
     {

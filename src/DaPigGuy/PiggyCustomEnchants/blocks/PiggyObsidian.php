@@ -12,8 +12,7 @@ use pocketmine\player\Player;
 
 class PiggyObsidian extends Block
 {
-    /** @var int */
-    private $age = 0;
+    private int $age = 0;
 
     public function __construct()
     {

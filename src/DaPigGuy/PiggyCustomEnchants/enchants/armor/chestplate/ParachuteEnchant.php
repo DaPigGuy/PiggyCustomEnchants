@@ -23,17 +23,12 @@ class ParachuteEnchant extends TickingEnchantment
 {
     use ToggleTrait;
 
-    /** @var string */
-    public $name = "Parachute";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Parachute";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel= 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+    public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {

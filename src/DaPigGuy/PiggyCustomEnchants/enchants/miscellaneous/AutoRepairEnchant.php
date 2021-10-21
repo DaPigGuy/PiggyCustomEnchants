@@ -16,15 +16,11 @@ use pocketmine\player\Player;
 
 class AutoRepairEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Autorepair";
-    /** @var int */
-    public $rarity = Rarity::UNCOMMON;
+    public string $name = "Autorepair";
+    public int $rarity = Rarity::UNCOMMON;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ANY_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_DAMAGEABLE;
+    public int $usageType = CustomEnchant::TYPE_ANY_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_DAMAGEABLE;
 
     public function getReagent(): array
     {
