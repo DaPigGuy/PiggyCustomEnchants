@@ -26,7 +26,6 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
-use pocketmine\event\player\PlayerItemUseEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -38,7 +37,6 @@ use pocketmine\inventory\CallbackInventoryListener;
 use pocketmine\inventory\Inventory;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
-use pocketmine\item\Armor;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
@@ -48,8 +46,8 @@ use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
+use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\player\Player;
 
 class EventListener implements Listener
@@ -79,7 +77,6 @@ class EventListener implements Listener
             foreach ($transaction->getActions() as $key => $action) {
                 $action->oldItem = new ItemStackWrapper($action->oldItem->getStackId(), Utils::filterDisplayedEnchants($action->oldItem->getItemStack()));
                 $action->newItem = new ItemStackWrapper($action->newItem->getStackId(), Utils::filterDisplayedEnchants($action->newItem->getItemStack()));
-                $transaction->getActions()[$key] = $action;
             }
             if ($transaction instanceof UseItemTransactionData) {
                 if ($transaction->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK) {
@@ -182,26 +179,6 @@ class EventListener implements Listener
         foreach ($oldItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $oldItem, $enchantmentInstance, $inventory, $inventory->getHeldItemIndex(), false);
         foreach ($newItem->getEnchantments() as $enchantmentInstance) ToggleableEnchantment::attemptToggle($player, $newItem, $enchantmentInstance, $inventory, $inventory->getHeldItemIndex());
     }
-
-    /**
-     * @priority HIGHEST
-     */
-/*    public function onItemUse(PlayerItemUseEvent $event): void
-    {
-        $player = $event->getPlayer();
-        $item = $player->getInventory()->getItemInHand();
-        if ($this->plugin->getConfig()->getNested("miscellaneous.armor-hold-equip", false)) {
-            if ($item instanceof Armor || $item->getId() === ItemIds::ELYTRA || $item->getId() === ItemIds::PUMPKIN || $item->getId() === ItemIds::SKULL) {
-                $slot = 0;
-                if (Utils::isChestplate($item)) $slot = 1;
-                if (Utils::isLeggings($item)) $slot = 2;
-                if (Utils::isBoots($item)) $slot = 3;
-                $player->getInventory()->setItemInHand($player->getArmorInventory()->getItem($slot));
-                $player->getArmorInventory()->setItem($slot, $item);
-                $event->cancel();
-            }
-        }
-    }*/
 
     public function onJoin(PlayerJoinEvent $event): void
     {

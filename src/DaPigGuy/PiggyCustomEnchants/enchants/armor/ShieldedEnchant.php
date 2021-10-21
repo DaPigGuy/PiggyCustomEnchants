@@ -32,7 +32,7 @@ class ShieldedEnchant extends ToggleableEnchantment
         if ($toggle) {
             if ($player->getEffects()->has(VanillaEffects::RESISTANCE()) && $player->getEffects()->get(VanillaEffects::RESISTANCE())->getAmplifier() > $this->getStack($player) - 1) $this->previousEffect[$player->getName()] = $player->getEffects()->get(VanillaEffects::RESISTANCE());
         } else {
-            if ($this->getArmorStack($playerS) === 0) {
+            if ($this->getArmorStack($player) === 0) {
                 $player->getEffects()->remove(VanillaEffects::RESISTANCE());
                 if (isset($this->previousEffect[$player->getName()])) {
                     $player->getEffects()->add($this->previousEffect[$player->getName()]);
