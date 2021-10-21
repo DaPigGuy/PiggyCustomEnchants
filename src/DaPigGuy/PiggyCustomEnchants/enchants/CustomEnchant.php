@@ -6,7 +6,10 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants;
 
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
+use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\ItemFlags;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\player\Player;
 use ReflectionClass;
 
@@ -15,10 +18,12 @@ class CustomEnchant extends Enchantment
     /** @var PiggyCustomEnchants */
     protected $plugin;
 
+    /** @var int */
+    public $id;
     /** @var string */
     public $name = "";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_RARE;
+    public $rarity = Rarity::RARE;
     /** @var int */
     public $maxLevel = 5;
     /** @var string */
@@ -69,6 +74,7 @@ class CustomEnchant extends Enchantment
     public function __construct(PiggyCustomEnchants $plugin, int $id)
     {
         $this->plugin = $plugin;
+        $this->id = $id;
         $this->rarity = (int)array_flip(Utils::RARITY_NAMES)[ucfirst(strtolower($plugin->getEnchantmentData($this->name, "rarities", Utils::RARITY_NAMES[$this->rarity])))];
         $this->maxLevel = (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
         $this->displayName = (string)$plugin->getEnchantmentData($this->name, "display_names", $this->displayName ?? $this->name);
@@ -83,7 +89,12 @@ class CustomEnchant extends Enchantment
             }
         }
         if (!Utils::isCoolKid($plugin->getDescription())) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
-        parent::__construct($id, $this->name, $this->rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
+        parent::__construct($this->name, $this->rarity, ItemFlags::ALL, ItemFlags::ALL, $this->maxLevel);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getDisplayName(): string

@@ -10,6 +10,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -18,7 +19,7 @@ class HeadhunterEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Headhunter";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_BOW;

@@ -11,6 +11,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -19,7 +20,7 @@ class StompEnchantment extends ReactiveEnchantment
     /** @var string */
     public $name = "Stomp";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
     /** @var int */
     public $maxLevel = 1;
 

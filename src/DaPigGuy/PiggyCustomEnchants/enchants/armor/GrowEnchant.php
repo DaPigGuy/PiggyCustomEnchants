@@ -11,6 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -25,7 +26,7 @@ class GrowEnchant extends ToggleableEnchantment
     /** @var string */
     public $name = "Grow";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
     /** @var int */
     public $cooldownDuration = 75;
 
@@ -73,7 +74,7 @@ class GrowEnchant extends ToggleableEnchantment
     {
         if ($event instanceof PlayerToggleSneakEvent) {
             $playerName = $player->getName();
-            if ($this->equippedArmorStack[$playerName] === 4) {
+            if ($this->getArmorStack($player) === 4) {
                 if ($event->isSneaking()) {
                     if ($stack - $level === 0) {
                         if (isset($this->grew[$playerName])) {
@@ -83,7 +84,7 @@ class GrowEnchant extends ToggleableEnchantment
                         } else {
                             $this->grew[$playerName] = $player;
                             if (!isset($this->growPower[$playerName])) $this->growPower[$playerName] = $this->extraData["power"];
-                            $player->setScale($player->getScale() + $this->extraData["base"] + ($this->stack[$playerName] * $this->extraData["multiplier"]));
+                            $player->setScale($player->getScale() + $this->extraData["base"] + ($this->getStack($player) * $this->extraData["multiplier"]));
                             $player->sendTip(TextFormat::GREEN . "You have grown. Sneak again to shrink back to normal size.");
                         }
                     }
@@ -98,7 +99,7 @@ class GrowEnchant extends ToggleableEnchantment
         if (isset($this->grew[$playerName])) {
             $this->growPower[$playerName]--;
             $player->sendTip(TextFormat::GREEN . "Grow power remaining: " . $this->growPower[$playerName]);
-            if ($this->equippedArmorStack[$playerName] < 4 || $this->growPower[$playerName] <= 0) {
+            if ($this->getArmorStack($player) < 4 || $this->growPower[$playerName] <= 0) {
                 unset($this->grew[$playerName]);
                 $this->setCooldown($player, $this->getCooldownDuration());
                 if ($this->growPower[$playerName] <= 0) $this->growPower[$playerName] = $this->extraData["power"];

@@ -39,7 +39,7 @@ class EnchantSubCommand extends BaseSubCommand
             $sender->sendMessage(TextFormat::RED . "Enchantment level must be an integer");
             return;
         }
-        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayer($args["player"]);
+        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayerByPrefix($args["player"]);
         if (!$target instanceof Player) {
             $sender->sendMessage(TextFormat::RED . "Invalid player.");
             return;

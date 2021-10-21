@@ -25,13 +25,13 @@ class PiggyObsidian extends Block
         if (mt_rand(0, 3) === 0 || $this->countNeighbors() < 4) {
             $this->slightlyMelt(true);
         } else {
-            $this->getPos()->getWorld()->scheduleDelayedBlockUpdate($this->getPos(), mt_rand(20, 40));
+            $this->getPosition()->getWorld()->scheduleDelayedBlockUpdate($this->getPosition(), mt_rand(20, 40));
         }
     }
 
     public function onBreak(Item $item, Player $player = null): bool
     {
-        $this->getPos()->getWorld()->setBlock($this->getPos(), VanillaBlocks::LAVA());
+        $this->getPosition()->getWorld()->setBlock($this->getPosition(), VanillaBlocks::LAVA());
         return true;
     }
 
@@ -56,9 +56,9 @@ class PiggyObsidian extends Block
     {
         if ($this->age < 3) {
             $this->age++;
-            $this->getPos()->getWorld()->scheduleDelayedBlockUpdate($this->getPos(), mt_rand(20, 40));
+            $this->getPosition()->getWorld()->scheduleDelayedBlockUpdate($this->getPosition(), mt_rand(20, 40));
         } else {
-            $this->getPos()->getWorld()->useBreakOn($this->getPos());
+            $this->getPosition()->getWorld()->useBreakOn($this->getPosition());
             if ($meltNeighbors) {
                 foreach ($this->getAllSides() as $block) {
                     if ($block instanceof PiggyObsidian) {

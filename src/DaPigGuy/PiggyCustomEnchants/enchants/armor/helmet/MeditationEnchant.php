@@ -11,6 +11,7 @@ use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -22,7 +23,7 @@ class MeditationEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Meditation";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
     /** @var int */
     public $maxLevel = 2;
 

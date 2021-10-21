@@ -12,6 +12,7 @@ use pocketmine\block\Lava;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -20,7 +21,7 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Magma Walker";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
     /** @var int */
     public $maxLevel = 2;
 

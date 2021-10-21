@@ -9,6 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\entity\Living;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\math\Vector2;
 use pocketmine\network\mcpe\protocol\MovePlayerPacket;
@@ -19,7 +20,7 @@ class AutoAimEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Auto Aim";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
     /** @var int */
     public $maxLevel = 1;
 

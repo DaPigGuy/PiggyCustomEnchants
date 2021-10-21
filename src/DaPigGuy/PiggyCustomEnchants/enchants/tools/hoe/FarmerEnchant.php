@@ -10,6 +10,7 @@ use pocketmine\block\Crops;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\math\Facing;
 use pocketmine\player\Player;
@@ -20,7 +21,7 @@ class FarmerEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Farmer";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
     /** @var int */
     public $maxLevel = 1;
 
@@ -40,7 +41,7 @@ class FarmerEnchant extends ReactiveEnchantment
                 $seed = $block->getPickedItem();
                 if ($player->getInventory()->contains($seed)) {
                     $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($player, $seed, $block): void {
-                        $block->getPos()->getWorld()->useItemOn($block->getPos()->subtract(0, 1, 0), $seed, Facing::UP, $block->getPos()->subtract(0, 1, 0), $player);
+                        $block->getPosition()->getWorld()->useItemOn($block->getPosition()->subtract(0, 1, 0), $seed, Facing::UP, $block->getPosition()->subtract(0, 1, 0), $player);
                         $player->getInventory()->removeItem($seed->setCount(1));
                     }), 1);
                 }

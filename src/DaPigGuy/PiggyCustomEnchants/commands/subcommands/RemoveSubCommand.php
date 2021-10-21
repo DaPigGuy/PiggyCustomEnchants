@@ -30,7 +30,7 @@ class RemoveSubCommand extends BaseSubCommand
             $sender->sendMessage("Usage: /ce remove <enchantment> <player>");
             return;
         }
-        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayer($args["player"]);
+        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayerByPrefix($args["player"]);
         if (!$target instanceof Player) {
             $sender->sendMessage(TextFormat::RED . "Invalid player.");
             return;

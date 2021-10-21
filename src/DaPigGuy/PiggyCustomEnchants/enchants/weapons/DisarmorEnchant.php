@@ -8,6 +8,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -16,7 +17,7 @@ class DisarmorEnchant extends DisarmingEnchant
     /** @var string */
     public $name = "Disarmor";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

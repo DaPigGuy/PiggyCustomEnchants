@@ -14,6 +14,7 @@ use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
@@ -23,7 +24,7 @@ class VolleyEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Volley";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_BOW;

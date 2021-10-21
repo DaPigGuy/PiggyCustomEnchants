@@ -9,6 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -17,7 +18,7 @@ class LuckyCharmEnchant extends ToggleableEnchantment
     /** @var string */
     public $name = "Lucky Charm";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
     /** @var int */
     public $maxLevel = 3;
 

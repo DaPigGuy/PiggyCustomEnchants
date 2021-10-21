@@ -13,6 +13,7 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -30,7 +31,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
     /** @var array */
     private $amplifierMultiplier;
 
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = Rarity::RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;

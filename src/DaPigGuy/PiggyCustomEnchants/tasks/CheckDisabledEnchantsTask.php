@@ -13,16 +13,17 @@ class CheckDisabledEnchantsTask extends AsyncTask
     public function onRun(): void
     {
         //TODO: Pass through proxy w/ API & Plugin Version for statistics on plugin
-        $disabledEnchants = Internet::getURL("https://gist.githubusercontent.com/DaPigGuy/9c65a998bc0aa8d6b4708796110f7d11/raw/");
-        if ($disabledEnchants !== false) $this->setResult($disabledEnchants);
+        $result = Internet::getURL("https://gist.githubusercontent.com/DaPigGuy/9c65a998bc0aa8d6b4708796110f7d11/raw/", 10, [], $error);
+        $this->setResult([$result?->getBody(), $error]);
     }
 
     public function onCompletion(): void
     {
-        if ($this->getResult() !== null) {
+        [$body, $error] = $this->getResult();
+        if ($error === null) {
             $plugin = CustomEnchantManager::getPlugin();
             if ($plugin->isEnabled()) {
-                $disabledEnchants = json_decode($this->getResult(), true);
+                $disabledEnchants = json_decode($body, true);
                 foreach ($disabledEnchants as $disabledEnchantEntry) {
                     if (
                         count(array_intersect($disabledEnchantEntry["api"], $plugin->getDescription()->getCompatibleApis())) > 0 ||

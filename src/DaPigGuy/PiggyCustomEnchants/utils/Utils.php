@@ -23,6 +23,7 @@ use pocketmine\item\Compass;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Hoe;
 use pocketmine\item\Item;
 use pocketmine\item\ItemIds;
@@ -59,10 +60,10 @@ class Utils
     ];
 
     const RARITY_NAMES = [
-        CustomEnchant::RARITY_COMMON => "Common",
-        CustomEnchant::RARITY_UNCOMMON => "Uncommon",
-        CustomEnchant::RARITY_RARE => "Rare",
-        CustomEnchant::RARITY_MYTHIC => "Mythic"
+		Rarity::COMMON => "Common",
+		Rarity::UNCOMMON => "Uncommon",
+		Rarity::RARE => "Rare",
+        Rarity::MYTHIC => "Mythic"
     ];
 
     const INCOMPATIBLE_ENCHANTS = [
@@ -186,8 +187,10 @@ class Utils
     public static function checkEnchantIncompatibilities(Item $item, CustomEnchant $enchant): bool
     {
         foreach ($item->getEnchantments() as $enchantment) {
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()])) return false;
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($enchantment->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()])) return false;
+            $otherEnchant = $enchantment->getType();
+            if(!$otherEnchant instanceof CustomEnchant) continue;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()])) return false;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($otherEnchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()])) return false;
         }
         return true;
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Location;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\item\Item;
@@ -28,11 +29,6 @@ class PigProjectile extends PiggyProjectile
         5 => [5, false, true, ItemIds::ROTTEN_FLESH, "Mysterious Rotten Pork"],
         6 => [6, true, true, ItemIds::ROTTEN_FLESH, "Mysterious Rotten Pork"]
     ];
-
-    /** @var float */
-    public $width = 0.9;
-    /** @var float */
-    public $height = 0.9;
 
     /** @var float */
     protected $drag = 0.01;
@@ -108,12 +104,17 @@ class PigProjectile extends PiggyProjectile
         $pk->entityRuntimeId = $this->getId();
         $pk->position = $this->getPosition();
         $pk->motion = $this->getMotion();
-        $pk->metadata = $this->getSyncedNetworkData(false);
+        $pk->metadata = $this->getAllNetworkData();
         $player->getNetworkSession()->sendDataPacket($pk);
     }
 
     public static function getNetworkTypeId(): string
     {
         return EntityIds::PIG;
+    }
+
+    protected function getInitialSizeInfo(): EntitySizeInfo
+    {
+        return new EntitySizeInfo(0.9, 0.9);
     }
 }

@@ -10,6 +10,7 @@ use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Durable;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -18,7 +19,7 @@ class AutoRepairEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Autorepair";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ANY_INVENTORY;

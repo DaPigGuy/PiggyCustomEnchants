@@ -12,6 +12,7 @@ use pocketmine\entity\object\ExperienceOrb;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
@@ -24,7 +25,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
     /** @var string */
     public $name = "Forcefield";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
@@ -38,7 +39,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        $forcefieldLevel = $this->stack[$player->getName()];
+        $forcefieldLevel = $this->getStack($player);
         if ($forcefieldLevel > 0) {
             $radius = $forcefieldLevel * $this->extraData["radiusMultiplier"];
             $entities = $player->getWorld()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);

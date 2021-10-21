@@ -10,6 +10,7 @@ use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityEffectAddEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -18,7 +19,7 @@ class FocusedEnchant extends RecursiveEnchant
     /** @var string */
     public $name = "Focused";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_HELMET;

@@ -10,6 +10,7 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -18,7 +19,7 @@ class LightningEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Lightning";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

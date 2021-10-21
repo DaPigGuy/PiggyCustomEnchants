@@ -2,7 +2,7 @@ name: PiggyCustomEnchants
 main: DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants
 version: 2.4.4
 api: 4.0.0-BETA6
-mcpe-protocol: [471]
+mcpe-protocol: [ 471 ]
 load: POSTWORLD
 author: DaPigGuy
 website: "https://github.com/DaPigGuy/PiggyCustomEnchants/"
@@ -10,36 +10,33 @@ permissions:
   piggycustomenchants:
     default: false
     description: "Allows usage of all PiggyCustomEnchants features"
-    children:
-      piggycustomenchants.command:
-        default: op
-        description: "Allow usage of all PiggyCustomEnchants commands"
-        children:
-          piggycustomenchants.command.ce:
-            default: op
-            description: "Allow usage of the /customenchant command"
-            children:
-              piggycustomenchants.command.ce.about:
-                default: true
-                description: "Allow usage of the /customenchant about subcommand"
-              piggycustomenchants.command.ce.enchant:
-                default: op
-                description: "Allow usage of the /customenchant enchant subcommand"
-              piggycustomenchants.command.ce.help:
-                default: true
-                description: "Allow usage of the /customenchant help subcommand"
-              piggycustomenchants.command.ce.info:
-                default: true
-                description: "Allow usage of the /customenchant info subcommand"
-              piggycustomenchants.command.ce.list:
-                default: true
-                description: "Allow usage of the /customenchant list subcommand"
-              piggycustomenchants.command.ce.nbt:
-                default: true
-                description: "Allow usage of the /customenchant nbt subcommand"
-              piggycustomenchants.command.ce.remove:
-                default: op
-                description: "Allow usage of the /customenchant remove subcommand"
-      piggycustomenchants.overridecheck:
-        default: false
-        description: "Allow overriding of custom enchant level limit and item restriction"
+  piggycustomenchants.command:
+    default: op
+    description: "Allow usage of all PiggyCustomEnchants commands"
+  piggycustomenchants.command.ce:
+    default: op
+    description: "Allow usage of the /customenchant command"
+  piggycustomenchants.command.ce.about:
+    default: true
+    description: "Allow usage of the /customenchant about subcommand"
+  piggycustomenchants.command.ce.enchant:
+    default: op
+    description: "Allow usage of the /customenchant enchant subcommand"
+  piggycustomenchants.command.ce.help:
+    default: true
+    description: "Allow usage of the /customenchant help subcommand"
+  piggycustomenchants.command.ce.info:
+    default: true
+    description: "Allow usage of the /customenchant info subcommand"
+  piggycustomenchants.command.ce.list:
+    default: true
+    description: "Allow usage of the /customenchant list subcommand"
+  piggycustomenchants.command.ce.nbt:
+    default: true
+    description: "Allow usage of the /customenchant nbt subcommand"
+  piggycustomenchants.command.ce.remove:
+    default: op
+    description: "Allow usage of the /customenchant remove subcommand"
+  piggycustomenchants.overridecheck:
+    default: false
+    description: "Allow overriding of custom enchant level limit and item restriction"

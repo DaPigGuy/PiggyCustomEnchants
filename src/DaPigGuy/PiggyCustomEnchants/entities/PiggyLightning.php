@@ -8,6 +8,7 @@ use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -17,13 +18,6 @@ use pocketmine\player\Player;
 
 class PiggyLightning extends Entity
 {
-    /** @var float */
-    public $width = 0.3;
-    /** @var float */
-    public $length = 0.9;
-    /** @var float */
-    public $height = 1.8;
-
     /** @var int */
     protected $age = 0;
 
@@ -55,5 +49,10 @@ class PiggyLightning extends Entity
     public static function getNetworkTypeId(): string
     {
         return EntityIds::LIGHTNING_BOLT;
+    }
+
+    protected function getInitialSizeInfo(): EntitySizeInfo
+    {
+        return new EntitySizeInfo(1.8, 0.3);
     }
 }

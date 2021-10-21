@@ -12,6 +12,7 @@ use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
@@ -21,7 +22,7 @@ class SoulboundEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Soulbound";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_ANY_INVENTORY;

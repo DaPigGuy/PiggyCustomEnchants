@@ -14,6 +14,7 @@ use pocketmine\block\VanillaBlocks;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
@@ -30,7 +31,7 @@ class HallucinationEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Hallucination";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
 
     /** @var NetworkNbtSerializer */
     public $nbtWriter = null;

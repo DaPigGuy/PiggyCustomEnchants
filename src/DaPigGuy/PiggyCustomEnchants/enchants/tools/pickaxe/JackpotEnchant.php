@@ -11,6 +11,7 @@ use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
@@ -20,7 +21,7 @@ class JackpotEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Jackpot";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
 
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;

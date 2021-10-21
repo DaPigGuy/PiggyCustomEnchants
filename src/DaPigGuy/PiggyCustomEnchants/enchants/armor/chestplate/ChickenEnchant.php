@@ -7,6 +7,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\item\VanillaItems;
@@ -18,7 +19,7 @@ class ChickenEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Chicken";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $usageType = CustomEnchant::TYPE_CHESTPLATE;

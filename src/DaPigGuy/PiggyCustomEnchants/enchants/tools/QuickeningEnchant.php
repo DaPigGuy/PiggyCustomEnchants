@@ -11,6 +11,7 @@ use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -19,7 +20,7 @@ class QuickeningEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Quickening";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;

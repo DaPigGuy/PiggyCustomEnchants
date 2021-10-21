@@ -9,6 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\math\Facing;
 use pocketmine\player\Player;
@@ -18,7 +19,7 @@ class DrillerEnchant extends RecursiveEnchant
     /** @var string */
     public $name = "Driller";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
@@ -54,10 +55,10 @@ class DrillerEnchant extends RecursiveEnchant
                              $block->getSide(Facing::opposite($faceUp))->getSide($faceLeft), //Bottom Left
                              $block->getSide(Facing::opposite($faceUp))->getSide(Facing::opposite($faceLeft)) //Bottom Right
                          ] as $b) {
-                    $player->getWorld()->useBreakOn($b->getPos(), $item, $player, true);
+                    $player->getWorld()->useBreakOn($b->getPosition(), $item, $player, true);
                 }
-                if (!$block->getPos()->equals($event->getBlock()->getPos())) {
-                    $player->getWorld()->useBreakOn($block->getPos(), $item, $player, true);
+                if (!$block->getPosition()->equals($event->getBlock()->getPosition())) {
+                    $player->getWorld()->useBreakOn($block->getPosition(), $item, $player, true);
                 }
             }
         }

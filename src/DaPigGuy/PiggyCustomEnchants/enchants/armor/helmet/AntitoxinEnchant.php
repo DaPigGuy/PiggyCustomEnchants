@@ -10,6 +10,7 @@ use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityEffectAddEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -18,7 +19,7 @@ class AntitoxinEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Antitoxin";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public $rarity = Rarity::MYTHIC;
     /** @var int */
     public $maxLevel = 1;
 

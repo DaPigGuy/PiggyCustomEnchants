@@ -57,7 +57,7 @@ class LumberjackEnchant extends RecursiveEnchant
             if ($side->getId() !== BlockLegacyIds::LOG && $side->getId() !== BlockLegacyIds::LOG2) {
                 continue;
             }
-            $player->getWorld()->useBreakOn($side->getPos(), $item, $player);
+            $player->getWorld()->useBreakOn($side->getPosition(), $item, $player);
             $mined++;
             $this->breakTree($side, $player, $mined);
         }

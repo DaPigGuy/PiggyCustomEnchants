@@ -12,6 +12,7 @@ use pocketmine\entity\object\FallingBlock;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
@@ -21,7 +22,7 @@ class MolotovEnchant extends ReactiveEnchantment
     /** @var string */
     public $name = "Molotov";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
 
     /** @var int */
     public $itemType = CustomEnchant::ITEM_TYPE_BOW;

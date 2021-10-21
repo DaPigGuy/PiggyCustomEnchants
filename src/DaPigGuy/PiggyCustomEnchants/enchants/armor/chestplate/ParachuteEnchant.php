@@ -15,6 +15,7 @@ use pocketmine\entity\effect\Effect;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -25,7 +26,7 @@ class ParachuteEnchant extends TickingEnchantment
     /** @var string */
     public $name = "Parachute";
     /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public $rarity = Rarity::UNCOMMON;
     /** @var int */
     public $maxLevel = 1;
 

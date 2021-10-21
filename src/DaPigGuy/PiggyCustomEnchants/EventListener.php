@@ -50,7 +50,6 @@ use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
 use pocketmine\player\Player;
 
 class EventListener implements Listener
@@ -78,8 +77,9 @@ class EventListener implements Listener
         if ($packet instanceof InventoryTransactionPacket) {
             $transaction = $packet->trData;
             foreach ($transaction->getActions() as $key => $action) {
-                $action->oldItem = Utils::filterDisplayedEnchants($action->oldItem);
-                $action->newItem = Utils::filterDisplayedEnchants($action->newItem);
+                $action->oldItem = new ItemStackWrapper($action->oldItem->getStackId(), Utils::filterDisplayedEnchants($action->oldItem->getItemStack()));
+                $action->newItem = new ItemStackWrapper($action->newItem->getStackId(), Utils::filterDisplayedEnchants($action->newItem->getItemStack()));
+                $transaction->getActions()[$key] = $action;
             }
             if ($transaction instanceof UseItemTransactionData) {
                 if ($transaction->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK) {
@@ -186,7 +186,7 @@ class EventListener implements Listener
     /**
      * @priority HIGHEST
      */
-    public function onItemUse(PlayerItemUseEvent $event): void
+/*    public function onItemUse(PlayerItemUseEvent $event): void
     {
         $player = $event->getPlayer();
         $item = $player->getInventory()->getItemInHand();
@@ -198,10 +198,10 @@ class EventListener implements Listener
                 if (Utils::isBoots($item)) $slot = 3;
                 $player->getInventory()->setItemInHand($player->getArmorInventory()->getItem($slot));
                 $player->getArmorInventory()->setItem($slot, $item);
-                $event->setCancelled();
+                $event->cancel();
             }
         }
-    }
+    }*/
 
     public function onJoin(PlayerJoinEvent $event): void
     {
@@ -303,7 +303,7 @@ class EventListener implements Listener
     {
         $projectile = $event->getEntity();
         $shooter = $projectile->getOwningEntity();
-        if ($shooter instanceof Player)  ProjectileTracker::addProjectile($projectile, $shooter->getInventory()->getItemInHand());
+        if ($shooter instanceof Player) ProjectileTracker::addProjectile($projectile, $shooter->getInventory()->getItemInHand());
     }
 
     /**
@@ -331,7 +331,7 @@ class EventListener implements Listener
                         $enchantmentSuccessful = true;
                     }
                     if ($enchantmentSuccessful) {
-                        $event->setCancelled();
+                        $event->cancel();
                         $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
                     }
                 }

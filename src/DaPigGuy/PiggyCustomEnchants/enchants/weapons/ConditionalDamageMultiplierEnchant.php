@@ -9,6 +9,7 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
@@ -17,7 +18,7 @@ class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
     /** @var callable */
     private $condition;
 
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, callable $condition, int $rarity = self::RARITY_RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, callable $condition, int $rarity = Rarity::RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;

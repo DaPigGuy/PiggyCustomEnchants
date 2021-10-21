@@ -80,13 +80,13 @@ class PiggyExplosion extends Explosion
         $item = $this->player->getInventory()->getItemInHand();
         RecursiveEnchant::$isUsing[$this->player->getName()] = true;
         foreach ($this->affectedBlocks as $key => $block) {
-            $ev = new BlockBreakEvent($this->what, $block, $item, true, $block->getDrops($item));
+            $ev = new BlockBreakEvent($this->player, $block, $item, true, $block->getDrops($item));
             $ev->call();
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$key]);
                 continue;
             }
-            $pos = $block->getPos();
+            $pos = $block->getPosition();
             if ($block instanceof TNT) {
                 $block->ignite(mt_rand(10, 30));
             } else {

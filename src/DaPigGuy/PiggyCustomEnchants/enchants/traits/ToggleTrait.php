@@ -21,7 +21,7 @@ trait ToggleTrait
     protected $plugin;
 
     /** @var array */
-    public $stack;
+    public $stack = [];
     /** @var array */
     public $equippedArmorStack;
 
@@ -45,16 +45,24 @@ trait ToggleTrait
 
     public function addToStack(Player $player, int $level): void
     {
-        if (!isset($this->stack[$player->getName()])) $this->stack[$player->getName()] = 0;
-        if (!isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()] = 0;
-        $this->stack[$player->getName()] += $level;
-        $this->equippedArmorStack[$player->getName()]++;
+        $this->stack[$player->getName()] = $this->getStack($player) + $level;
+        $this->equippedArmorStack[$player->getName()] = $this->getArmorStack($player) - 1;
     }
 
     public function removeFromStack(Player $player, int $level): void
     {
         if (isset($this->stack[$player->getName()])) $this->stack[$player->getName()] -= $level;
         if (isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()]--;
+    }
+
+    public function getStack(Player $player): int {
+        if(isset($this->stack[$player->getName()])) return $this->stack[$player->getName()];
+        return 0;
+    }
+
+    public function getArmorStack(Player $player): int {
+        if(isset($this->equippedArmorStack[$player->getName()])) return $this->equippedArmorStack[$player->getName()];
+        return 0;
     }
 
     public static function attemptToggle(Player $player, Item $item, EnchantmentInstance $enchantmentInstance, Inventory $inventory, int $slot, bool $toggle = true): void
