@@ -291,7 +291,7 @@ class Utils
     {
         return ((!$enchant instanceof CustomEnchant || self::itemMatchesItemType($item, $enchant->getItemType())) &&
             $level <= $enchant->getMaxLevel() &&
-            (($enchantmentInstance = $item->getEnchantment(CustomEnchantManager::getEnchantment($enchant->getId()))) === null || $enchantmentInstance->getLevel() < $level) &&
+            (($enchantmentInstance = $item->getEnchantment($enchant)) === null || $enchantmentInstance->getLevel() < $level) &&
             $item->getCount() === 1 &&
             (!$enchant instanceof CustomEnchant || self::checkEnchantIncompatibilities($item, $enchant))
         );

@@ -98,7 +98,7 @@ class EnchantSubCommand extends BaseSubCommand
                             Utils::errorForm($player, TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
                             return;
                         }
-                        if (($enchantmentInstance = $item->getEnchantment(CustomEnchantManager::getEnchantment($enchant->getId()))) !== null && $enchantmentInstance->getLevel() > $data[1]) {
+                        if (($enchantmentInstance = $item->getEnchantment($enchant)) !== null && $enchantmentInstance->getLevel() > $data[1]) {
                             Utils::errorForm($player, TextFormat::RED . "The enchant has already been applied with a higher level on the item.");
                             return;
                         }
