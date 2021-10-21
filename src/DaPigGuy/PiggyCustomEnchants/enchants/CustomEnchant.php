@@ -6,7 +6,6 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants;
 
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
-use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\ItemFlags;
 use pocketmine\item\enchantment\Rarity;
@@ -75,7 +74,7 @@ class CustomEnchant extends Enchantment
                 $plugin->setEnchantmentData($this->name, "extra_data", $this->extraData);
             }
         }
-        if (!Utils::isCoolKid($plugin->getDescription())) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
+        if (!Utils::isCoolKid($plugin->getDescription())) $this->id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
         parent::__construct($this->name, $this->rarity, ItemFlags::ALL, ItemFlags::ALL, $this->maxLevel);
     }
 

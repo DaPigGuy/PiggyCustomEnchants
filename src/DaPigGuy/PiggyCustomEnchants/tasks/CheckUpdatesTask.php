@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
-use Exception;
 use pocketmine\plugin\ApiVersion;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\utils\Internet;

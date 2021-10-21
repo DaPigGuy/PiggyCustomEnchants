@@ -42,7 +42,7 @@ class FertilizerEnchant extends RecursiveEnchant
                     for ($z = -$radius; $z <= $radius; $z++) {
                         $newBlock = $block->getPosition()->getWorld()->getBlock($block->getPosition()->add($x, 0, $z));
                         if ($newBlock->getId() === BlockLegacyIds::GRASS || ($newBlock->getId() === BlockLegacyIds::DIRT && $newBlock->getMeta() === 0)) {
-                            $block->getPosition()->getWorld()->useItemOn($newBlock->getPosition(), $item, 0, $newBlock->getPos(), $player);
+                            $block->getPosition()->getWorld()->useItemOn($newBlock->getPosition(), $item, 0, $newBlock->getPosition(), $player);
                         }
                     }
                 }

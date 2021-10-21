@@ -25,14 +25,14 @@ class PiggyTNT extends PrimedTNT
     public function explode(): void
     {
         $ownerEntity = $this->getOwningEntity();
-        if ($ownerEntity === null || !$ownerEntity instanceof Player) {
+        if (!$ownerEntity instanceof Player) {
             return;
         }
         $ev = new ExplosionPrimeEvent($this, 4);
         $ev->setBlockBreaking($this->worldDamage);
         $ev->call();
         if (!$ev->isCancelled()) {
-            $explosion = new PiggyExplosion(Position::fromObject($this->location->add(0, $this->height / 2, 0), $this->location->world), $ev->getForce(), $ownerEntity);
+            $explosion = new PiggyExplosion(Position::fromObject($this->location->add(0, $this->size->getHeight() / 2, 0), $this->location->world), $ev->getForce(), $ownerEntity);
             if ($ev->isBlockBreaking()) $explosion->explodeA();
             $explosion->explodeB();
         }

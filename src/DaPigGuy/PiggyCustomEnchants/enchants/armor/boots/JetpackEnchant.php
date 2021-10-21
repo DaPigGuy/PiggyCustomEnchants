@@ -50,7 +50,7 @@ class JetpackEnchant extends ReactiveEnchantment
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL && $this->hasActiveJetpack($player)) $event->setCancelled();
+        if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL && $this->hasActiveJetpack($player)) $event->cancel();
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {
@@ -81,7 +81,6 @@ class JetpackEnchant extends ReactiveEnchantment
                 if ($this->powerRemaining[$player->getName()] <= 0) {
                     $player->sendTip(TextFormat::RED . "Jetpack has run out of power.");
                     $this->powerActiveJetpack($player, false);
-                    return;
                 }
             }
         }

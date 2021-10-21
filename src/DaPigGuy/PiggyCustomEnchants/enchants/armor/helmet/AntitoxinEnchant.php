@@ -31,7 +31,7 @@ class AntitoxinEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof EntityEffectAddEvent) {
-            if ($event->getEffect()->getType() === VanillaEffects::POISON()) $event->setCancelled();
+            if ($event->getEffect()->getType() === VanillaEffects::POISON()) $event->cancel();
         }
     }
 }

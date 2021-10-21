@@ -28,8 +28,8 @@ class HomingArrow extends Arrow
         if (!$this->closed && !$this->isFlaggedForDespawn() && $this->blockHit === null) {
             $target = $this->findNearestEntity($this->enchantmentLevel * 10);
             if ($target !== null) {
-                $this->setMotion($target->getPosition()->add(0, $target->height / 2, 0)->subtractVector($this->getPosition())->normalize()->multiply(1.5));
-                $this->lookAt($target->getPosition()->add(0, $target->height / 2, 0));
+                $this->setMotion($target->getPosition()->add(0, $target->size->getHeight() / 2, 0)->subtractVector($this->getPosition())->normalize()->multiply(1.5));
+                $this->lookAt($target->getPosition()->add(0, $target->size->getHeight() / 2, 0));
             }
         }
         return parent::entityBaseTick($tickDiff);

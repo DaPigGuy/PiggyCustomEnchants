@@ -11,6 +11,7 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
+use pocketmine\math\Axis;
 use pocketmine\math\Facing;
 use pocketmine\player\Player;
 
@@ -40,8 +41,8 @@ class DrillerEnchant extends RecursiveEnchant
             $breakFace = self::$lastBreakFace[$player->getName()];
             for ($i = 0; $i <= $level * $this->extraData["distanceMultiplier"]; $i++) {
                 $block = $event->getBlock()->getSide(Facing::opposite($breakFace), $i);
-                $faceLeft = Facing::rotate($breakFace, Facing::axis($breakFace) !== Facing::AXIS_Y ? Facing::AXIS_Y : Facing::AXIS_X, true);
-                $faceUp = Facing::rotate($breakFace, Facing::axis($breakFace) !== Facing::AXIS_Z ? Facing::AXIS_Z : Facing::AXIS_X, true);
+                $faceLeft = Facing::rotate($breakFace, Facing::axis($breakFace) !== Axis::Y ? Axis::Y : Axis::X, true);
+                $faceUp = Facing::rotate($breakFace, Facing::axis($breakFace) !== Axis::Z ? Axis::Z : Axis::X, true);
                 foreach ([
                              $block->getSide($faceLeft), //Center Left
                              $block->getSide(Facing::opposite($faceLeft)), //Center Right

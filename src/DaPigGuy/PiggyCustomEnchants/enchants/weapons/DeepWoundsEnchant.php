@@ -13,7 +13,7 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
-use pocketmine\world\particle\DestroyBlockParticle;
+use pocketmine\world\particle\BlockBreakParticle;
 
 class DeepWoundsEnchant extends ReactiveEnchantment
 {
@@ -41,7 +41,7 @@ class DeepWoundsEnchant extends ReactiveEnchantment
                         return;
                     }
                     $entity->attack(new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_MAGIC, $this->extraData["base"] + $entity->getHealth() * $this->extraData["multiplier"]));
-                    $entity->getWorld()->addParticle($entity->getPosition()->add(0, 1, 0), new DestroyBlockParticle(VanillaBlocks::REDSTONE()));
+                    $entity->getWorld()->addParticle($entity->getPosition()->add(0, 1, 0), new BlockBreakParticle(VanillaBlocks::REDSTONE()));
                 });
                 $this->plugin->getScheduler()->scheduleRepeatingTask(self::$tasks[$entity->getId()], $this->extraData["interval"]);
             }

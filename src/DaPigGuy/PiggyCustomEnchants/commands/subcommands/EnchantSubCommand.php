@@ -83,7 +83,7 @@ class EnchantSubCommand extends BaseSubCommand
                         Utils::errorForm($player, TextFormat::RED . "Invalid enchantment.");
                         return;
                     }
-                    $target = $this->plugin->getServer()->getPlayer($data[2]);
+                    $target = $this->plugin->getServer()->getPlayerByPrefix($data[2]);
                     if (!$target instanceof Player) {
                         Utils::errorForm($player, TextFormat::RED . "Invalid player.");
                         return;

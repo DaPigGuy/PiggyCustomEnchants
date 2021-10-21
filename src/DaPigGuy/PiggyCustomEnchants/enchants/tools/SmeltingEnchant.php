@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use pocketmine\crafting\FurnaceType;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -30,7 +31,7 @@ class SmeltingEnchant extends ReactiveEnchantment
     {
         if ($event instanceof BlockBreakEvent) {
             $event->setDrops(array_map(function (Item $item) {
-                $recipe = $this->plugin->getServer()->getCraftingManager()->getFurnaceRecipeManager()->match($item);
+                $recipe = $this->plugin->getServer()->getCraftingManager()->getFurnaceRecipeManager(FurnaceType::FURNACE())->match($item);
                 if ($recipe !== null) $item = $recipe->getResult();
                 return $item;
             }, $event->getDrops()));

@@ -60,7 +60,7 @@ class RemoveSubCommand extends BaseSubCommand
                         Utils::errorForm($player, TextFormat::RED . "Invalid enchantment.");
                         return;
                     }
-                    $target = $this->plugin->getServer()->getPlayer($data[1]);
+                    $target = $this->plugin->getServer()->getPlayerByPrefix($data[1]);
                     if (!$target instanceof Player) {
                         Utils::errorForm($player, TextFormat::RED . "Invalid player.");
                         return;

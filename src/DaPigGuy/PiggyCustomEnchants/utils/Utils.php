@@ -130,58 +130,36 @@ class Utils
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
         if ($item->getId() === ItemIds::BOOK || $item->getId() === ItemIds::ENCHANTED_BOOK) return true;
-        switch ($itemType) {
-            case CustomEnchant::ITEM_TYPE_GLOBAL:
-                return true;
-            case CustomEnchant::ITEM_TYPE_DAMAGEABLE:
-                return $item instanceof Durable;
-            case CustomEnchant::ITEM_TYPE_WEAPON:
-                return $item instanceof Sword || $item instanceof Axe || $item instanceof Bow;
-            case CustomEnchant::ITEM_TYPE_SWORD:
-                return $item instanceof Sword;
-            case CustomEnchant::ITEM_TYPE_BOW:
-                return $item instanceof Bow;
-            case CustomEnchant::ITEM_TYPE_TOOLS:
-                return $item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Hoe || $item instanceof Shears;
-            case CustomEnchant::ITEM_TYPE_PICKAXE:
-                return $item instanceof Pickaxe;
-            case CustomEnchant::ITEM_TYPE_AXE:
-                return $item instanceof Axe;
-            case CustomEnchant::ITEM_TYPE_SHOVEL:
-                return $item instanceof Shovel;
-            case CustomEnchant::ITEM_TYPE_HOE:
-                return $item instanceof Hoe;
-            case CustomEnchant::ITEM_TYPE_ARMOR:
-                return $item instanceof Armor || $item->getId() === ItemIds::ELYTRA;
-            case CustomEnchant::ITEM_TYPE_HELMET:
-                return self::isHelmet($item);
-            case CustomEnchant::ITEM_TYPE_CHESTPLATE:
-                return self::isChestplate($item);
-            case CustomEnchant::ITEM_TYPE_LEGGINGS:
-                return self::isLeggings($item);
-            case CustomEnchant::ITEM_TYPE_BOOTS:
-                return self::isBoots($item);
-            case CustomEnchant::ITEM_TYPE_COMPASS:
-                return $item instanceof Compass;
-        }
-        return false;
+        return match ($itemType) {
+            CustomEnchant::ITEM_TYPE_GLOBAL => true,
+            CustomEnchant::ITEM_TYPE_DAMAGEABLE => $item instanceof Durable,
+            CustomEnchant::ITEM_TYPE_WEAPON => $item instanceof Sword || $item instanceof Axe || $item instanceof Bow,
+            CustomEnchant::ITEM_TYPE_SWORD => $item instanceof Sword,
+            CustomEnchant::ITEM_TYPE_BOW => $item instanceof Bow,
+            CustomEnchant::ITEM_TYPE_TOOLS => $item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Hoe || $item instanceof Shears,
+            CustomEnchant::ITEM_TYPE_PICKAXE => $item instanceof Pickaxe,
+            CustomEnchant::ITEM_TYPE_AXE => $item instanceof Axe,
+            CustomEnchant::ITEM_TYPE_SHOVEL => $item instanceof Shovel,
+            CustomEnchant::ITEM_TYPE_HOE => $item instanceof Hoe,
+            CustomEnchant::ITEM_TYPE_ARMOR => $item instanceof Armor || $item->getId() === ItemIds::ELYTRA,
+            CustomEnchant::ITEM_TYPE_HELMET => self::isHelmet($item),
+            CustomEnchant::ITEM_TYPE_CHESTPLATE => self::isChestplate($item),
+            CustomEnchant::ITEM_TYPE_LEGGINGS => self::isLeggings($item),
+            CustomEnchant::ITEM_TYPE_BOOTS => self::isBoots($item),
+            CustomEnchant::ITEM_TYPE_COMPASS => $item instanceof Compass,
+            default => false,
+        };
     }
 
     public static function createNewProjectile(string $className, Location $location, Player $shooter, Projectile $previousProjectile, int $level = 1): Projectile
     {
-        switch ($className) {
-            case Arrow::class:
-                return new Arrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null);
-            case HomingArrow::class:
-                return new HomingArrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null, $previousProjectile instanceof HomingArrow ? $previousProjectile->getEnchantmentLevel() : $level);
-            case PiggyFireball::class:
-            case PiggyWitherSkull::class:
-                return new $className($location, $shooter, null);
-            case PigProjectile::class:
-                return new PigProjectile($location, $shooter, null, $previousProjectile instanceof PigProjectile ? $previousProjectile->getPorkLevel() : $level);
-            default:
-                throw new InvalidArgumentException("Entity $className not found");
-        }
+        return match ($className) {
+            Arrow::class => new Arrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null),
+            HomingArrow::class => new HomingArrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null, $previousProjectile instanceof HomingArrow ? $previousProjectile->getEnchantmentLevel() : $level),
+            PiggyFireball::class, PiggyWitherSkull::class => new $className($location, $shooter, null),
+            PigProjectile::class => new PigProjectile($location, $shooter, null, $previousProjectile instanceof PigProjectile ? $previousProjectile->getPorkLevel() : $level),
+            default => throw new InvalidArgumentException("Entity $className not found"),
+        };
     }
 
     public static function checkEnchantIncompatibilities(Item $item, CustomEnchant $enchant): bool
@@ -280,7 +258,6 @@ class Utils
         $form = new SimpleForm(function (Player $player, ?int $data) {
             if (!is_null($data)) {
                 $player->getServer()->dispatchCommand($player, "ce");
-                return;
             }
         });
         $form->setTitle(TextFormat::RED . "Error");

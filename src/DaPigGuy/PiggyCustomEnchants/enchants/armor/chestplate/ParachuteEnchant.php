@@ -32,10 +32,10 @@ class ParachuteEnchant extends TickingEnchantment
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        $slowFall = new Effect(27, "%potion.slowFalling", new Color(206, 255, 255));
+        $slowFall = new Effect("%potion.slowFalling", new Color(206, 255, 255));
         if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(Enchantment::get(CustomEnchantIds::JETPACK))) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
             $player->getEffects()->add(new EffectInstance($slowFall, 2147483647, 1, false));
-        } elseif (($effect = $player->getEffects()->get($slowFall)) !== null) {
+        } elseif ($player->getEffects()->get($slowFall) !== null) {
             if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1, 0))->getId() !== BlockLegacyIds::AIR) $player->getEffects()->remove($slowFall);
         }
         $player->resetFallDistance();
@@ -43,7 +43,7 @@ class ParachuteEnchant extends TickingEnchantment
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
-        $slowFall = new Effect(27, "%potion.slowFalling", new Color(206, 255, 255));
+        $slowFall = new Effect("%potion.slowFalling", new Color(206, 255, 255));
         if (!$toggle && ($effect = $player->getEffects()->get($slowFall)) !== null && $effect->getAmplifier() === -5) {
             $player->getEffects()->remove($slowFall);
         }

@@ -12,7 +12,6 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\math\Vector2;
-use pocketmine\network\mcpe\protocol\MovePlayerPacket;
 use pocketmine\player\Player;
 
 class AutoAimEnchant extends TickingEnchantment
@@ -41,7 +40,6 @@ class AutoAimEnchant extends TickingEnchantment
                     $tmp = 1 - $g * ($g * ($length * $length) + 2 * $position->y);
                     $pitch = 180 / M_PI * -(atan((1 - sqrt($tmp)) / ($g * $length)));
                     $player->setRotation($yaw, $pitch);
-                    $player->sendPosition($player->getPosition(), $yaw, $pitch, MovePlayerPacket::MODE_TELEPORT);
                 }
             }
         }

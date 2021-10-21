@@ -73,7 +73,7 @@ class EventListener implements Listener
         $packet = $event->getPacket();
         if ($packet instanceof InventoryTransactionPacket) {
             $transaction = $packet->trData;
-            foreach ($transaction->getActions() as $key => $action) {
+            foreach ($transaction->getActions() as $action) {
                 $action->oldItem = new ItemStackWrapper($action->oldItem->getStackId(), Utils::filterDisplayedEnchants($action->oldItem->getItemStack()));
                 $action->newItem = new ItemStackWrapper($action->newItem->getStackId(), Utils::filterDisplayedEnchants($action->newItem->getItemStack()));
             }
@@ -111,7 +111,7 @@ class EventListener implements Listener
                 $tnt->setOwningEntity($entity->getOwningEntity());
                 $tnt->spawnToAll();
             }
-            $event->setCancelled();
+            $event->cancel();
         }
     }
 
@@ -124,7 +124,7 @@ class EventListener implements Listener
         if ($entity instanceof Player) {
             if ($event->getCause() === EntityDamageEvent::CAUSE_FALL && !Utils::shouldTakeFallDamage($entity)) {
                 if ($entity->getArmorInventory()->getBoots()->getEnchantment(Enchantment::get(CustomEnchantIds::SPRINGS)) === null) Utils::setShouldTakeFallDamage($entity, true);
-                $event->setCancelled();
+                $event->cancel();
                 return;
             }
             ReactiveEnchantment::attemptReaction($entity, $event);
