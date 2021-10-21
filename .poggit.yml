@@ -9,8 +9,9 @@ projects:
     libs:
       - src: DaPigGuy/FormAPI-4.0.0/libFormAPI
         version: ^1.3
-      - src: DaPigGuy/Commando-4.0.0/Commando
-        version: ^2.1.0
+      - src: Paroxity/Commando/Commando
+        version: ^3.0.0
+        branch: PM-4.0
     lint:
       phpstan: false
 ...

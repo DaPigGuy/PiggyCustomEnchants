@@ -21,7 +21,7 @@ jobs:
       - name: wget virions, Commando
         uses: wei/wget@v1
         with:
-          args: -O vendor/Commando.phar https://poggit.pmmp.io/r/90966/Commando_dev-2.phar
+          args: -O vendor/Commando.phar https://poggit.pmmp.io/r/138917/Commando_dev-26.phar
       - name: Run PHPStan
         uses: paroxity/pmmp-phpstan-action@master
         with:
