@@ -23,6 +23,6 @@ jobs:
         with:
           args: -O vendor/Commando.phar https://poggit.pmmp.io/r/138917/Commando_dev-26.phar
       - name: Run PHPStan
-        uses: paroxity/pmmp-phpstan-action@master
+        uses: paroxity/pmmp-phpstan-action@4.0.0
         with:
           phpstan-config: phpstan.neon.dist
