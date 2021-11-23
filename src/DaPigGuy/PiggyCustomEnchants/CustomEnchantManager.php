@@ -87,7 +87,9 @@ use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\Rarity;
+use pocketmine\item\enchantment\StringToEnchantmentParser;
 use pocketmine\player\Player;
+use pocketmine\utils\StringToTParser;
 use ReflectionProperty;
 
 class CustomEnchantManager
@@ -216,6 +218,7 @@ class CustomEnchantManager
     {
 		EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
         self::$enchants[$enchant->getId()] = $enchant;
+		StringToEnchantmentParser::getInstance()->register($enchant->getName(), $enchant);
 
         self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
     }
@@ -227,6 +230,13 @@ class CustomEnchantManager
     {
         $id = $id instanceof Enchantment ? $id->getId() : $id;
         self::$enchants[$id]->unregister();
+
+		$property = new ReflectionProperty(StringToTParser::class, "callbackMap");
+		$property->setAccessible(true);
+		$value = $property->getValue(StringToEnchantmentParser::getInstance());
+		unset($value[strtolower(str_replace([" ", "minecraft:"], ["_", ""], trim(self::$enchants[$id]->getName())))]);
+		$property->setValue($value);
+
         self::$plugin->getLogger()->debug("Custom Enchantment '" . self::$enchants[$id]->getName() . "' unregistered with id " . self::$enchants[$id]->getId());
         unset(self::$enchants[$id]);
 
@@ -252,12 +262,6 @@ class CustomEnchantManager
 
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
-        foreach (self::$enchants as $enchant) {
-            if (
-                strtolower(str_replace(" ", "", $enchant->getName())) === strtolower(str_replace(" ", "", $name)) ||
-                strtolower(str_replace(" ", "", $enchant->getDisplayName())) === strtolower(str_replace(" ", "", $name))
-            ) return $enchant;
-        }
-        return null;
+        StringToEnchantmentParser::getInstance()->parse($name);
     }
 }
