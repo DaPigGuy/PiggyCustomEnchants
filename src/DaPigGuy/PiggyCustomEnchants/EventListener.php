@@ -219,7 +219,7 @@ class EventListener implements Listener
         $player = $event->getPlayer();
         $item = $player->getInventory()->getItemInHand();
         ReactiveEnchantment::attemptReaction($player, $event);
-        if ($this->plugin->getConfig()->getNested("miscellaneous.armor-hold-equip", false) && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_AIR) {
+        if ($this->plugin->getConfig()->getNested("miscellaneous.armor-hold-equip", false) === true && $event->getAction() === PlayerInteractEvent::RIGHT_CLICK_AIR) {
             if ($item instanceof Armor || $item->getId() === Item::ELYTRA || $item->getId() === Item::PUMPKIN || $item->getId() === Item::SKULL) {
                 $slot = 0;
                 if (Utils::isChestplate($item)) $slot = 1;
@@ -348,7 +348,7 @@ class EventListener implements Listener
      */
     public function onTransaction(InventoryTransactionEvent $event): void
     {
-        if (!$this->plugin->getConfig()->getNested("enchants.books", true)) return;
+        if ($this->plugin->getConfig()->getNested("enchants.books", true) === false) return;
         $transaction = $event->getTransaction();
         $actions = array_values($transaction->getActions());
         if (count($actions) === 2) {

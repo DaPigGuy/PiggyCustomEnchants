@@ -28,7 +28,16 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
     /** @var int[] */
     private array $amplifierMultiplier;
 
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
+	/**
+	 * @param PiggyCustomEnchants $plugin
+	 * @param int                 $id
+	 * @param string              $name
+	 * @param int[]               $effects
+	 * @param int[]               $durationMultiplier
+	 * @param int[]               $amplifierMultiplier
+	 * @param int                 $rarity
+	 */
+	public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;

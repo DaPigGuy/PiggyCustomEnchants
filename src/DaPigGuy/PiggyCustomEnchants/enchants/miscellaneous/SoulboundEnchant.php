@@ -31,7 +31,7 @@ class SoulboundEnchant extends ReactiveEnchantment
     {
         if ($event instanceof PlayerDeathEvent) {
             $drops = $event->getDrops();
-            unset($drops[array_search($item, $drops)]);
+            unset($drops[array_search($item, $drops, true)]);
             $event->setDrops($drops);
             $level > 1 ? $item->addEnchantment($item->getEnchantment(CustomEnchantIds::SOULBOUND)->setLevel($level - 1)) : $item->removeEnchantment(CustomEnchantIds::SOULBOUND);
             if (count($item->getEnchantments()) === 0) $item->removeNamedTagEntry(Item::TAG_ENCH);

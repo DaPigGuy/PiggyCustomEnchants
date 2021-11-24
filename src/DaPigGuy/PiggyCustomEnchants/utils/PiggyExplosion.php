@@ -34,7 +34,6 @@ class PiggyExplosion extends Explosion
 
     public function explodeB(): bool
     {
-        $send = [];
         $updateBlocks = [];
         $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
 
@@ -60,7 +59,7 @@ class PiggyExplosion extends Explosion
             $distance = $entity->distance($this->source) / $explosionSize;
             if ($distance <= 1) {
                 $motion = $entity->subtract($this->source)->normalize();
-                $impact = (1 - $distance) * ($exposure = 1);
+                $impact = (1 - $distance);
                 $damage = (int)((($impact * $impact + $impact) / 2) * 8 * $explosionSize + 1);
 
                 $ev = new EntityDamageByEntityEvent($this->player, $entity, EntityDamageEvent::CAUSE_ENTITY_EXPLOSION, $damage);
@@ -115,7 +114,6 @@ class PiggyExplosion extends Explosion
                     $updateBlocks[$index] = true;
                 }
             }
-            $send[] = new Vector3($block->x - $source->x, $block->y - $source->y, $block->z - $source->z);
         }
         unset(RecursiveEnchant::$isUsing[$this->player->getName()]);
         $this->level->addParticle(new HugeExplodeSeedParticle($source));

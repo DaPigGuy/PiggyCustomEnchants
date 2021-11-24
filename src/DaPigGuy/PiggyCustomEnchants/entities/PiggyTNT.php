@@ -17,7 +17,7 @@ class PiggyTNT extends PrimedTNT
     public function explode(): void
     {
         $ownerEntity = $this->getOwningEntity();
-        if ($ownerEntity === null || !$ownerEntity instanceof Player) {
+        if (!$ownerEntity instanceof Player) {
             parent::explode();
             return;
         }

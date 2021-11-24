@@ -98,22 +98,22 @@ class Utils
 
     public static function isHelmet(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_CAP, Item::CHAIN_HELMET, Item::IRON_HELMET, Item::GOLD_HELMET, Item::DIAMOND_HELMET]);
+        return in_array($item->getId(), [Item::LEATHER_CAP, Item::CHAIN_HELMET, Item::IRON_HELMET, Item::GOLD_HELMET, Item::DIAMOND_HELMET], true);
     }
 
     public static function isChestplate(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE, Item::ELYTRA]);
+        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE, Item::ELYTRA], true);
     }
 
     public static function isLeggings(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_PANTS, Item::CHAIN_LEGGINGS, Item::IRON_LEGGINGS, Item::GOLD_LEGGINGS, Item::DIAMOND_LEGGINGS]);
+        return in_array($item->getId(), [Item::LEATHER_PANTS, Item::CHAIN_LEGGINGS, Item::IRON_LEGGINGS, Item::GOLD_LEGGINGS, Item::DIAMOND_LEGGINGS], true);
     }
 
     public static function isBoots(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_BOOTS, Item::CHAIN_BOOTS, Item::IRON_BOOTS, Item::GOLD_BOOTS, Item::DIAMOND_BOOTS]);
+        return in_array($item->getId(), [Item::LEATHER_BOOTS, Item::CHAIN_BOOTS, Item::IRON_BOOTS, Item::GOLD_BOOTS, Item::DIAMOND_BOOTS], true);
     }
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
@@ -143,8 +143,8 @@ class Utils
     public static function checkEnchantIncompatibilities(Item $item, CustomEnchant $enchant): bool
     {
         foreach ($item->getEnchantments() as $enchantment) {
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()])) return false;
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($enchantment->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()])) return false;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()], true)) return false;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($enchantment->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()], true)) return false;
         }
         return true;
     }
@@ -157,11 +157,11 @@ class Utils
             foreach ($item->getEnchantments() as $enchantmentInstance) {
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant) {
-                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
+                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals", true) === true ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
                 }
             }
             if ($item->getNamedTagEntry(Item::TAG_DISPLAY) instanceof CompoundTag) $item->setNamedTagEntry(new CompoundTag("OriginalDisplayTag", $item->getNamedTagEntry(Item::TAG_DISPLAY)->getValue()));
-            if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position") === "lore") {
+            if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position", "name") === "lore") {
                 $lore = array_merge(explode("\n", $additionalInformation), $item->getLore());
                 array_shift($lore);
                 $item = $item->setLore($lore);
@@ -169,7 +169,7 @@ class Utils
                 $item = $item->setCustomName($additionalInformation);
             }
         }
-        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors())) $item->setNamedTagEntry(new StringTag("LolGetRekted", "Loser"));
+        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors(), true)) $item->setNamedTagEntry(new StringTag("LolGetRekted", "Loser"));
         return $item;
     }
 
@@ -267,6 +267,6 @@ class Utils
 
     public static function isCoolKid(PluginDescription $description): bool
     {
-        return $description->getName() === "PiggyCustomEnchants" && in_array("DaPigGuy", $description->getAuthors());
+        return $description->getName() === "PiggyCustomEnchants" && in_array("DaPigGuy", $description->getAuthors(), true);
     }
 }

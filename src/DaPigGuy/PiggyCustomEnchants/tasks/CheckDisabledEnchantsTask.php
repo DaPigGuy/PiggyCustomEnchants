@@ -27,9 +27,9 @@ class CheckDisabledEnchantsTask extends AsyncTask
                 foreach ($disabledEnchants as $disabledEnchantEntry) {
                     if (
                         count(array_intersect($disabledEnchantEntry["api"], $plugin->getDescription()->getCompatibleApis())) > 0 ||
-                        in_array("all", $disabledEnchantEntry["api"]) ||
-                        in_array($plugin->getDescription()->getVersion(), $disabledEnchantEntry["version"]) ||
-                        in_array("all", $disabledEnchantEntry["version"])
+                        in_array("all", $disabledEnchantEntry["api"], true) ||
+                        in_array($plugin->getDescription()->getVersion(), $disabledEnchantEntry["version"], true) ||
+                        in_array("all", $disabledEnchantEntry["version"], true)
                     ) {
                         $plugin->getLogger()->info("Enchantment " . $disabledEnchantEntry["name"] . " (id " . $disabledEnchantEntry["id"] . ") has been remotely disabled for " . $disabledEnchantEntry["reason"]);
                         CustomEnchantManager::unregisterEnchantment($disabledEnchantEntry["id"]);

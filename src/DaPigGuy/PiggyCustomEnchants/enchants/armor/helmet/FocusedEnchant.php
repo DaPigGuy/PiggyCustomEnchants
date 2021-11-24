@@ -31,13 +31,11 @@ class FocusedEnchant extends RecursiveEnchant
         if ($event instanceof EntityEffectAddEvent) {
             $effect = $event->getEffect();
             if ($effect->getId() === Effect::NAUSEA) {
-                if ($effect->getEffectLevel() - ($level * 2) <= 0) {
-                    $event->setCancelled();
-                } else {
-                    $event->setCancelled();
-                    $player->addEffect($effect->setAmplifier($effect->getEffectLevel() - (1 + ($level * 2))));
-                }
-            }
+				$event->setCancelled();
+				if ($effect->getEffectLevel() - ($level * 2) > 0) {
+					$player->addEffect($effect->setAmplifier($effect->getEffectLevel() - (1 + ($level * 2))));
+				}
+			}
         }
     }
 }
