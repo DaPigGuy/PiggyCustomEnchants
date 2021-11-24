@@ -20,13 +20,10 @@ use pocketmine\utils\TextFormat;
 
 class ReviveEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Revive";
+    public string $name = "Revive";
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getReagent(): array
     {

@@ -10,7 +10,7 @@ use pocketmine\item\Item;
 class ProjectileTracker
 {
     /** @var Item[] */
-    public static $projectile = [];
+    public static array $projectile = [];
 
     /**
      * @param Projectile $projectile

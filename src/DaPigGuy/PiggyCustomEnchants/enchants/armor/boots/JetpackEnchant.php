@@ -24,15 +24,11 @@ class JetpackEnchant extends ReactiveEnchantment
     use TickingTrait;
     use ToggleTrait;
 
-    /** @var string */
-    public $name = "Jetpack";
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Jetpack";
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_BOOTS;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
+    public int $usageType = CustomEnchant::TYPE_BOOTS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     /** @var Player[] */
     public $activeJetpacks = [];

@@ -13,15 +13,11 @@ use pocketmine\Player;
 
 class VacuumEnchant extends TickingEnchantment
 {
-    /** @var string */
-    public $name = "Vacuum";
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Vacuum";
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+    public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
     public function getDefaultExtraData(): array
     {

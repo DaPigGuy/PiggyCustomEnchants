@@ -21,15 +21,11 @@ class ForcefieldEnchant extends ToggleableEnchantment
 {
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Forcefield";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public string $name = "Forcefield";
+    public int $rarity = CustomEnchant::RARITY_MYTHIC;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

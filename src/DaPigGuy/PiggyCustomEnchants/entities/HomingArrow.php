@@ -15,8 +15,7 @@ use pocketmine\Player;
 
 class HomingArrow extends Arrow
 {
-    /** @var int */
-    private $enchantmentLevel;
+    private int $enchantmentLevel;
 
     public function __construct(Level $level, CompoundTag $nbt, ?Entity $shootingEntity = null, bool $critical = false, int $enchantmentLevel = 1)
     {

@@ -14,13 +14,10 @@ use pocketmine\Player;
 
 class TelepathyEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Telepathy";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Telepathy";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {

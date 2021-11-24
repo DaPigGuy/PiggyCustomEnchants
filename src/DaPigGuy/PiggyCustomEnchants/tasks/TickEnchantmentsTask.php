@@ -15,8 +15,7 @@ use pocketmine\utils\TextFormat;
 
 class TickEnchantmentsTask extends Task
 {
-    /** @var PiggyCustomEnchants */
-    private $plugin;
+    private PiggyCustomEnchants $plugin;
 
     public function __construct(PiggyCustomEnchants $plugin)
     {

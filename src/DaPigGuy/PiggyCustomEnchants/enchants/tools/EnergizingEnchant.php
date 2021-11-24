@@ -16,11 +16,9 @@ use pocketmine\Player;
 
 class EnergizingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Energizing";
+    public string $name = "Energizing";
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {

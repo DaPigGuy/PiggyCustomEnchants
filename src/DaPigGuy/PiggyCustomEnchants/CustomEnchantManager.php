@@ -86,11 +86,10 @@ use SplFixedArray;
 
 class CustomEnchantManager
 {
-    /** @var PiggyCustomEnchants */
-    private static $plugin;
+    private static PiggyCustomEnchants $plugin;
 
     /** @var CustomEnchant[] */
-    public static $enchants = [];
+    public static array $enchants = [];
 
     public static function init(PiggyCustomEnchants $plugin): void
     {

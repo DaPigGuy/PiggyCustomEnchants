@@ -63,8 +63,8 @@ class Utils
         CustomEnchantIds::PORKIFIED => [CustomEnchantIds::WITHERSKULL]
     ];
 
-    /** @var array */
-    public static $shouldTakeFallDamage;
+    /** @var int[] */
+    public static array $shouldTakeFallDamage;
 
     public static function getRomanNumeral(int $integer): string
     {

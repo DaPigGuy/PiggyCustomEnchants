@@ -15,20 +15,16 @@ use pocketmine\Player;
 
 class SmeltingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Smelting";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Smelting";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
-    /** @var array */
-    public $inputTable;
-    /** @var array */
-    public $outputTable;
+    /** @var Item[] */
+    public array $inputTable;
+    /** @var Item[] */
+    public array $outputTable;
 
     public function __construct(PiggyCustomEnchants $plugin, int $id)
     {

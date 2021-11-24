@@ -14,15 +14,11 @@ use pocketmine\Player;
 
 class AntiKnockbackEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Anti Knockback";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Anti Knockback";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

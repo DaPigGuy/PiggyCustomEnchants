@@ -18,17 +18,15 @@ use pocketmine\Player;
 
 class AttackerDeterrentEnchant extends ReactiveEnchantment
 {
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
-    /** @var array */
-    private $effects;
-    /** @var array */
-    private $durationMultiplier;
-    /** @var array */
-    private $amplifierMultiplier;
+    /** @var int[] */
+    private array $effects;
+    /** @var int[] */
+    private array $durationMultiplier;
+    /** @var int[] */
+    private array $amplifierMultiplier;
 
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
     {

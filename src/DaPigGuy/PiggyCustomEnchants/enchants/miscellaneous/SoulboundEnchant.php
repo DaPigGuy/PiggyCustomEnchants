@@ -16,15 +16,11 @@ use pocketmine\scheduler\ClosureTask;
 
 class SoulboundEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Soulbound";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public string $name = "Soulbound";
+    public int $rarity = CustomEnchant::RARITY_MYTHIC;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ANY_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_GLOBAL;
+    public int $usageType = CustomEnchant::TYPE_ANY_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_GLOBAL;
 
     public function getReagent(): array
     {

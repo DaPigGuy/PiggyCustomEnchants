@@ -15,13 +15,10 @@ use pocketmine\Player;
 
 class HeavyEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Heavy";
+    public string $name = "Heavy";
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

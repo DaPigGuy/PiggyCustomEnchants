@@ -17,8 +17,7 @@ class PiggyFireball extends PiggyProjectile
 
     /** @var float */
     public $width = 0.5;
-    /** @var float */
-    public $length = 0.5;
+    public float $length = 0.5;
     /** @var float */
     public $height = 0.5;
 

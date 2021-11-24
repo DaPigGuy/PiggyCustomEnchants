@@ -15,16 +15,13 @@ use pocketmine\Player;
 
 class DrillerEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Driller";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Driller";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
-    /** @var array */
-    public static $lastBreakFace;
+    /** @var int[] */
+    public static array $lastBreakFace;
 
     public function getReagent(): array
     {

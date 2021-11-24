@@ -14,10 +14,8 @@ use pocketmine\Player;
 
 class LifestealEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Lifesteal";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_COMMON;
+    public string $name = "Lifesteal";
+    public int $rarity = CustomEnchant::RARITY_COMMON;
 
     public function getDefaultExtraData(): array
     {

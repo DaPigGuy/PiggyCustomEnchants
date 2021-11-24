@@ -16,15 +16,11 @@ class SpiderEnchant extends ToggleableEnchantment
 {
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Spider";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Spider";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+    public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void

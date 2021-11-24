@@ -14,15 +14,11 @@ use pocketmine\Player;
 
 class BountyHunterEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Bounty Hunter";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $cooldownDuration = 30;
+    public string $name = "Bounty Hunter";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public int $cooldownDuration = 30;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

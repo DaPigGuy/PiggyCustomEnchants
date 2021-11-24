@@ -14,11 +14,9 @@ use pocketmine\Player;
 
 class HealingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Healing";
+    public string $name = "Healing";
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

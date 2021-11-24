@@ -25,13 +25,11 @@ use pocketmine\utils\TextFormat;
 
 class HallucinationEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Hallucination";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public string $name = "Hallucination";
+    public int $rarity = CustomEnchant::RARITY_MYTHIC;
 
-    /** @var array */
-    public static $hallucinating;
+    /** @var bool[] */
+    public static array $hallucinating;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

@@ -16,6 +16,9 @@ use pocketmine\utils\TextFormat;
 
 class PigProjectile extends PiggyProjectile
 {
+	/**
+	 * @const array<int, bool, bool, int, string>
+	 */
     const PORK_LEVELS = [
         //level => [damage, dinnerbone, zombie, drop id, drop name]
         1 => [1, false, false, Item::AIR, ""],
@@ -38,10 +41,8 @@ class PigProjectile extends PiggyProjectile
 
     /** @var float */
     protected $damage = 1.5;
-    /** @var int */
-    private $porkLevel;
-    /** @var bool */
-    private $zombie;
+    private int $porkLevel;
+    private bool $zombie;
 
     public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porkLevel = 1)
     {

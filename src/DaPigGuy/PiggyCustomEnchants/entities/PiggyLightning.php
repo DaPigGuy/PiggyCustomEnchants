@@ -21,13 +21,11 @@ class PiggyLightning extends Entity
 
     /** @var float */
     public $width = 0.3;
-    /** @var float */
-    public $length = 0.9;
+    public float $length = 0.9;
     /** @var float */
     public $height = 1.8;
 
-    /** @var int */
-    protected $age = 0;
+    protected int $age = 0;
 
     public function entityBaseTick(int $tickDiff = 1): bool
     {

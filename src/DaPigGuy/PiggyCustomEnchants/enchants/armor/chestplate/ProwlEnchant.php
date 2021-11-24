@@ -18,18 +18,14 @@ class ProwlEnchant extends ToggleableEnchantment
 {
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Prowl";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Prowl";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+    public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
-    /** @var array */
-    public $prowled;
+    /** @var bool[] */
+    public array $prowled;
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {

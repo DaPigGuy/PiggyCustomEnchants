@@ -16,17 +16,12 @@ use pocketmine\Player;
 
 class MagmaWalkerEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Magma Walker";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 2;
+    public string $name = "Magma Walker";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public int $maxLevel = 2;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_BOOTS;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
+    public int $usageType = CustomEnchant::TYPE_BOOTS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     public function getReagent(): array
     {

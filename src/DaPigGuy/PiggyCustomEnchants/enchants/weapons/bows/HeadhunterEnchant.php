@@ -15,13 +15,10 @@ use pocketmine\Player;
 
 class HeadhunterEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Headhunter";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Headhunter";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

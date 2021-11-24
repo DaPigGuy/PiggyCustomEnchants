@@ -15,15 +15,11 @@ use pocketmine\Player;
 
 class FocusedEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Focused";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Focused";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_HELMET;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+    public int $usageType = CustomEnchant::TYPE_HELMET;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     public function getReagent(): array
     {

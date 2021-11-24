@@ -17,15 +17,11 @@ use pocketmine\Player;
 
 class PoisonousCloudEnchant extends TickingEnchantment
 {
-    /** @var string */
-    public $name = "Poisonous Cloud";
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Poisonous Cloud";
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

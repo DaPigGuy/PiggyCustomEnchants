@@ -15,10 +15,8 @@ use pocketmine\Player;
 
 class LightningEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Lightning";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public string $name = "Lightning";
+    public int $rarity = CustomEnchant::RARITY_MYTHIC;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

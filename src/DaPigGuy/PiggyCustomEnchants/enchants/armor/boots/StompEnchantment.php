@@ -16,17 +16,12 @@ use pocketmine\Player;
 
 class StompEnchantment extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Stomp";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Stomp";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_BOOTS;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
+    public int $usageType = CustomEnchant::TYPE_BOOTS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     public function getReagent(): array
     {

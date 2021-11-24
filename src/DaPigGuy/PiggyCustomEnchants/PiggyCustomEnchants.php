@@ -29,8 +29,8 @@ use ReflectionException;
 
 class PiggyCustomEnchants extends PluginBase
 {
-    /** @var array[] */
-    private $enchantmentData;
+    /** @var mixed[] */
+    private array $enchantmentData;
 
     /**
      * @throws ReflectionException

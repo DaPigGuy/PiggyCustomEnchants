@@ -22,26 +22,20 @@ class ShrinkEnchant extends ToggleableEnchantment
     }
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Shrink";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 2;
-    /** @var int */
-    public $cooldownDuration = 75;
+    public string $name = "Shrink";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public int $maxLevel = 2;
+    public int $cooldownDuration = 75;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
-    /** @var array */
-    public $shrunk;
-    /** @var array */
-    public $shrinkPower;
-    /** @var array */
-    public $shiftCache;
+    /** @var Player[] */
+    public array $shrunk;
+    /** @var int[] */
+    public array $shrinkPower;
+    /** @var bool[] */
+    public array $shiftCache;
 
     public function getReagent(): array
     {

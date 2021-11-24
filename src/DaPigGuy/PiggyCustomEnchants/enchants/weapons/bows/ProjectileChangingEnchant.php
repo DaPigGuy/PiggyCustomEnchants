@@ -19,11 +19,9 @@ use pocketmine\Player;
 
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    private $projectileType;
+    private string $projectileType;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
     {

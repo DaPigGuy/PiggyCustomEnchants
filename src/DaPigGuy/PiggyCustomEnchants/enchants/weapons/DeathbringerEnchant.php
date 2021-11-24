@@ -14,8 +14,7 @@ use pocketmine\Player;
 
 class DeathbringerEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Deathbringer";
+    public string $name = "Deathbringer";
 
     public function getDefaultExtraData(): array
     {

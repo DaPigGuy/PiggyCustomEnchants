@@ -14,18 +14,14 @@ use pocketmine\Player;
 
 class ShieldedEnchant extends ToggleableEnchantment
 {
-    /** @var string */
-    public $name = "Shielded";
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Shielded";
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     /** @var EffectInstance[] */
-    private $previousEffect;
+    private array $previousEffect;
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {

@@ -16,15 +16,11 @@ use pocketmine\Player;
 
 class TankEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Tank";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Tank";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

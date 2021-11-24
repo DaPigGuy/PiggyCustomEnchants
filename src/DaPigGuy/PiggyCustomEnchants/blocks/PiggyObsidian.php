@@ -9,8 +9,7 @@ use pocketmine\Player;
 
 class PiggyObsidian extends Obsidian
 {
-    /** @var int */
-    private $age = 0;
+    private int $age = 0;
 
     public function getName(): string
     {

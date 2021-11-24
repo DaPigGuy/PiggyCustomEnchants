@@ -12,8 +12,7 @@ use pocketmine\Player;
 
 class PiggyTNT extends PrimedTNT
 {
-    /** @var bool */
-    public $worldDamage = true;
+    public bool $worldDamage = true;
 
     public function explode(): void
     {

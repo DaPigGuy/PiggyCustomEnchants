@@ -17,15 +17,11 @@ use pocketmine\scheduler\ClosureTask;
 
 class FarmerEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Farmer";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Farmer";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HOE;
 
     public function getReagent(): array
     {

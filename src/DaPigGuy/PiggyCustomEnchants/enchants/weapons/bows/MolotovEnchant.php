@@ -17,13 +17,10 @@ use pocketmine\Player;
 
 class MolotovEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Molotov";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Molotov";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

@@ -21,13 +21,10 @@ use pocketmine\Player;
 
 class VolleyEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Volley";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Volley";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

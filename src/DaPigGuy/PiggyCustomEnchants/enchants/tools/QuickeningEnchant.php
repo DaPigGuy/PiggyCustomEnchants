@@ -16,13 +16,10 @@ use pocketmine\Player;
 
 class QuickeningEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Quickening";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Quickening";
+    public int $rarity = CustomEnchant::RARITY_UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {
