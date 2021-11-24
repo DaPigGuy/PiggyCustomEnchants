@@ -119,42 +119,26 @@ class Utils
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
         if ($item->getId() === Item::BOOK || $item->getId() === Item::ENCHANTED_BOOK) return true;
-        switch ($itemType) {
-            case CustomEnchant::ITEM_TYPE_GLOBAL:
-                return true;
-            case CustomEnchant::ITEM_TYPE_DAMAGEABLE:
-                return $item instanceof Durable;
-            case CustomEnchant::ITEM_TYPE_WEAPON:
-                return $item instanceof Sword || $item instanceof Axe || $item instanceof Bow;
-            case CustomEnchant::ITEM_TYPE_SWORD:
-                return $item instanceof Sword;
-            case CustomEnchant::ITEM_TYPE_BOW:
-                return $item instanceof Bow;
-            case CustomEnchant::ITEM_TYPE_TOOLS:
-                return $item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Hoe || $item instanceof Shears;
-            case CustomEnchant::ITEM_TYPE_PICKAXE:
-                return $item instanceof Pickaxe;
-            case CustomEnchant::ITEM_TYPE_AXE:
-                return $item instanceof Axe;
-            case CustomEnchant::ITEM_TYPE_SHOVEL:
-                return $item instanceof Shovel;
-            case CustomEnchant::ITEM_TYPE_HOE:
-                return $item instanceof Hoe;
-            case CustomEnchant::ITEM_TYPE_ARMOR:
-                return $item instanceof Armor || $item->getId() === Item::ELYTRA;
-            case CustomEnchant::ITEM_TYPE_HELMET:
-                return self::isHelmet($item);
-            case CustomEnchant::ITEM_TYPE_CHESTPLATE:
-                return self::isChestplate($item);
-            case CustomEnchant::ITEM_TYPE_LEGGINGS:
-                return self::isLeggings($item);
-            case CustomEnchant::ITEM_TYPE_BOOTS:
-                return self::isBoots($item);
-            case CustomEnchant::ITEM_TYPE_COMPASS:
-                return $item instanceof Compass;
-        }
-        return false;
-    }
+		return match ($itemType) {
+			CustomEnchant::ITEM_TYPE_GLOBAL => true,
+			CustomEnchant::ITEM_TYPE_DAMAGEABLE => $item instanceof Durable,
+			CustomEnchant::ITEM_TYPE_WEAPON => $item instanceof Sword || $item instanceof Axe || $item instanceof Bow,
+			CustomEnchant::ITEM_TYPE_SWORD => $item instanceof Sword,
+			CustomEnchant::ITEM_TYPE_BOW => $item instanceof Bow,
+			CustomEnchant::ITEM_TYPE_TOOLS => $item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Hoe || $item instanceof Shears,
+			CustomEnchant::ITEM_TYPE_PICKAXE => $item instanceof Pickaxe,
+			CustomEnchant::ITEM_TYPE_AXE => $item instanceof Axe,
+			CustomEnchant::ITEM_TYPE_SHOVEL => $item instanceof Shovel,
+			CustomEnchant::ITEM_TYPE_HOE => $item instanceof Hoe,
+			CustomEnchant::ITEM_TYPE_ARMOR => $item instanceof Armor || $item->getId() === Item::ELYTRA,
+			CustomEnchant::ITEM_TYPE_HELMET => self::isHelmet($item),
+			CustomEnchant::ITEM_TYPE_CHESTPLATE => self::isChestplate($item),
+			CustomEnchant::ITEM_TYPE_LEGGINGS => self::isLeggings($item),
+			CustomEnchant::ITEM_TYPE_BOOTS => self::isBoots($item),
+			CustomEnchant::ITEM_TYPE_COMPASS => $item instanceof Compass,
+			default => false,
+		};
+	}
 
     public static function checkEnchantIncompatibilities(Item $item, CustomEnchant $enchant): bool
     {
@@ -243,12 +227,7 @@ class Utils
 
     public static function errorForm(Player $player, string $error): void
     {
-        $form = new SimpleForm(function (Player $player, ?int $data) {
-            if (!is_null($data)) {
-                $player->getServer()->dispatchCommand($player, "ce");
-                return;
-            }
-        });
+        $form = new SimpleForm(fn (Player $player, ?int $data) => !is_null($data) ? $player->getServer()->dispatchCommand($player, "ce") : null);
         $form->setTitle(TextFormat::RED . "Error");
         $form->setContent($error);
         $form->addButton(TextFormat::BOLD . "Back");

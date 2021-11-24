@@ -110,15 +110,9 @@ class CustomEnchantManager
         self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::POISONED, "Poisoned", [Effect::POISON], [60], [1], CustomEnchant::RARITY_UNCOMMON));
         self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::REVULSION, "Revulsion", [Effect::NAUSEA], [20], [0], CustomEnchant::RARITY_UNCOMMON));
 
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::AERIAL, "Aerial", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->isOnGround();
-        }, CustomEnchant::RARITY_COMMON));
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::BACKSTAB, "Backstab", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0;
-        }, CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->isSprinting();
-        }, CustomEnchant::RARITY_UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::AERIAL, "Aerial", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->isOnGround(), CustomEnchant::RARITY_COMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::BACKSTAB, "Backstab", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0, CustomEnchant::RARITY_UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->isSprinting(), CustomEnchant::RARITY_UNCOMMON));
 
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::BLIND, "Blind", CustomEnchant::RARITY_COMMON, [Effect::BLINDNESS], [20], [0], [100]));
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::CRIPPLE, "Cripple", CustomEnchant::RARITY_COMMON, [Effect::NAUSEA, Effect::SLOWNESS], [100, 100], [0, 1]));
@@ -222,10 +216,7 @@ class CustomEnchantManager
         self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
     }
 
-    /**
-     * @param int|Enchantment $id
-     */
-    public static function unregisterEnchantment($id): void
+    public static function unregisterEnchantment(int|Enchantment $id): void
     {
         $id = $id instanceof Enchantment ? $id->getId() : $id;
         self::$enchants[$id]->unregister();

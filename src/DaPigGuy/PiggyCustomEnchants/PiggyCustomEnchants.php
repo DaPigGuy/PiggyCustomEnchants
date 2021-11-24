@@ -99,20 +99,15 @@ class PiggyCustomEnchants extends PluginBase
     }
 
     /**
-     * @param int|string|array $default
-     * @return mixed
      * @internal
      */
-    public function getEnchantmentData(string $enchant, string $data, $default = "")
+    public function getEnchantmentData(string $enchant, string $data, int|string|array $default = ""): mixed
     {
         if (!isset($this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data])) $this->setEnchantmentData($enchant, $data, $default);
         return $this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data];
     }
 
-    /**
-     * @param int|string|array $value
-     */
-    public function setEnchantmentData(string $enchant, string $data, $value): void
+    public function setEnchantmentData(string $enchant, string $data, int|string|array $value): void
     {
         $this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data] = $value;
         $config = new Config($this->getDataFolder() . $data . ".json");
