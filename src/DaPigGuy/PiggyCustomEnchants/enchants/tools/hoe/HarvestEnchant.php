@@ -39,8 +39,8 @@ class HarvestEnchant extends RecursiveEnchant
                 $radius = $level * $this->extraData["radiusMultiplier"];
                 for ($x = -$radius; $x <= $radius; $x++) {
                     for ($z = -$radius; $z <= $radius; $z++) {
-                        if ($block->getLevel()->getBlock($block->add($x, 0, $z)) instanceof Crops) {
-                            $block->getLevel()->useBreakOn($block->add($x, 0, $z), $item, $player);
+                        if ($block->getLevelNonNull()->getBlock($block->add($x, 0, $z)) instanceof Crops) {
+                            $block->getLevelNonNull()->useBreakOn($block->add($x, 0, $z), $item, $player);
                         }
                     }
                 }

@@ -44,7 +44,7 @@ class PiggyObsidian extends Obsidian
                 for ($z = -1; $z <= 1; $z++) {
                     $pos = $this->add((float)$x, 0.0, (float)$z);
                     if (!$this->equals($pos)) {
-                        $block = $this->getLevel()->getBlock($pos);
+                        $block = $this->getLevelNonNull()->getBlock($pos);
                         if ($block instanceof PiggyObsidian && $block->isMagmaWalker()) {
                             $count++;
                         }
@@ -53,13 +53,13 @@ class PiggyObsidian extends Obsidian
             }
             if (mt_rand(0, 100) <= 33.33 || $count < 4) $this->age++;
             if ($this->age >= 4) $this->getLevel()->useBreakOn($this);
-            $this->getLevel()->scheduleDelayedBlockUpdate($this, mt_rand(1, 2) * 20);
+            $this->getLevelNonNull()->scheduleDelayedBlockUpdate($this, mt_rand(1, 2) * 20);
         }
     }
 
     public function onBreak(Item $item, Player $player = null): bool
     {
-        return $this->getLevel()->setBlock($this, Block::get($this->isMagmaWalker() ? Block::LAVA : Block::AIR), true);
+        return $this->getLevelNonNull()->setBlock($this, Block::get($this->isMagmaWalker() ? Block::LAVA : Block::AIR), true);
     }
 
     public function getDrops(Item $item): array

@@ -44,7 +44,7 @@ class HomingArrow extends Arrow
     {
         $nearestEntity = null;
         $nearestEntityDistance = $range;
-        foreach ($this->getLevel()->getEntities() as $entity) {
+        foreach ($this->getLevelNonNull()->getEntities() as $entity) {
             $distance = $this->distance($entity);
             if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && ($owner = $this->getOwningEntity()) !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn()) {
                 if (!$owner instanceof Player || !AllyChecks::isAlly($owner, $entity)) {

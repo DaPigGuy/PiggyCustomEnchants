@@ -51,7 +51,7 @@ class VolleyEnchant extends ReactiveEnchantment
 
                 $nbt = Entity::createBaseNBT($player->add(0, $player->getEyeHeight()), $player->getDirectionVector(), $player->yaw, $player->pitch);
                 /** @var Projectile $newProjectile */
-                $newProjectile = Entity::createEntity($entityType, $player->getLevel(), $nbt, $player, ($projectile instanceof Arrow ? $projectile->isCritical() : ($projectile instanceof PigProjectile ? $projectile->getPorkLevel() : null)), ($projectile instanceof HomingArrow ? $projectile->getEnchantmentLevel() : null));
+                $newProjectile = Entity::createEntity($entityType, $player->getLevelNonNull(), $nbt, $player, ($projectile instanceof Arrow ? $projectile->isCritical() : ($projectile instanceof PigProjectile ? $projectile->getPorkLevel() : null)), ($projectile instanceof HomingArrow ? $projectile->getEnchantmentLevel() : null));
                 if ($newProjectile instanceof Arrow) $newProjectile->setPickupMode(Arrow::PICKUP_NONE);
                 $newProjectile->spawnToAll();
                 ProjectileTracker::addProjectile($newProjectile, $item);

@@ -41,7 +41,7 @@ class MissileEnchant extends ReactiveEnchantment
             $projectile = $event->getEntity();
             for ($i = 0; $i <= $level * $this->extraData["multiplier"]; $i++) {
                 /** @var PiggyTNT $tnt */
-                $tnt = Entity::createEntity("PiggyTNT", $projectile->getLevel(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $projectile->x), new DoubleTag("", $projectile->y), new DoubleTag("", $projectile->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
+                $tnt = Entity::createEntity("PiggyTNT", $projectile->getLevelNonNull(), new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $projectile->x), new DoubleTag("", $projectile->y), new DoubleTag("", $projectile->z)]), "Motion" => new ListTag("Motion", [new DoubleTag("", 0), new DoubleTag("", 0), new DoubleTag("", 0)]), "Rotation" => new ListTag("Rotation", [new FloatTag("", 0), new FloatTag("", 0)]), "Fuse" => new ByteTag("Fuse", 40)]));
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.missile", false);
                 $tnt->setOwningEntity($player);
                 $tnt->spawnToAll();

@@ -35,10 +35,10 @@ class ChickenEnchant extends TickingEnchantment
             $drop = explode(":", $drops[$drop]);
             $item = count($drop) < 3 ? Item::get(Item::GOLD_INGOT, 0, 1) : Item::get((int)$drop[0], (int)$drop[1], (int)$drop[2]);
             $vowels = ["a", "e", "i", "o", "u"];
-            $player->getLevel()->dropItem($player, $item, $player->getDirectionVector()->multiply(-0.4));
+            $player->getLevelNonNull()->dropItem($player, $item, $player->getDirectionVector()->multiply(-0.4));
             $player->sendTip(TextFormat::GREEN . "You have laid a" . (in_array(strtolower($item->getName()[0]), $vowels) ? "n " : " ") . $item->getName() . "...");
         } else {
-            $player->getLevel()->dropItem($player, Item::get(Item::EGG, 0, 1), $player->getDirectionVector()->multiply(-0.4));
+            $player->getLevelNonNull()->dropItem($player, Item::get(Item::EGG, 0, 1), $player->getDirectionVector()->multiply(-0.4));
             $player->sendTip(TextFormat::GREEN . "You have laid an egg.");
         }
     }

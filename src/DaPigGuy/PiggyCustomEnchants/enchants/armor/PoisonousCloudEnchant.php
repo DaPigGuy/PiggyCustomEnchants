@@ -31,7 +31,7 @@ class PoisonousCloudEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $radius = $level * $this->extraData["radiusMultiplier"];
-        foreach ($player->getLevel()->getEntities() as $entity) {
+        foreach ($player->getLevelNonNull()->getEntities() as $entity) {
             if ($entity !== $player && $entity instanceof Living && !AllyChecks::isAlly($player, $entity) && $entity->distance($player) <= $radius) {
                 $effect = new EffectInstance(Effect::getEffect(Effect::POISON), $level * $this->extraData["durationMultiplier"], $level * $this->extraData["amplifierMultiplier"] + $this->extraData["baseAmplifier"], false);
                 $entity->addEffect($effect);
@@ -43,7 +43,7 @@ class PoisonousCloudEnchant extends TickingEnchantment
                     for ($z = -$radius; $z <= $radius; $z += 0.25) {
                         $random = mt_rand(1, 800 * $level);
                         if ($random === 800 * $level) {
-                            $player->getLevel()->addParticle(new DustParticle($player->add($x, $y, $z), 34, 139, 34));
+                            $player->getLevelNonNull()->addParticle(new DustParticle($player->add($x, $y, $z), 34, 139, 34));
                         }
                     }
                 }

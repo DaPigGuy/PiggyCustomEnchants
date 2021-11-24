@@ -39,9 +39,9 @@ class FertilizerEnchant extends RecursiveEnchant
                 $radius = $level * $this->extraData["radiusMultiplier"];
                 for ($x = -$radius; $x <= $radius; $x++) {
                     for ($z = -$radius; $z <= $radius; $z++) {
-                        $newBlock = $block->getLevel()->getBlock($block->add($x, 0, $z));
+                        $newBlock = $block->getLevelNonNull()->getBlock($block->add($x, 0, $z));
                         if ($newBlock->getId() === Block::GRASS || ($newBlock->getId() === Block::DIRT && $newBlock->getDamage() === 0)) {
-                            $block->getLevel()->useItemOn($newBlock, $item, 0, $newBlock, $player);
+                            $block->getLevelNonNull()->useItemOn($newBlock, $item, 0, $newBlock, $player);
                         }
                     }
                 }

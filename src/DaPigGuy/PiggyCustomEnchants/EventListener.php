@@ -128,7 +128,7 @@ class EventListener implements Listener
                 $nbt->setShort("Fuse", 0);
 
                 /** @var PiggyTNT $tnt */
-                $tnt = Entity::createEntity("PiggyTNT", $entity->getLevel(), $nbt);
+                $tnt = Entity::createEntity("PiggyTNT", $entity->getLevelNonNull(), $nbt);
                 $tnt->worldDamage = $this->plugin->getConfig()->getNested("world-damage.bombardment", false);
                 $tnt->setOwningEntity($entity->getOwningEntity());
                 $tnt->spawnToAll();
@@ -282,7 +282,7 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         if (!Utils::shouldTakeFallDamage($player)) {
-            if ($player->getLevel()->getBlock($player->floor()->subtract(0, 1))->getId() !== Block::AIR && Utils::getNoFallDamageDuration($player) <= 0) {
+            if ($player->getLevelNonNull()->getBlock($player->floor()->subtract(0, 1))->getId() !== Block::AIR && Utils::getNoFallDamageDuration($player) <= 0) {
                 Utils::setShouldTakeFallDamage($player, true);
             } else {
                 Utils::increaseNoFallDamageDuration($player);

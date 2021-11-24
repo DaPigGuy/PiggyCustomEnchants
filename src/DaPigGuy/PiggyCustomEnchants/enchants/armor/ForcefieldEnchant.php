@@ -37,7 +37,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
         $forcefieldLevel = $this->stack[$player->getName()];
         if ($forcefieldLevel > 0) {
             $radius = $forcefieldLevel * $this->extraData["radiusMultiplier"];
-            $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);
+            $entities = $player->getLevelNonNull()->getNearbyEntities($player->getBoundingBox()->expandedCopy($radius, $radius, $radius), $player);
             foreach ($entities as $entity) {
                 if ($entity instanceof Projectile) {
                     if ($entity->getOwningEntity() !== $player) $entity->setMotion($entity->getMotion()->multiply(-1));
@@ -51,7 +51,7 @@ class ForcefieldEnchant extends ToggleableEnchantment
                 $diff = $radius / $forcefieldLevel;
                 for ($theta = 0; $theta <= 360; $theta += $diff) {
                     $pos = $player->add($radius * sin($theta), 0.5, $radius * cos($theta));
-                    $player->getLevel()->addParticle(new EnchantmentTableParticle($pos));
+                    $player->getLevelNonNull()->addParticle(new EnchantmentTableParticle($pos));
                 }
             }
         }

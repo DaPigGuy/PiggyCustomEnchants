@@ -42,7 +42,7 @@ class PiggyFireball extends PiggyProjectile
 
     public function onHitBlock(Block $blockHit, RayTraceResult $hitResult): void
     {
-        $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
+        $this->getLevelNonNull()->setBlock($this, Block::get(Block::FIRE));
         parent::onHitBlock($blockHit, $hitResult);
     }
 }

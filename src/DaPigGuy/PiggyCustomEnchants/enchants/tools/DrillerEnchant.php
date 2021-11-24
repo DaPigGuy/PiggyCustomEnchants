@@ -51,10 +51,10 @@ class DrillerEnchant extends RecursiveEnchant
                              $block->getSide(Facing::opposite($faceUp))->getSide($faceLeft), //Bottom Left
                              $block->getSide(Facing::opposite($faceUp))->getSide(Facing::opposite($faceLeft)) //Bottom Right
                          ] as $b) {
-                    $player->getLevel()->useBreakOn($b, $item, $player, true);
+                    $player->getLevelNonNull()->useBreakOn($b, $item, $player, true);
                 }
                 if (!$block->equals($event->getBlock())) {
-                    $player->getLevel()->useBreakOn($block, $item, $player, true);
+                    $player->getLevelNonNull()->useBreakOn($block, $item, $player, true);
                 }
             }
         }

@@ -37,7 +37,7 @@ class MolotovEnchant extends ReactiveEnchantment
                     $nbt = Entity::createBaseNBT($entity->add(0.5, 1, 0.5), new Vector3($x, 0.1, $z));
                     $nbt->setInt("TileID", Block::FIRE);
                     $nbt->setByte("Data", 0);
-                    $fire = Entity::createEntity("FallingSand", $entity->getLevel(), $nbt);
+                    $fire = Entity::createEntity("FallingSand", $entity->getLevelNonNull(), $nbt);
                     $fire->setOnFire(1638); //Falling Sand with block id of fire not rendered by game
                     $fire->spawnToAll();
                 }

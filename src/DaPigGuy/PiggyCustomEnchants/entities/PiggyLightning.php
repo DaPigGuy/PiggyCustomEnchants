@@ -31,7 +31,7 @@ class PiggyLightning extends Entity
     {
         if ($this->closed) return false;
         $this->age += $tickDiff;
-        $world = $this->getLevel();
+        $world = $this->getLevelNonNull();
         foreach ($world->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
             if ($entity instanceof Living && $entity->isAlive() && $this->getOwningEntity() !== $entity) {
                 $owner = $this->getOwningEntity();

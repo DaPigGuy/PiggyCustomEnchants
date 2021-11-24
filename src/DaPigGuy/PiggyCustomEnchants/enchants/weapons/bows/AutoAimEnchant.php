@@ -50,7 +50,7 @@ class AutoAimEnchant extends TickingEnchantment
     {
         $nearestEntity = null;
         $nearestEntityDistance = $range;
-        foreach ($player->getLevel()->getEntities() as $entity) {
+        foreach ($player->getLevelNonNull()->getEntities() as $entity) {
             $distance = $player->distance($entity);
             if ($entity instanceof Living && $distance <= $range && $distance < $nearestEntityDistance && $player !== $entity && $entity->isAlive() && !$entity->isClosed() && !$entity->isFlaggedForDespawn() && !AllyChecks::isAlly($player, $entity)) {
                 $nearestEntity = $entity;

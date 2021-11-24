@@ -26,7 +26,7 @@ class VacuumEnchant extends TickingEnchantment
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        foreach ($player->getLevel()->getEntities() as $entity) {
+        foreach ($player->getLevelNonNull()->getEntities() as $entity) {
             if ($entity instanceof ItemEntity) {
                 $distance = $player->distance($entity);
                 if ($distance <= $this->extraData["radiusMultiplier"] * $level) {

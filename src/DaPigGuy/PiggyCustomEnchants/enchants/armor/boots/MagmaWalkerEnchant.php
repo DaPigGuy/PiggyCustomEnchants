@@ -36,7 +36,7 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof PlayerMoveEvent) {
-            $world = $player->getLevel();
+            $world = $player->getLevelNonNull();
             if (!($world->getBlock($player) instanceof Lava)) {
                 $radius = $level * $this->extraData["radiusMultiplier"] + $this->extraData["baseRadius"];
                 for ($x = -$radius; $x <= $radius; $x++) {

@@ -32,7 +32,7 @@ class ParachuteEnchant extends TickingEnchantment
         if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantIds::JETPACK)) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
             $player->addEffect(new EffectInstance(Effect::getEffect(Effect::LEVITATION), 2147483647, -5, false)); //Hack to make the Parachute CE feel like a parachute
         } elseif (($effect = $player->getEffect(Effect::LEVITATION)) !== null && $effect->getAmplifier() === -5) {
-            if ($this->isInAir($player) || $player->getLevel()->getBlock($player->subtract(0, 1))->getId() !== Block::AIR) $player->removeEffect($effect->getId());
+            if ($this->isInAir($player) || $player->getLevelNonNull()->getBlock($player->subtract(0, 1))->getId() !== Block::AIR) $player->removeEffect($effect->getId());
         }
         $player->resetFallDistance();
     }
@@ -47,7 +47,7 @@ class ParachuteEnchant extends TickingEnchantment
     public function isInAir(Player $player): bool
     {
         for ($y = 1; $y <= 5; $y++) {
-            if ($player->getLevel()->getBlock($player->subtract(0, $y))->getId() !== Block::AIR) return false;
+            if ($player->getLevelNonNull()->getBlock($player->subtract(0, $y))->getId() !== Block::AIR) return false;
         }
         return true;
     }
