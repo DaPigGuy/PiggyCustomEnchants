@@ -46,7 +46,7 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
                         $b = $world->getBlock($player->getPosition()->add($x, -1, $z));
                         if ($world->getBlock($b->getPosition()->add(0, 1, 0))->getId() === BlockLegacyIds::AIR) {
                             if ($b instanceof Lava && $b->getMeta() === 0) {
-                                $world->setBlock($b->getPosition()->asVector3(), BlockFactory::getInstance()->get(BlockLegacyIds::OBSIDIAN, 15));
+                                $world->setBlock($b->getPosition()->asVector3(), BlockFactory::getInstance()->get(BlockLegacyIds::GLOWING_OBSIDIAN, 0));
                             }
                         }
                     }
