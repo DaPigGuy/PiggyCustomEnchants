@@ -92,9 +92,9 @@ class TickEnchantmentsTask extends Task
         foreach ($item->getEnchantments() as $enchantmentInstance) {
             $enchantment = $enchantmentInstance->getType();
             if ($enchantment instanceof CustomEnchant) {
-                $item->setCustomName(str_replace("\n" . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), "", $item->getCustomName()));
+                $item->setCustomName(str_replace("\n" . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->name . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), "", $item->getCustomName()));
                 $lore = $item->getLore();
-                if (($key = array_search(Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), $lore, true)) !== false) {
+                if (($key = array_search(Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->name . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), $lore, true)) !== false) {
                     unset($lore[$key]);
                 }
                 $item->setLore($lore);
