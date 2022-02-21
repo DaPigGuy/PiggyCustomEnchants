@@ -111,7 +111,7 @@ class EnchantSubCommand extends BaseSubCommand
                             return;
                         }
                     }
-                    $item->addEnchantment(new EnchantmentInstance($enchant, $data[1]));
+                    $item->addEnchantment(new EnchantmentInstance($enchant, (int)$data[1]));
                     $player->sendMessage(TextFormat::GREEN . "Item successfully enchanted.");
                     $target->getInventory()->setItemInHand($item);
                 }
