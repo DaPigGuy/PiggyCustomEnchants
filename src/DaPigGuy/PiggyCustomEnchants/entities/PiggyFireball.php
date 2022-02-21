@@ -21,7 +21,7 @@ class PiggyFireball extends PiggyProjectile
     /** @var float */
     protected $gravity = 0.05;
 
-    /** @var int */
+    /** @var float */
     protected $damage = 5;
 
     public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void

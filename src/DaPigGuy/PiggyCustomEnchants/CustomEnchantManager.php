@@ -84,10 +84,10 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\Rarity;
-use pocketmine\player\Player;
 use ReflectionProperty;
 
 class CustomEnchantManager
@@ -110,7 +110,7 @@ class CustomEnchantManager
 
         self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::AERIAL, "Aerial", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->isOnGround(), Rarity::UNCOMMON));
         self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::BACKSTAB, "Backstab", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0, Rarity::UNCOMMON));
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->isSprinting(), Rarity::UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", fn(EntityDamageByEntityEvent $event) => ($damager = $event->getDamager()) instanceof Living && $damager->isSprinting(), Rarity::UNCOMMON));
 
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::BLIND, "Blind", Rarity::COMMON, [VanillaEffects::BLINDNESS()], [20], [0], [100]));
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::CRIPPLE, "Cripple", Rarity::COMMON, [VanillaEffects::NAUSEA(), VanillaEffects::SLOWNESS()], [100, 100], [0, 1]));
@@ -206,7 +206,7 @@ class CustomEnchantManager
 
     public static function registerEnchantment(CustomEnchant $enchant): void
     {
-		EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
+        EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
         self::$enchants[$enchant->getId()] = $enchant;
 
         self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());

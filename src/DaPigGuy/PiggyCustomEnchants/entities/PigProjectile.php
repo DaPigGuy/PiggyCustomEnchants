@@ -102,7 +102,7 @@ class PigProjectile extends PiggyProjectile
     {
         $pk = new AddActorPacket();
         $pk->type = $this->isZombie() ? EntityIds::ZOMBIE_PIGMAN : EntityIds::PIG;
-        $pk->entityRuntimeId = $this->getId();
+        $pk->actorRuntimeId = $this->getId();
         $pk->position = $this->getPosition();
         $pk->motion = $this->getMotion();
         $pk->metadata = $this->getAllNetworkData();

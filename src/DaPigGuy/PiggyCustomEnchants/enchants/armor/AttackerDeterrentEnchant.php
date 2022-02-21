@@ -30,7 +30,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
     private array $amplifierMultiplier;
 
     /**
-     * @param Effect\[] $effects
+     * @param Effect[] $effects
      * @param int[] $durationMultiplier
      * @param int[] $amplifierMultiplier
      */
