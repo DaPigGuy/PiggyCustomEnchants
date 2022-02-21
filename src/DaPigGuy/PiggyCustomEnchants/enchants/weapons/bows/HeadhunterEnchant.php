@@ -35,7 +35,7 @@ class HeadhunterEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
             if ($event->getChild()->getPosition()->y > $event->getEntity()->getPosition()->y + $event->getEntity()->getEyeHeight()) {
-                $event->setModifier($this->extraData["additionalMultiplier"] * $level, CustomEnchantIds::HEADHUNTER);
+                $event->setModifier($event->getFinalDamage() * $this->extraData["additionalMultiplier"] * $level, CustomEnchantIds::HEADHUNTER);
             }
         }
     }
