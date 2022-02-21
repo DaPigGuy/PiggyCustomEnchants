@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
+use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\Item;
@@ -41,6 +42,7 @@ class TickEnchantmentsTask extends Task
                 }
                 if ($content->getNamedTag()->getTag("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getInventory()->setItem($slot, $this->cleanOldItems($content));
                 foreach ($content->getEnchantments() as $enchantmentInstance) {
+                    /** @var TickingTrait $enchantment */
                     $enchantment = $enchantmentInstance->getType();
                     if ($enchantment instanceof CustomEnchant && $enchantment->canTick()) {
                         if (!in_array($enchantment, $successfulEnchantments, true) || $enchantment->supportsMultipleItems()) {
@@ -61,6 +63,7 @@ class TickEnchantmentsTask extends Task
             foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
                 if ($content->getNamedTag()->getTag("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getArmorInventory()->setItem($slot, $this->cleanOldItems($content));
                 foreach ($content->getEnchantments() as $enchantmentInstance) {
+                    /** @var TickingTrait $enchantment */
                     $enchantment = $enchantmentInstance->getType();
                     if ($enchantment instanceof CustomEnchant && $enchantment->canTick()) {
                         if (!in_array($enchantment, $successfulEnchantments, true) || $enchantment->supportsMultipleItems()) {
