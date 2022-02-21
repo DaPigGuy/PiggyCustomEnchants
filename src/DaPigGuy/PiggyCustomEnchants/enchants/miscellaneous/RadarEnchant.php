@@ -33,7 +33,7 @@ class RadarEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $detected = $this->findNearestPlayer($player, $level * $this->extraData["radiusMultiplier"]);
-        $this->setCompassPosition($player, $detected->getPosition() ?? $player->getWorld()->getSafeSpawn());
+        $this->setCompassPosition($player, $detected?->getPosition() ?? $player->getWorld()->getSafeSpawn());
         if ($item->equalsExact($player->getInventory()->getItemInHand())) {
             if (is_null($detected)) {
                 $player->sendTip(TextFormat::RED . "No players found.");
