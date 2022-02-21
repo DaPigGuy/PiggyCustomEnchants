@@ -94,24 +94,7 @@ class PiggyExplosion extends Explosion
                 if (($t = $this->world->getTileAt((int)$pos->x, (int)$pos->y, (int)$pos->z)) !== null) {
                     $t->onBlockDestroyed(); //needed to create drops for inventories
                 }
-                $this->world->setBlockAt((int)$pos->x, (int)$pos->y, (int)$pos->z, $airBlock, false); //TODO: should updating really be disabled here?
-                $this->world->updateAllLight((int)$pos->x, (int)$pos->y, (int)$pos->z);
-            }
-
-            foreach (Facing::ALL as $side) {
-                $sideBlock = $pos->getSide($side);
-                if (!$this->world->isInWorld((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z)) continue;
-                if (!isset($this->affectedBlocks[$index = World::blockHash((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z)]) and !isset($updateBlocks[$index])) {
-                    $ev = new BlockUpdateEvent($this->world->getBlockAt((int)$sideBlock->x, (int)$sideBlock->y, (int)$sideBlock->z));
-                    $ev->call();
-                    if (!$ev->isCancelled()) {
-                        foreach ($this->world->getNearbyEntities(AxisAlignedBB::one()->offset($sideBlock->x, $sideBlock->y, $sideBlock->z)->expand(1, 1, 1)) as $entity) {
-                            $entity->onNearbyBlockChange();
-                        }
-                        $ev->getBlock()->onNearbyBlockChange();
-                    }
-                    $updateBlocks[$index] = true;
-                }
+                $this->world->setBlockAt((int)$pos->x, (int)$pos->y, (int)$pos->z, $airBlock, false);
             }
         }
         unset(RecursiveEnchant::$isUsing[$this->player->getName()]);
