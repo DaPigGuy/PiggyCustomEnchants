@@ -16,7 +16,7 @@ class PiggyObsidian extends Block
 
     public function __construct()
     {
-        parent::__construct(new BlockIdentifier(BlockLegacyIds::OBSIDIAN, 15), "Magmawalker Obsidian", BlockBreakInfo::instant());
+        parent::__construct(new BlockIdentifier(BlockLegacyIds::GLOWING_OBSIDIAN, 0), "Magmawalker Obsidian", BlockBreakInfo::instant());
     }
 
     public function onScheduledUpdate(): void
