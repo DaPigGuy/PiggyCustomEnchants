@@ -21,10 +21,9 @@ use pocketmine\player\Player;
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
     /**
-     * @var string
      * @phpstan-var class-string<Entity>
      */
-    private $projectileType;
+    private string $projectileType;
 
     public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 

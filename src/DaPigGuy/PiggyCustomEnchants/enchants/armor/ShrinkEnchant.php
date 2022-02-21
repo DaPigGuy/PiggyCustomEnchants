@@ -31,14 +31,17 @@ class ShrinkEnchant extends ToggleableEnchantment
     public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
     public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
-    /** @var array */
-    public $shrunk;
-    /** @var array */
-    public $shrinkPower;
-    /** @var array */
-    public $shiftCache;
+    /** @var Player[] */
+    public array $shrunk;
+    /** @var int[] */
+    public array $shrinkPower;
+    /** @var bool[] */
+    public array $shiftCache;
 
-    public function getReagent(): array
+	/**
+	 * @return class-string[]
+	 */
+	public function getReagent(): array
     {
         return [PlayerToggleSneakEvent::class];
     }

@@ -30,12 +30,12 @@ class GrowEnchant extends ToggleableEnchantment
     public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
     public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
-    /** @var array */
-    public $grew;
-    /** @var array */
-    public $growPower;
-    /** @var array */
-    public $shiftCache;
+    /** @var Player[] */
+    public array $grew;
+    /** @var int[] */
+    public array $growPower;
+    /** @var bool[] */
+    public array $shiftCache;
 
     public function getReagent(): array
     {

@@ -84,6 +84,7 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use pocketmine\data\bedrock\EnchantmentIdMap;
 use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\Rarity;
@@ -97,7 +98,7 @@ class CustomEnchantManager
     private static PiggyCustomEnchants $plugin;
 
     /** @var CustomEnchant[] */
-    public static $enchants = [];
+    public static array $enchants = [];
 
     public static function init(PiggyCustomEnchants $plugin): void
     {
@@ -110,17 +111,9 @@ class CustomEnchantManager
         self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::POISONED, "Poisoned", [VanillaEffects::POISON()], [60], [1], Rarity::UNCOMMON));
         self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::REVULSION, "Revulsion", [VanillaEffects::NAUSEA()], [20], [0], Rarity::UNCOMMON));
 
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::AERIAL, "Aerial", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->isOnGround();
-        }, Rarity::COMMON));
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::BACKSTAB, "Backstab", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0;
-        }, Rarity::COMMON));
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", function (EntityDamageByEntityEvent $event) {
-            /** @var Player $player */
-            $player = $event->getDamager();
-            return $player->isSprinting();
-        }, Rarity::UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::AERIAL, "Aerial", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->isOnGround(), Rarity::UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::BACKSTAB, "Backstab", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0, Rarity::UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", fn(EntityDamageByEntityEvent $event) => ($damager = $event->getDamager()) instanceof Living && $damager->isSprinting(), Rarity::UNCOMMON));
 
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::BLIND, "Blind", Rarity::COMMON, [VanillaEffects::BLINDNESS()], [20], [0], [100]));
         self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::CRIPPLE, "Cripple", Rarity::COMMON, [VanillaEffects::NAUSEA(), VanillaEffects::SLOWNESS()], [100, 100], [0, 1]));
@@ -224,10 +217,7 @@ class CustomEnchantManager
         self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
     }
 
-    /**
-     * @param int|Enchantment $id
-     */
-    public static function unregisterEnchantment($id): void
+    public static function unregisterEnchantment(int|Enchantment $id): void
     {
         $id = $id instanceof Enchantment ? $id->getId() : $id;
         self::$enchants[$id]->unregister();

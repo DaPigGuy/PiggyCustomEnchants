@@ -41,10 +41,9 @@ class TickEnchantmentsTask extends Task
                 }
                 if ($content->getNamedTag()->getTag("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getInventory()->setItem($slot, $this->cleanOldItems($content));
                 foreach ($content->getEnchantments() as $enchantmentInstance) {
-                    /** @var TickingEnchantment $enchantment */
                     $enchantment = $enchantmentInstance->getType();
-                    if ($enchantment instanceof CustomEnchant && $enchantment->canTick()) {
-                        if (!in_array($enchantment, $successfulEnchantments) || $enchantment->supportsMultipleItems()) {
+                    if ($enchantment instanceof TickingEnchantment && $enchantment->canTick()) {
+                        if (!in_array($enchantment, $successfulEnchantments, true) || $enchantment->supportsMultipleItems()) {
                             if ((
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY ||
@@ -62,10 +61,9 @@ class TickEnchantmentsTask extends Task
             foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
                 if ($content->getNamedTag()->getTag("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getArmorInventory()->setItem($slot, $this->cleanOldItems($content));
                 foreach ($content->getEnchantments() as $enchantmentInstance) {
-                    /** @var TickingEnchantment $enchantment */
                     $enchantment = $enchantmentInstance->getType();
-                    if ($enchantment instanceof CustomEnchant && $enchantment->canTick()) {
-                        if (!in_array($enchantment, $successfulEnchantments) || $enchantment->supportsMultipleItems()) {
+                    if ($enchantment instanceof TickingEnchantment && $enchantment->canTick()) {
+                        if (!in_array($enchantment, $successfulEnchantments, true) || $enchantment->supportsMultipleItems()) {
                             if ((
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_ARMOR_INVENTORY ||
@@ -93,7 +91,7 @@ class TickEnchantmentsTask extends Task
             if ($enchantment instanceof CustomEnchant) {
                 $item->setCustomName(str_replace("\n" . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), "", $item->getCustomName()));
                 $lore = $item->getLore();
-                if (($key = array_search(Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), $lore))) {
+                if (($key = array_search(Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), $lore, true)) !== false) {
                     unset($lore[$key]);
                 }
                 $item->setLore($lore);

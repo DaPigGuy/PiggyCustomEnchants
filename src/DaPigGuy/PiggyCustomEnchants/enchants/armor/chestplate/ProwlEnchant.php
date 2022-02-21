@@ -23,8 +23,8 @@ class ProwlEnchant extends ToggleableEnchantment
     public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
     public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
-    /** @var array */
-    public $prowled;
+    /** @var bool[] */
+    public array $prowled;
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {

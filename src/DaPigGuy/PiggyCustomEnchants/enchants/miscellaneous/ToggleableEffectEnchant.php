@@ -23,7 +23,7 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
     private int $amplifierMultiplier;
 
     /** @var EffectInstance[] */
-    private $previousEffect;
+    private array $previousEffect;
 
     public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, Effect $effect, int $baseAmplifier = 0, int $amplifierMultiplier = 1, int $rarity = Rarity::RARE)
     {

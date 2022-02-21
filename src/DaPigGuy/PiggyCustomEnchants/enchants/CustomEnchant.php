@@ -29,6 +29,7 @@ class CustomEnchant extends Enchantment
     public int $usageType = CustomEnchant::TYPE_HAND;
     public int $itemType = CustomEnchant::ITEM_TYPE_WEAPON;
 
+    /** @var int[] */
     public array $cooldown;
 
     const TYPE_HAND = 0;
@@ -61,7 +62,7 @@ class CustomEnchant extends Enchantment
     {
         $this->plugin = $plugin;
         $this->id = $id;
-        $this->rarity = (int)array_flip(Utils::RARITY_NAMES)[ucfirst(strtolower($plugin->getEnchantmentData($this->name, "rarities", Utils::RARITY_NAMES[$this->rarity])))];
+        $this->rarity = array_flip(Utils::RARITY_NAMES)[ucfirst(strtolower($plugin->getEnchantmentData($this->name, "rarities", Utils::RARITY_NAMES[$this->rarity])))];
         $this->maxLevel = (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
         $this->displayName = (string)$plugin->getEnchantmentData($this->name, "display_names", $this->displayName ?? $this->name);
         $this->description = (string)$plugin->getEnchantmentData($this->name, "descriptions", $this->description ?? "");

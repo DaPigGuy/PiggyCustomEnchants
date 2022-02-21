@@ -10,6 +10,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
+use pocketmine\network\mcpe\protocol\types\BlockPosition;
 use pocketmine\network\mcpe\protocol\types\DimensionIds;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -32,7 +33,7 @@ class RadarEnchant extends TickingEnchantment
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
         $detected = $this->findNearestPlayer($player, $level * $this->extraData["radiusMultiplier"]);
-        $this->setCompassPosition($player, $detected->getPosition() ?? $player->getWorld()->getSafeSpawn());
+        $this->setCompassPosition($player, $detected?->getPosition() ?? $player->getWorld()->getSafeSpawn());
         if ($item->equalsExact($player->getInventory()->getItemInHand())) {
             if (is_null($detected)) {
                 $player->sendTip(TextFormat::RED . "No players found.");
@@ -49,12 +50,7 @@ class RadarEnchant extends TickingEnchantment
 
     public function setCompassPosition(Player $player, Position $position): void
     {
-        $pk = new SetSpawnPositionPacket();
-        $pk->x = $pk->x2 = $position->getFloorX();
-        $pk->y = $pk->y2 = $position->getFloorY();
-        $pk->z = $pk->z2 = $position->getFloorZ();
-        $pk->spawnType = SetSpawnPositionPacket::TYPE_WORLD_SPAWN;
-        $pk->dimension = DimensionIds::OVERWORLD;
+        $pk = SetSpawnPositionPacket::worldSpawn(BlockPosition::fromVector3($position->floor()), DimensionIds::OVERWORLD);
         $player->getNetworkSession()->sendDataPacket($pk);
     }
 

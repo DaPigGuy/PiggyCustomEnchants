@@ -30,11 +30,7 @@ class SmeltingEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            $event->setDrops(array_map(function (Item $item) {
-                $recipe = $this->plugin->getServer()->getCraftingManager()->getFurnaceRecipeManager(FurnaceType::FURNACE())->match($item);
-                if ($recipe !== null) $item = $recipe->getResult();
-                return $item;
-            }, $event->getDrops()));
+            $event->setDrops(array_map(fn(Item $item) => $this->plugin->getServer()->getCraftingManager()->getFurnaceRecipeManager(FurnaceType::FURNACE())->match($item)?->getResult() ?? $item, $event->getDrops()));
         }
     }
 

@@ -74,8 +74,8 @@ class Utils
         CustomEnchantIds::PORKIFIED => [CustomEnchantIds::WITHERSKULL]
     ];
 
-    /** @var array */
-    public static $shouldTakeFallDamage;
+    /** @var int[] */
+    public static array $shouldTakeFallDamage;
 
     public static function getRomanNumeral(int $integer): string
     {
@@ -109,22 +109,22 @@ class Utils
 
     public static function isHelmet(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_CAP, ItemIds::CHAIN_HELMET, ItemIds::IRON_HELMET, ItemIds::GOLD_HELMET, ItemIds::DIAMOND_HELMET]);
+        return in_array($item->getId(), [ItemIds::LEATHER_CAP, ItemIds::CHAIN_HELMET, ItemIds::IRON_HELMET, ItemIds::GOLD_HELMET, ItemIds::DIAMOND_HELMET], true);
     }
 
     public static function isChestplate(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_TUNIC, ItemIds::CHAIN_CHESTPLATE, ItemIds::IRON_CHESTPLATE, ItemIds::GOLD_CHESTPLATE, ItemIds::DIAMOND_CHESTPLATE, ItemIds::ELYTRA]);
+        return in_array($item->getId(), [ItemIds::LEATHER_TUNIC, ItemIds::CHAIN_CHESTPLATE, ItemIds::IRON_CHESTPLATE, ItemIds::GOLD_CHESTPLATE, ItemIds::DIAMOND_CHESTPLATE, ItemIds::ELYTRA], true);
     }
 
     public static function isLeggings(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_PANTS, ItemIds::CHAIN_LEGGINGS, ItemIds::IRON_LEGGINGS, ItemIds::GOLD_LEGGINGS, ItemIds::DIAMOND_LEGGINGS]);
+        return in_array($item->getId(), [ItemIds::LEATHER_PANTS, ItemIds::CHAIN_LEGGINGS, ItemIds::IRON_LEGGINGS, ItemIds::GOLD_LEGGINGS, ItemIds::DIAMOND_LEGGINGS], true);
     }
 
     public static function isBoots(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_BOOTS, ItemIds::CHAIN_BOOTS, ItemIds::IRON_BOOTS, ItemIds::GOLD_BOOTS, ItemIds::DIAMOND_BOOTS]);
+        return in_array($item->getId(), [ItemIds::LEATHER_BOOTS, ItemIds::CHAIN_BOOTS, ItemIds::IRON_BOOTS, ItemIds::GOLD_BOOTS, ItemIds::DIAMOND_BOOTS], true);
     }
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
@@ -167,8 +167,8 @@ class Utils
         foreach ($item->getEnchantments() as $enchantment) {
             $otherEnchant = $enchantment->getType();
             if(!$otherEnchant instanceof CustomEnchant) continue;
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()])) return false;
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($otherEnchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()])) return false;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()], true)) return false;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($otherEnchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()], true)) return false;
         }
         return true;
     }
@@ -182,11 +182,11 @@ class Utils
             foreach ($item->getEnchantments() as $enchantmentInstance) {
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant) {
-                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
+                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals", true) === true ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
                 }
             }
             if ($item->getNamedTag()->getTag(Item::TAG_DISPLAY)) $item->getNamedTag()->setTag("OriginalDisplayTag", $item->getNamedTag()->getTag(Item::TAG_DISPLAY)->safeClone());
-            if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position") === "lore") {
+            if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position", "name") === "lore") {
                 $lore = array_merge(explode("\n", $additionalInformation), $item->getLore());
                 array_shift($lore);
                 $item = $item->setLore($lore);
@@ -194,7 +194,7 @@ class Utils
                 $item = $item->setCustomName($additionalInformation);
             }
         }
-        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors())) $item->getNamedTag()->setString("LolGetRekted", "Loser");
+        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors(), true)) $item->getNamedTag()->setString("LolGetRekted", "Loser");
         return TypeConverter::getInstance()->coreItemStackToNet($item);
     }
 
@@ -255,11 +255,7 @@ class Utils
 
     public static function errorForm(Player $player, string $error): void
     {
-        $form = new SimpleForm(function (Player $player, ?int $data) {
-            if (!is_null($data)) {
-                $player->getServer()->dispatchCommand($player, "ce");
-            }
-        });
+        $form = new SimpleForm(fn (Player $player, ?int $data) => !is_null($data) ? $player->getServer()->dispatchCommand($player, "ce") : null);
         $form->setTitle(TextFormat::RED . "Error");
         $form->setContent($error);
         $form->addButton(TextFormat::BOLD . "Back");
@@ -299,6 +295,6 @@ class Utils
 
     public static function isCoolKid(PluginDescription $description): bool
     {
-        return $description->getName() === "PiggyCustomEnchants" && in_array("DaPigGuy", $description->getAuthors());
+        return $description->getName() === "PiggyCustomEnchants" && in_array("DaPigGuy", $description->getAuthors(), true);
     }
 }

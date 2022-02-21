@@ -20,6 +20,9 @@ use pocketmine\utils\TextFormat;
 
 class PigProjectile extends PiggyProjectile
 {
+	/**
+	 * @const array<int, bool, bool, int, string>
+	 */
     const PORK_LEVELS = [
         //level => [damage, dinnerbone, zombie, drop id, drop name]
         1 => [1, false, false, ItemIds::AIR, ""],
@@ -99,7 +102,7 @@ class PigProjectile extends PiggyProjectile
     {
         $pk = new AddActorPacket();
         $pk->type = $this->isZombie() ? EntityIds::ZOMBIE_PIGMAN : EntityIds::PIG;
-        $pk->entityRuntimeId = $this->getId();
+        $pk->actorRuntimeId = $this->getId();
         $pk->position = $this->getPosition();
         $pk->motion = $this->getMotion();
         $pk->metadata = $this->getAllNetworkData();
