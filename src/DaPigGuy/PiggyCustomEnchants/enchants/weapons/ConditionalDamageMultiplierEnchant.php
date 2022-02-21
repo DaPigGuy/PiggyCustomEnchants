@@ -35,7 +35,7 @@ class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByEntityEvent) {
             if (($this->condition)($event)) {
-                $event->setModifier($this->extraData["additionalMultiplier"] * $level, $this->getId());
+                $event->setModifier($event->getFinalDamage() * $this->extraData["additionalMultiplier"] * $level, $this->getId());
             }
         }
     }

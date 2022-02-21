@@ -66,7 +66,7 @@ class InfoSubCommand extends BaseSubCommand
         $infoForm = new SimpleForm(function (Player $player, ?int $data): void {
             if ($data !== null) $this->plugin->getServer()->dispatchCommand($player, "ce");
         });
-        $infoForm->setTitle(TextFormat::GREEN . $enchantment->getName() . " Enchantment");
+        $infoForm->setTitle(TextFormat::GREEN . $enchantment->getDisplayName() . " Enchantment");
         $infoForm->setContent(TextFormat::GREEN . $enchantment->getDisplayName() . TextFormat::EOL . TextFormat::RESET . "ID: " . $enchantment->getId() . TextFormat::EOL . "Description: " . $enchantment->getDescription() . TextFormat::EOL . "Type: " . Utils::TYPE_NAMES[$enchantment->getItemType()] . TextFormat::EOL . "Rarity: " . Utils::RARITY_NAMES[$enchantment->getRarity()] . TextFormat::EOL . "Max Level: " . $enchantment->getMaxLevel());
         $infoForm->addButton("Back");
         $player->sendForm($infoForm);

@@ -22,6 +22,9 @@ use DaPigGuy\PiggyCustomEnchants\tasks\CheckUpdatesTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
 use jojoe77777\FormAPI\Form;
 use pocketmine\block\BlockFactory;
+use pocketmine\color\Color;
+use pocketmine\data\bedrock\EffectIdMap;
+use pocketmine\entity\effect\Effect;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
 use pocketmine\nbt\tag\CompoundTag;
@@ -31,6 +34,8 @@ use pocketmine\world\World;
 
 class PiggyCustomEnchants extends PluginBase
 {
+    public static Effect $SLOW_FALL;
+
     /** @var mixed[] */
     private array $enchantmentData;
 
@@ -60,6 +65,10 @@ class PiggyCustomEnchants extends PluginBase
         CustomEnchantManager::init($this);
 
         BlockFactory::getInstance()->register(new PiggyObsidian(), true);
+
+        //TODO: Use real effect
+        self::$SLOW_FALL = new Effect("%potion.slowFalling", new Color(206, 255, 255));
+        EffectIdMap::getInstance()->register(27, self::$SLOW_FALL);
 
         $entityFactory = EntityFactory::getInstance();
         $entityFactory->register(BombardmentTNT::class, function (World $world, CompoundTag $nbt): BombardmentTNT {

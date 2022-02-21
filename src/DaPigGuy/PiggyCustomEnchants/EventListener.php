@@ -45,8 +45,11 @@ use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
 use pocketmine\network\mcpe\protocol\MobEquipmentPacket;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket;
+use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\network\mcpe\protocol\types\inventory\ItemStackWrapper;
-use pocketmine\network\mcpe\protocol\types\inventory\UseItemTransactionData;
+use pocketmine\network\mcpe\protocol\types\PlayerAction;
+use pocketmine\network\mcpe\protocol\types\PlayerBlockActionWithBlockInfo;
 use pocketmine\player\Player;
 
 class EventListener implements Listener
@@ -76,9 +79,19 @@ class EventListener implements Listener
                 $action->oldItem = new ItemStackWrapper($action->oldItem->getStackId(), Utils::filterDisplayedEnchants($action->oldItem->getItemStack()));
                 $action->newItem = new ItemStackWrapper($action->newItem->getStackId(), Utils::filterDisplayedEnchants($action->newItem->getItemStack()));
             }
-            if ($transaction instanceof UseItemTransactionData) {
-                if ($transaction->getActionType() === UseItemTransactionData::ACTION_BREAK_BLOCK) {
-                    DrillerEnchant::$lastBreakFace[$event->getOrigin()->getPlayer()->getName()] = $transaction->getFace();
+        }
+        if ($packet instanceof PlayerActionPacket) {
+            if ($packet->action === PlayerAction::START_BREAK || $packet->action === PlayerAction::CREATIVE_PLAYER_DESTROY_BLOCK) {
+                DrillerEnchant::$lastBreakFace[$event->getOrigin()->getPlayer()->getName()] = $packet->face;
+            }
+        }
+        if ($packet instanceof PlayerAuthInputPacket) {
+            $blockActions = $packet->getBlockActions();
+            if ($blockActions !== null) {
+                foreach ($blockActions as $blockAction) {
+                    if ($blockAction instanceof PlayerBlockActionWithBlockInfo) {
+                        DrillerEnchant::$lastBreakFace[$event->getOrigin()->getPlayer()->getName()] = $blockAction->getFace();
+                    }
                 }
             }
         }

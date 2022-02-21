@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
+use pocketmine\entity\Attribute;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Location;
@@ -14,15 +15,16 @@ use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
+use pocketmine\network\mcpe\protocol\types\entity\Attribute as NetworkAttribute;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class PigProjectile extends PiggyProjectile
 {
-	/**
-	 * @const array<int, bool, bool, int, string>
-	 */
+    /**
+     * @const array<int, bool, bool, int, string>
+     */
     const PORK_LEVELS = [
         //level => [damage, dinnerbone, zombie, drop id, drop name]
         1 => [1, false, false, ItemIds::AIR, ""],
@@ -100,13 +102,20 @@ class PigProjectile extends PiggyProjectile
 
     protected function sendSpawnPacket(Player $player): void
     {
-        $pk = new AddActorPacket();
-        $pk->type = $this->isZombie() ? EntityIds::ZOMBIE_PIGMAN : EntityIds::PIG;
-        $pk->actorRuntimeId = $this->getId();
-        $pk->position = $this->getPosition();
-        $pk->motion = $this->getMotion();
-        $pk->metadata = $this->getAllNetworkData();
-        $player->getNetworkSession()->sendDataPacket($pk);
+        $player->getNetworkSession()->sendDataPacket(AddActorPacket::create(
+            $this->getId(), $this->getId(),
+            $this->isZombie() ? EntityIds::ZOMBIE_PIGMAN : EntityIds::PIG,
+            $this->getPosition()->asVector3(),
+            $this->getMotion(),
+            $this->location->pitch,
+            $this->location->yaw,
+            $this->location->yaw,
+            array_map(function (Attribute $attr): NetworkAttribute {
+                return new NetworkAttribute($attr->getId(), $attr->getMinValue(), $attr->getMaxValue(), $attr->getValue(), $attr->getDefaultValue());
+            }, $this->attributeMap->getAll()),
+            $this->getAllNetworkData(),
+            []
+        ));
     }
 
     public static function getNetworkTypeId(): string

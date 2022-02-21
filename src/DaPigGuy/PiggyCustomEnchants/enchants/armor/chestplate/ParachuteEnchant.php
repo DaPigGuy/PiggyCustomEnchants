@@ -10,12 +10,10 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
+use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use pocketmine\block\BlockLegacyIds;
-use pocketmine\color\Color;
-use pocketmine\entity\effect\Effect;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\inventory\Inventory;
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
@@ -33,20 +31,18 @@ class ParachuteEnchant extends TickingEnchantment
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        $slowFall = new Effect("%potion.slowFalling", new Color(206, 255, 255));
         if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantManager::getEnchantment(CustomEnchantIds::JETPACK))) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
-            $player->getEffects()->add(new EffectInstance($slowFall, 2147483647, 1, false));
-        } elseif ($player->getEffects()->get($slowFall) !== null) {
-            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1, 0))->getId() !== BlockLegacyIds::AIR) $player->getEffects()->remove($slowFall);
+            $player->getEffects()->add(new EffectInstance(PiggyCustomEnchants::$SLOW_FALL, 2147483647, 1, false));
+        } elseif ($player->getEffects()->get(PiggyCustomEnchants::$SLOW_FALL) !== null) {
+            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1, 0))->getId() !== BlockLegacyIds::AIR) $player->getEffects()->remove(PiggyCustomEnchants::$SLOW_FALL);
         }
         $player->resetFallDistance();
     }
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
-        $slowFall = new Effect("%potion.slowFalling", new Color(206, 255, 255));
-        if (!$toggle && ($effect = $player->getEffects()->get($slowFall)) !== null && $effect->getAmplifier() === -5) {
-            $player->getEffects()->remove($slowFall);
+        if (!$toggle && ($effect = $player->getEffects()->get(PiggyCustomEnchants::$SLOW_FALL)) !== null && $effect->getAmplifier() === -5) {
+            $player->getEffects()->remove(PiggyCustomEnchants::$SLOW_FALL);
         }
     }
 
