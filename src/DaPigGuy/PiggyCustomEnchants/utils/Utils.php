@@ -60,9 +60,9 @@ class Utils
     ];
 
     const RARITY_NAMES = [
-		Rarity::COMMON => "Common",
-		Rarity::UNCOMMON => "Uncommon",
-		Rarity::RARE => "Rare",
+        Rarity::COMMON => "Common",
+        Rarity::UNCOMMON => "Uncommon",
+        Rarity::RARE => "Rare",
         Rarity::MYTHIC => "Mythic"
     ];
 
@@ -166,7 +166,7 @@ class Utils
     {
         foreach ($item->getEnchantments() as $enchantment) {
             $otherEnchant = $enchantment->getType();
-            if(!$otherEnchant instanceof CustomEnchant) continue;
+            if (!$otherEnchant instanceof CustomEnchant) continue;
             if (isset(self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()], true)) return false;
             if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($otherEnchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()], true)) return false;
         }
@@ -255,7 +255,7 @@ class Utils
 
     public static function errorForm(Player $player, string $error): void
     {
-        $form = new SimpleForm(fn (Player $player, ?int $data) => !is_null($data) ? $player->getServer()->dispatchCommand($player, "ce") : null);
+        $form = new SimpleForm(fn(Player $player, ?int $data) => !is_null($data) ? $player->getServer()->dispatchCommand($player, "ce") : null);
         $form->setTitle(TextFormat::RED . "Error");
         $form->setContent($error);
         $form->addButton(TextFormat::BOLD . "Back");
