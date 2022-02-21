@@ -216,9 +216,10 @@ class CustomEnchantManager
 
     public static function registerEnchantment(CustomEnchant $enchant): void
     {
-		EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
+        EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
         self::$enchants[$enchant->getId()] = $enchant;
-		StringToEnchantmentParser::getInstance()->register($enchant->getName(), $enchant);
+        StringToEnchantmentParser::getInstance()->register($enchant->name, $enchant);
+        StringToEnchantmentParser::getInstance()->register($enchant->getDisplayName(), $enchant);
 
         self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
     }
@@ -231,11 +232,11 @@ class CustomEnchantManager
         $id = $id instanceof Enchantment ? $id->getId() : $id;
         self::$enchants[$id]->unregister();
 
-		$property = new ReflectionProperty(StringToTParser::class, "callbackMap");
-		$property->setAccessible(true);
-		$value = $property->getValue(StringToEnchantmentParser::getInstance());
-		unset($value[strtolower(str_replace([" ", "minecraft:"], ["_", ""], trim(self::$enchants[$id]->getName())))]);
-		$property->setValue($value);
+        $property = new ReflectionProperty(StringToTParser::class, "callbackMap");
+        $property->setAccessible(true);
+        $value = $property->getValue(StringToEnchantmentParser::getInstance());
+        unset($value[strtolower(str_replace([" ", "minecraft:"], ["_", ""], trim(self::$enchants[$id]->name)))]);
+        $property->setValue($value);
 
         self::$plugin->getLogger()->debug("Custom Enchantment '" . self::$enchants[$id]->getName() . "' unregistered with id " . self::$enchants[$id]->getId());
         unset(self::$enchants[$id]);
@@ -262,6 +263,6 @@ class CustomEnchantManager
 
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
-        StringToEnchantmentParser::getInstance()->parse($name);
+        return ($enchant = StringToEnchantmentParser::getInstance()->parse($name)) instanceof CustomEnchant ? $enchant : null;
     }
 }
