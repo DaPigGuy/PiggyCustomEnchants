@@ -22,8 +22,8 @@ class DrillerEnchant extends RecursiveEnchant
 
     public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
-    /** @var array */
-    public static $lastBreakFace;
+    /** @var int[] */
+    public static array $lastBreakFace;
 
     public function getReagent(): array
     {

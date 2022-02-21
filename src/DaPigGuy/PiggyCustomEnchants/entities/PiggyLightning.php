@@ -38,7 +38,7 @@ class PiggyLightning extends Entity
                 if (!$ev->isCancelled()) $entity->attack($ev);
             }
         }
-        if ($this->getWorld()->getBlock($this->location)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false)) {
+        if ($this->getWorld()->getBlock($this->location)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false) === true) {
             $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());
         }
         if ($this->age > 20) $this->flagForDespawn();

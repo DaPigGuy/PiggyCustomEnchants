@@ -21,7 +21,7 @@ class DeepWoundsEnchant extends ReactiveEnchantment
     public int $cooldownDuration = 7;
 
     /** @var ClosureTask[] */
-    public static $tasks;
+    public static array $tasks;
 
     public function getDefaultExtraData(): array
     {

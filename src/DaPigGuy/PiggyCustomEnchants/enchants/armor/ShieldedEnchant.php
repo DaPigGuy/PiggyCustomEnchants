@@ -21,7 +21,7 @@ class ShieldedEnchant extends ToggleableEnchantment
     public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     /** @var EffectInstance[] */
-    private $previousEffect;
+    private array $previousEffect;
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {

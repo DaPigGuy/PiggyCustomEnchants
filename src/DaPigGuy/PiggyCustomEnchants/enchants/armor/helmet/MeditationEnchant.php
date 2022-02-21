@@ -28,9 +28,9 @@ class MeditationEnchant extends ReactiveEnchantment
     public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     /** @var Player[] */
-    public $meditating = [];
-    /** @var array */
-    public $meditationTick;
+    public array $meditating = [];
+    /** @var int[] */
+    public array $meditationTick;
 
     public function getReagent(): array
     {

@@ -35,7 +35,7 @@ class SoulboundEnchant extends ReactiveEnchantment
     {
         if ($event instanceof PlayerDeathEvent) {
             $drops = $event->getDrops();
-            unset($drops[array_search($item, $drops)]);
+            unset($drops[array_search($item, $drops, true)]);
             $event->setDrops($drops);
             $level > 1 ? $item->addEnchantment(new EnchantmentInstance(CustomEnchantManager::getEnchantment(CustomEnchantIds::SOULBOUND), $level - 1)) : $item->removeEnchantment(CustomEnchantManager::getEnchantment(CustomEnchantIds::SOULBOUND));
             $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($inventory, $slot, $item): void {

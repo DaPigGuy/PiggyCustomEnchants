@@ -20,6 +20,9 @@ use pocketmine\utils\TextFormat;
 
 class PigProjectile extends PiggyProjectile
 {
+	/**
+	 * @const array<int, bool, bool, int, string>
+	 */
     const PORK_LEVELS = [
         //level => [damage, dinnerbone, zombie, drop id, drop name]
         1 => [1, false, false, ItemIds::AIR, ""],

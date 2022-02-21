@@ -286,7 +286,7 @@ class EventListener implements Listener
      */
     public function onTransaction(InventoryTransactionEvent $event): void
     {
-        if (!$this->plugin->getConfig()->getNested("enchants.books", true)) return;
+        if ($this->plugin->getConfig()->getNested("enchants.books", true) === false) return;
         $transaction = $event->getTransaction();
         $actions = array_values($transaction->getActions());
         if (count($actions) === 2) {

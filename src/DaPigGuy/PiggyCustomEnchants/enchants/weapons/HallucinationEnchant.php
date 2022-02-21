@@ -33,8 +33,8 @@ class HallucinationEnchant extends ReactiveEnchantment
     /** @var NetworkNbtSerializer */
     public $nbtWriter = null;
 
-    /** @var array */
-    public static $hallucinating;
+    /** @var bool[] */
+    public static array $hallucinating;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

@@ -12,6 +12,5 @@ projects:
       - src: Paroxity/Commando/Commando
         version: ^3.0.0
         branch: PM-4.0
-    lint:
-      phpstan: false
+    lint: false
 ...
