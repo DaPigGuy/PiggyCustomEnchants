@@ -19,10 +19,10 @@ trait ToggleTrait
 {
     protected PiggyCustomEnchants $plugin;
 
-    /** @var array */
-    public $stack = [];
-    /** @var array */
-    public $equippedArmorStack;
+    /** @var int[] */
+    public array $stack = [];
+    /** @var int[] */
+    public array $equippedArmorStack = [];
 
     public function canToggle(): bool
     {
