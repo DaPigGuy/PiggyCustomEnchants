@@ -50,8 +50,7 @@ class RadarEnchant extends TickingEnchantment
 
     public function setCompassPosition(Player $player, Position $position): void
     {
-        $pk = SetSpawnPositionPacket::worldSpawn(BlockPosition::fromVector3($position->floor()), DimensionIds::OVERWORLD);
-        $player->getNetworkSession()->sendDataPacket($pk);
+        $player->getNetworkSession()->sendDataPacket(SetSpawnPositionPacket::worldSpawn(BlockPosition::fromVector3($position->floor()), DimensionIds::OVERWORLD));
     }
 
     public function findNearestPlayer(Player $player, int $range): ?Player
