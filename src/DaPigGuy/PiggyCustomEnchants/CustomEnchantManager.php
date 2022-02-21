@@ -88,6 +88,9 @@ use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\Rarity;
+use pocketmine\item\enchantment\StringToEnchantmentParser;
+use pocketmine\player\Player;
+use pocketmine\utils\StringToTParser;
 use ReflectionProperty;
 
 class CustomEnchantManager
@@ -208,15 +211,26 @@ class CustomEnchantManager
     {
         EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
         self::$enchants[$enchant->getId()] = $enchant;
+        StringToEnchantmentParser::getInstance()->register($enchant->name, fn() => $enchant);
+        if ($enchant->name !== $enchant->getDisplayName()) StringToEnchantmentParser::getInstance()->register($enchant->getDisplayName(), fn() => $enchant);
 
-        self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
+        self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getDisplayName() . "' registered with id " . $enchant->getId());
     }
 
-    public static function unregisterEnchantment(int|Enchantment $id): void
+    public static function unregisterEnchantment(int|CustomEnchant $id): void
     {
-        $id = $id instanceof Enchantment ? $id->getId() : $id;
-        self::$enchants[$id]->unregister();
-        self::$plugin->getLogger()->debug("Custom Enchantment '" . self::$enchants[$id]->getName() . "' unregistered with id " . self::$enchants[$id]->getId());
+        $id = $id instanceof CustomEnchant ? $id->getId() : $id;
+        $enchant = self::$enchants[$id];
+        $enchant->unregister();
+
+        $property = new ReflectionProperty(StringToTParser::class, "callbackMap");
+        $property->setAccessible(true);
+        $value = $property->getValue(StringToEnchantmentParser::getInstance());
+        unset($value[strtolower(str_replace([" ", "minecraft:"], ["_", ""], trim($enchant->name)))]);
+        if ($enchant->name !== $enchant->getDisplayName()) unset($value[strtolower(str_replace([" ", "minecraft:"], ["_", ""], trim($enchant->getDisplayName())))]);
+        $property->setValue($value);
+
+        self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getDisplayName() . "' unregistered with id " . $enchant->getId());
         unset(self::$enchants[$id]);
 
         $property = new ReflectionProperty(Enchantment::class, "enchantments");
@@ -241,12 +255,6 @@ class CustomEnchantManager
 
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
-        foreach (self::$enchants as $enchant) {
-            if (
-                strtolower(str_replace(" ", "", $enchant->getName())) === strtolower(str_replace(" ", "", $name)) ||
-                strtolower(str_replace(" ", "", $enchant->getDisplayName())) === strtolower(str_replace(" ", "", $name))
-            ) return $enchant;
-        }
-        return null;
+        return ($enchant = StringToEnchantmentParser::getInstance()->parse($name)) instanceof CustomEnchant ? $enchant : null;
     }
 }
