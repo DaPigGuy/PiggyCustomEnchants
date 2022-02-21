@@ -12,6 +12,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
+use pocketmine\math\Facing;
 use pocketmine\player\Player;
 
 class FertilizerEnchant extends RecursiveEnchant
@@ -42,7 +43,7 @@ class FertilizerEnchant extends RecursiveEnchant
                     for ($z = -$radius; $z <= $radius; $z++) {
                         $newBlock = $block->getPosition()->getWorld()->getBlock($block->getPosition()->add($x, 0, $z));
                         if ($newBlock->getId() === BlockLegacyIds::GRASS || ($newBlock->getId() === BlockLegacyIds::DIRT && $newBlock->getMeta() === 0)) {
-                            $block->getPosition()->getWorld()->useItemOn($newBlock->getPosition(), $item, 0, $newBlock->getPosition(), $player);
+                            $block->getPosition()->getWorld()->useItemOn($newBlock->getPosition(), $item, Facing::UP, $newBlock->getPosition(), $player);
                         }
                     }
                 }
