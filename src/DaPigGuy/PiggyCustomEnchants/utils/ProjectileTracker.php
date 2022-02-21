@@ -29,12 +29,10 @@ class ProjectileTracker
         return self::$projectile[$projectile->getId()];
     }
 
-	/**
-	 * @param Projectile $projectile
-	 *
-	 * @return EnchantmentInstance[]
-	 */
-	public static function getEnchantments(Projectile $projectile): array
+    /**
+     * @return EnchantmentInstance[]
+     */
+    public static function getEnchantments(Projectile $projectile): array
     {
         if (!isset(self::$projectile[$projectile->getId()])) return [];
         $item = self::$projectile[$projectile->getId()];
