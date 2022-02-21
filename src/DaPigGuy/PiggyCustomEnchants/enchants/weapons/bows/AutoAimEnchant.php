@@ -39,7 +39,7 @@ class AutoAimEnchant extends TickingEnchantment
                     $g = 0.006;
                     $tmp = 1 - $g * ($g * ($length * $length) + 2 * $position->y);
                     $pitch = 180 / M_PI * -(atan((1 - sqrt($tmp)) / ($g * $length)));
-                    $player->setRotation($yaw, $pitch);
+                    $player->teleport($player->getPosition(), $yaw, $pitch);
                 }
             }
         }
