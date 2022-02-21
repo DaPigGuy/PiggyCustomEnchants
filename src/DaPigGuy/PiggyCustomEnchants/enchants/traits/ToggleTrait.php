@@ -45,22 +45,24 @@ trait ToggleTrait
     public function addToStack(Player $player, int $level): void
     {
         $this->stack[$player->getName()] = $this->getStack($player) + $level;
-        $this->equippedArmorStack[$player->getName()] = $this->getArmorStack($player) - 1;
+        $this->equippedArmorStack[$player->getName()] = $this->getArmorStack($player) + 1;
     }
 
     public function removeFromStack(Player $player, int $level): void
     {
         if (isset($this->stack[$player->getName()])) $this->stack[$player->getName()] -= $level;
-        if (isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()]--;
+        $this->equippedArmorStack[$player->getName()] = $this->getArmorStack($player) - 1;
     }
 
-    public function getStack(Player $player): int {
-        if(isset($this->stack[$player->getName()])) return $this->stack[$player->getName()];
+    public function getStack(Player $player): int
+    {
+        if (isset($this->stack[$player->getName()])) return $this->stack[$player->getName()];
         return 0;
     }
 
-    public function getArmorStack(Player $player): int {
-        if(isset($this->equippedArmorStack[$player->getName()])) return $this->equippedArmorStack[$player->getName()];
+    public function getArmorStack(Player $player): int
+    {
+        if (isset($this->equippedArmorStack[$player->getName()])) return $this->equippedArmorStack[$player->getName()];
         return 0;
     }
 
