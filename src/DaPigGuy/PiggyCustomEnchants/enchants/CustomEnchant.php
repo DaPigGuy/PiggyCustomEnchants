@@ -138,8 +138,4 @@ class CustomEnchant extends Enchantment
     {
         $this->cooldown[$player->getName()] = time() + $cooldown;
     }
-
-    public function unregister(): void
-    {
-    }
 }

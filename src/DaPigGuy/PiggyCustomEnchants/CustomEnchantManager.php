@@ -89,7 +89,6 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\enchantment\StringToEnchantmentParser;
-use pocketmine\player\Player;
 use pocketmine\utils\StringToTParser;
 use ReflectionProperty;
 
@@ -221,8 +220,7 @@ class CustomEnchantManager
     {
         $id = $id instanceof CustomEnchant ? $id->getId() : $id;
         $enchant = self::$enchants[$id];
-        $enchant->unregister();
-
+        
         $property = new ReflectionProperty(StringToTParser::class, "callbackMap");
         $property->setAccessible(true);
         $value = $property->getValue(StringToEnchantmentParser::getInstance());
