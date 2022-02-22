@@ -12,17 +12,14 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\item\Sword;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class ArmoredEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Armored";
+    public string $name = "Armored";
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

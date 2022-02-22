@@ -7,38 +7,27 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\enchantment\Enchantment;
-use pocketmine\Player;
+use pocketmine\item\enchantment\ItemFlags;
+use pocketmine\item\enchantment\Rarity;
+use pocketmine\player\Player;
 use ReflectionClass;
 
 class CustomEnchant extends Enchantment
 {
-    /** @var PiggyCustomEnchants */
-    protected $plugin;
+    public string $name = "";
+    public int $rarity = Rarity::RARE;
+    public int $maxLevel = 5;
+    private string $displayName;
+    public string $description;
+    public array $extraData;
+    public int $cooldownDuration;
+    public int $chance;
 
-    /** @var string */
-    public $name = "";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_RARE;
-    /** @var int */
-    public $maxLevel = 5;
-    /** @var string */
-    private $displayName;
-    /** @var string */
-    public $description;
-    /** @var array */
-    public $extraData;
-    /** @var int */
-    public $cooldownDuration;
-    /** @var int */
-    public $chance;
+    public int $usageType = CustomEnchant::TYPE_HAND;
+    public int $itemType = CustomEnchant::ITEM_TYPE_WEAPON;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_HAND;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_WEAPON;
-
-    /** @var array */
-    public $cooldown;
+    /** @var int[] */
+    public array $cooldown;
 
     const TYPE_HAND = 0;
     const TYPE_ANY_INVENTORY = 1;
@@ -66,10 +55,9 @@ class CustomEnchant extends Enchantment
     const ITEM_TYPE_BOOTS = 14;
     const ITEM_TYPE_COMPASS = 15;
 
-    public function __construct(PiggyCustomEnchants $plugin, int $id)
+    public function __construct(protected PiggyCustomEnchants $plugin, public int $id)
     {
-        $this->plugin = $plugin;
-        $this->rarity = (int)array_flip(Utils::RARITY_NAMES)[ucfirst(strtolower($plugin->getEnchantmentData($this->name, "rarities", Utils::RARITY_NAMES[$this->rarity])))];
+        $this->rarity = array_flip(Utils::RARITY_NAMES)[ucfirst(strtolower($plugin->getEnchantmentData($this->name, "rarities", Utils::RARITY_NAMES[$this->rarity])))];
         $this->maxLevel = (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
         $this->displayName = (string)$plugin->getEnchantmentData($this->name, "display_names", $this->displayName ?? $this->name);
         $this->description = (string)$plugin->getEnchantmentData($this->name, "descriptions", $this->description ?? "");
@@ -82,8 +70,13 @@ class CustomEnchant extends Enchantment
                 $plugin->setEnchantmentData($this->name, "extra_data", $this->extraData);
             }
         }
-        if (!Utils::isCoolKid($plugin->getDescription())) $id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
-        parent::__construct($id, $this->name, $this->rarity, self::SLOT_ALL, self::SLOT_ALL, $this->maxLevel);
+        if (!Utils::isCoolKid($plugin->getDescription())) $this->id = (int)array_rand(array_flip((new ReflectionClass(CustomEnchantIds::class))->getConstants()));
+        parent::__construct($this->name, $this->rarity, ItemFlags::ALL, ItemFlags::ALL, $this->maxLevel);
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getDisplayName(): string
@@ -144,9 +137,5 @@ class CustomEnchant extends Enchantment
     public function setCooldown(Player $player, int $cooldown): void
     {
         $this->cooldown[$player->getName()] = time() + $cooldown;
-    }
-
-    public function unregister(): void
-    {
     }
 }

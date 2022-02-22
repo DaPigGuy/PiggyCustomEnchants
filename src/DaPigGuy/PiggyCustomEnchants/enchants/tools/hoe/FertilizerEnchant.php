@@ -6,24 +6,22 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
-use pocketmine\block\Block;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\math\Facing;
+use pocketmine\player\Player;
 
 class FertilizerEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Fertilizer";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Fertilizer";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HOE;
 
     public function getReagent(): array
     {
@@ -39,13 +37,13 @@ class FertilizerEnchant extends RecursiveEnchant
     {
         if ($event instanceof PlayerInteractEvent) {
             $block = $event->getBlock();
-            if ($block->getId() === Block::GRASS || ($block->getId() === Block::DIRT && $block->getDamage() === 0)) {
+            if ($block->getId() === BlockLegacyIds::GRASS || ($block->getId() === BlockLegacyIds::DIRT && $block->getMeta() === 0)) {
                 $radius = $level * $this->extraData["radiusMultiplier"];
                 for ($x = -$radius; $x <= $radius; $x++) {
                     for ($z = -$radius; $z <= $radius; $z++) {
-                        $newBlock = $block->getLevel()->getBlock($block->add($x, 0, $z));
-                        if ($newBlock->getId() === Block::GRASS || ($newBlock->getId() === Block::DIRT && $newBlock->getDamage() === 0)) {
-                            $block->getLevel()->useItemOn($newBlock, $item, 0, $newBlock, $player);
+                        $newBlock = $block->getPosition()->getWorld()->getBlock($block->getPosition()->add($x, 0, $z));
+                        if ($newBlock->getId() === BlockLegacyIds::GRASS || ($newBlock->getId() === BlockLegacyIds::DIRT && $newBlock->getMeta() === 0)) {
+                            $block->getPosition()->getWorld()->useItemOn($newBlock->getPosition(), $item, Facing::UP, $newBlock->getPosition(), $player);
                         }
                     }
                 }

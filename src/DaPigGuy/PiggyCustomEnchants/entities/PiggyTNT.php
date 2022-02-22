@@ -5,28 +5,34 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\utils\PiggyExplosion;
+use pocketmine\entity\Location;
 use pocketmine\entity\object\PrimedTNT;
 use pocketmine\event\entity\ExplosionPrimeEvent;
-use pocketmine\level\Position;
-use pocketmine\Player;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\player\Player;
+use pocketmine\world\Position;
 
 class PiggyTNT extends PrimedTNT
 {
-    /** @var bool */
-    public $worldDamage = true;
+    private bool $worldDamage;
+
+    public function __construct(Location $location, ?CompoundTag $nbt = null, bool $worldDamage = false)
+    {
+        parent::__construct($location, $nbt);
+        $this->worldDamage = $worldDamage;
+    }
 
     public function explode(): void
     {
         $ownerEntity = $this->getOwningEntity();
-        if ($ownerEntity === null || !$ownerEntity instanceof Player) {
-            parent::explode();
+        if (!$ownerEntity instanceof Player) {
             return;
         }
         $ev = new ExplosionPrimeEvent($this, 4);
         $ev->setBlockBreaking($this->worldDamage);
         $ev->call();
         if (!$ev->isCancelled()) {
-            $explosion = new PiggyExplosion(Position::fromObject($this->add(0, $this->height / 2, 0), $this->level), $ev->getForce(), $ownerEntity);
+            $explosion = new PiggyExplosion(Position::fromObject($this->location->add(0, $this->size->getHeight() / 2, 0), $this->location->world), $ev->getForce(), $ownerEntity);
             if ($ev->isBlockBreaking()) $explosion->explodeA();
             $explosion->explodeB();
         }

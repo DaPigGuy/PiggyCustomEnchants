@@ -10,17 +10,14 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class TelepathyEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Telepathy";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Telepathy";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {
@@ -46,7 +43,7 @@ class TelepathyEnchant extends ReactiveEnchantment
                 }
                 $drops[$key] = $drop;
             }
-            $player->addXp($event->getXpDropAmount());
+            $player->getXpManager()->addXp($event->getXpDropAmount());
             $event->setDrops($drops);
             $event->setXpDropAmount(0);
         }

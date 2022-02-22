@@ -7,21 +7,19 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\axes;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\block\Block;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class LumberjackEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Lumberjack";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Lumberjack";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_AXE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_AXE;
 
     public function getReagent(): array
     {
@@ -38,7 +36,7 @@ class LumberjackEnchant extends RecursiveEnchant
         if ($event instanceof BlockBreakEvent) {
             $block = $event->getBlock();
             if ($player->isSneaking()) {
-                if ($block->getId() == Block::WOOD || $block->getId() == Block::WOOD2) {
+                if ($block->getId() == BlockLegacyIds::LOG || $block->getId() == BlockLegacyIds::LOG2) {
                     $this->breakTree($block, $player);
                 }
             }
@@ -53,10 +51,10 @@ class LumberjackEnchant extends RecursiveEnchant
                 break;
             }
             $side = $block->getSide($i);
-            if ($side->getId() !== Block::WOOD && $side->getId() !== Block::WOOD2) {
+            if ($side->getId() !== BlockLegacyIds::LOG && $side->getId() !== BlockLegacyIds::LOG2) {
                 continue;
             }
-            $player->getLevel()->useBreakOn($side, $item, $player);
+            $player->getWorld()->useBreakOn($side->getPosition(), $item, $player);
             $mined++;
             $this->breakTree($side, $player, $mined);
         }

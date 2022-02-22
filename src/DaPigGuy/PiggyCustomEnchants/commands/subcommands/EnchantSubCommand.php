@@ -13,8 +13,9 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class EnchantSubCommand extends BaseSubCommand
@@ -38,7 +39,7 @@ class EnchantSubCommand extends BaseSubCommand
             $sender->sendMessage(TextFormat::RED . "Enchantment level must be an integer");
             return;
         }
-        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayer($args["player"]);
+        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayerByPrefix($args["player"]);
         if (!$target instanceof Player) {
             $sender->sendMessage(TextFormat::RED . "Invalid player.");
             return;
@@ -82,7 +83,7 @@ class EnchantSubCommand extends BaseSubCommand
                         Utils::errorForm($player, TextFormat::RED . "Invalid enchantment.");
                         return;
                     }
-                    $target = $this->plugin->getServer()->getPlayer($data[2]);
+                    $target = $this->plugin->getServer()->getPlayerByPrefix($data[2]);
                     if (!$target instanceof Player) {
                         Utils::errorForm($player, TextFormat::RED . "Invalid player.");
                         return;
@@ -97,7 +98,7 @@ class EnchantSubCommand extends BaseSubCommand
                             Utils::errorForm($player, TextFormat::RED . "The max level is " . $enchant->getMaxLevel() . ".");
                             return;
                         }
-                        if (($enchantmentInstance = $item->getEnchantment($enchant->getId())) !== null && $enchantmentInstance->getLevel() > $data[1]) {
+                        if (($enchantmentInstance = $item->getEnchantment($enchant)) !== null && $enchantmentInstance->getLevel() > $data[1]) {
                             Utils::errorForm($player, TextFormat::RED . "The enchant has already been applied with a higher level on the item.");
                             return;
                         }
@@ -110,7 +111,7 @@ class EnchantSubCommand extends BaseSubCommand
                             return;
                         }
                     }
-                    $item->addEnchantment(new EnchantmentInstance($enchant, $data[1]));
+                    $item->addEnchantment(new EnchantmentInstance($enchant, (int)$data[1]));
                     $player->sendMessage(TextFormat::GREEN . "Item successfully enchanted.");
                     $target->getInventory()->setItemInHand($item);
                 }

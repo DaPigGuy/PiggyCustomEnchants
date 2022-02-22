@@ -12,7 +12,7 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class RemoveSubCommand extends BaseSubCommand
@@ -30,7 +30,7 @@ class RemoveSubCommand extends BaseSubCommand
             $sender->sendMessage("Usage: /ce remove <enchantment> <player>");
             return;
         }
-        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayer($args["player"]);
+        $target = empty($args["player"]) ? $sender : $this->plugin->getServer()->getPlayerByPrefix($args["player"]);
         if (!$target instanceof Player) {
             $sender->sendMessage(TextFormat::RED . "Invalid player.");
             return;
@@ -41,12 +41,11 @@ class RemoveSubCommand extends BaseSubCommand
             return;
         }
         $item = $target->getInventory()->getItemInHand();
-        if ($item->getEnchantment($enchant->getId()) === null) {
+        if ($item->getEnchantment($enchant) === null) {
             $sender->sendMessage(TextFormat::RED . "Item does not have specified enchantment.");
             return;
         }
-        $item->removeEnchantment($enchant->getId());
-        if (count($item->getEnchantments()) === 0) $item->removeEnchantments();
+        $item->removeEnchantment($enchant);
         $sender->sendMessage(TextFormat::GREEN . "Enchantment successfully removed.");
         $target->getInventory()->setItemInHand($item);
     }
@@ -61,18 +60,17 @@ class RemoveSubCommand extends BaseSubCommand
                         Utils::errorForm($player, TextFormat::RED . "Invalid enchantment.");
                         return;
                     }
-                    $target = $this->plugin->getServer()->getPlayer($data[1]);
+                    $target = $this->plugin->getServer()->getPlayerByPrefix($data[1]);
                     if (!$target instanceof Player) {
                         Utils::errorForm($player, TextFormat::RED . "Invalid player.");
                         return;
                     }
                     $item = $target->getInventory()->getItemInHand();
-                    if ($item->getEnchantment($enchant->getId()) === null) {
+                    if ($item->getEnchantment($enchant) === null) {
                         $player->sendMessage(TextFormat::RED . "Item does not have specified enchantment.");
                         return;
                     }
-                    $item->removeEnchantment($enchant->getId());
-                    if (count($item->getEnchantments()) === 0) $item->removeEnchantments();
+                    $item->removeEnchantment($enchant);
                     $target->sendMessage(TextFormat::GREEN . "Enchantment successfully removed.");
                     $target->getInventory()->setItemInHand($item);
                 }

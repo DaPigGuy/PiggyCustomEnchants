@@ -8,12 +8,12 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class RecursiveEnchant extends ReactiveEnchantment
 {
-    /** @var array */
-    public static $isUsing;
+    /** @var bool[] */
+    public static array $isUsing;
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {

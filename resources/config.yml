@@ -33,6 +33,3 @@ world-damage:
   lightning: true
   missile: true
   self-destruct: true
-miscellaneous:
-  # Toggles PiggyCE's implementation of the vanilla feature to hold armor to equip
-  armor-hold-equip: true

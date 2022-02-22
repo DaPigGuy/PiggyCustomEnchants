@@ -11,18 +11,15 @@ use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class ShuffleEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Shuffle";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Shuffle";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {

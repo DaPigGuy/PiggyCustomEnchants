@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants;
 
 use CortexPE\Commando\BaseCommand;
-use CortexPE\Commando\exception\HookAlreadyRegistered;
 use CortexPE\Commando\PacketHooker;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
+use DaPigGuy\PiggyCustomEnchants\entities\BombardmentTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
@@ -22,20 +22,23 @@ use DaPigGuy\PiggyCustomEnchants\tasks\CheckUpdatesTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
 use jojoe77777\FormAPI\Form;
 use pocketmine\block\BlockFactory;
-use pocketmine\entity\Entity;
+use pocketmine\color\Color;
+use pocketmine\data\bedrock\EffectIdMap;
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\EntityDataHelper;
+use pocketmine\entity\EntityFactory;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use ReflectionException;
+use pocketmine\world\World;
 
 class PiggyCustomEnchants extends PluginBase
 {
-    /** @var array[] */
-    private $enchantmentData;
+    public static Effect $SLOW_FALL;
 
-    /**
-     * @throws ReflectionException
-     * @throws HookAlreadyRegistered
-     */
+    /** @var mixed[] */
+    private array $enchantmentData;
+
     public function onEnable(): void
     {
         foreach (
@@ -61,11 +64,34 @@ class PiggyCustomEnchants extends PluginBase
 
         CustomEnchantManager::init($this);
 
-        BlockFactory::registerBlock(new PiggyObsidian(), true);
+        BlockFactory::getInstance()->register(new PiggyObsidian(), true);
 
-        foreach ([HomingArrow::class, PigProjectile::class, PiggyFireball::class, PiggyWitherSkull::class, PiggyLightning::class, PiggyTNT::class] as $entityClassName) {
-            Entity::registerEntity($entityClassName, true);
-        }
+        //TODO: Use real effect
+        self::$SLOW_FALL = new Effect("%potion.slowFalling", new Color(206, 255, 255));
+        EffectIdMap::getInstance()->register(27, self::$SLOW_FALL);
+
+        $entityFactory = EntityFactory::getInstance();
+        $entityFactory->register(BombardmentTNT::class, function (World $world, CompoundTag $nbt): BombardmentTNT {
+            return new BombardmentTNT(EntityDataHelper::parseLocation($nbt, $world), $nbt, $nbt->getInt("Level", 1));
+        }, ["BombardmentTNT"]);
+        $entityFactory->register(HomingArrow::class, function (World $world, CompoundTag $nbt): HomingArrow {
+            return new HomingArrow(EntityDataHelper::parseLocation($nbt, $world), null, false, $nbt, $nbt->getInt("Level", 1));
+        }, ["HomingArrow"]);
+        $entityFactory->register(PigProjectile::class, function (World $world, CompoundTag $nbt): PigProjectile {
+            return new PigProjectile(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ["PigProjectile"]);
+        $entityFactory->register(PiggyFireball::class, function (World $world, CompoundTag $nbt): PiggyFireball {
+            return new PiggyFireball(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ["PiggyFireball"]);
+        $entityFactory->register(PiggyLightning::class, function (World $world, CompoundTag $nbt): PiggyLightning {
+            return new PiggyLightning(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ["PiggyLightning"]);
+        $entityFactory->register(PiggyTNT::class, function (World $world, CompoundTag $nbt): PiggyTNT {
+            return new PiggyTNT(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+        }, ["PiggyTNT"]);
+        $entityFactory->register(PiggyWitherSkull::class, function (World $world, CompoundTag $nbt): PiggyWitherSkull {
+            return new PiggyWitherSkull(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ["PiggyWitherSkull"]);
 
         foreach ($this->getConfig()->get("disabled-enchants", []) as $enchant) {
             $e = CustomEnchantManager::getEnchantmentByName($enchant);
@@ -79,7 +105,7 @@ class PiggyCustomEnchants extends PluginBase
         $this->getScheduler()->scheduleRepeatingTask(new TickEnchantmentsTask($this), 1);
 
         $this->getServer()->getAsyncPool()->submitTask(new CheckUpdatesTask());
-        if ($this->getConfig()->get("remote-disable", true)) $this->getServer()->getAsyncPool()->submitTask(new CheckDisabledEnchantsTask());
+        if ($this->getConfig()->get("remote-disable", true) === true) $this->getServer()->getAsyncPool()->submitTask(new CheckDisabledEnchantsTask());
     }
 
     public function onDisable(): void
@@ -99,20 +125,15 @@ class PiggyCustomEnchants extends PluginBase
     }
 
     /**
-     * @param int|string|array $default
-     * @return mixed
      * @internal
      */
-    public function getEnchantmentData(string $enchant, string $data, $default = "")
+    public function getEnchantmentData(string $enchant, string $data, int|string|array $default = ""): mixed
     {
         if (!isset($this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data])) $this->setEnchantmentData($enchant, $data, $default);
         return $this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data];
     }
 
-    /**
-     * @param int|string|array $value
-     */
-    public function setEnchantmentData(string $enchant, string $data, $value): void
+    public function setEnchantmentData(string $enchant, string $data, int|string|array $value): void
     {
         $this->enchantmentData[str_replace(" ", "", strtolower($enchant))][$data] = $value;
         $config = new Config($this->getDataFolder() . $data . ".json");

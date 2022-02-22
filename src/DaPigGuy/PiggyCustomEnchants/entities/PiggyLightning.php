@@ -6,34 +6,25 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
-use pocketmine\block\Block;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Entity;
-use pocketmine\entity\EntityIds;
+use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\Player;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\player\Player;
 
 class PiggyLightning extends Entity
 {
-    const NETWORK_ID = EntityIds::LIGHTNING_BOLT;
-
-    /** @var float */
-    public $width = 0.3;
-    /** @var float */
-    public $length = 0.9;
-    /** @var float */
-    public $height = 1.8;
-
-    /** @var int */
-    protected $age = 0;
+    protected int $age = 0;
 
     public function entityBaseTick(int $tickDiff = 1): bool
     {
         if ($this->closed) return false;
         $this->age += $tickDiff;
-        $world = $this->getLevel();
+        $world = $this->getWorld();
         foreach ($world->getNearbyEntities($this->getBoundingBox()->expandedCopy(4, 3, 4), $this) as $entity) {
             if ($entity instanceof Living && $entity->isAlive() && $this->getOwningEntity() !== $entity) {
                 $owner = $this->getOwningEntity();
@@ -47,10 +38,20 @@ class PiggyLightning extends Entity
                 if (!$ev->isCancelled()) $entity->attack($ev);
             }
         }
-        if ($world->getBlock($this)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false)) {
-            $world->setBlock($this, Block::get(Block::FIRE));
+        if ($this->getWorld()->getBlock($this->location)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false) === true) {
+            $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());
         }
         if ($this->age > 20) $this->flagForDespawn();
         return parent::entityBaseTick($tickDiff);
+    }
+
+    public static function getNetworkTypeId(): string
+    {
+        return EntityIds::LIGHTNING_BOLT;
+    }
+
+    protected function getInitialSizeInfo(): EntitySizeInfo
+    {
+        return new EntitySizeInfo(1.8, 0.3);
     }
 }

@@ -11,7 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class ListSubCommand extends BaseSubCommand
@@ -40,7 +40,7 @@ class ListSubCommand extends BaseSubCommand
         }
         return array_map(function (array $typeEnchants) {
             uasort($typeEnchants, function (CustomEnchant $a, CustomEnchant $b) {
-                return strcmp($a->getName(), $b->getName());
+                return strcmp($a->getDisplayName(), $b->getDisplayName());
             });
             return $typeEnchants;
         }, $enchantmentsByType);
@@ -54,7 +54,7 @@ class ListSubCommand extends BaseSubCommand
             if (isset($enchantmentsByType[$type])) {
                 $listString .= TextFormat::EOL . TextFormat::GREEN . TextFormat::BOLD . Utils::TYPE_NAMES[$type] . TextFormat::EOL . TextFormat::RESET;
                 $listString .= implode(", ", array_map(function (CustomEnchant $enchant) {
-                    return $enchant->getName();
+                    return $enchant->getDisplayName();
                 }, $enchantmentsByType[$type]));
             }
         }
@@ -96,7 +96,7 @@ class ListSubCommand extends BaseSubCommand
                 });
                 /** @var CustomEnchant $selectedEnchantment */
                 $selectedEnchantment = array_values($enchantmentsByType[$type])[$data];
-                $infoForm->setTitle(TextFormat::GREEN . $selectedEnchantment->getName() . " Enchantment");
+                $infoForm->setTitle(TextFormat::GREEN . $selectedEnchantment->getDisplayName() . " Enchantment");
                 $infoForm->setContent(TextFormat::GREEN . $selectedEnchantment->getDisplayName() . TextFormat::EOL . TextFormat::RESET . "ID: " . $selectedEnchantment->getId() . TextFormat::EOL . "Description: " . $selectedEnchantment->getDescription() . TextFormat::EOL . "Type: " . Utils::TYPE_NAMES[$type] . TextFormat::EOL . "Rarity: " . Utils::RARITY_NAMES[$selectedEnchantment->getRarity()] . TextFormat::EOL . "Max Level: " . $selectedEnchantment->getMaxLevel());
                 $infoForm->addButton("Back");
                 $player->sendForm($infoForm);
@@ -104,7 +104,7 @@ class ListSubCommand extends BaseSubCommand
         });
         $enchantForm->setTitle(TextFormat::GREEN . Utils::TYPE_NAMES[$type] . " Enchants");
         foreach ($enchantmentsByType[$type] as $enchantment) {
-            $enchantForm->addButton($enchantment->getName());
+            $enchantForm->addButton($enchantment->getDisplayName());
         }
         $enchantForm->addButton("Back");
         $player->sendForm($enchantForm);

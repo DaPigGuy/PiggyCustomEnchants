@@ -6,25 +6,21 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class BerserkerEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Berserker";
-    /** @var int */
-    public $cooldownDuration = 300;
+    public string $name = "Berserker";
+    public int $cooldownDuration = 300;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getReagent(): array
     {
@@ -40,9 +36,9 @@ class BerserkerEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageEvent) {
             if ($player->getHealth() - $event->getFinalDamage() <= $this->extraData["minimumHealth"]) {
-                if (!$player->hasEffect(Effect::STRENGTH)) {
-                    $effect = new EffectInstance(Effect::getEffect(Effect::STRENGTH), $this->extraData["effectDurationMultiplier"] * $level, $level * $this->extraData["effectAmplifierMultiplier"] + $this->extraData["effectAmplifierBase"], false);
-                    $player->addEffect($effect);
+                if (!$player->getEffects()->has(VanillaEffects::STRENGTH())) {
+                    $effect = new EffectInstance(VanillaEffects::STRENGTH(), $this->extraData["effectDurationMultiplier"] * $level, $level * $this->extraData["effectAmplifierMultiplier"] + $this->extraData["effectAmplifierBase"], false);
+                    $player->getEffects()->add($effect);
                 }
                 $player->sendMessage("Your bloodloss makes your stronger!");
             }

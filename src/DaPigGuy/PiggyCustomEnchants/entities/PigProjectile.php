@@ -4,32 +4,36 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
+use pocketmine\entity\Attribute;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntitySizeInfo;
+use pocketmine\entity\Location;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\item\Item;
-use pocketmine\level\Level;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
-use pocketmine\Player;
+use pocketmine\network\mcpe\protocol\types\entity\Attribute as NetworkAttribute;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class PigProjectile extends PiggyProjectile
 {
+    /**
+     * @const array<int, bool, bool, int, string>
+     */
     const PORK_LEVELS = [
         //level => [damage, dinnerbone, zombie, drop id, drop name]
-        1 => [1, false, false, Item::AIR, ""],
-        2 => [2, false, false, Item::RAW_PORKCHOP, "Mysterious Raw Pork"],
-        3 => [2, false, false, Item::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
-        4 => [3, true, false, Item::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
-        5 => [5, false, true, Item::ROTTEN_FLESH, "Mysterious Rotten Pork"],
-        6 => [6, true, true, Item::ROTTEN_FLESH, "Mysterious Rotten Pork"]
+        1 => [1, false, false, ItemIds::AIR, ""],
+        2 => [2, false, false, ItemIds::RAW_PORKCHOP, "Mysterious Raw Pork"],
+        3 => [2, false, false, ItemIds::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
+        4 => [3, true, false, ItemIds::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
+        5 => [5, false, true, ItemIds::ROTTEN_FLESH, "Mysterious Rotten Pork"],
+        6 => [6, true, true, ItemIds::ROTTEN_FLESH, "Mysterious Rotten Pork"]
     ];
-
-    /** @var float */
-    public $width = 0.9;
-    /** @var float */
-    public $height = 0.9;
 
     /** @var float */
     protected $drag = 0.01;
@@ -38,20 +42,18 @@ class PigProjectile extends PiggyProjectile
 
     /** @var float */
     protected $damage = 1.5;
-    /** @var int */
-    private $porkLevel;
-    /** @var bool */
-    private $zombie;
+    private int $porkLevel;
+    private bool $zombie;
 
-    public function __construct(Level $level, CompoundTag $nbt, Entity $shootingEntity = null, int $porkLevel = 1)
+    public function __construct(Location $location, ?Entity $shootingEntity, ?CompoundTag $nbt = null, int $porkLevel = 1)
     {
-        parent::__construct($level, $nbt, $shootingEntity);
-        if ($porkLevel < 1) $porkLevel = 1;
-        if ($porkLevel > 6) $porkLevel = 6;
-        $values = self::PORK_LEVELS[$porkLevel];
+        parent::__construct($location, $shootingEntity, $nbt);
+        $this->porkLevel = max(1, min($porkLevel, 6));
+        $values = self::PORK_LEVELS[$this->porkLevel];
         $this->damage = $values[0];
-        if ($values[1]) $this->setNameTag("Dinnerbone");
-        $this->porkLevel = $porkLevel;
+        if ($values[1]) {
+            $this->setNameTag("Dinnerbone");
+        }
         $this->zombie = $values[2];
     }
 
@@ -62,19 +64,11 @@ class PigProjectile extends PiggyProjectile
         if (!$this->isCollided) {
             if ($this->getPorkLevel() > 1) {
                 foreach ($this->getDrops() as $drop) {
-                    $motion = new Vector3(lcg_value() * 0.2 - 0.1, 0.2, lcg_value() * 0.2 - 0.1);
-                    $itemTag = $drop->nbtSerialize();
-                    $itemTag->setName("Item");
                     if (!$drop->isNull()) {
-                        $nbt = Entity::createBaseNBT($this, $motion, lcg_value() * 360, 0);
-                        $nbt->setShort("Health", 5);
-                        $nbt->setShort("PickupDelay", 10);
-                        $nbt->setShort("Age", 5700);
-                        $nbt->setTag($itemTag);
-                        $itemEntity = Entity::createEntity("Item", $this->level, $nbt);
-                        if ($itemEntity instanceof ItemEntity) {
-                            $itemEntity->spawnToAll();
-                        }
+                        $itemEntity = new ItemEntity(Location::fromObject($this->getPosition(), $this->getWorld(), lcg_value() * 360, 0), $drop);
+                        $itemEntity->setDespawnDelay(300);
+                        $itemEntity->setMotion(new Vector3(lcg_value() * 0.2 - 0.1, 0.2, lcg_value() * 0.2 - 0.1));
+                        $itemEntity->spawnToAll();
                     }
                 }
             }
@@ -102,18 +96,35 @@ class PigProjectile extends PiggyProjectile
     {
         $values = self::PORK_LEVELS[$this->getPorkLevel()];
         return [
-            Item::get($values[3], 0, 1)->setCustomName(TextFormat::RESET . TextFormat::WHITE . $values[4])
+            ItemFactory::getInstance()->get($values[3], 0, 1)->setCustomName(TextFormat::RESET . TextFormat::WHITE . $values[4])
         ];
     }
 
     protected function sendSpawnPacket(Player $player): void
     {
-        $pk = new AddActorPacket();
-        $pk->type = AddActorPacket::LEGACY_ID_MAP_BC[$this->isZombie() ? Entity::ZOMBIE_PIGMAN : Entity::PIG];
-        $pk->entityRuntimeId = $this->getId();
-        $pk->position = $this->asVector3();
-        $pk->motion = $this->getMotion();
-        $pk->metadata = $this->propertyManager->getAll();
-        $player->sendDataPacket($pk);
+        $player->getNetworkSession()->sendDataPacket(AddActorPacket::create(
+            $this->getId(), $this->getId(),
+            $this->isZombie() ? EntityIds::ZOMBIE_PIGMAN : EntityIds::PIG,
+            $this->getPosition()->asVector3(),
+            $this->getMotion(),
+            $this->location->pitch,
+            $this->location->yaw,
+            $this->location->yaw,
+            array_map(function (Attribute $attr): NetworkAttribute {
+                return new NetworkAttribute($attr->getId(), $attr->getMinValue(), $attr->getMaxValue(), $attr->getValue(), $attr->getDefaultValue());
+            }, $this->attributeMap->getAll()),
+            $this->getAllNetworkData(),
+            []
+        ));
+    }
+
+    public static function getNetworkTypeId(): string
+    {
+        return EntityIds::PIG;
+    }
+
+    protected function getInitialSizeInfo(): EntitySizeInfo
+    {
+        return new EntitySizeInfo(0.9, 0.9);
     }
 }

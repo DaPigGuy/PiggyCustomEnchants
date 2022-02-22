@@ -7,24 +7,19 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\chestplate;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
-use pocketmine\block\Block;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class SpiderEnchant extends ToggleableEnchantment
 {
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Spider";
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Spider";
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+    public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
@@ -39,8 +34,10 @@ class SpiderEnchant extends ToggleableEnchantment
 
     public function canClimb(Player $player): bool
     {
-        /** @var Block $block */
-        foreach (array_merge($player->getLevel()->getBlock($player->add(0, (count($player->getLevel()->getBlock($player)->getCollisionBoxes()) > 0 ? ceil($player->y) - $player->y + 0.01 : 0)))->getHorizontalSides(), $player->getLevel()->getBlock($player->add(0, 1))->getHorizontalSides()) as $block) {
+        foreach ($player->getWorld()->getBlock($player->getPosition()->add(0, (count($player->getWorld()->getBlock($player->getPosition())->getCollisionBoxes()) > 0 ? ceil($player->getPosition()->y) - $player->getPosition()->y + 0.01 : 0), 0))->getHorizontalSides() as $block) {
+            if ($block->isSolid()) return true;
+        }
+        foreach ($player->getWorld()->getBlock($player->getPosition()->add(0, 1, 0))->getHorizontalSides() as $block) {
             if ($block->isSolid()) return true;
         }
         return false;

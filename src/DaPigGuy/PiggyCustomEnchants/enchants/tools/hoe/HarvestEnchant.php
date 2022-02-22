@@ -10,20 +10,17 @@ use pocketmine\block\Crops;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class HarvestEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Harvest";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Harvest";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HOE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HOE;
 
     public function getReagent(): array
     {
@@ -43,8 +40,8 @@ class HarvestEnchant extends RecursiveEnchant
                 $radius = $level * $this->extraData["radiusMultiplier"];
                 for ($x = -$radius; $x <= $radius; $x++) {
                     for ($z = -$radius; $z <= $radius; $z++) {
-                        if ($block->getLevel()->getBlock($block->add($x, 0, $z)) instanceof Crops) {
-                            $block->getLevel()->useBreakOn($block->add($x, 0, $z), $item, $player);
+                        if ($block->getPosition()->getWorld()->getBlock($block->getPosition()->add($x, 0, $z)) instanceof Crops) {
+                            $block->getPosition()->getWorld()->useBreakOn($block->getPosition()->add($x, 0, $z), $item, $player);
                         }
                     }
                 }

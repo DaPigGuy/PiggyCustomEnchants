@@ -7,7 +7,15 @@ namespace DaPigGuy\PiggyCustomEnchants\utils;
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
+use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
+use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
+use InvalidArgumentException;
 use jojoe77777\FormAPI\SimpleForm;
+use pocketmine\entity\Location;
+use pocketmine\entity\projectile\Arrow;
+use pocketmine\entity\projectile\Projectile;
 use pocketmine\item\Armor;
 use pocketmine\item\Axe;
 use pocketmine\item\Bow;
@@ -15,15 +23,18 @@ use pocketmine\item\Compass;
 use pocketmine\item\Durable;
 use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Hoe;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\item\Pickaxe;
 use pocketmine\item\Shears;
 use pocketmine\item\Shovel;
 use pocketmine\item\Sword;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\StringTag;
-use pocketmine\Player;
+use pocketmine\network\mcpe\convert\TypeConverter;
+use pocketmine\network\mcpe\protocol\types\inventory\ItemStack;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginDescription;
 use pocketmine\utils\TextFormat;
 
@@ -49,10 +60,10 @@ class Utils
     ];
 
     const RARITY_NAMES = [
-        CustomEnchant::RARITY_COMMON => "Common",
-        CustomEnchant::RARITY_UNCOMMON => "Uncommon",
-        CustomEnchant::RARITY_RARE => "Rare",
-        CustomEnchant::RARITY_MYTHIC => "Mythic"
+        Rarity::COMMON => "Common",
+        Rarity::UNCOMMON => "Uncommon",
+        Rarity::RARE => "Rare",
+        Rarity::MYTHIC => "Mythic"
     ];
 
     const INCOMPATIBLE_ENCHANTS = [
@@ -63,8 +74,8 @@ class Utils
         CustomEnchantIds::PORKIFIED => [CustomEnchantIds::WITHERSKULL]
     ];
 
-    /** @var array */
-    public static $shouldTakeFallDamage;
+    /** @var int[] */
+    public static array $shouldTakeFallDamage;
 
     public static function getRomanNumeral(int $integer): string
     {
@@ -98,86 +109,84 @@ class Utils
 
     public static function isHelmet(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_CAP, Item::CHAIN_HELMET, Item::IRON_HELMET, Item::GOLD_HELMET, Item::DIAMOND_HELMET]);
+        return in_array($item->getId(), [ItemIds::LEATHER_CAP, ItemIds::CHAIN_HELMET, ItemIds::IRON_HELMET, ItemIds::GOLD_HELMET, ItemIds::DIAMOND_HELMET], true);
     }
 
     public static function isChestplate(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_TUNIC, Item::CHAIN_CHESTPLATE, Item::IRON_CHESTPLATE, Item::GOLD_CHESTPLATE, Item::DIAMOND_CHESTPLATE, Item::ELYTRA]);
+        return in_array($item->getId(), [ItemIds::LEATHER_TUNIC, ItemIds::CHAIN_CHESTPLATE, ItemIds::IRON_CHESTPLATE, ItemIds::GOLD_CHESTPLATE, ItemIds::DIAMOND_CHESTPLATE, ItemIds::ELYTRA], true);
     }
 
     public static function isLeggings(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_PANTS, Item::CHAIN_LEGGINGS, Item::IRON_LEGGINGS, Item::GOLD_LEGGINGS, Item::DIAMOND_LEGGINGS]);
+        return in_array($item->getId(), [ItemIds::LEATHER_PANTS, ItemIds::CHAIN_LEGGINGS, ItemIds::IRON_LEGGINGS, ItemIds::GOLD_LEGGINGS, ItemIds::DIAMOND_LEGGINGS], true);
     }
 
     public static function isBoots(Item $item): bool
     {
-        return in_array($item->getId(), [Item::LEATHER_BOOTS, Item::CHAIN_BOOTS, Item::IRON_BOOTS, Item::GOLD_BOOTS, Item::DIAMOND_BOOTS]);
+        return in_array($item->getId(), [ItemIds::LEATHER_BOOTS, ItemIds::CHAIN_BOOTS, ItemIds::IRON_BOOTS, ItemIds::GOLD_BOOTS, ItemIds::DIAMOND_BOOTS], true);
     }
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
-        if ($item->getId() === Item::BOOK || $item->getId() === Item::ENCHANTED_BOOK) return true;
-        switch ($itemType) {
-            case CustomEnchant::ITEM_TYPE_GLOBAL:
-                return true;
-            case CustomEnchant::ITEM_TYPE_DAMAGEABLE:
-                return $item instanceof Durable;
-            case CustomEnchant::ITEM_TYPE_WEAPON:
-                return $item instanceof Sword || $item instanceof Axe || $item instanceof Bow;
-            case CustomEnchant::ITEM_TYPE_SWORD:
-                return $item instanceof Sword;
-            case CustomEnchant::ITEM_TYPE_BOW:
-                return $item instanceof Bow;
-            case CustomEnchant::ITEM_TYPE_TOOLS:
-                return $item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Hoe || $item instanceof Shears;
-            case CustomEnchant::ITEM_TYPE_PICKAXE:
-                return $item instanceof Pickaxe;
-            case CustomEnchant::ITEM_TYPE_AXE:
-                return $item instanceof Axe;
-            case CustomEnchant::ITEM_TYPE_SHOVEL:
-                return $item instanceof Shovel;
-            case CustomEnchant::ITEM_TYPE_HOE:
-                return $item instanceof Hoe;
-            case CustomEnchant::ITEM_TYPE_ARMOR:
-                return $item instanceof Armor || $item->getId() === Item::ELYTRA;
-            case CustomEnchant::ITEM_TYPE_HELMET:
-                return self::isHelmet($item);
-            case CustomEnchant::ITEM_TYPE_CHESTPLATE:
-                return self::isChestplate($item);
-            case CustomEnchant::ITEM_TYPE_LEGGINGS:
-                return self::isLeggings($item);
-            case CustomEnchant::ITEM_TYPE_BOOTS:
-                return self::isBoots($item);
-            case CustomEnchant::ITEM_TYPE_COMPASS:
-                return $item instanceof Compass;
-        }
-        return false;
+        if ($item->getId() === ItemIds::BOOK || $item->getId() === ItemIds::ENCHANTED_BOOK) return true;
+        return match ($itemType) {
+            CustomEnchant::ITEM_TYPE_GLOBAL => true,
+            CustomEnchant::ITEM_TYPE_DAMAGEABLE => $item instanceof Durable,
+            CustomEnchant::ITEM_TYPE_WEAPON => $item instanceof Sword || $item instanceof Axe || $item instanceof Bow,
+            CustomEnchant::ITEM_TYPE_SWORD => $item instanceof Sword,
+            CustomEnchant::ITEM_TYPE_BOW => $item instanceof Bow,
+            CustomEnchant::ITEM_TYPE_TOOLS => $item instanceof Pickaxe || $item instanceof Axe || $item instanceof Shovel || $item instanceof Hoe || $item instanceof Shears,
+            CustomEnchant::ITEM_TYPE_PICKAXE => $item instanceof Pickaxe,
+            CustomEnchant::ITEM_TYPE_AXE => $item instanceof Axe,
+            CustomEnchant::ITEM_TYPE_SHOVEL => $item instanceof Shovel,
+            CustomEnchant::ITEM_TYPE_HOE => $item instanceof Hoe,
+            CustomEnchant::ITEM_TYPE_ARMOR => $item instanceof Armor || $item->getId() === ItemIds::ELYTRA,
+            CustomEnchant::ITEM_TYPE_HELMET => self::isHelmet($item),
+            CustomEnchant::ITEM_TYPE_CHESTPLATE => self::isChestplate($item),
+            CustomEnchant::ITEM_TYPE_LEGGINGS => self::isLeggings($item),
+            CustomEnchant::ITEM_TYPE_BOOTS => self::isBoots($item),
+            CustomEnchant::ITEM_TYPE_COMPASS => $item instanceof Compass,
+            default => false,
+        };
+    }
+
+    public static function createNewProjectile(string $className, Location $location, Player $shooter, Projectile $previousProjectile, int $level = 1): Projectile
+    {
+        return match ($className) {
+            Arrow::class => new Arrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null),
+            HomingArrow::class => new HomingArrow($location, $shooter, $previousProjectile instanceof Arrow ? $previousProjectile->isCritical() : false, null, $previousProjectile instanceof HomingArrow ? $previousProjectile->getEnchantmentLevel() : $level),
+            PiggyFireball::class, PiggyWitherSkull::class => new $className($location, $shooter, null),
+            PigProjectile::class => new PigProjectile($location, $shooter, null, $previousProjectile instanceof PigProjectile ? $previousProjectile->getPorkLevel() : $level),
+            default => throw new InvalidArgumentException("Entity $className not found"),
+        };
     }
 
     public static function checkEnchantIncompatibilities(Item $item, CustomEnchant $enchant): bool
     {
         foreach ($item->getEnchantments() as $enchantment) {
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchantment->getId()])) return false;
-            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($enchantment->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()])) return false;
+            $otherEnchant = $enchantment->getType();
+            if (!$otherEnchant instanceof CustomEnchant) continue;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()]) && in_array($enchant->getId(), self::INCOMPATIBLE_ENCHANTS[$otherEnchant->getId()], true)) return false;
+            if (isset(self::INCOMPATIBLE_ENCHANTS[$enchant->getId()]) && in_array($otherEnchant->getId(), self::INCOMPATIBLE_ENCHANTS[$enchant->getId()], true)) return false;
         }
         return true;
     }
 
-    public static function displayEnchants(Item $item): Item
+    public static function displayEnchants(ItemStack $itemStack): ItemStack
     {
         $plugin = CustomEnchantManager::getPlugin();
+        $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
         if (count($item->getEnchantments()) > 0) {
             $additionalInformation = $plugin->getConfig()->getNested("enchants.position") === "name" ? TextFormat::RESET . TextFormat::WHITE . $item->getName() : "";
             foreach ($item->getEnchantments() as $enchantmentInstance) {
                 $enchantment = $enchantmentInstance->getType();
                 if ($enchantment instanceof CustomEnchant) {
-                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals") ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
+                    $additionalInformation .= "\n" . TextFormat::RESET . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getDisplayName() . " " . ($plugin->getConfig()->getNested("enchants.roman-numerals", true) === true ? Utils::getRomanNumeral($enchantmentInstance->getLevel()) : $enchantmentInstance->getLevel());
                 }
             }
-            if ($item->getNamedTagEntry(Item::TAG_DISPLAY) instanceof CompoundTag) $item->setNamedTagEntry(new CompoundTag("OriginalDisplayTag", $item->getNamedTagEntry(Item::TAG_DISPLAY)->getValue()));
-            if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position") === "lore") {
+            if ($item->getNamedTag()->getTag(Item::TAG_DISPLAY)) $item->getNamedTag()->setTag("OriginalDisplayTag", $item->getNamedTag()->getTag(Item::TAG_DISPLAY)->safeClone());
+            if (CustomEnchantManager::getPlugin()->getConfig()->getNested("enchants.position", "name") === "lore") {
                 $lore = array_merge(explode("\n", $additionalInformation), $item->getLore());
                 array_shift($lore);
                 $item = $item->setLore($lore);
@@ -185,18 +194,21 @@ class Utils
                 $item = $item->setCustomName($additionalInformation);
             }
         }
-        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors())) $item->setNamedTagEntry(new StringTag("LolGetRekted", "Loser"));
-        return $item;
+        if (CustomEnchantManager::getPlugin()->getDescription()->getName() !== "PiggyCustomEnchants" || !in_array("DaPigGuy", CustomEnchantManager::getPlugin()->getDescription()->getAuthors(), true)) $item->getNamedTag()->setString("LolGetRekted", "Loser");
+        return TypeConverter::getInstance()->coreItemStackToNet($item);
     }
 
-    public static function filterDisplayedEnchants(Item $item): Item
+    public static function filterDisplayedEnchants(ItemStack $itemStack): ItemStack
     {
-        if (count($item->getEnchantments()) > 0) $item->removeNamedTagEntry(Item::TAG_DISPLAY);
-        if ($item->getNamedTagEntry("OriginalDisplayTag") instanceof CompoundTag) {
-            $item->setNamedTagEntry(new CompoundTag(Item::TAG_DISPLAY, $item->getNamedTagEntry("OriginalDisplayTag")->getValue()));
-            $item->removeNamedTagEntry("OriginalDisplayTag");
+        $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
+        $tag = $item->getNamedTag();
+        if (count($item->getEnchantments()) > 0) $tag->removeTag(Item::TAG_DISPLAY);
+        if ($tag->getTag("OriginalDisplayTag") instanceof CompoundTag) {
+            $tag->setTag(Item::TAG_DISPLAY, $tag->getTag("OriginalDisplayTag"));
+            $tag->removeTag("OriginalDisplayTag");
         }
-        return $item;
+        $item->setNamedTag($tag);
+        return TypeConverter::getInstance()->coreItemStackToNet($item);
     }
 
     /**
@@ -243,12 +255,7 @@ class Utils
 
     public static function errorForm(Player $player, string $error): void
     {
-        $form = new SimpleForm(function (Player $player, ?int $data) {
-            if (!is_null($data)) {
-                $player->getServer()->dispatchCommand($player, "ce");
-                return;
-            }
-        });
+        $form = new SimpleForm(fn(Player $player, ?int $data) => !is_null($data) ? $player->getServer()->dispatchCommand($player, "ce") : null);
         $form->setTitle(TextFormat::RED . "Error");
         $form->setContent($error);
         $form->addButton(TextFormat::BOLD . "Back");
@@ -280,7 +287,7 @@ class Utils
     {
         return ((!$enchant instanceof CustomEnchant || self::itemMatchesItemType($item, $enchant->getItemType())) &&
             $level <= $enchant->getMaxLevel() &&
-            (($enchantmentInstance = $item->getEnchantment($enchant->getId())) === null || $enchantmentInstance->getLevel() < $level) &&
+            (($enchantmentInstance = $item->getEnchantment($enchant)) === null || $enchantmentInstance->getLevel() < $level) &&
             $item->getCount() === 1 &&
             (!$enchant instanceof CustomEnchant || self::checkEnchantIncompatibilities($item, $enchant))
         );
@@ -288,6 +295,6 @@ class Utils
 
     public static function isCoolKid(PluginDescription $description): bool
     {
-        return $description->getName() === "PiggyCustomEnchants" && in_array("DaPigGuy", $description->getAuthors());
+        return $description->getName() === "PiggyCustomEnchants" && in_array("DaPigGuy", $description->getAuthors(), true);
     }
 }

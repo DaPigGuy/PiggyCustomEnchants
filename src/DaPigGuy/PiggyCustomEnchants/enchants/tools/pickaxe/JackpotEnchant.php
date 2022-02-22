@@ -6,29 +6,29 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\pickaxe;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\item\VanillaItems;
+use pocketmine\player\Player;
 
 class JackpotEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Jackpot";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
+    public string $name = "Jackpot";
+    public int $rarity = Rarity::MYTHIC;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;
 
     const ORE_TIERS = [
-        Block::COAL_ORE,
-        Block::IRON_ORE,
-        Block::GOLD_ORE,
-        Block::DIAMOND_ORE,
-        Block::EMERALD_ORE
+        BlockLegacyIds::COAL_ORE,
+        BlockLegacyIds::IRON_ORE,
+        BlockLegacyIds::GOLD_ORE,
+        BlockLegacyIds::DIAMOND_ORE,
+        BlockLegacyIds::EMERALD_ORE
     ];
 
     public function getReagent(): array
@@ -39,17 +39,16 @@ class JackpotEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            /** @var int $key */
-            $key = array_search($event->getBlock()->getId(), self::ORE_TIERS);
+            $key = array_search($event->getBlock()->getId(), self::ORE_TIERS, true);
             if ($key !== false) {
                 if (isset(self::ORE_TIERS[$key + 1])) {
                     $drops = $event->getDrops();
                     foreach ($drops as $k => $drop) {
-                        if (in_array($drop, $event->getBlock()->getDrops($item))) {
+                        if (in_array($drop, $event->getBlock()->getDrops($item), true)) {
                             unset($drops[$k]);
                         }
                     }
-                    $drops = array_merge($drops, Block::get(self::ORE_TIERS[$key + 1])->getDrops(Item::get(Item::DIAMOND_PICKAXE)));
+                    $drops = array_merge($drops, BlockFactory::getInstance()->get(self::ORE_TIERS[$key + 1], 0)->getDrops(VanillaItems::DIAMOND_PICKAXE()));
                     $event->setDrops($drops);
                 }
             }

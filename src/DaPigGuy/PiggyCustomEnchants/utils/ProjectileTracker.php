@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\utils;
 
 use pocketmine\entity\projectile\Projectile;
+use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
 
 class ProjectileTracker
 {
     /** @var Item[] */
-    public static $projectile = [];
+    public static array $projectile = [];
 
-    /**
-     * @param Projectile $projectile
-     * @param Item $item
-     */
     public static function addProjectile(Projectile $projectile, Item $item): void
     {
         self::$projectile[$projectile->getId()] = $item;
@@ -32,6 +29,9 @@ class ProjectileTracker
         return self::$projectile[$projectile->getId()];
     }
 
+    /**
+     * @return EnchantmentInstance[]
+     */
     public static function getEnchantments(Projectile $projectile): array
     {
         if (!isset(self::$projectile[$projectile->getId()])) return [];

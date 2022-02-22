@@ -10,12 +10,11 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class DeathbringerEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Deathbringer";
+    public string $name = "Deathbringer";
 
     public function getDefaultExtraData(): array
     {

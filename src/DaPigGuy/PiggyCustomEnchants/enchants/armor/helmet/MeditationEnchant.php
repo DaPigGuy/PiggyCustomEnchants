@@ -11,30 +11,26 @@ use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class MeditationEnchant extends ReactiveEnchantment
 {
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Meditation";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 2;
+    public string $name = "Meditation";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel = 2;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_HELMET;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_HELMET;
+    public int $usageType = CustomEnchant::TYPE_HELMET;
+    public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     /** @var Player[] */
-    public $meditating = [];
-    /** @var array */
-    public $meditationTick;
+    public array $meditating = [];
+    /** @var int[] */
+    public array $meditationTick;
 
     public function getReagent(): array
     {
@@ -64,7 +60,7 @@ class MeditationEnchant extends ReactiveEnchantment
                 $this->meditationTick[$player->getName()] = 0;
                 $event = new EntityRegainHealthEvent($player, $level * $this->extraData["healthReplenishAmountMultiplier"], EntityRegainHealthEvent::CAUSE_MAGIC);
                 if (!$event->isCancelled()) $player->heal($event);
-                $player->setFood($player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"] > $player->getMaxFood() ? $player->getMaxFood() : $player->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"]);
+                $player->getHungerManager()->setFood($player->getHungerManager()->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"] > $player->getHungerManager()->getMaxFood() ? $player->getHungerManager()->getMaxFood() : $player->getHungerManager()->getFood() + $level * $this->extraData["foodReplenishAmountMultiplier"]);
             }
         }
     }

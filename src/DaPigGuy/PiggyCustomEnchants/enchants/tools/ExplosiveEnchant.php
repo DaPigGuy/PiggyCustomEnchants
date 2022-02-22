@@ -10,18 +10,16 @@ use DaPigGuy\PiggyCustomEnchants\utils\PiggyExplosion;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class ExplosiveEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Explosive";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Explosive";
+    public int $rarity = Rarity::UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
     public function getReagent(): array
     {
@@ -36,7 +34,7 @@ class ExplosiveEnchant extends RecursiveEnchant
     public function safeReact(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            $explosion = new PiggyExplosion($event->getBlock(), $level * $this->extraData["sizeMultiplier"], $player);
+            $explosion = new PiggyExplosion($event->getBlock()->getPosition(), $level * $this->extraData["sizeMultiplier"], $player);
             $explosion->explodeA();
             $explosion->explodeB();
         }

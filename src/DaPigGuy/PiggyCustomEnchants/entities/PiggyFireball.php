@@ -6,28 +6,22 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 
 use DaPigGuy\PiggyCustomEnchants\utils\AllyChecks;
 use pocketmine\block\Block;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\entity\Entity;
+use pocketmine\entity\EntitySizeInfo;
 use pocketmine\event\entity\EntityCombustByEntityEvent;
 use pocketmine\math\RayTraceResult;
-use pocketmine\Player;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\player\Player;
 
 class PiggyFireball extends PiggyProjectile
 {
-    const NETWORK_ID = Entity::SMALL_FIREBALL;
-
-    /** @var float */
-    public $width = 0.5;
-    /** @var float */
-    public $length = 0.5;
-    /** @var float */
-    public $height = 0.5;
-
     /** @var float */
     protected $drag = 0.01;
     /** @var float */
     protected $gravity = 0.05;
 
-    /** @var int */
+    /** @var float */
     protected $damage = 5;
 
     public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void
@@ -43,7 +37,17 @@ class PiggyFireball extends PiggyProjectile
 
     public function onHitBlock(Block $blockHit, RayTraceResult $hitResult): void
     {
-        $this->getLevel()->setBlock($this, Block::get(Block::FIRE));
+        $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());
         parent::onHitBlock($blockHit, $hitResult);
+    }
+
+    public static function getNetworkTypeId(): string
+    {
+        return EntityIds::SMALL_FIREBALL;
+    }
+
+    protected function getInitialSizeInfo(): EntitySizeInfo
+    {
+        return new EntitySizeInfo(0.5, 0.5);
     }
 }

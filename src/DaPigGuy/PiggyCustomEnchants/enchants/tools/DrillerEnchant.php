@@ -6,25 +6,24 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
-use DaPigGuy\PiggyCustomEnchants\utils\Facing;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\math\Axis;
+use pocketmine\math\Facing;
+use pocketmine\player\Player;
 
 class DrillerEnchant extends RecursiveEnchant
 {
-    /** @var string */
-    public $name = "Driller";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Driller";
+    public int $rarity = Rarity::UNCOMMON;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_TOOLS;
 
-    /** @var array */
-    public static $lastBreakFace;
+    /** @var int[] */
+    public static array $lastBreakFace = [];
 
     public function getReagent(): array
     {
@@ -42,8 +41,8 @@ class DrillerEnchant extends RecursiveEnchant
             $breakFace = self::$lastBreakFace[$player->getName()];
             for ($i = 0; $i <= $level * $this->extraData["distanceMultiplier"]; $i++) {
                 $block = $event->getBlock()->getSide(Facing::opposite($breakFace), $i);
-                $faceLeft = Facing::rotate($breakFace, Facing::axis($breakFace) !== Facing::AXIS_Y ? Facing::AXIS_Y : Facing::AXIS_X, true);
-                $faceUp = Facing::rotate($breakFace, Facing::axis($breakFace) !== Facing::AXIS_Z ? Facing::AXIS_Z : Facing::AXIS_X, true);
+                $faceLeft = Facing::rotate($breakFace, Facing::axis($breakFace) !== Axis::Y ? Axis::Y : Axis::X, true);
+                $faceUp = Facing::rotate($breakFace, Facing::axis($breakFace) !== Axis::Z ? Axis::Z : Axis::X, true);
                 foreach ([
                              $block->getSide($faceLeft), //Center Left
                              $block->getSide(Facing::opposite($faceLeft)), //Center Right
@@ -54,10 +53,10 @@ class DrillerEnchant extends RecursiveEnchant
                              $block->getSide(Facing::opposite($faceUp))->getSide($faceLeft), //Bottom Left
                              $block->getSide(Facing::opposite($faceUp))->getSide(Facing::opposite($faceLeft)) //Bottom Right
                          ] as $b) {
-                    $player->getLevel()->useBreakOn($b, $item, $player, true);
+                    $player->getWorld()->useBreakOn($b->getPosition(), $item, $player, true);
                 }
-                if (!$block->equals($event->getBlock())) {
-                    $player->getLevel()->useBreakOn($block, $item, $player, true);
+                if (!$block->getPosition()->equals($event->getBlock()->getPosition())) {
+                    $player->getWorld()->useBreakOn($block->getPosition(), $item, $player, true);
                 }
             }
         }

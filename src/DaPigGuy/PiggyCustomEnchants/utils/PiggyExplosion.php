@@ -6,26 +6,25 @@ namespace DaPigGuy\PiggyCustomEnchants\utils;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\block\TNT;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockUpdateEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
-use pocketmine\level\Explosion;
-use pocketmine\level\particle\HugeExplodeSeedParticle;
-use pocketmine\level\Position;
 use pocketmine\math\AxisAlignedBB;
+use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\Player;
-use pocketmine\tile\Chest;
-use pocketmine\tile\Container;
-use pocketmine\tile\Tile;
+use pocketmine\player\Player;
+use pocketmine\world\Explosion;
+use pocketmine\world\particle\HugeExplodeSeedParticle;
+use pocketmine\world\Position;
+use pocketmine\world\sound\ExplodeSound;
+use pocketmine\world\World;
 
 class PiggyExplosion extends Explosion
 {
-    /** @var Player */
-    protected $player;
+    protected Player $player;
 
     public function __construct(Position $center, float $size, Player $what)
     {
@@ -35,11 +34,12 @@ class PiggyExplosion extends Explosion
 
     public function explodeB(): bool
     {
-        $send = [];
         $updateBlocks = [];
-        $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
 
-        $ev = new EntityExplodeEvent($this->player, $this->source, $this->affectedBlocks, (1 / $this->size) * 100);
+        $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
+        $yield = (1 / $this->size) * 100;
+
+        $ev = new EntityExplodeEvent($this->player, $this->source, $this->affectedBlocks, $yield);
         $ev->call();
         if ($ev->isCancelled()) {
             return false;
@@ -56,12 +56,15 @@ class PiggyExplosion extends Explosion
         $maxZ = (int)ceil($this->source->z + $explosionSize + 1);
 
         $explosionBB = new AxisAlignedBB($minX, $minY, $minZ, $maxX, $maxY, $maxZ);
-        $list = $this->level->getNearbyEntities($explosionBB, $this->player);
+
+        $list = $this->world->getNearbyEntities($explosionBB, $this->player);
         foreach ($list as $entity) {
-            $distance = $entity->distance($this->source) / $explosionSize;
+            $entityPos = $entity->getPosition();
+            $distance = $entityPos->distance($this->source) / $explosionSize;
+
             if ($distance <= 1) {
-                $motion = $entity->subtract($this->source)->normalize();
-                $impact = (1 - $distance) * ($exposure = 1);
+                $motion = $entityPos->subtractVector($this->source)->normalize();
+                $impact = (1 - $distance);
                 $damage = (int)((($impact * $impact + $impact) / 2) * 8 * $explosionSize + 1);
 
                 $ev = new EntityDamageByEntityEvent($this->player, $entity, EntityDamageEvent::CAUSE_ENTITY_EXPLOSION, $damage);
@@ -70,57 +73,34 @@ class PiggyExplosion extends Explosion
             }
         }
 
+        $airBlock = VanillaBlocks::AIR();
+
         $item = $this->player->getInventory()->getItemInHand();
         RecursiveEnchant::$isUsing[$this->player->getName()] = true;
         foreach ($this->affectedBlocks as $key => $block) {
-            $drops = $this->player->isCreative() || $block->equals($source) ? [] : $block->getDrops($item);
-            $tile = $this->level->getTileAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ());
-            if ($tile instanceof Container) $drops = array_merge($drops, $tile->getInventory()->getContents());
-
-            $ev = new BlockBreakEvent($this->player, $block, $item, true, $drops);
+            $ev = new BlockBreakEvent($this->player, $block, $item, true, $block->getDrops($item));
             $ev->call();
             if ($ev->isCancelled()) {
                 unset($this->affectedBlocks[$key]);
                 continue;
             }
-
-            if ($tile instanceof Tile) {
-                if ($tile instanceof Chest) $tile->unpair();
-                $tile->close();
-            }
-
+            $pos = $block->getPosition();
             if ($block instanceof TNT) {
                 $block->ignite(mt_rand(10, 30));
             } else {
                 foreach ($ev->getDrops() as $drop) {
-                    $this->level->dropItem($block->add(0.5, 0.5, 0.5), $drop);
+                    $this->world->dropItem($pos->add(0.5, 0.5, 0.5), $drop);
                 }
-            }
-
-            $this->level->setBlockIdAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ(), 0);
-            $this->level->setBlockDataAt($block->getFloorX(), $block->getFloorY(), $block->getFloorZ(), 0);
-
-            $pos = new Vector3($block->x, $block->y, $block->z);
-            for ($side = 0; $side <= 5; $side++) {
-                $sideBlock = $pos->getSide($side);
-                if (!$this->level->isInWorld($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ())) continue;
-                if (!isset($this->affectedBlocks[$index = ((($sideBlock->x) & 0xFFFFFFF) << 36) | ((($sideBlock->y) & 0xff) << 28) | (($sideBlock->z) & 0xFFFFFFF)]) and !isset($updateBlocks[$index])) {
-                    $ev = new BlockUpdateEvent($this->level->getBlockAt($sideBlock->getFloorX(), $sideBlock->getFloorY(), $sideBlock->getFloorZ()));
-                    $ev->call();
-                    if (!$ev->isCancelled()) {
-                        foreach ($this->level->getNearbyEntities(new AxisAlignedBB($sideBlock->x - 1, $sideBlock->y - 1, $sideBlock->z - 1, $sideBlock->x + 2, $sideBlock->y + 2, $sideBlock->z + 2)) as $entity) {
-                            $entity->onNearbyBlockChange();
-                        }
-                        $ev->getBlock()->onNearbyBlockChange();
-                    }
-                    $updateBlocks[$index] = true;
+                if (($t = $this->world->getTileAt((int)$pos->x, (int)$pos->y, (int)$pos->z)) !== null) {
+                    $t->onBlockDestroyed(); //needed to create drops for inventories
                 }
+                $this->world->setBlockAt((int)$pos->x, (int)$pos->y, (int)$pos->z, $airBlock, false);
             }
-            $send[] = new Vector3($block->x - $source->x, $block->y - $source->y, $block->z - $source->z);
         }
         unset(RecursiveEnchant::$isUsing[$this->player->getName()]);
-        $this->level->addParticle(new HugeExplodeSeedParticle($source));
-        $this->level->broadcastLevelSoundEvent($source, LevelSoundEventPacket::SOUND_EXPLODE);
+
+        $this->world->addParticle($source, new HugeExplodeSeedParticle());
+        $this->world->addSound($source, new ExplodeSound());
         return true;
     }
 }

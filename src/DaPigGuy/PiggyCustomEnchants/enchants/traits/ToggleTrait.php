@@ -13,17 +13,16 @@ use pocketmine\inventory\Inventory;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 trait ToggleTrait
 {
-    /** @var PiggyCustomEnchants */
-    protected $plugin;
+    protected PiggyCustomEnchants $plugin;
 
-    /** @var array */
-    public $stack;
-    /** @var array */
-    public $equippedArmorStack;
+    /** @var int[] */
+    public array $stack = [];
+    /** @var int[] */
+    public array $equippedArmorStack = [];
 
     public function canToggle(): bool
     {
@@ -33,7 +32,7 @@ trait ToggleTrait
     public function onToggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
         $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
-        if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
+        if (isset($perWorldDisabledEnchants[$player->getWorld()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getWorld()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
         $toggle ? $this->addToStack($player, $level) : $this->removeFromStack($player, $level);
         $this->toggle($player, $item, $inventory, $slot, $level, $toggle);
@@ -45,16 +44,26 @@ trait ToggleTrait
 
     public function addToStack(Player $player, int $level): void
     {
-        if (!isset($this->stack[$player->getName()])) $this->stack[$player->getName()] = 0;
-        if (!isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()] = 0;
-        $this->stack[$player->getName()] += $level;
-        $this->equippedArmorStack[$player->getName()]++;
+        $this->stack[$player->getName()] = $this->getStack($player) + $level;
+        $this->equippedArmorStack[$player->getName()] = $this->getArmorStack($player) + 1;
     }
 
     public function removeFromStack(Player $player, int $level): void
     {
         if (isset($this->stack[$player->getName()])) $this->stack[$player->getName()] -= $level;
-        if (isset($this->equippedArmorStack[$player->getName()])) $this->equippedArmorStack[$player->getName()]--;
+        $this->equippedArmorStack[$player->getName()] = $this->getArmorStack($player) - 1;
+    }
+
+    public function getStack(Player $player): int
+    {
+        if (isset($this->stack[$player->getName()])) return $this->stack[$player->getName()];
+        return 0;
+    }
+
+    public function getArmorStack(Player $player): int
+    {
+        if (isset($this->equippedArmorStack[$player->getName()])) return $this->equippedArmorStack[$player->getName()];
+        return 0;
     }
 
     public static function attemptToggle(Player $player, Item $item, EnchantmentInstance $enchantmentInstance, Inventory $inventory, int $slot, bool $toggle = true): void

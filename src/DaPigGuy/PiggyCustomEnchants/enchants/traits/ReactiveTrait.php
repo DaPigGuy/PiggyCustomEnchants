@@ -16,12 +16,11 @@ use pocketmine\event\entity\ProjectileHitBlockEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 trait ReactiveTrait
 {
-    /** @var PiggyCustomEnchants */
-    protected $plugin;
+    protected PiggyCustomEnchants $plugin;
 
     /** @var float[] */
     public $chanceMultiplier;
@@ -39,7 +38,7 @@ trait ReactiveTrait
     public function onReaction(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         $perWorldDisabledEnchants = $this->plugin->getConfig()->get("per-world-disabled-enchants");
-        if (isset($perWorldDisabledEnchants[$player->getLevel()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getLevel()->getFolderName()])) return;
+        if (isset($perWorldDisabledEnchants[$player->getWorld()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getWorld()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
         if ($event instanceof EntityDamageByEntityEvent) {
             if ($event->getEntity() === $player && $event->getDamager() !== $player && $this->shouldReactToDamage()) return;

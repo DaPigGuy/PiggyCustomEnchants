@@ -7,36 +7,30 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\Effect;
+use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class AttackerDeterrentEnchant extends ReactiveEnchantment
 {
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
-    /** @var array */
-    private $effects;
-    /** @var array */
-    private $durationMultiplier;
-    /** @var array */
-    private $amplifierMultiplier;
-
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, array $effects, array $durationMultiplier, array $amplifierMultiplier, int $rarity = self::RARITY_RARE)
+    /**
+     * @param Effect[] $effects
+     * @param int[] $durationMultiplier
+     * @param int[] $amplifierMultiplier
+     */
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, private array $effects, private array $durationMultiplier, private array $amplifierMultiplier, int $rarity = Rarity::RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;
-        $this->effects = $effects;
-        $this->durationMultiplier = $durationMultiplier;
-        $this->amplifierMultiplier = $amplifierMultiplier;
         parent::__construct($plugin, $id);
     }
 
@@ -51,7 +45,7 @@ class AttackerDeterrentEnchant extends ReactiveEnchantment
             $damager = $event->getDamager();
             if ($damager instanceof Living) {
                 foreach ($this->effects as $key => $effect) {
-                    $damager->addEffect(new EffectInstance(Effect::getEffect($effect), $this->extraData["durationMultipliers"][$key] * $level, $this->extraData["amplifierMultipliers"][$key] * $level));
+                    $damager->getEffects()->add(new EffectInstance($effect, $this->extraData["durationMultipliers"][$key] * $level, $this->extraData["amplifierMultipliers"][$key] * $level));
                 }
             }
         }

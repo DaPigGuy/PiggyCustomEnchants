@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\boots;
 
+use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
+use DaPigGuy\PiggyCustomEnchants\particles\JetpackParticle;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
-use pocketmine\level\particle\GenericParticle;
-use pocketmine\level\particle\Particle;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class JetpackEnchant extends ReactiveEnchantment
@@ -24,15 +25,11 @@ class JetpackEnchant extends ReactiveEnchantment
     use TickingTrait;
     use ToggleTrait;
 
-    /** @var string */
-    public $name = "Jetpack";
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Jetpack";
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_BOOTS;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
+    public int $usageType = CustomEnchant::TYPE_BOOTS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     /** @var Player[] */
     public $activeJetpacks = [];
@@ -54,11 +51,11 @@ class JetpackEnchant extends ReactiveEnchantment
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL && $this->hasActiveJetpack($player)) $event->setCancelled();
+        if ($event instanceof EntityDamageEvent && $event->getCause() === EntityDamageEvent::CAUSE_FALL && $this->hasActiveJetpack($player)) $event->cancel();
         if ($event instanceof PlayerToggleSneakEvent) {
             if ($event->isSneaking()) {
                 if ($this->hasActiveJetpack($player)) {
-                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantIds::PARACHUTE) === null && !$player->getAllowFlight()) {
+                    if (!$player->isOnGround() && $player->getArmorInventory()->getChestplate()->getEnchantment(CustomEnchantManager::getEnchantment(CustomEnchantIds::PARACHUTE)) === null && !$player->getAllowFlight()) {
                         $player->sendPopup(TextFormat::RED . "It is unsafe to disable your jetpack while in the air.");
                     } else {
                         $this->powerActiveJetpack($player, false);
@@ -75,8 +72,7 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($this->hasActiveJetpack($player)) {
             $player->setMotion($player->getDirectionVector()->multiply($level * ($player->isSprinting() ? $this->extraData["sprintSpeedMultiplier"] : $this->extraData["speedMultiplier"])));
             $player->resetFallDistance();
-            $player->getLevel()->addParticle(new GenericParticle($player, Particle::TYPE_CAMPFIRE_SMOKE));
-
+            $player->getWorld()->addParticle($player->getPosition(), new JetpackParticle());
             $time = ceil($this->powerRemaining[$player->getName()] / 10);
             if ($time > 2) $player->sendTip(($time > 10 ? TextFormat::GREEN : ($time > 5 ? TextFormat::YELLOW : TextFormat::RED)) . "Power: " . str_repeat("|", (int)$time));
             $lowTime = ceil($this->powerRemaining[$player->getName()] / 5);
@@ -86,7 +82,6 @@ class JetpackEnchant extends ReactiveEnchantment
                 if ($this->powerRemaining[$player->getName()] <= 0) {
                     $player->sendTip(TextFormat::RED . "Jetpack has run out of power.");
                     $this->powerActiveJetpack($player, false);
-                    return;
                 }
             }
         }

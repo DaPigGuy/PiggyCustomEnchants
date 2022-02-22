@@ -11,22 +11,18 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class StompEnchantment extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Stomp";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 1;
+    public string $name = "Stomp";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel = 1;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_BOOTS;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
+    public int $usageType = CustomEnchant::TYPE_BOOTS;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     public function getReagent(): array
     {
@@ -42,7 +38,7 @@ class StompEnchantment extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageEvent) {
             if ($event->getCause() === EntityDamageEvent::CAUSE_FALL) {
-                $entities = $player->getLevel()->getNearbyEntities($player->getBoundingBox());
+                $entities = $player->getWorld()->getNearbyEntities($player->getBoundingBox());
                 foreach ($entities as $entity) {
                     if ($player === $entity) {
                         continue;

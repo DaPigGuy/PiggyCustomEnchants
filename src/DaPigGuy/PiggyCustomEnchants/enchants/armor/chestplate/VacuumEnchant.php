@@ -9,19 +9,15 @@ use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class VacuumEnchant extends TickingEnchantment
 {
-    /** @var string */
-    public $name = "Vacuum";
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Vacuum";
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_CHESTPLATE;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
+    public int $usageType = CustomEnchant::TYPE_CHESTPLATE;
+    public int $itemType = CustomEnchant::ITEM_TYPE_CHESTPLATE;
 
     public function getDefaultExtraData(): array
     {
@@ -30,11 +26,11 @@ class VacuumEnchant extends TickingEnchantment
 
     public function tick(Player $player, Item $item, Inventory $inventory, int $slot, int $level): void
     {
-        foreach ($player->getLevel()->getEntities() as $entity) {
+        foreach ($player->getWorld()->getEntities() as $entity) {
             if ($entity instanceof ItemEntity) {
-                $distance = $player->distance($entity);
+                $distance = $player->getPosition()->distance($entity->getPosition());
                 if ($distance <= $this->extraData["radiusMultiplier"] * $level) {
-                    $entity->setMotion($player->subtract($entity)->divide(3 * $level)->multiply($level));
+                    $entity->setMotion($player->getPosition()->subtractVector($entity->getPosition())->divide(3 * $level)->multiply($level));
                 }
             }
         }

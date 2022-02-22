@@ -11,8 +11,9 @@ use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class ShrinkEnchant extends ToggleableEnchantment
@@ -22,28 +23,25 @@ class ShrinkEnchant extends ToggleableEnchantment
     }
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Shrink";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $maxLevel = 2;
-    /** @var int */
-    public $cooldownDuration = 75;
+    public string $name = "Shrink";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $maxLevel = 2;
+    public int $cooldownDuration = 75;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
-    /** @var array */
-    public $shrunk;
-    /** @var array */
-    public $shrinkPower;
-    /** @var array */
-    public $shiftCache;
+    /** @var Player[] */
+    public array $shrunk;
+    /** @var int[] */
+    public array $shrinkPower;
+    /** @var bool[] */
+    public array $shiftCache;
 
-    public function getReagent(): array
+	/**
+	 * @return class-string[]
+	 */
+	public function getReagent(): array
     {
         return [PlayerToggleSneakEvent::class];
     }
@@ -75,7 +73,7 @@ class ShrinkEnchant extends ToggleableEnchantment
     {
         if ($event instanceof PlayerToggleSneakEvent) {
             $playerName = $player->getName();
-            if ($this->equippedArmorStack[$playerName] === 4) {
+            if ($this->getArmorStack($player) === 4) {
                 if ($event->isSneaking()) {
                     if ($stack - $level === 0) {
                         if (isset($this->shrunk[$playerName])) {
@@ -85,7 +83,7 @@ class ShrinkEnchant extends ToggleableEnchantment
                         } else {
                             $this->shrunk[$playerName] = $player;
                             if (!isset($this->shrinkPower[$playerName])) $this->shrinkPower[$playerName] = $this->extraData["power"];
-                            $player->setScale($player->getScale() - $this->extraData["base"] - ($this->stack[$playerName] * $this->extraData["multiplier"]));
+                            $player->setScale($player->getScale() - $this->extraData["base"] - ($this->getStack($player) * $this->extraData["multiplier"]));
                             $player->sendTip(TextFormat::GREEN . "You have shrunk. Sneak again to grow back to normal size.");
                         }
                     }
@@ -100,7 +98,7 @@ class ShrinkEnchant extends ToggleableEnchantment
         if (isset($this->shrunk[$playerName])) {
             $this->shrinkPower[$playerName]--;
             $player->sendTip(TextFormat::GREEN . "Shrink power remaining: " . $this->shrinkPower[$playerName]);
-            if ($this->equippedArmorStack[$playerName] < 4 || $this->shrinkPower[$playerName] <= 0) {
+            if ($this->getArmorStack($player) < 4 || $this->shrinkPower[$playerName] <= 0) {
                 unset($this->shrunk[$playerName]);
                 $this->setCooldown($player, $this->getCooldownDuration());
                 if ($this->shrinkPower[$playerName] <= 0) $this->shrinkPower[$playerName] = $this->extraData["power"];

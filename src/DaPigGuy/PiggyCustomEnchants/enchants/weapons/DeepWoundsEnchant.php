@@ -5,25 +5,23 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\Block;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\level\particle\DestroyBlockParticle;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
+use pocketmine\world\particle\BlockBreakParticle;
 
 class DeepWoundsEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Deep Wounds";
-    /** @var int */
-    public $cooldownDuration = 7;
+    public string $name = "Deep Wounds";
+    public int $cooldownDuration = 7;
 
     /** @var ClosureTask[] */
-    public static $tasks;
+    public static array $tasks;
 
     public function getDefaultExtraData(): array
     {
@@ -43,7 +41,7 @@ class DeepWoundsEnchant extends ReactiveEnchantment
                         return;
                     }
                     $entity->attack(new EntityDamageEvent($entity, EntityDamageEvent::CAUSE_MAGIC, $this->extraData["base"] + $entity->getHealth() * $this->extraData["multiplier"]));
-                    $entity->getLevel()->addParticle(new DestroyBlockParticle($entity->add(0, 1), Block::get(Block::REDSTONE_BLOCK)));
+                    $entity->getWorld()->addParticle($entity->getPosition()->add(0, 1, 0), new BlockBreakParticle(VanillaBlocks::REDSTONE()));
                 });
                 $this->plugin->getScheduler()->scheduleRepeatingTask(self::$tasks[$entity->getId()], $this->extraData["interval"]);
             }

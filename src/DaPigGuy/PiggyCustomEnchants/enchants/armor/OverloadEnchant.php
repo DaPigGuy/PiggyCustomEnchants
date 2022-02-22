@@ -7,22 +7,18 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\armor;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class OverloadEnchant extends ToggleableEnchantment
 {
-    /** @var string */
-    public $name = "Overload";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_MYTHIC;
-    /** @var int */
-    public $maxLevel = 3;
+    public string $name = "Overload";
+    public int $rarity = Rarity::MYTHIC;
+    public int $maxLevel = 3;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

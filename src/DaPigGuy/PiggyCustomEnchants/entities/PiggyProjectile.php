@@ -5,7 +5,7 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\ProjectileHitEvent;
 
-class PiggyProjectile extends Projectile
+abstract class PiggyProjectile extends Projectile
 {
     public function onHit(ProjectileHitEvent $event): void
     {

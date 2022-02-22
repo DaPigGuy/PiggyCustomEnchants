@@ -9,20 +9,19 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
+use pocketmine\player\Player;
 
 class BountyHunterEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Bounty Hunter";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $cooldownDuration = 30;
+    public string $name = "Bounty Hunter";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $cooldownDuration = 30;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {
@@ -38,7 +37,7 @@ class BountyHunterEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $bountyDrop = $this->getBounty();
-            $player->getInventory()->addItem(Item::get($bountyDrop, 0, mt_rand(1, $this->extraData["base"] + $level * $this->extraData["multiplier"])));
+            $player->getInventory()->addItem(ItemFactory::getInstance()->get($bountyDrop, 0, mt_rand(1, $this->extraData["base"] + $level * $this->extraData["multiplier"])));
         }
     }
 
@@ -47,20 +46,20 @@ class BountyHunterEnchant extends ReactiveEnchantment
         $random = mt_rand(0, 75);
         $currentChance = 2.5;
         if ($random < $currentChance) {
-            return Item::EMERALD;
+            return ItemIds::EMERALD;
         }
         $currentChance += 5;
         if ($random < $currentChance) {
-            return Item::DIAMOND;
+            return ItemIds::DIAMOND;
         }
         $currentChance += 15;
         if ($random < $currentChance) {
-            return Item::GOLD_INGOT;
+            return ItemIds::GOLD_INGOT;
         }
         $currentChance += 27.5;
         if ($random < $currentChance) {
-            return Item::IRON_INGOT;
+            return ItemIds::IRON_INGOT;
         }
-        return Item::COAL;
+        return ItemIds::COAL;
     }
 }

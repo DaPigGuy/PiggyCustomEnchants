@@ -6,23 +6,20 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons\bows;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\Block;
-use pocketmine\entity\Entity;
-use pocketmine\entity\object\FallingBlock;
+use DaPigGuy\PiggyCustomEnchants\entities\BombardmentTNT;
+use pocketmine\entity\Location;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class BombardmentEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Bombardment";
+    public string $name = "Bombardment";
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     public function getReagent(): array
     {
@@ -33,15 +30,10 @@ class BombardmentEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $entity = $event->getEntity();
-
-            $nbt = Entity::createBaseNBT($entity->add(0, 255 - $entity->y), new Vector3(0, -5));
-            $nbt->setInt("TileID", Block::TNT);
-            $nbt->setInt("Bombardment", $level);
-
-            /** @var FallingBlock $entity */
-            $entity = Entity::createEntity("FallingSand", $player->getLevel(), $nbt);
-            $entity->setOwningEntity($player);
-            $entity->spawnToAll();
+            $bombardmentEntity = new BombardmentTNT(Location::fromObject($entity->getLocation()->add(0, 255 - $entity->getLocation()->y, 0), $entity->getWorld()), null, $level);
+            $bombardmentEntity->setOwningEntity($player);
+            $bombardmentEntity->setMotion(new Vector3(0, -5, 0));
+            $bombardmentEntity->spawnToAll();
         }
     }
 }

@@ -8,28 +8,27 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
+use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\entity\Entity;
-use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\Projectile;
 use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    private $projectileType;
+    public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_BOW;
-
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = self::RARITY_RARE)
+    /**
+     * @phpstan-param class-string<Entity> $projectileType
+     */
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, private string $projectileType, int $maxLevel = 1, int $rarity = Rarity::RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;
-        $this->projectileType = $projectileType;
         $this->maxLevel = $maxLevel;
         parent::__construct($plugin, $id);
     }
@@ -45,12 +44,13 @@ class ProjectileChangingEnchant extends ReactiveEnchantment
             /** @var Projectile $projectile */
             $projectile = $event->getProjectile();
             ProjectileTracker::removeProjectile($projectile);
-            $nbt = Entity::createBaseNBT($projectile, $projectile->getMotion(), $projectile->yaw, $projectile->pitch);
-            /** @var Projectile $projectile */
-            $projectile = Entity::createEntity($this->projectileType, $player->getLevel(), $nbt, $player, $projectile instanceof Arrow && $this->projectileType === "HomingArrow" ? $projectile->isCritical() : $level, $level);
-            $projectile->spawnToAll();
-            $event->setProjectile($projectile);
-            ProjectileTracker::addProjectile($projectile, $item);
+
+            $newProjectile = Utils::createNewProjectile($this->projectileType, $projectile->getLocation(), $player, $projectile, $level);
+            $newProjectile->setMotion($projectile->getMotion());
+            $newProjectile->spawnToAll();
+
+            $event->setProjectile($newProjectile);
+            ProjectileTracker::addProjectile($newProjectile, $item);
         }
     }
 

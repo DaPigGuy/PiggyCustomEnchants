@@ -9,40 +9,39 @@ use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\Item;
-use pocketmine\nbt\tag\IntTag;
+use pocketmine\item\ItemFactory;
+use pocketmine\item\ItemIds;
 use pocketmine\scheduler\Task;
+use pocketmine\Server;
 use pocketmine\utils\TextFormat;
 
 class TickEnchantmentsTask extends Task
 {
-    /** @var PiggyCustomEnchants */
-    private $plugin;
-
-    public function __construct(PiggyCustomEnchants $plugin)
+    public function __construct(private PiggyCustomEnchants $plugin)
     {
-        $this->plugin = $plugin;
     }
 
-    public function onRun(int $currentTick): void
+    public function onRun(): void
     {
+        $currentTick = Server::getInstance()->getTick();
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $successfulEnchantments = [];
             foreach ($player->getInventory()->getContents() as $slot => $content) {
-                if ($content->getId() === Item::BOOK) {
+                if ($content->getId() === ItemIds::BOOK) {
                     if (count($content->getEnchantments()) > 0) {
-                        $enchantedBook = Item::get(Item::ENCHANTED_BOOK, 0, $content->getCount());
+                        $enchantedBook = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_BOOK, 0, $content->getCount());
                         $enchantedBook->setCustomName(TextFormat::RESET . TextFormat::YELLOW . "Enchanted Book");
-                        $enchantedBook->setNamedTagEntry($content->getNamedTagEntry(Item::TAG_ENCH));
+                        $enchantedBook->addEnchantment(...$content->getEnchantments());
                         $player->getInventory()->setItem($slot, $enchantedBook);
                         continue;
                     }
                 }
-                if ($content->getNamedTagEntry("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getInventory()->setItem($slot, $this->cleanOldItems($content));
+                if ($content->getNamedTag()->getTag("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getInventory()->setItem($slot, $this->cleanOldItems($content));
                 foreach ($content->getEnchantments() as $enchantmentInstance) {
                     /** @var TickingEnchantment $enchantment */
                     $enchantment = $enchantmentInstance->getType();
                     if ($enchantment instanceof CustomEnchant && $enchantment->canTick()) {
-                        if (!in_array($enchantment, $successfulEnchantments) || $enchantment->supportsMultipleItems()) {
+                        if (!in_array($enchantment, $successfulEnchantments, true) || $enchantment->supportsMultipleItems()) {
                             if ((
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_INVENTORY ||
@@ -58,12 +57,12 @@ class TickEnchantmentsTask extends Task
                 }
             }
             foreach ($player->getArmorInventory()->getContents() as $slot => $content) {
-                if ($content->getNamedTagEntry("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getArmorInventory()->setItem($slot, $this->cleanOldItems($content));
+                if ($content->getNamedTag()->getTag("PiggyCEItemVersion") === null && count($content->getEnchantments()) > 0) $player->getArmorInventory()->setItem($slot, $this->cleanOldItems($content));
                 foreach ($content->getEnchantments() as $enchantmentInstance) {
                     /** @var TickingEnchantment $enchantment */
                     $enchantment = $enchantmentInstance->getType();
                     if ($enchantment instanceof CustomEnchant && $enchantment->canTick()) {
-                        if (!in_array($enchantment, $successfulEnchantments) || $enchantment->supportsMultipleItems()) {
+                        if (!in_array($enchantment, $successfulEnchantments, true) || $enchantment->supportsMultipleItems()) {
                             if ((
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_ANY_INVENTORY ||
                                 $enchantment->getUsageType() === CustomEnchant::TYPE_ARMOR_INVENTORY ||
@@ -89,15 +88,15 @@ class TickEnchantmentsTask extends Task
         foreach ($item->getEnchantments() as $enchantmentInstance) {
             $enchantment = $enchantmentInstance->getType();
             if ($enchantment instanceof CustomEnchant) {
-                $item->setCustomName(str_replace("\n" . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), "", $item->getCustomName()));
+                $item->setCustomName(str_replace("\n" . Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->name . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), "", $item->getCustomName()));
                 $lore = $item->getLore();
-                if (($key = array_search(Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->getName() . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), $lore))) {
+                if (($key = array_search(Utils::getColorFromRarity($enchantment->getRarity()) . $enchantment->name . " " . Utils::getRomanNumeral($enchantmentInstance->getLevel()), $lore, true)) !== false) {
                     unset($lore[$key]);
                 }
                 $item->setLore($lore);
             }
         }
-        $item->setNamedTagEntry(new IntTag("PiggyCEItemVersion", 0));
+        $item->getNamedTag()->setInt("PiggyCEItemVersion", 0);
         return $item;
     }
 }

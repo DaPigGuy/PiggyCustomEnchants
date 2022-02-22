@@ -11,20 +11,17 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Axe;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class TankEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Tank";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
+    public string $name = "Tank";
+    public int $rarity = Rarity::UNCOMMON;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
     public function getDefaultExtraData(): array
     {

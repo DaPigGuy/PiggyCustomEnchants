@@ -10,13 +10,12 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
 use pocketmine\math\Vector3;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
 
 class GooeyEnchant extends ReactiveEnchantment
 {
-    /** @var string */
-    public $name = "Gooey";
+    public string $name = "Gooey";
 
     public function getDefaultExtraData(): array
     {

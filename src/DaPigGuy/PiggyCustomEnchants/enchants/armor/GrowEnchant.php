@@ -11,8 +11,9 @@ use DaPigGuy\PiggyCustomEnchants\enchants\traits\TickingTrait;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
+use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
 class GrowEnchant extends ToggleableEnchantment
@@ -22,24 +23,19 @@ class GrowEnchant extends ToggleableEnchantment
     }
     use TickingTrait;
 
-    /** @var string */
-    public $name = "Grow";
-    /** @var int */
-    public $rarity = CustomEnchant::RARITY_UNCOMMON;
-    /** @var int */
-    public $cooldownDuration = 75;
+    public string $name = "Grow";
+    public int $rarity = Rarity::UNCOMMON;
+    public int $cooldownDuration = 75;
 
-    /** @var int */
-    public $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
-    /** @var int */
-    public $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
+    public int $usageType = CustomEnchant::TYPE_ARMOR_INVENTORY;
+    public int $itemType = CustomEnchant::ITEM_TYPE_ARMOR;
 
-    /** @var array */
-    public $grew;
-    /** @var array */
-    public $growPower;
-    /** @var array */
-    public $shiftCache;
+    /** @var Player[] */
+    public array $grew;
+    /** @var int[] */
+    public array $growPower;
+    /** @var bool[] */
+    public array $shiftCache;
 
     public function getReagent(): array
     {
@@ -73,7 +69,7 @@ class GrowEnchant extends ToggleableEnchantment
     {
         if ($event instanceof PlayerToggleSneakEvent) {
             $playerName = $player->getName();
-            if ($this->equippedArmorStack[$playerName] === 4) {
+            if ($this->getArmorStack($player) === 4) {
                 if ($event->isSneaking()) {
                     if ($stack - $level === 0) {
                         if (isset($this->grew[$playerName])) {
@@ -83,7 +79,7 @@ class GrowEnchant extends ToggleableEnchantment
                         } else {
                             $this->grew[$playerName] = $player;
                             if (!isset($this->growPower[$playerName])) $this->growPower[$playerName] = $this->extraData["power"];
-                            $player->setScale($player->getScale() + $this->extraData["base"] + ($this->stack[$playerName] * $this->extraData["multiplier"]));
+                            $player->setScale($player->getScale() + $this->extraData["base"] + ($this->getStack($player) * $this->extraData["multiplier"]));
                             $player->sendTip(TextFormat::GREEN . "You have grown. Sneak again to shrink back to normal size.");
                         }
                     }
@@ -98,7 +94,7 @@ class GrowEnchant extends ToggleableEnchantment
         if (isset($this->grew[$playerName])) {
             $this->growPower[$playerName]--;
             $player->sendTip(TextFormat::GREEN . "Grow power remaining: " . $this->growPower[$playerName]);
-            if ($this->equippedArmorStack[$playerName] < 4 || $this->growPower[$playerName] <= 0) {
+            if ($this->getArmorStack($player) < 4 || $this->growPower[$playerName] <= 0) {
                 unset($this->grew[$playerName]);
                 $this->setCooldown($player, $this->getCooldownDuration());
                 if ($this->growPower[$playerName] <= 0) $this->growPower[$playerName] = $this->extraData["power"];

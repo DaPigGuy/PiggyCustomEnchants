@@ -78,66 +78,59 @@ use DaPigGuy\PiggyCustomEnchants\enchants\weapons\LacedWeaponEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\LifestealEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\LightningEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\weapons\VampireEnchant;
-use pocketmine\entity\Effect;
+use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
+use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
+use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
+use pocketmine\data\bedrock\EnchantmentIdMap;
+use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\entity\Living;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\Rarity;
+use pocketmine\item\enchantment\StringToEnchantmentParser;
+use pocketmine\utils\StringToTParser;
 use ReflectionProperty;
-use SplFixedArray;
 
 class CustomEnchantManager
 {
-    /** @var PiggyCustomEnchants */
-    private static $plugin;
+    private static PiggyCustomEnchants $plugin;
 
     /** @var CustomEnchant[] */
-    public static $enchants = [];
+    public static array $enchants = [];
 
     public static function init(PiggyCustomEnchants $plugin): void
     {
         self::$plugin = $plugin;
-        $vanillaEnchantments = new SplFixedArray(1024);
 
-        $property = new ReflectionProperty(Enchantment::class, "enchantments");
-        $property->setAccessible(true);
-        foreach ($property->getValue() as $key => $value) {
-            $vanillaEnchantments[$key] = $value;
-        }
-        $property->setValue($vanillaEnchantments);
+        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::CURSED, "Cursed", [VanillaEffects::WITHER()], [60], [1], Rarity::UNCOMMON));
+        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::DRUNK, "Drunk", [VanillaEffects::SLOWNESS(), VanillaEffects::MINING_FATIGUE(), VanillaEffects::NAUSEA()], [60, 60, 60], [1, 1, 0]));
+        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::FROZEN, "Frozen", [VanillaEffects::SLOWNESS()], [60], [1]));
+        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::HARDENED, "Hardened", [VanillaEffects::WEAKNESS()], [60], [1], Rarity::UNCOMMON));
+        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::POISONED, "Poisoned", [VanillaEffects::POISON()], [60], [1], Rarity::UNCOMMON));
+        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::REVULSION, "Revulsion", [VanillaEffects::NAUSEA()], [20], [0], Rarity::UNCOMMON));
 
-        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::CURSED, "Cursed", [Effect::WITHER], [60], [1], CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::DRUNK, "Drunk", [Effect::SLOWNESS, Effect::MINING_FATIGUE, Effect::NAUSEA], [60, 60, 60], [1, 1, 0]));
-        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::FROZEN, "Frozen", [Effect::SLOWNESS], [60], [1]));
-        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::HARDENED, "Hardened", [Effect::WEAKNESS], [60], [1], CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::POISONED, "Poisoned", [Effect::POISON], [60], [1], CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new AttackerDeterrentEnchant($plugin, CustomEnchantIds::REVULSION, "Revulsion", [Effect::NAUSEA], [20], [0], CustomEnchant::RARITY_UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::AERIAL, "Aerial", fn(EntityDamageByEntityEvent $event) => !$event->getDamager()?->isOnGround(), Rarity::UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::BACKSTAB, "Backstab", fn(EntityDamageByEntityEvent $event) => $event->getDamager()?->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0, Rarity::UNCOMMON));
+        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", fn(EntityDamageByEntityEvent $event) => ($damager = $event->getDamager()) instanceof Living && $damager->isSprinting(), Rarity::UNCOMMON));
 
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::AERIAL, "Aerial", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->isOnGround();
-        }, CustomEnchant::RARITY_COMMON));
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::BACKSTAB, "Backstab", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->getDirectionVector()->dot($event->getEntity()->getDirectionVector()) > 0;
-        }, CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new ConditionalDamageMultiplierEnchant($plugin, CustomEnchantIds::CHARGE, "Charge", function (EntityDamageByEntityEvent $event) {
-            return $event->getDamager()->isSprinting();
-        }, CustomEnchant::RARITY_UNCOMMON));
+        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::BLIND, "Blind", Rarity::COMMON, [VanillaEffects::BLINDNESS()], [20], [0], [100]));
+        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::CRIPPLE, "Cripple", Rarity::COMMON, [VanillaEffects::NAUSEA(), VanillaEffects::SLOWNESS()], [100, 100], [0, 1]));
+        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::POISON, "Poison", Rarity::UNCOMMON, [VanillaEffects::POISON()]));
+        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::WITHER, "Wither", Rarity::UNCOMMON, [VanillaEffects::WITHER()]));
 
-        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::BLIND, "Blind", CustomEnchant::RARITY_COMMON, [Effect::BLINDNESS], [20], [0], [100]));
-        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::CRIPPLE, "Cripple", CustomEnchant::RARITY_COMMON, [Effect::NAUSEA, Effect::SLOWNESS], [100, 100], [0, 1]));
-        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::POISON, "Poison", CustomEnchant::RARITY_UNCOMMON, [Effect::POISON]));
-        self::registerEnchantment(new LacedWeaponEnchant($plugin, CustomEnchantIds::WITHER, "Wither", CustomEnchant::RARITY_UNCOMMON, [Effect::WITHER]));
+        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::BLAZE, "Blaze", PiggyFireball::class));
+        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::HOMING, "Homing", HomingArrow::class, 3, Rarity::MYTHIC));
+        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::PORKIFIED, "Porkified", PigProjectile::class, 3, Rarity::MYTHIC));
+        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::WITHERSKULL, "Wither Skull", PiggyWitherSkull::class, 1, Rarity::MYTHIC));
 
-        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::BLAZE, "Blaze", "PiggyFireball"));
-        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::HOMING, "Homing", "HomingArrow", 3, CustomEnchant::RARITY_MYTHIC));
-        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::PORKIFIED, "Porkified", "PigProjectile", 3, CustomEnchant::RARITY_MYTHIC));
-        self::registerEnchantment(new ProjectileChangingEnchant($plugin, CustomEnchantIds::WITHERSKULL, "Wither Skull", "PiggyWitherSkull", 1, CustomEnchant::RARITY_MYTHIC));
-
-        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::ENRAGED, "Enraged", 5, CustomEnchant::TYPE_CHESTPLATE, CustomEnchant::ITEM_TYPE_CHESTPLATE, Effect::STRENGTH, -1));
-        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::GEARS, "Gears", 1, CustomEnchant::TYPE_BOOTS, CustomEnchant::ITEM_TYPE_BOOTS, Effect::SPEED, 0, 0, CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::GLOWING, "Glowing", 1, CustomEnchant::TYPE_HELMET, CustomEnchant::ITEM_TYPE_HELMET, Effect::NIGHT_VISION, 0, 0, CustomEnchant::RARITY_COMMON));
-        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::HASTE, "Haste", 5, CustomEnchant::TYPE_HAND, CustomEnchant::ITEM_TYPE_PICKAXE, Effect::HASTE, 0, 1, CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::OBSIDIANSHIELD, "Obsidian Shield", 1, CustomEnchant::TYPE_ARMOR_INVENTORY, CustomEnchant::ITEM_TYPE_ARMOR, Effect::FIRE_RESISTANCE, 0, 0, CustomEnchant::RARITY_COMMON));
-        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::OXYGENATE, "Oxygenate", 1, CustomEnchant::TYPE_HAND, CustomEnchant::ITEM_TYPE_PICKAXE, Effect::WATER_BREATHING, 0, 0, CustomEnchant::RARITY_UNCOMMON));
-        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::SPRINGS, "Springs", 1, CustomEnchant::TYPE_BOOTS, CustomEnchant::ITEM_TYPE_BOOTS, Effect::JUMP_BOOST, 3, 0, CustomEnchant::RARITY_UNCOMMON));
+        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::ENRAGED, "Enraged", 5, CustomEnchant::TYPE_CHESTPLATE, CustomEnchant::ITEM_TYPE_CHESTPLATE, VanillaEffects::STRENGTH(), -1));
+        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::GEARS, "Gears", 1, CustomEnchant::TYPE_BOOTS, CustomEnchant::ITEM_TYPE_BOOTS, VanillaEffects::SPEED(), 0, 0, Rarity::UNCOMMON));
+        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::GLOWING, "Glowing", 1, CustomEnchant::TYPE_HELMET, CustomEnchant::ITEM_TYPE_HELMET, VanillaEffects::NIGHT_VISION(), 0, 0, Rarity::COMMON));
+        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::HASTE, "Haste", 5, CustomEnchant::TYPE_HAND, CustomEnchant::ITEM_TYPE_PICKAXE, VanillaEffects::HASTE(), 0, 1, Rarity::UNCOMMON));
+        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::OBSIDIANSHIELD, "Obsidian Shield", 1, CustomEnchant::TYPE_ARMOR_INVENTORY, CustomEnchant::ITEM_TYPE_ARMOR, VanillaEffects::FIRE_RESISTANCE(), 0, 0, Rarity::COMMON));
+        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::OXYGENATE, "Oxygenate", 1, CustomEnchant::TYPE_HAND, CustomEnchant::ITEM_TYPE_PICKAXE, VanillaEffects::WATER_BREATHING(), 0, 0, Rarity::UNCOMMON));
+        self::registerEnchantment(new ToggleableEffectEnchant($plugin, CustomEnchantIds::SPRINGS, "Springs", 1, CustomEnchant::TYPE_BOOTS, CustomEnchant::ITEM_TYPE_BOOTS, VanillaEffects::JUMP_BOOST(), 3, 0, Rarity::UNCOMMON));
 
         self::registerEnchantment(new AntiKnockbackEnchant($plugin, CustomEnchantIds::ANTIKNOCKBACK));
         self::registerEnchantment(new AntitoxinEnchant($plugin, CustomEnchantIds::ANTITOXIN));
@@ -215,22 +208,27 @@ class CustomEnchantManager
 
     public static function registerEnchantment(CustomEnchant $enchant): void
     {
-        Enchantment::registerEnchantment($enchant);
-        /** @var CustomEnchant $enchant */
-        $enchant = Enchantment::getEnchantment($enchant->getId());
+        EnchantmentIdMap::getInstance()->register($enchant->getId(), $enchant);
         self::$enchants[$enchant->getId()] = $enchant;
+        StringToEnchantmentParser::getInstance()->register($enchant->name, fn() => $enchant);
+        if ($enchant->name !== $enchant->getDisplayName()) StringToEnchantmentParser::getInstance()->register($enchant->getDisplayName(), fn() => $enchant);
 
-        self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getName() . "' registered with id " . $enchant->getId());
+        self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getDisplayName() . "' registered with id " . $enchant->getId());
     }
 
-    /**
-     * @param int|Enchantment $id
-     */
-    public static function unregisterEnchantment($id): void
+    public static function unregisterEnchantment(int|CustomEnchant $id): void
     {
-        $id = $id instanceof Enchantment ? $id->getId() : $id;
-        self::$enchants[$id]->unregister();
-        self::$plugin->getLogger()->debug("Custom Enchantment '" . self::$enchants[$id]->getName() . "' unregistered with id " . self::$enchants[$id]->getId());
+        $id = $id instanceof CustomEnchant ? $id->getId() : $id;
+        $enchant = self::$enchants[$id];
+        
+        $property = new ReflectionProperty(StringToTParser::class, "callbackMap");
+        $property->setAccessible(true);
+        $value = $property->getValue(StringToEnchantmentParser::getInstance());
+        unset($value[strtolower(str_replace([" ", "minecraft:"], ["_", ""], trim($enchant->name)))]);
+        if ($enchant->name !== $enchant->getDisplayName()) unset($value[strtolower(str_replace([" ", "minecraft:"], ["_", ""], trim($enchant->getDisplayName())))]);
+        $property->setValue($value);
+
+        self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getDisplayName() . "' unregistered with id " . $enchant->getId());
         unset(self::$enchants[$id]);
 
         $property = new ReflectionProperty(Enchantment::class, "enchantments");
@@ -255,12 +253,6 @@ class CustomEnchantManager
 
     public static function getEnchantmentByName(string $name): ?CustomEnchant
     {
-        foreach (self::$enchants as $enchant) {
-            if (
-                strtolower(str_replace(" ", "", $enchant->getName())) === strtolower(str_replace(" ", "", $name)) ||
-                strtolower(str_replace(" ", "", $enchant->getDisplayName())) === strtolower(str_replace(" ", "", $name))
-            ) return $enchant;
-        }
-        return null;
+        return ($enchant = StringToEnchantmentParser::getInstance()->parse($name)) instanceof CustomEnchant ? $enchant : null;
     }
 }
