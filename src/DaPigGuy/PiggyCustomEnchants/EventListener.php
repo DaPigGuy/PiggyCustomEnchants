@@ -54,11 +54,8 @@ use pocketmine\player\Player;
 
 class EventListener implements Listener
 {
-    private PiggyCustomEnchants $plugin;
-
-    public function __construct(PiggyCustomEnchants $plugin)
+    public function __construct(private PiggyCustomEnchants $plugin)
     {
-        $this->plugin = $plugin;
     }
 
     /**

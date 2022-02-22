@@ -18,23 +18,16 @@ use pocketmine\player\Player;
 
 class ToggleableEffectEnchant extends ToggleableEnchantment
 {
-    private Effect $effect;
-    private int $baseAmplifier;
-    private int $amplifierMultiplier;
-
     /** @var EffectInstance[] */
-    private array $previousEffect;
+    private array $previousEffect = [];
 
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, Effect $effect, int $baseAmplifier = 0, int $amplifierMultiplier = 1, int $rarity = Rarity::RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $maxLevel, int $usageType, int $itemType, private Effect $effect, private int $baseAmplifier = 0, private int $amplifierMultiplier = 1, int $rarity = Rarity::RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;
         $this->maxLevel = $maxLevel;
         $this->usageType = $usageType;
         $this->itemType = $itemType;
-        $this->effect = $effect;
-        $this->baseAmplifier = $baseAmplifier;
-        $this->amplifierMultiplier = $amplifierMultiplier;
         parent::__construct($plugin, $id);
     }
 

@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
+use pocketmine\entity\effect\Effect;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\entity\Living;
@@ -18,26 +19,18 @@ use pocketmine\player\Player;
 
 class LacedWeaponEnchant extends ReactiveEnchantment
 {
-    /** @var array */
-    private $effects;
-    /** @var array */
-    private $baseDuration;
-    /** @var array */
-    private $baseAmplifier;
-    /** @var int[] */
-    private $durationMultiplier;
-    /** @var int[] */
-    private $amplifierMultiplier;
-
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = Rarity::RARE, ?array $effects = null, array $durationMultiplier = [60], array $amplifierMultiplier = [1], array $baseDuration = [0], array $baseAmplifier = [0])
+    /**
+     * @param Effect[]|null $effects
+     * @param int[] $durationMultiplier
+     * @param int[] $amplifierMultiplier
+     * @param int[] $baseDuration
+     * @param int[] $baseAmplifier
+     */
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, int $rarity = Rarity::RARE, private ?array $effects = null, private array $durationMultiplier = [60], private array $amplifierMultiplier = [1], private array $baseDuration = [0], private array $baseAmplifier = [0])
     {
         $this->name = $name;
         $this->rarity = $rarity;
         $this->effects = $effects ?? [VanillaEffects::POISON()];
-        $this->durationMultiplier = $durationMultiplier;
-        $this->amplifierMultiplier = $amplifierMultiplier;
-        $this->baseDuration = $baseDuration;
-        $this->baseAmplifier = $baseAmplifier;
         parent::__construct($plugin, $id);
     }
 

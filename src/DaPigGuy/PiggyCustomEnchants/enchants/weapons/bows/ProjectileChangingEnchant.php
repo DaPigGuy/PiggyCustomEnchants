@@ -20,21 +20,15 @@ use pocketmine\player\Player;
 
 class ProjectileChangingEnchant extends ReactiveEnchantment
 {
-    /**
-     * @phpstan-var class-string<Entity>
-     */
-    private string $projectileType;
-
     public int $itemType = CustomEnchant::ITEM_TYPE_BOW;
 
     /**
      * @phpstan-param class-string<Entity> $projectileType
      */
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, string $projectileType, int $maxLevel = 1, int $rarity = Rarity::RARE)
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, private string $projectileType, int $maxLevel = 1, int $rarity = Rarity::RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;
-        $this->projectileType = $projectileType;
         $this->maxLevel = $maxLevel;
         parent::__construct($plugin, $id);
     }

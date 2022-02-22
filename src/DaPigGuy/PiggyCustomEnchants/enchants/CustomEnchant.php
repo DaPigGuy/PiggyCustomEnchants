@@ -14,9 +14,6 @@ use ReflectionClass;
 
 class CustomEnchant extends Enchantment
 {
-    protected PiggyCustomEnchants $plugin;
-
-    public int $id;
     public string $name = "";
     public int $rarity = Rarity::RARE;
     public int $maxLevel = 5;
@@ -58,10 +55,8 @@ class CustomEnchant extends Enchantment
     const ITEM_TYPE_BOOTS = 14;
     const ITEM_TYPE_COMPASS = 15;
 
-    public function __construct(PiggyCustomEnchants $plugin, int $id)
+    public function __construct(protected PiggyCustomEnchants $plugin, public int $id)
     {
-        $this->plugin = $plugin;
-        $this->id = $id;
         $this->rarity = array_flip(Utils::RARITY_NAMES)[ucfirst(strtolower($plugin->getEnchantmentData($this->name, "rarities", Utils::RARITY_NAMES[$this->rarity])))];
         $this->maxLevel = (int)$plugin->getEnchantmentData($this->name, "max_levels", $this->maxLevel);
         $this->displayName = (string)$plugin->getEnchantmentData($this->name, "display_names", $this->displayName ?? $this->name);
