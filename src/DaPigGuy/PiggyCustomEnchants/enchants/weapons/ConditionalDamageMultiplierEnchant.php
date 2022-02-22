@@ -15,7 +15,10 @@ use pocketmine\player\Player;
 
 class ConditionalDamageMultiplierEnchant extends ReactiveEnchantment
 {
-    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, private callable $condition, int $rarity = Rarity::RARE)
+    /**
+     * @param callable $condition
+     */
+    public function __construct(PiggyCustomEnchants $plugin, int $id, string $name, private $condition, int $rarity = Rarity::RARE)
     {
         $this->name = $name;
         $this->rarity = $rarity;
