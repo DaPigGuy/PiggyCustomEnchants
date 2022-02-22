@@ -18,4 +18,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # JetBrains IDE
-\.idea/
+\.idea
+\.dependencies

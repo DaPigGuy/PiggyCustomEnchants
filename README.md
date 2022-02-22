@@ -9,7 +9,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 
 ## Prerequisites
 * Basic knowledge on how to install plugins from Poggit Releases and/or Poggit CI
-* PMMP 4.0.0+
+* PMMP 4.2.0+
 * MCPE protocol 486 (v1.18.10)
 
 ## Installation & Setup
@@ -41,43 +41,44 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
          ```
      * `world-damage`: Toggles world damage for explosive enchantments
 3. (Optional) Install additional plugins supporting PiggyCE:
+   * [PiggyCrates](https://poggit.pmmp.io/p/PiggyCrates) (Official)
    * [PiggyCustomEnchantsShop](https://poggit.pmmp.io/p/PiggyCustomEnchantsShop) (Official)
    * [PCEAllyChecks](https://poggit.pmmp.io/p/PCEAllyChecks) (Official)
    * [PCEBookShop](https://poggit.pmmp.io/p/PCEBookShop) (Official)
    * Kits
-      * [EasyKits](https://poggit.pmmp.io/p/EasyKits) (Recommended)
+      * [EasyKits](https://poggit.pmmp.io/p/EasyKits)
       * [AdvancedKits](https://poggit.pmmp.io/p/AdvancedKits) 
       * [KitUI](https://poggit.pmmp.io/p/KitUI)
       * [KitsPlus](https://poggit.pmmp.io/p/KitsPlus)
    * [EnchantUI](https://poggit.pmmp.io/p/EnchantUI)
-6. You're done! Start your server.
+5. You're done! Start your server.
 
 ## Commands
-| Command | Description | Permissions | Aliases |
-| --- | --- | --- | --- |
-| `/customenchant` | Main command for PiggyCustomEnchants | `piggycustomenchants.command.ce` |  `/ce` |
-| `/customenchant about` | Shows version and author information | `piggycustomenchants.command.ce.about` | `/ce about` |
+| Command                  | Description                                     | Permissions                              | Aliases       |
+|--------------------------|-------------------------------------------------|------------------------------------------|---------------|
+| `/customenchant`         | Main command for PiggyCustomEnchants            | `piggycustomenchants.command.ce`         | `/ce`         |
+| `/customenchant about`   | Shows version and author information            | `piggycustomenchants.command.ce.about`   | `/ce about`   |
 | `/customenchant enchant` | Command to enchant an item with custom enchants | `piggycustomenchants.command.ce.enchant` | `/ce enchant` |
-| `/customenchant help` | Lists all PiggyCustomEnchant commands | `piggycustomenchants.command.ce.help` | `/ce help` |
-| `/customenchant info` | Gives information on a custom enchant | `piggycustomenchants.command.ce.info` | `/ce info` |
-| `/customenchant list` | Lists all PiggyCustomEnchants enchants | `piggycustomenchants.command.ce.list` | `/ce list` |
-| `/customenchant nbt` | Outputs the NBT of the held item | `piggycustomenchants.command.ce.nbt` | `/ce nbt` |
-| `/customenchant remove` | Removes a custom enchant from the held item | `piggycustomenchants.command.ce.remove` | `/ce remove` |
+| `/customenchant help`    | Lists all PiggyCustomEnchant commands           | `piggycustomenchants.command.ce.help`    | `/ce help`    |
+| `/customenchant info`    | Gives information on a custom enchant           | `piggycustomenchants.command.ce.info`    | `/ce info`    |
+| `/customenchant list`    | Lists all PiggyCustomEnchants enchants          | `piggycustomenchants.command.ce.list`    | `/ce list`    |
+| `/customenchant nbt`     | Outputs the NBT of the held item                | `piggycustomenchants.command.ce.nbt`     | `/ce nbt`     |
+| `/customenchant remove`  | Removes a custom enchant from the held item     | `piggycustomenchants.command.ce.remove`  | `/ce remove`  |
 
 ## Permissions
-| Permissions | Description | Default |
-| --- | --- | --- |
-| `piggycustomenchants` | Allows usage of all PiggyCustomEnchants features | `op` |
-| `piggycustomenchants.command` | Allow usage of all PiggyCustomEnchants commands | `op` |
-| `piggycustomenchants.command.ce` | Allow usage of the /customenchant command | `op` |
-| `piggycustomenchants.command.ce.about` | Allow usage of the /customenchant about subcommand | `true` |
-| `piggycustomenchants.command.ce.enchant` | Allow usage of the /customenchant enchant subcommand | `op` |
-| `piggycustomenchants.command.ce.help` | Allow usage of the /customenchant help subcommand | `true` |
-| `piggycustomenchants.command.ce.info` | Allow usage of the /customenchant info subcommand | `true` |
-| `piggycustomenchants.command.ce.list` | Allow usage of the /customenchant list subcommand | `true` |
-| `piggycustomenchants.command.ce.nbt` | Allow usage of the /customenchant nbt subcommand | `true` |
-| `piggycustomenchants.command.ce.remove` | Allow usage of the /customenchant remove subcommand | `op` |
-| `piggycustomenchants.overridecheck` | Allow overriding of custom enchant level limit and item restriction | `false` |
+| Permissions                              | Description                                                         | Default |
+|------------------------------------------|---------------------------------------------------------------------|---------|
+| `piggycustomenchants`                    | Allows usage of all PiggyCustomEnchants features                    | `op`    |
+| `piggycustomenchants.command`            | Allow usage of all PiggyCustomEnchants commands                     | `op`    |
+| `piggycustomenchants.command.ce`         | Allow usage of the /customenchant command                           | `op`    |
+| `piggycustomenchants.command.ce.about`   | Allow usage of the /customenchant about subcommand                  | `true`  |
+| `piggycustomenchants.command.ce.enchant` | Allow usage of the /customenchant enchant subcommand                | `op`    |
+| `piggycustomenchants.command.ce.help`    | Allow usage of the /customenchant help subcommand                   | `true`  |
+| `piggycustomenchants.command.ce.info`    | Allow usage of the /customenchant info subcommand                   | `true`  |
+| `piggycustomenchants.command.ce.list`    | Allow usage of the /customenchant list subcommand                   | `true`  |
+| `piggycustomenchants.command.ce.nbt`     | Allow usage of the /customenchant nbt subcommand                    | `true`  |
+| `piggycustomenchants.command.ce.remove`  | Allow usage of the /customenchant remove subcommand                 | `op`    |
+| `piggycustomenchants.overridecheck`      | Allow overriding of custom enchant level limit and item restriction | `false` |
 
 ## Issue Reporting
 * If you experience an unexpected non-crash behavior with PiggyCustomEnchants, click [here](https://github.com/DaPigGuy/PiggyCustomEnchants/issues/new?assignees=DaPigGuy&labels=bug&template=bug_report.md&title=).
@@ -89,10 +90,6 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
   * This includes plugins that modify PocketMine-MP's behavior directly, such as TeaSpoon.
 
 ## Additional Information
-* We do not support any spoons. Anything to do with spoons (Issues or PRs) will be ignored.
-* We are using the following virions: [Commando](https://github.com/ParoxityTeam/Commando) and [libFormAPI](https://github.com/jojoe77777/FormAPI).
-    * **Unless you know what you are doing, use the pre-compiled phar from [Poggit-CI](https://poggit.pmmp.io/ci/DaPigGuy/PiggyCustomEnchants/~) and not GitHub.**
-    * If you wish to run it via source, check out [DEVirion](https://github.com/poggit/devirion).
 * Detailed Plugin Setup, Custom Enchantment List, & API Documentation available at [PiggyDocs](https://piggydocs.aericio.net/PiggyCustomEnchants.html).
 
 ## License

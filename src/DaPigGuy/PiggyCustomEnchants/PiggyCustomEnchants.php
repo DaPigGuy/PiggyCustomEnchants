@@ -6,6 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants;
 
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\PacketHooker;
+use DaPigGuy\libPiggyUpdateChecker\libPiggyUpdateChecker;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
@@ -104,7 +105,7 @@ class PiggyCustomEnchants extends PluginBase
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getScheduler()->scheduleRepeatingTask(new TickEnchantmentsTask($this), 1);
 
-        $this->getServer()->getAsyncPool()->submitTask(new CheckUpdatesTask());
+        libPiggyUpdateChecker::init($this);
         if ($this->getConfig()->get("remote-disable", true) === true) $this->getServer()->getAsyncPool()->submitTask(new CheckDisabledEnchantsTask());
     }
 
