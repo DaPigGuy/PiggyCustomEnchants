@@ -19,7 +19,6 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use DaPigGuy\PiggyCustomEnchants\tasks\CheckDisabledEnchantsTask;
-use DaPigGuy\PiggyCustomEnchants\tasks\CheckUpdatesTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
 use jojoe77777\FormAPI\Form;
 use pocketmine\block\BlockFactory;
@@ -45,7 +44,8 @@ class PiggyCustomEnchants extends PluginBase
         foreach (
             [
                 "Commando" => BaseCommand::class,
-                "libformapi" => Form::class
+                "libformapi" => Form::class,
+                "libPiggyUpdateChecker" => libPiggyUpdateChecker::class
             ] as $virion => $class
         ) {
             if (!class_exists($class)) {
