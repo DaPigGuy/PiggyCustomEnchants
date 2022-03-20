@@ -13,10 +13,11 @@ use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
+use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use Ramsey\Uuid\Uuid;
 
 class EnchantSubCommand extends BaseSubCommand
 {
@@ -29,7 +30,6 @@ class EnchantSubCommand extends BaseSubCommand
             $this->onRunForm($sender, $aliasUsed, $args);
             return;
         }
-
         if ((!$sender instanceof Player && empty($args["player"])) || !isset($args["enchantment"])) {
             $sender->sendMessage("Usage: /ce enchant <enchantment> <level> <player>");
             return;
@@ -67,6 +67,9 @@ class EnchantSubCommand extends BaseSubCommand
                 $sender->sendMessage(TextFormat::RED . "This enchant is not compatible with another enchant.");
                 return;
             }
+        }
+        if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
+            $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
         }
         $item->addEnchantment(new EnchantmentInstance($enchant, $args["level"]));
         $sender->sendMessage(TextFormat::GREEN . "Item successfully enchanted.");
@@ -110,6 +113,9 @@ class EnchantSubCommand extends BaseSubCommand
                             Utils::errorForm($player, TextFormat::RED . "This enchant is not compatible with another enchant.");
                             return;
                         }
+                    }
+                    if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
+                        $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
                     }
                     $item->addEnchantment(new EnchantmentInstance($enchant, (int)$data[1]));
                     $player->sendMessage(TextFormat::GREEN . "Item successfully enchanted.");

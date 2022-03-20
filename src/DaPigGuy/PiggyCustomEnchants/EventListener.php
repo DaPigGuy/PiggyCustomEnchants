@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
@@ -39,8 +40,8 @@ use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
@@ -218,7 +219,7 @@ class EventListener implements Listener
          */
         $onContent = function (Inventory $inventory, array $oldContents) use ($onSlot): void {
             foreach ($oldContents as $slot => $oldItem) {
-                if (!($oldItem ?? ItemFactory::air())->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
+                if (!($oldItem ?? VanillaItems::AIR())->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
                     $onSlot($inventory, $slot, $oldItem);
                 }
             }
@@ -301,23 +302,32 @@ class EventListener implements Listener
         $actions = array_values($transaction->getActions());
         if (count($actions) === 2) {
             foreach ($actions as $i => $action) {
-                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR) {
+                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR && ($itemClicked->getId() !== ItemIds::ENCHANTED_BOOK || count($itemClicked->getEnchantments()) < count($itemClickedWith->getEnchantments()))) {
                     if (count($itemClickedWith->getEnchantments()) < 1) return;
                     $enchantmentSuccessful = false;
                     foreach ($itemClickedWith->getEnchantments() as $enchantment) {
+                        $enchantmentType = $enchantment->getType();
                         $newLevel = $enchantment->getLevel();
-                        if (($existingEnchant = $itemClicked->getEnchantment($enchantment->getType())) !== null) {
+                        if (($existingEnchant = $itemClicked->getEnchantment($enchantmentType)) !== null) {
                             if ($existingEnchant->getLevel() > $newLevel) continue;
                             $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
                         }
-                        if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $newLevel) || ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0)) continue;
-                        $itemClicked->addEnchantment(new EnchantmentInstance($enchantment->getType(), $enchantment->getLevel()));
-                        $action->getInventory()->setItem($action->getSlot(), $itemClicked);
+                        if (
+                            ($enchantmentType instanceof CustomEnchant &&
+                                (!Utils::itemMatchesItemType($itemClicked, $enchantmentType->getItemType()) || !Utils::checkEnchantIncompatibilities($itemClicked, $enchantmentType))
+                            ) ||
+                            $itemClicked->getCount() !== 1 ||
+                            $newLevel > $enchantmentType->getMaxLevel() ||
+                            ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0) ||
+                            $itemClicked->getId() === ItemIds::BOOK
+                        ) continue;
+                        $itemClicked->addEnchantment(new EnchantmentInstance($enchantmentType, $newLevel));
                         $enchantmentSuccessful = true;
                     }
                     if ($enchantmentSuccessful) {
                         $event->cancel();
-                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
+                        $action->getInventory()->setItem($action->getSlot(), $itemClicked);
+                        $otherAction->getInventory()->setItem($otherAction->getSlot(), VanillaItems::AIR());
                     }
                 }
             }
