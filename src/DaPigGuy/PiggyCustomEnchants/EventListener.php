@@ -302,15 +302,21 @@ class EventListener implements Listener
         $actions = array_values($transaction->getActions());
         if (count($actions) === 2) {
             foreach ($actions as $i => $action) {
-                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR && ($itemClicked->getId() !== ItemIds::ENCHANTED_BOOK || count($itemClicked->getEnchantments()) < count($itemClickedWith->getEnchantments()))) {
+                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR && ($itemClicked->getId() !== ItemIds::ENCHANTED_BOOK || count($itemClicked->getEnchantments()) >= count($itemClickedWith->getEnchantments()))) {
                     if (count($itemClickedWith->getEnchantments()) < 1) return;
                     $enchantmentSuccessful = false;
                     foreach ($itemClickedWith->getEnchantments() as $enchantment) {
                         $enchantmentType = $enchantment->getType();
                         $newLevel = $enchantment->getLevel();
+                        $willChange = false;
                         if (($existingEnchant = $itemClicked->getEnchantment($enchantmentType)) !== null) {
                             if ($existingEnchant->getLevel() > $newLevel) continue;
-                            $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
+                            if ($existingEnchant->getLevel() === $newLevel) {
+                                $newLevel++;
+                                $willChange = true;
+                            }
+                        } else {
+                            $willChange = true;
                         }
                         if (
                             ($enchantmentType instanceof CustomEnchant &&
@@ -322,7 +328,7 @@ class EventListener implements Listener
                             $itemClicked->getId() === ItemIds::BOOK
                         ) continue;
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantmentType, $newLevel));
-                        $enchantmentSuccessful = true;
+                        if ($willChange) $enchantmentSuccessful = true;
                     }
                     if ($enchantmentSuccessful) {
                         $event->cancel();
