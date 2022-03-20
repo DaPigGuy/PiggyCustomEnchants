@@ -306,8 +306,9 @@ class EventListener implements Listener
                     if (count($itemClickedWith->getEnchantments()) < 1) return;
                     $enchantmentSuccessful = false;
                     foreach ($itemClickedWith->getEnchantments() as $enchantment) {
+                        $enchantmentType = $enchantment->getType();
                         $newLevel = $enchantment->getLevel();
-                        if (($existingEnchant = $itemClicked->getEnchantment($enchantment->getType())) !== null) {
+                        if (($existingEnchant = $itemClicked->getEnchantment($enchantmentType)) !== null) {
                             if ($existingEnchant->getLevel() > $newLevel) continue;
                             $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
                         }
@@ -316,10 +317,10 @@ class EventListener implements Listener
                                 (!Utils::itemMatchesItemType($itemClicked, $enchantment->getItemType()) || !Utils::checkEnchantIncompatibilities($itemClicked, $enchantment))
                             ) ||
                             $itemClicked->getCount() !== 1 ||
-                            $newLevel > $enchantment->getType()->getMaxLevel() ||
+                            $newLevel > $enchantmentType->getMaxLevel() ||
                             ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0)
                         ) continue;
-                        $itemClicked->addEnchantment(new EnchantmentInstance($enchantment->getType(), $newLevel));
+                        $itemClicked->addEnchantment(new EnchantmentInstance($enchantmentType, $newLevel));
                         $action->getInventory()->setItem($action->getSlot(), $itemClicked);
                         $enchantmentSuccessful = true;
                     }
