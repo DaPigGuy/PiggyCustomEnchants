@@ -313,8 +313,8 @@ class EventListener implements Listener
                             $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
                         }
                         if (
-                            ($enchantment instanceof CustomEnchant &&
-                                (!Utils::itemMatchesItemType($itemClicked, $enchantment->getItemType()) || !Utils::checkEnchantIncompatibilities($itemClicked, $enchantment))
+                            ($enchantmentType instanceof CustomEnchant &&
+                                (!Utils::itemMatchesItemType($itemClicked, $enchantmentType->getItemType()) || !Utils::checkEnchantIncompatibilities($itemClicked, $enchantmentType))
                             ) ||
                             $itemClicked->getCount() !== 1 ||
                             $newLevel > $enchantmentType->getMaxLevel() ||
