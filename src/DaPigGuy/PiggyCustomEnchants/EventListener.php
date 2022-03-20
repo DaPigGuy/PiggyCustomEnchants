@@ -302,7 +302,7 @@ class EventListener implements Listener
         $actions = array_values($transaction->getActions());
         if (count($actions) === 2) {
             foreach ($actions as $i => $action) {
-                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR) {
+                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR && ($itemClicked->getId() !== ItemIds::ENCHANTED_BOOK || count($itemClicked->getEnchantments()) < count($itemClickedWith->getEnchantments()))) {
                     if (count($itemClickedWith->getEnchantments()) < 1) return;
                     $enchantmentSuccessful = false;
                     foreach ($itemClickedWith->getEnchantments() as $enchantment) {
@@ -318,14 +318,15 @@ class EventListener implements Listener
                             ) ||
                             $itemClicked->getCount() !== 1 ||
                             $newLevel > $enchantmentType->getMaxLevel() ||
-                            ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0)
+                            ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0) ||
+                            $itemClicked->getId() === ItemIds::BOOK
                         ) continue;
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantmentType, $newLevel));
-                        $action->getInventory()->setItem($action->getSlot(), $itemClicked);
                         $enchantmentSuccessful = true;
                     }
                     if ($enchantmentSuccessful) {
                         $event->cancel();
+                        $action->getInventory()->setItem($action->getSlot(), $itemClicked);
                         $otherAction->getInventory()->setItem($otherAction->getSlot(), VanillaItems::AIR());
                     }
                 }
