@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants;
 
+use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
@@ -310,7 +311,14 @@ class EventListener implements Listener
                             if ($existingEnchant->getLevel() > $newLevel) continue;
                             $newLevel = $existingEnchant->getLevel() === $newLevel ? $newLevel + 1 : $newLevel;
                         }
-                        if (!Utils::canBeEnchanted($itemClicked, $enchantment->getType(), $newLevel) || ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0)) continue;
+                        if (
+                            (($enchantment instanceof CustomEnchant && (
+                                    !Utils::itemMatchesItemType($itemClicked, $enchantment->getItemType()) || !Utils::checkEnchantIncompatibilities($itemClicked, $enchantment)))
+                            ) ||
+                            $itemClicked->getCount() !== 1 ||
+                            $newLevel > $enchantment->getType()->getMaxLevel() ||
+                            ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0)
+                        ) continue;
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantment->getType(), $newLevel));
                         $action->getInventory()->setItem($action->getSlot(), $itemClicked);
                         $enchantmentSuccessful = true;

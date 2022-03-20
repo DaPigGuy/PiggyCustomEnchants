@@ -68,9 +68,9 @@ class EnchantSubCommand extends BaseSubCommand
                 return;
             }
         }
-	    if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
-		    $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
-	    }
+        if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
+            $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
+        }
         $item->addEnchantment(new EnchantmentInstance($enchant, $args["level"]));
         $sender->sendMessage(TextFormat::GREEN . "Item successfully enchanted.");
         $target->getInventory()->setItemInHand($item);
@@ -114,9 +114,9 @@ class EnchantSubCommand extends BaseSubCommand
                             return;
                         }
                     }
-	                if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
-		                $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
-	                }
+                    if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
+                        $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
+                    }
                     $item->addEnchantment(new EnchantmentInstance($enchant, (int)$data[1]));
                     $player->sendMessage(TextFormat::GREEN . "Item successfully enchanted.");
                     $target->getInventory()->setItemInHand($item);
