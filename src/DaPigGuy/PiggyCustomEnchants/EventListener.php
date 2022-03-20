@@ -39,8 +39,8 @@ use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
 use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
 use pocketmine\network\mcpe\protocol\InventoryTransactionPacket;
@@ -218,7 +218,7 @@ class EventListener implements Listener
          */
         $onContent = function (Inventory $inventory, array $oldContents) use ($onSlot): void {
             foreach ($oldContents as $slot => $oldItem) {
-                if (!($oldItem ?? ItemFactory::air())->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
+                if (!($oldItem ?? VanillaItems::AIR())->equals($inventory->getItem($slot), !$inventory instanceof ArmorInventory)) {
                     $onSlot($inventory, $slot, $oldItem);
                 }
             }
@@ -317,7 +317,7 @@ class EventListener implements Listener
                     }
                     if ($enchantmentSuccessful) {
                         $event->cancel();
-                        $otherAction->getInventory()->setItem($otherAction->getSlot(), ItemFactory::air());
+                        $otherAction->getInventory()->setItem($otherAction->getSlot(), VanillaItems::AIR());
                     }
                 }
             }
