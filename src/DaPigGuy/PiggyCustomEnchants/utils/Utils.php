@@ -16,6 +16,7 @@ use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Arrow;
 use pocketmine\entity\projectile\Projectile;
+use pocketmine\inventory\ArmorInventory;
 use pocketmine\item\Armor;
 use pocketmine\item\Axe;
 use pocketmine\item\Bow;
@@ -108,22 +109,22 @@ class Utils
 
     public static function isHelmet(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_CAP, ItemIds::CHAIN_HELMET, ItemIds::IRON_HELMET, ItemIds::GOLD_HELMET, ItemIds::DIAMOND_HELMET], true);
+        return $item instanceof Armor && $item->getArmorSlot() === ArmorInventory::SLOT_HEAD;
     }
 
     public static function isChestplate(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_TUNIC, ItemIds::CHAIN_CHESTPLATE, ItemIds::IRON_CHESTPLATE, ItemIds::GOLD_CHESTPLATE, ItemIds::DIAMOND_CHESTPLATE, ItemIds::ELYTRA], true);
+        return $item instanceof Armor && $item->getArmorSlot() === ArmorInventory::SLOT_CHEST;
     }
 
     public static function isLeggings(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_PANTS, ItemIds::CHAIN_LEGGINGS, ItemIds::IRON_LEGGINGS, ItemIds::GOLD_LEGGINGS, ItemIds::DIAMOND_LEGGINGS], true);
+        return $item instanceof Armor && $item->getArmorSlot() === ArmorInventory::SLOT_LEGS;
     }
 
     public static function isBoots(Item $item): bool
     {
-        return in_array($item->getId(), [ItemIds::LEATHER_BOOTS, ItemIds::CHAIN_BOOTS, ItemIds::IRON_BOOTS, ItemIds::GOLD_BOOTS, ItemIds::DIAMOND_BOOTS], true);
+        return $item instanceof Armor && $item->getArmorSlot() === ArmorInventory::SLOT_FEET;
     }
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
