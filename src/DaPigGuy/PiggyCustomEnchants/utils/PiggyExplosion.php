@@ -8,34 +8,26 @@ use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
 use pocketmine\block\TNT;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\block\BlockUpdateEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityExplodeEvent;
 use pocketmine\math\AxisAlignedBB;
-use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\world\Explosion;
 use pocketmine\world\particle\HugeExplodeSeedParticle;
 use pocketmine\world\Position;
 use pocketmine\world\sound\ExplodeSound;
-use pocketmine\world\World;
 
 class PiggyExplosion extends Explosion
 {
-    protected Player $player;
-
-    public function __construct(Position $center, float $size, Player $what)
+    public function __construct(Position $center, float $size, protected Player $player, protected bool $entityDamage = true)
     {
-        parent::__construct($center, $size, $what);
-        $this->player = $what;
+        parent::__construct($center, $size, $this->player);
     }
 
     public function explodeB(): bool
     {
-        $updateBlocks = [];
-
         $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
         $yield = (1 / $this->size) * 100;
 
@@ -62,7 +54,7 @@ class PiggyExplosion extends Explosion
             $entityPos = $entity->getPosition();
             $distance = $entityPos->distance($this->source) / $explosionSize;
 
-            if ($distance <= 1) {
+            if ($distance <= 1 && $this->entityDamage) {
                 $motion = $entityPos->subtractVector($this->source)->normalize();
                 $impact = (1 - $distance);
                 $damage = (int)((($impact * $impact + $impact) / 2) * 8 * $explosionSize + 1);

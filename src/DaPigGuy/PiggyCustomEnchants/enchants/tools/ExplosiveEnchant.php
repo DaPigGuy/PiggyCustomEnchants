@@ -28,13 +28,13 @@ class ExplosiveEnchant extends RecursiveEnchant
 
     public function getDefaultExtraData(): array
     {
-        return ["sizeMultiplier" => 5];
+        return ["sizeMultiplier" => 5, "entityDamage" => true];
     }
 
     public function safeReact(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            $explosion = new PiggyExplosion($event->getBlock()->getPosition(), $level * $this->extraData["sizeMultiplier"], $player);
+            $explosion = new PiggyExplosion($event->getBlock()->getPosition(), $level * $this->extraData["sizeMultiplier"], $player, $this->extraData["entityDamage"]);
             $explosion->explodeA();
             $explosion->explodeB();
         }
