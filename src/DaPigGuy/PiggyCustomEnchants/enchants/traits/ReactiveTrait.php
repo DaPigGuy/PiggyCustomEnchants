@@ -41,8 +41,9 @@ trait ReactiveTrait
         if (isset($perWorldDisabledEnchants[$player->getWorld()->getFolderName()]) && in_array(strtolower($this->name), $perWorldDisabledEnchants[$player->getWorld()->getFolderName()])) return;
         if ($this->getCooldown($player) > 0) return;
         if ($event instanceof EntityDamageByEntityEvent) {
-            if ($event->getEntity() === $player && $event->getDamager() !== $player && $this->shouldReactToDamage()) return;
-            if ($event->getEntity() !== $player && $this->shouldReactToDamaged()) return;
+            if ($event->getEntity() === $player) {
+                if ($event->getDamager() !== $player && !$this->shouldReactToDamaged()) return;
+            } elseif (!$this->shouldReactToDamage()) return;
         }
         if (mt_rand(0 * 100000, 100 * 100000) / 100000 <= $this->getChance($player, $level)) {
             $this->react($player, $item, $inventory, $slot, $event, $level, $stack);
