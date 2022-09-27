@@ -38,7 +38,11 @@ class ShieldedEnchant extends ToggleableEnchantment
             }
         }
         $player->getEffects()->remove(VanillaEffects::RESISTANCE());
-        $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 2147483647, $this->getStack($player) - 1, false));
+
+        $amplifier = $this->getStack($player) - 1;
+        if ($amplifier < 0) $amplifier = 0;
+
+        $player->getEffects()->add(new EffectInstance(VanillaEffects::RESISTANCE(), 2147483647, $amplifier, false));
     }
 
     public function canEffectsStack(): bool
