@@ -39,7 +39,9 @@ class PiggyLightning extends Entity
             }
         }
         if ($this->getWorld()->getBlock($this->location)->canBeFlowedInto() && CustomEnchantManager::getPlugin()->getConfig()->getNested("world-damage.lightning", false) === true) {
-            $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());
+            if ($this->getWorld()->getMaxY() > $this->location->getY() && $this->getWorld()->getMinY() < $this->location->getY()) {
+                $this->getWorld()->setBlock($this->location, VanillaBlocks::FIRE());
+            } // otherwise OutOfBounds!
         }
         if ($this->age > 20) $this->flagForDespawn();
         return parent::entityBaseTick($tickDiff);
