@@ -2,7 +2,7 @@ name: PiggyCustomEnchants
 main: DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants
 version: 3.0.7
 api: 4.2.0
-mcpe-protocol: [ 554 ]
+mcpe-protocol: [ 554, 557 ]
 load: POSTWORLD
 author: DaPigGuy
 website: "https://github.com/DaPigGuy/PiggyCustomEnchants/"
