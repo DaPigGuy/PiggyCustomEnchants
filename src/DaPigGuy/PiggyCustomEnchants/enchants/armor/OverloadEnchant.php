@@ -27,7 +27,10 @@ class OverloadEnchant extends ToggleableEnchantment
 
     public function toggle(Player $player, Item $item, Inventory $inventory, int $slot, int $level, bool $toggle): void
     {
-        $player->setMaxHealth($player->getMaxHealth() + $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1));
-        $player->setHealth($player->getHealth() * ($player->getMaxHealth() / ($player->getMaxHealth() - $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1))));
+        $maxHealth = $player->getMaxHealth() + $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1);
+        $health = $player->getHealth() * ($player->getMaxHealth() / ($player->getMaxHealth() - $this->extraData["multiplier"] * $level * ($toggle ? 1 : -1)));
+
+        $player->setMaxHealth(max($maxHealth, 1));
+        $player->setHealth(max($health, 0));
     }
 }
