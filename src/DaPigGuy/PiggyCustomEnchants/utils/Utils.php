@@ -200,7 +200,12 @@ class Utils
 
     public static function filterDisplayedEnchants(ItemStack $itemStack): ItemStack
     {
-        $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
+        try {
+            $item = TypeConverter::getInstance()->netItemStackToCore($itemStack);
+        } catch (\Exception $e) {
+            CustomEnchantManager::getPlugin()->getLogger()->error($e->getMessage());
+            return new ItemStack(0, 0, 0, 0, null, [], [], null);
+        }
         $tag = $item->getNamedTag();
         if (count($item->getEnchantments()) > 0) $tag->removeTag(Item::TAG_DISPLAY);
         if ($tag->getTag("OriginalDisplayTag") instanceof CompoundTag) {
