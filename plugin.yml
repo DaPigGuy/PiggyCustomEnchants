@@ -1,6 +1,6 @@
 name: PiggyCustomEnchants
 main: DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants
-version: 3.0.9
+version: 3.0.10
 api: 4.2.0
 mcpe-protocol: [ 560, 567 ]
 load: POSTWORLD
