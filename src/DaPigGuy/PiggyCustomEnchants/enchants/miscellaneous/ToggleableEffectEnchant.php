@@ -53,7 +53,8 @@ class ToggleableEffectEnchant extends ToggleableEnchantment
             }
         }
         $player->getEffects()->remove($this->effect);
-        $player->getEffects()->add(new EffectInstance($this->effect, 2147483647, $this->extraData["baseAmplifier"] + $this->extraData["amplifierMultiplier"] * $level, false));
+        $amplifier = $this->extraData["baseAmplifier"] + $this->extraData["amplifierMultiplier"] * $level;
+        $player->getEffects()->add(new EffectInstance($this->effect, 2147483647, min($amplifier, 255), false));
     }
 
     public function getUsageType(): int
