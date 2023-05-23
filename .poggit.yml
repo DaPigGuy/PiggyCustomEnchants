@@ -7,8 +7,8 @@ projects:
     path: ""
     icon: "resources/PCE_Icon.png"
     libs:
-      - src: DaPigGuy/FormAPI-4.0.0/libFormAPI
-        version: ^2.1.0
+      - src: jojoe77777/FormAPI/libFormAPI
+        version: ^2.1.1
       - src: Paroxity/Commando/Commando
         version: ^3.0.0
       - src: DaPigGuy/libPiggyUpdateChecker/libPiggyUpdateChecker
