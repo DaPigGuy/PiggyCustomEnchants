@@ -8,6 +8,7 @@ use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\PacketHooker;
 use DaPigGuy\libPiggyUpdateChecker\libPiggyUpdateChecker;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
+use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidianBlock;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
@@ -18,17 +19,26 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
+use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
 use DaPigGuy\PiggyCustomEnchants\tasks\CheckDisabledEnchantsTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
-use pocketmine\block\BlockFactory;
+use pocketmine\block\Block;
+use pocketmine\block\RuntimeBlockStateRegistry;
 use pocketmine\color\Color;
+use pocketmine\data\bedrock\block\BlockTypeNames;
 use pocketmine\data\bedrock\EffectIdMap;
+use pocketmine\data\bedrock\item\ItemTypeNames;
+use pocketmine\data\bedrock\item\SavedItemData;
 use pocketmine\entity\effect\Effect;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
+use pocketmine\item\Item;
+use pocketmine\item\StringToItemParser;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
+use pocketmine\world\format\io\GlobalBlockStateHandlers;
+use pocketmine\world\format\io\GlobalItemDataHandlers;
 use pocketmine\world\World;
 use Vecnavium\FormsUI\Form;
 
@@ -65,9 +75,9 @@ class PiggyCustomEnchants extends PluginBase
 
         CustomEnchantManager::init($this);
 
-        BlockFactory::getInstance()->register(new PiggyObsidian(), true);
+        self::registerItemsAndBlocks();
 
-        //TODO: Use real effect
+        // TODO: Use real effect
         self::$SLOW_FALL = new Effect("%potion.slowFalling", new Color(206, 255, 255));
         EffectIdMap::getInstance()->register(27, self::$SLOW_FALL);
 
@@ -148,5 +158,39 @@ class PiggyCustomEnchants extends PluginBase
     public function areFormsEnabled(): bool
     {
         return $this->getConfig()->getNested("forms.enabled", true);
+    }
+
+    private static function registerItemsAndBlocks(): void
+    {
+        self::registerItem(ItemTypeNames::ENCHANTED_BOOK, EnchantedBook::ENCHANTED_BOOK(), ["enchanted_book"]);
+        self::registerBlock(BlockTypeNames::OBSIDIAN, PiggyObsidian::PIGGY_OBSIDIAN(), ["obsidian"]);
+    }
+
+    /**
+     * @param string[] $stringToItemParserNames
+     */
+    private static function registerBlock(string $id, Block $block, array $stringToItemParserNames): void
+    {
+        RuntimeBlockStateRegistry::getInstance()->register($block);
+
+        GlobalBlockStateHandlers::getDeserializer()->mapSimple($id, fn() => clone $block);
+        GlobalBlockStateHandlers::getSerializer()->mapSimple($block, $id);
+
+        foreach ($stringToItemParserNames as $name) {
+            StringToItemParser::getInstance()->registerBlock($name, fn() => clone $block);
+        }
+    }
+
+    /**
+     * @param string[] $stringToItemParserNames
+     */
+    private static function registerItem(string $id, Item $item, array $stringToItemParserNames): void
+    {
+        GlobalItemDataHandlers::getDeserializer()->map($id, fn() => clone $item);
+        GlobalItemDataHandlers::getSerializer()->map($item, fn() => new SavedItemData($id));
+
+        foreach ($stringToItemParserNames as $name) {
+            StringToItemParser::getInstance()->register($name, fn() => clone $item);
+        }
     }
 }

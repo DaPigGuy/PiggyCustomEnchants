@@ -5,66 +5,40 @@ namespace DaPigGuy\PiggyCustomEnchants\blocks;
 use pocketmine\block\Block;
 use pocketmine\block\BlockBreakInfo;
 use pocketmine\block\BlockIdentifier;
-use pocketmine\block\BlockLegacyIds;
-use pocketmine\block\VanillaBlocks;
-use pocketmine\item\Item;
-use pocketmine\player\Player;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\block\BlockTypeInfo;
+use pocketmine\utils\CloningRegistryTrait;
 
-class PiggyObsidian extends Block
+/**
+ * @method static PiggyObsidianBlock PIGGY_OBSIDIAN()
+ */
+final class PiggyObsidian
 {
-    private int $age = 0;
+    use CloningRegistryTrait;
 
-    public function __construct()
+    private function __construct()
     {
-        parent::__construct(new BlockIdentifier(BlockLegacyIds::OBSIDIAN, 15), "Magmawalker Obsidian", BlockBreakInfo::instant());
+        //NOOP
     }
 
-    public function onScheduledUpdate(): void
+    protected static function register(string $name, Block $block): void
     {
-        if (mt_rand(0, 3) === 0 || $this->countNeighbors() < 4) {
-            $this->slightlyMelt(true);
-        } else {
-            $this->getPosition()->getWorld()->scheduleDelayedBlockUpdate($this->getPosition(), mt_rand(20, 40));
-        }
+        self::_registryRegister($name, $block);
     }
 
-    public function onBreak(Item $item, Player $player = null): bool
+    /**
+     * @return Block[]
+     * @phpstan-return array<string, Block>
+     */
+    public static function getAll(): array
     {
-        $this->getPosition()->getWorld()->setBlock($this->getPosition(), VanillaBlocks::LAVA());
-        return true;
+        /** @var Block[] $result */
+        $result = self::_registryGetAll();
+        return $result;
     }
 
-    public function getDrops(Item $item): array
+    protected static function setup(): void
     {
-        return [];
-    }
-
-    public function countNeighbors(): int
-    {
-        $i = 0;
-        foreach ($this->getAllSides() as $block) {
-            if ($block instanceof PiggyObsidian) {
-                $i++;
-                if ($i >= 4) return $i;
-            }
-        }
-        return $i;
-    }
-
-    public function slightlyMelt(bool $meltNeighbors): void
-    {
-        if ($this->age < 3) {
-            $this->age++;
-            $this->getPosition()->getWorld()->scheduleDelayedBlockUpdate($this->getPosition(), mt_rand(20, 40));
-        } else {
-            $this->getPosition()->getWorld()->useBreakOn($this->getPosition());
-            if ($meltNeighbors) {
-                foreach ($this->getAllSides() as $block) {
-                    if ($block instanceof PiggyObsidian) {
-                        $block->slightlyMelt(false);
-                    }
-                }
-            }
-        }
+        self::register("obsidian", new PiggyObsidianBlock(new BlockIdentifier(BlockTypeIds::newId(), 15), "Magmawalker Obsidian", new BlockTypeInfo(BlockBreakInfo::instant())));
     }
 }
