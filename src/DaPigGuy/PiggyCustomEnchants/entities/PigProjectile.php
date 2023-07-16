@@ -17,6 +17,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\types\entity\Attribute as NetworkAttribute;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\network\mcpe\protocol\types\entity\PropertySyncData;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 
@@ -103,17 +104,20 @@ class PigProjectile extends PiggyProjectile
     protected function sendSpawnPacket(Player $player): void
     {
         $player->getNetworkSession()->sendDataPacket(AddActorPacket::create(
-            $this->getId(), $this->getId(),
+            $this->getId(),
+            $this->getId(),
             $this->isZombie() ? EntityIds::ZOMBIE_PIGMAN : EntityIds::PIG,
             $this->getPosition()->asVector3(),
             $this->getMotion(),
             $this->location->pitch,
             $this->location->yaw,
             $this->location->yaw,
+            $this->location->yaw,
             array_map(function (Attribute $attr): NetworkAttribute {
-                return new NetworkAttribute($attr->getId(), $attr->getMinValue(), $attr->getMaxValue(), $attr->getValue(), $attr->getDefaultValue());
+                return new NetworkAttribute($attr->getId(), $attr->getMinValue(), $attr->getMaxValue(), $attr->getValue(), $attr->getDefaultValue(), []);
             }, $this->attributeMap->getAll()),
             $this->getAllNetworkData(),
+            new PropertySyncData([], []),
             []
         ));
     }
