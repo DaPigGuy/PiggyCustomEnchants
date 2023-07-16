@@ -11,13 +11,13 @@ use CortexPE\Commando\exception\ArgumentOrderException;
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
-use jojoe77777\FormAPI\CustomForm;
 use pocketmine\command\CommandSender;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\ItemIds;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use Ramsey\Uuid\Uuid;
+use Vecnavium\FormsUI\CustomForm;
 
 class EnchantSubCommand extends BaseSubCommand
 {

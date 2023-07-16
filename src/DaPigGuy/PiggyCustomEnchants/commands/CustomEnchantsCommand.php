@@ -13,10 +13,10 @@ use DaPigGuy\PiggyCustomEnchants\commands\subcommands\ListSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\NBTSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\RemoveSubCommand;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use Vecnavium\FormsUI\SimpleForm;
 
 class CustomEnchantsCommand extends BaseCommand
 {

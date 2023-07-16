@@ -20,7 +20,6 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
 use DaPigGuy\PiggyCustomEnchants\tasks\CheckDisabledEnchantsTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
-use jojoe77777\FormAPI\Form;
 use pocketmine\block\BlockFactory;
 use pocketmine\color\Color;
 use pocketmine\data\bedrock\EffectIdMap;
@@ -31,6 +30,7 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\world\World;
+use Vecnavium\FormsUI\Form;
 
 class PiggyCustomEnchants extends PluginBase
 {
@@ -44,7 +44,7 @@ class PiggyCustomEnchants extends PluginBase
         foreach (
             [
                 "Commando" => BaseCommand::class,
-                "libformapi" => Form::class,
+                "FormsUI" => Form::class,
                 "libPiggyUpdateChecker" => libPiggyUpdateChecker::class
             ] as $virion => $class
         ) {
