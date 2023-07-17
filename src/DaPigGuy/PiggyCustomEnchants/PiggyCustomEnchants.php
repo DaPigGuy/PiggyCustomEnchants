@@ -8,7 +8,6 @@ use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\PacketHooker;
 use DaPigGuy\libPiggyUpdateChecker\libPiggyUpdateChecker;
 use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
-use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidianBlock;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;

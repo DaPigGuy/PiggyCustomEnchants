@@ -11,6 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
+use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
 use InvalidArgumentException;
 use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Arrow;
@@ -25,7 +26,7 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Hoe;
 use pocketmine\item\Item;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\item\Pickaxe;
 use pocketmine\item\Shears;
 use pocketmine\item\Shovel;
@@ -129,7 +130,7 @@ class Utils
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
-        if ($item->getId() === ItemIds::BOOK || $item->getId() === ItemIds::ENCHANTED_BOOK) return true;
+        if ($item->getTypeId() === ItemTypeIds::BOOK || $item->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId()) return true;
         return match ($itemType) {
             CustomEnchant::ITEM_TYPE_GLOBAL => true,
             CustomEnchant::ITEM_TYPE_DAMAGEABLE => $item instanceof Durable,
@@ -141,7 +142,8 @@ class Utils
             CustomEnchant::ITEM_TYPE_AXE => $item instanceof Axe,
             CustomEnchant::ITEM_TYPE_SHOVEL => $item instanceof Shovel,
             CustomEnchant::ITEM_TYPE_HOE => $item instanceof Hoe,
-            CustomEnchant::ITEM_TYPE_ARMOR => $item instanceof Armor || $item->getId() === ItemIds::ELYTRA,
+            // TODO: $item->getTypeId() === ItemTypeIds::ELYTRA
+            CustomEnchant::ITEM_TYPE_ARMOR => $item instanceof Armor,
             CustomEnchant::ITEM_TYPE_HELMET => self::isHelmet($item),
             CustomEnchant::ITEM_TYPE_CHESTPLATE => self::isChestplate($item),
             CustomEnchant::ITEM_TYPE_LEGGINGS => self::isLeggings($item),

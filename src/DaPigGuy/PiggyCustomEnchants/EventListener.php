@@ -11,9 +11,10 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\tools\DrillerEnchant;
 use DaPigGuy\PiggyCustomEnchants\entities\BombardmentTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
+use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
-use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\BlockTypeIds;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\entity\EntityBlockChangeEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -40,7 +41,7 @@ use pocketmine\inventory\PlayerInventory;
 use pocketmine\inventory\transaction\action\SlotChangeAction;
 use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\item\Item;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\item\VanillaItems;
 use pocketmine\network\mcpe\protocol\InventoryContentPacket;
 use pocketmine\network\mcpe\protocol\InventorySlotPacket;
@@ -208,8 +209,8 @@ class EventListener implements Listener
                 $holder = $inventory->getHolder();
                 if ($holder instanceof Player) {
                     if (!$oldItem->equals(($newItem = $inventory->getItem($slot)), !$inventory instanceof ArmorInventory)) {
-                        if ($newItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($oldItem->getEnchantments() as $oldEnchantment) ToggleableEnchantment::attemptToggle($holder, $oldItem, $oldEnchantment, $inventory, $slot, false);
-                        if ($oldItem->getId() === ItemIds::AIR || $inventory instanceof ArmorInventory) foreach ($newItem->getEnchantments() as $newEnchantment) ToggleableEnchantment::attemptToggle($holder, $newItem, $newEnchantment, $inventory, $slot);
+                        if ($newItem->getStateId() === BlockTypeIds::AIR || $inventory instanceof ArmorInventory) foreach ($oldItem->getEnchantments() as $oldEnchantment) ToggleableEnchantment::attemptToggle($holder, $oldItem, $oldEnchantment, $inventory, $slot, false);
+                        if ($oldItem->getStateId() === BlockTypeIds::AIR || $inventory instanceof ArmorInventory) foreach ($newItem->getEnchantments() as $newEnchantment) ToggleableEnchantment::attemptToggle($holder, $newItem, $newEnchantment, $inventory, $slot);
                     }
                 }
             }
@@ -235,7 +236,7 @@ class EventListener implements Listener
     {
         $player = $event->getPlayer();
         if (!Utils::shouldTakeFallDamage($player)) {
-            if ($player->getWorld()->getBlock($player->getPosition()->floor()->subtract(0, 1, 0))->getId() !== BlockLegacyIds::AIR && Utils::getNoFallDamageDuration($player) <= 0) {
+            if ($player->getWorld()->getBlock($player->getPosition()->floor()->subtract(0, 1, 0))->getTypeId() !== BlockTypeIds::AIR && Utils::getNoFallDamageDuration($player) <= 0) {
                 Utils::setShouldTakeFallDamage($player, true);
             } else {
                 Utils::increaseNoFallDamageDuration($player);
@@ -302,7 +303,10 @@ class EventListener implements Listener
         $actions = array_values($transaction->getActions());
         if (count($actions) === 2) {
             foreach ($actions as $i => $action) {
-                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction && ($itemClickedWith = $action->getTargetItem())->getId() === ItemIds::ENCHANTED_BOOK && ($itemClicked = $action->getSourceItem())->getId() !== ItemIds::AIR && ($itemClicked->getId() !== ItemIds::ENCHANTED_BOOK || count($itemClicked->getEnchantments()) >= count($itemClickedWith->getEnchantments()))) {
+                if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction &&
+                    ($itemClickedWith = $action->getTargetItem())->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId() &&
+                    ($itemClicked = $action->getSourceItem())->getTypeId() !== BlockTypeIds::AIR &&
+                    ($itemClicked->getTypeId() !== EnchantedBook::ENCHANTED_BOOK()->getTypeId() || count($itemClicked->getEnchantments()) >= count($itemClickedWith->getEnchantments()))) {
                     if (count($itemClickedWith->getEnchantments()) < 1) return;
                     $enchantmentSuccessful = false;
                     foreach ($itemClickedWith->getEnchantments() as $enchantment) {
@@ -324,8 +328,8 @@ class EventListener implements Listener
                             ) ||
                             $itemClicked->getCount() !== 1 ||
                             $newLevel > $enchantmentType->getMaxLevel() ||
-                            ($itemClicked->getId() === ItemIds::ENCHANTED_BOOK && count($itemClicked->getEnchantments()) === 0) ||
-                            $itemClicked->getId() === ItemIds::BOOK
+                            ($itemClicked->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId() && count($itemClicked->getEnchantments()) === 0) ||
+                            $itemClicked->getTypeId() === ItemTypeIds::BOOK
                         ) continue;
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantmentType, $newLevel));
                         if ($willChange) $enchantmentSuccessful = true;

@@ -38,10 +38,10 @@ class ShrinkEnchant extends ToggleableEnchantment
     /** @var bool[] */
     public array $shiftCache;
 
-	/**
-	 * @return class-string[]
-	 */
-	public function getReagent(): array
+    /**
+     * @return class-string[]
+     */
+    public function getReagent(): array
     {
         return [PlayerToggleSneakEvent::class];
     }

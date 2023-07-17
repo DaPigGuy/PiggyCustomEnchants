@@ -9,11 +9,12 @@ use CortexPE\Commando\args\RawStringArgument;
 use CortexPE\Commando\BaseSubCommand;
 use CortexPE\Commando\exception\ArgumentOrderException;
 use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
+use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\command\CommandSender;
 use pocketmine\item\enchantment\EnchantmentInstance;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
 use Ramsey\Uuid\Uuid;
@@ -68,7 +69,7 @@ class EnchantSubCommand extends BaseSubCommand
                 return;
             }
         }
-        if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
+        if ($item->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId() || $item->getTypeId() === ItemTypeIds::BOOK) {
             $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
         }
         $item->addEnchantment(new EnchantmentInstance($enchant, $args["level"]));
@@ -114,7 +115,7 @@ class EnchantSubCommand extends BaseSubCommand
                             return;
                         }
                     }
-                    if ($item->getId() === ItemIds::ENCHANTED_BOOK || $item->getId() === ItemIds::BOOK) {
+                    if ($item->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId() || $item->getTypeId() === ItemTypeIds::BOOK) {
                         $item->getNamedTag()->setString("PiggyCEBookUUID", Uuid::uuid4()->toString());
                     }
                     $item->addEnchantment(new EnchantmentInstance($enchant, (int)$data[1]));

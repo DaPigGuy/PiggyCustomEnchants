@@ -11,7 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchantIds;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\traits\ToggleTrait;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\BlockTypeIds;
 use pocketmine\entity\effect\EffectInstance;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Rarity;
@@ -34,7 +34,7 @@ class ParachuteEnchant extends TickingEnchantment
         if ($this->isInAir($player) && !$player->getAllowFlight() && !$player->canClimbWalls() && (($enchantInstance = $player->getArmorInventory()->getBoots()->getEnchantment(CustomEnchantManager::getEnchantment(CustomEnchantIds::JETPACK))) === null || !($enchant = $enchantInstance->getType()) instanceof JetpackEnchant || !$enchant->hasActiveJetpack($player))) {
             $player->getEffects()->add(new EffectInstance(PiggyCustomEnchants::$SLOW_FALL, 2147483647, 1, false));
         } elseif ($player->getEffects()->get(PiggyCustomEnchants::$SLOW_FALL) !== null) {
-            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1, 0))->getId() !== BlockLegacyIds::AIR) $player->getEffects()->remove(PiggyCustomEnchants::$SLOW_FALL);
+            if ($this->isInAir($player) || $player->getWorld()->getBlock($player->getPosition()->subtract(0, 1, 0))->getTypeId() !== BlockTypeIds::AIR) $player->getEffects()->remove(PiggyCustomEnchants::$SLOW_FALL);
         }
         $player->resetFallDistance();
     }
@@ -49,7 +49,7 @@ class ParachuteEnchant extends TickingEnchantment
     public function isInAir(Player $player): bool
     {
         for ($y = 1; $y <= 5; $y++) {
-            if ($player->getWorld()->getBlock($player->getPosition()->subtract(0, $y, 0))->getId() !== BlockLegacyIds::AIR) return false;
+            if ($player->getWorld()->getBlock($player->getPosition()->subtract(0, $y, 0))->getTypeId() !== BlockTypeIds::AIR) return false;
         }
         return true;
     }

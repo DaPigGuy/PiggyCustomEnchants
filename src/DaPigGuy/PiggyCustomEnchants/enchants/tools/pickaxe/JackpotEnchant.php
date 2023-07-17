@@ -6,8 +6,8 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\pickaxe;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
@@ -24,11 +24,11 @@ class JackpotEnchant extends ReactiveEnchantment
     public int $itemType = CustomEnchant::ITEM_TYPE_PICKAXE;
 
     const ORE_TIERS = [
-        BlockLegacyIds::COAL_ORE,
-        BlockLegacyIds::IRON_ORE,
-        BlockLegacyIds::GOLD_ORE,
-        BlockLegacyIds::DIAMOND_ORE,
-        BlockLegacyIds::EMERALD_ORE
+        BlockTypeIds::COAL_ORE,
+        BlockTypeIds::IRON_ORE,
+        BlockTypeIds::GOLD_ORE,
+        BlockTypeIds::DIAMOND_ORE,
+        BlockTypeIds::EMERALD_ORE
     ];
 
     public function getReagent(): array
@@ -39,7 +39,7 @@ class JackpotEnchant extends ReactiveEnchantment
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
         if ($event instanceof BlockBreakEvent) {
-            $key = array_search($event->getBlock()->getId(), self::ORE_TIERS, true);
+            $key = array_search($event->getBlock()->getTypeId(), self::ORE_TIERS, true);
             if ($key !== false) {
                 if (isset(self::ORE_TIERS[$key + 1])) {
                     $drops = $event->getDrops();
@@ -48,7 +48,7 @@ class JackpotEnchant extends ReactiveEnchantment
                             unset($drops[$k]);
                         }
                     }
-                    $drops = array_merge($drops, BlockFactory::getInstance()->get(self::ORE_TIERS[$key + 1], 0)->getDrops(VanillaItems::DIAMOND_PICKAXE()));
+                    $drops = array_merge($drops, $this->getOreDrops(self::ORE_TIERS[$key + 1]));
                     $event->setDrops($drops);
                 }
             }
@@ -58,5 +58,18 @@ class JackpotEnchant extends ReactiveEnchantment
     public function getPriority(): int
     {
         return 3;
+    }
+
+    public function getOreDrops(int $tier): array
+    {
+        $drop = match ($tier) {
+            BlockTypeIds::COAL_ORE => VanillaBlocks::COAL_ORE(),
+            BlockTypeIds::IRON_ORE => VanillaBlocks::IRON_ORE(),
+            BlockTypeIds::GOLD_ORE => VanillaBlocks::GOLD_ORE(),
+            BlockTypeIds::DIAMOND_ORE => VanillaBlocks::DIAMOND_ORE(),
+            BlockTypeIds::EMERALD_ORE => VanillaBlocks::EMERALD_ORE(),
+            default => VanillaItems::AIR(),
+        };
+        return $drop->getDrops(VanillaItems::DIAMOND_PICKAXE());
     }
 }

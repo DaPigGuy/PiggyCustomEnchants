@@ -12,7 +12,6 @@ use pocketmine\block\Water;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;

@@ -34,8 +34,8 @@ class AutoRepairEnchant extends ReactiveEnchantment
 
     public function react(Player $player, Item $item, Inventory $inventory, int $slot, Event $event, int $level, int $stack): void
     {
-        if (!$item instanceof Durable || $item->getMeta() === 0) return;
-        $newDir = $item->getMeta() - ((int)$this->extraData["baseRepair"] + ((int)$this->extraData["repairMultiplier"] * $level));
+        if (!$item instanceof Durable || $item->getStateId() === 0) return;
+        $newDir = $item->getStateId() - ((int)$this->extraData["baseRepair"] + ((int)$this->extraData["repairMultiplier"] * $level));
         if ($newDir < 0) {
             $item->setDamage(0);
         } else {

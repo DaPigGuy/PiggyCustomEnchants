@@ -11,8 +11,7 @@ use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\player\Player;
 
 class BountyHunterEnchant extends ReactiveEnchantment
@@ -37,29 +36,30 @@ class BountyHunterEnchant extends ReactiveEnchantment
     {
         if ($event instanceof EntityDamageByChildEntityEvent) {
             $bountyDrop = $this->getBounty();
-            $player->getInventory()->addItem(ItemFactory::getInstance()->get($bountyDrop, 0, mt_rand(1, $this->extraData["base"] + $level * $this->extraData["multiplier"])));
+            $bountyDrop->setCount(mt_rand(1, $this->extraData["base"] + $level * $this->extraData["multiplier"]));
+            $player->getInventory()->addItem($bountyDrop);
         }
     }
 
-    public function getBounty(): int
+    public function getBounty(): Item
     {
         $random = mt_rand(0, 75);
         $currentChance = 2.5;
         if ($random < $currentChance) {
-            return ItemIds::EMERALD;
+            return VanillaItems::EMERALD();
         }
         $currentChance += 5;
         if ($random < $currentChance) {
-            return ItemIds::DIAMOND;
+            return VanillaItems::DIAMOND();
         }
         $currentChance += 15;
         if ($random < $currentChance) {
-            return ItemIds::GOLD_INGOT;
+            return VanillaItems::GOLD_INGOT();
         }
         $currentChance += 27.5;
         if ($random < $currentChance) {
-            return ItemIds::IRON_INGOT;
+            return VanillaItems::IRON_INGOT();
         }
-        return ItemIds::COAL;
+        return VanillaItems::COAL();
     }
 }

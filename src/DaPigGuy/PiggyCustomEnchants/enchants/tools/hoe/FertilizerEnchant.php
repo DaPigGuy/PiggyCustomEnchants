@@ -6,7 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\enchants\tools\hoe;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\miscellaneous\RecursiveEnchant;
-use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\BlockTypeIds;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\inventory\Inventory;
@@ -37,12 +37,12 @@ class FertilizerEnchant extends RecursiveEnchant
     {
         if ($event instanceof PlayerInteractEvent) {
             $block = $event->getBlock();
-            if ($block->getId() === BlockLegacyIds::GRASS || ($block->getId() === BlockLegacyIds::DIRT && $block->getMeta() === 0)) {
+            if ($block->getTypeId() === BlockTypeIds::GRASS || ($block->getTypeId() === BlockTypeIds::DIRT && $block->getStateId() === 0)) {
                 $radius = $level * $this->extraData["radiusMultiplier"];
                 for ($x = -$radius; $x <= $radius; $x++) {
                     for ($z = -$radius; $z <= $radius; $z++) {
                         $newBlock = $block->getPosition()->getWorld()->getBlock($block->getPosition()->add($x, 0, $z));
-                        if ($newBlock->getId() === BlockLegacyIds::GRASS || ($newBlock->getId() === BlockLegacyIds::DIRT && $newBlock->getMeta() === 0)) {
+                        if ($newBlock->getTypeId() === BlockTypeIds::GRASS || ($newBlock->getTypeId() === BlockTypeIds::DIRT && $newBlock->getStateId() === 0)) {
                             $block->getPosition()->getWorld()->useItemOn($newBlock->getPosition(), $item, Facing::UP, $newBlock->getPosition(), $player);
                         }
                     }

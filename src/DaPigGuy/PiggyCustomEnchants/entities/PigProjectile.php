@@ -93,19 +93,12 @@ class PigProjectile extends PiggyProjectile
     {
         $values = self::PORK_LEVELS[$this->getPorkLevel()];
 
-        switch ($values[3]) {
-            case ItemTypeIds::RAW_PORKCHOP:
-                $drop = VanillaItems::RAW_PORKCHOP();
-                break;
-            case ItemTypeIds::COOKED_PORKCHOP:
-                $drop = VanillaItems::COOKED_PORKCHOP();
-                break;
-            case ItemTypeIds::ROTTEN_FLESH:
-                $drop = VanillaItems::ROTTEN_FLESH();
-                break;
-            default:
-                return [];
-        }
+        $drop = match ($values[3]) {
+            ItemTypeIds::RAW_PORKCHOP => VanillaItems::RAW_PORKCHOP(),
+            ItemTypeIds::COOKED_PORKCHOP => VanillaItems::COOKED_PORKCHOP(),
+            ItemTypeIds::ROTTEN_FLESH => VanillaItems::ROTTEN_FLESH(),
+            default => VanillaItems::AIR(),
+        };
 
         return [$drop->setCount(1)->setCustomName(TextFormat::RESET . TextFormat::WHITE . $values[4])];
     }
