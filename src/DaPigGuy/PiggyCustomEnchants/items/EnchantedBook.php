@@ -39,6 +39,6 @@ final class EnchantedBook
 
     protected static function setup(): void
     {
-        self::register("enchanted_book", new Item(new ItemIdentifier(ItemTypeIds::newId()), "Enchanted Book"));
+        self::register("enchanted_book", new EnchantedBookItem(new ItemIdentifier(ItemTypeIds::newId()), "Enchanted Book"));
     }
 }
