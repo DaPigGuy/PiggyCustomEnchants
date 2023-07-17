@@ -12,5 +12,3 @@ parameters:
     analyse:
       - source/vendor
   checkMissingIterableValueType: false
-  ignoreErrors:
-    - "#Strict comparison using === between pocketmine\\\\inventory\\\\PlayerInventory and null will always evaluate to false.#"
