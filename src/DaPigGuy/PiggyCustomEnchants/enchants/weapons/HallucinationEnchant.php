@@ -52,9 +52,7 @@ class HallucinationEnchant extends ReactiveEnchantment
                                 $block = VanillaBlocks::BEDROCK();
                                 if ($position->equals($originalPosition)) $block = VanillaBlocks::LAVA();
                                 if ($position->equals($originalPosition->add(0, 1, 0))) {
-                                    // TODO: I have no idea what meta 2 means.
-                                    // BlockFactory::getInstance()->get(BlockLegacyIds::WALL_SIGN, 2);
-                                    $block = VanillaBlocks::OAK_SIGN();
+                                    $block = VanillaBlocks::OAK_WALL_SIGN();
                                     if ($this->nbtWriter === null) $this->nbtWriter = new NetworkNbtSerializer();
                                     $packets[] = BlockActorDataPacket::create(BlockPosition::fromVector3($position->floor()), new CacheableNbt(
                                         CompoundTag::create()->

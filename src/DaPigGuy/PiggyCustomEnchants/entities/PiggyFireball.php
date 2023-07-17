@@ -16,7 +16,6 @@ use pocketmine\player\Player;
 
 class PiggyFireball extends PiggyProjectile
 {
-    /** @var float */
     protected float $damage = 5;
 
     public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void
