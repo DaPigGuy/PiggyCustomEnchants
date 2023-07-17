@@ -77,7 +77,7 @@ class InfoSubCommand extends BaseSubCommand
      */
     public function prepare(): void
     {
-        $this->setPermission("piggycustomenchants.command.ce.list");
+        $this->setPermission("piggycustomenchants.command.ce.info");
         $this->registerArgument(0, new RawStringArgument("enchantment", true));
     }
 }

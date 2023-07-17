@@ -44,6 +44,8 @@ class CustomEnchantsCommand extends BaseCommand
 
     public function prepare(): void
     {
+        $this->setPermission("piggycustomenchants.command.ce");
+
         $this->registerSubCommand(new AboutSubCommand($this->plugin, "about", "Displays basic information about the plugin"));
         $this->registerSubCommand(new EnchantSubCommand($this->plugin, "enchant", "Apply an enchantment on an item"));
         $this->registerSubCommand(new InfoSubCommand($this->plugin, "info", "Get info on a custom enchant"));

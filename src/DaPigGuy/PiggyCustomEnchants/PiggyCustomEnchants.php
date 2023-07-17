@@ -7,7 +7,6 @@ namespace DaPigGuy\PiggyCustomEnchants;
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\PacketHooker;
 use DaPigGuy\libPiggyUpdateChecker\libPiggyUpdateChecker;
-use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
@@ -24,7 +23,6 @@ use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
 use pocketmine\block\Block;
 use pocketmine\block\RuntimeBlockStateRegistry;
 use pocketmine\color\Color;
-use pocketmine\data\bedrock\block\BlockTypeNames;
 use pocketmine\data\bedrock\EffectIdMap;
 use pocketmine\data\bedrock\item\ItemTypeNames;
 use pocketmine\data\bedrock\item\SavedItemData;
@@ -162,7 +160,7 @@ class PiggyCustomEnchants extends PluginBase
     private static function registerItemsAndBlocks(): void
     {
         self::registerItem(ItemTypeNames::ENCHANTED_BOOK, EnchantedBook::ENCHANTED_BOOK(), ["enchanted_book"]);
-        self::registerBlock(BlockTypeNames::OBSIDIAN, PiggyObsidian::PIGGY_OBSIDIAN(), ["piggy_obsidian"]);
+//        self::registerBlock(BlockTypeNames::OBSIDIAN, PiggyObsidian::PIGGY_OBSIDIAN(), ["piggy_obsidian"]);
     }
 
     /**
