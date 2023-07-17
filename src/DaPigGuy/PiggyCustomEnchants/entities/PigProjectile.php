@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\entities;
 
+use pocketmine\block\BlockTypeIds;
 use pocketmine\entity\Attribute;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntitySizeInfo;
 use pocketmine\entity\Location;
 use pocketmine\entity\object\ItemEntity;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
+use pocketmine\item\VanillaItems;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
@@ -27,22 +28,17 @@ class PigProjectile extends PiggyProjectile
      * @const array<int, bool, bool, int, string>
      */
     const PORK_LEVELS = [
-        //level => [damage, dinnerbone, zombie, drop id, drop name]
-        1 => [1, false, false, ItemIds::AIR, ""],
-        2 => [2, false, false, ItemIds::RAW_PORKCHOP, "Mysterious Raw Pork"],
-        3 => [2, false, false, ItemIds::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
-        4 => [3, true, false, ItemIds::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
-        5 => [5, false, true, ItemIds::ROTTEN_FLESH, "Mysterious Rotten Pork"],
-        6 => [6, true, true, ItemIds::ROTTEN_FLESH, "Mysterious Rotten Pork"]
+        // level => [damage, dinnerbone, zombie, drop id, drop name]
+        1 => [1, false, false, BlockTypeIds::AIR, ""],
+        2 => [2, false, false, ItemTypeIds::RAW_PORKCHOP, "Mysterious Raw Pork"],
+        3 => [2, false, false, ItemTypeIds::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
+        4 => [3, true, false, ItemTypeIds::COOKED_PORKCHOP, "Mysterious Cooked Pork"],
+        5 => [5, false, true, ItemTypeIds::ROTTEN_FLESH, "Mysterious Rotten Pork"],
+        6 => [6, true, true, ItemTypeIds::ROTTEN_FLESH, "Mysterious Rotten Pork"]
     ];
 
     /** @var float */
-    protected $drag = 0.01;
-    /** @var float */
-    protected $gravity = 0.05;
-
-    /** @var float */
-    protected $damage = 1.5;
+    protected float $damage = 1.5;
     private int $porkLevel;
     private bool $zombie;
 
@@ -96,9 +92,22 @@ class PigProjectile extends PiggyProjectile
     public function getDrops(): array
     {
         $values = self::PORK_LEVELS[$this->getPorkLevel()];
-        return [
-            ItemFactory::getInstance()->get($values[3], 0, 1)->setCustomName(TextFormat::RESET . TextFormat::WHITE . $values[4])
-        ];
+
+        switch ($values[3]) {
+            case ItemTypeIds::RAW_PORKCHOP:
+                $drop = VanillaItems::RAW_PORKCHOP();
+                break;
+            case ItemTypeIds::COOKED_PORKCHOP:
+                $drop = VanillaItems::COOKED_PORKCHOP();
+                break;
+            case ItemTypeIds::ROTTEN_FLESH:
+                $drop = VanillaItems::ROTTEN_FLESH();
+                break;
+            default:
+                return [];
+        }
+
+        return [$drop->setCount(1)->setCustomName(TextFormat::RESET . TextFormat::WHITE . $values[4])];
     }
 
     protected function sendSpawnPacket(Player $player): void

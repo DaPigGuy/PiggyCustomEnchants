@@ -17,12 +17,7 @@ use pocketmine\player\Player;
 class PiggyWitherSkull extends PiggyProjectile
 {
     /** @var float */
-    protected $drag = 0.01;
-    /** @var float */
-    protected $gravity = 0.05;
-
-    /** @var float */
-    protected $damage = 0;
+    protected float $damage = 0;
 
     public function onHitEntity(Entity $entityHit, RayTraceResult $hitResult): void
     {

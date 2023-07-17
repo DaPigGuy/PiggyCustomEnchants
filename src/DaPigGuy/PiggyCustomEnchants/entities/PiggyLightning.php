@@ -54,4 +54,14 @@ class PiggyLightning extends Entity
     {
         return new EntitySizeInfo(1.8, 0.3);
     }
+
+    protected function getInitialDragMultiplier(): float
+    {
+        return 0;
+    }
+
+    protected function getInitialGravity(): float
+    {
+        return 0;
+    }
 }
