@@ -32,8 +32,7 @@ class HallucinationEnchant extends ReactiveEnchantment
     public string $name = "Hallucination";
     public int $rarity = Rarity::MYTHIC;
 
-    /** @var NetworkNbtSerializer */
-    public $nbtWriter = null;
+    public ?NetworkNbtSerializer $nbtWriter = null;
 
     /** @var bool[] */
     public static array $hallucinating;

@@ -23,7 +23,7 @@ trait ReactiveTrait
     protected PiggyCustomEnchants $plugin;
 
     /** @var float[] */
-    public $chanceMultiplier;
+    public array $chanceMultiplier;
 
     public function canReact(): bool
     {

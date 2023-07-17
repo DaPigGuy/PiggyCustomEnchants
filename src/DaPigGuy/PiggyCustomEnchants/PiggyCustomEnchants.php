@@ -46,7 +46,7 @@ class PiggyCustomEnchants extends PluginBase
 {
     public static Effect $SLOW_FALL;
 
-    /** @var mixed[] */
+    /** @var array */
     private array $enchantmentData;
 
     public function onEnable(): void
