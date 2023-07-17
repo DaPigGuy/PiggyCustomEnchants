@@ -51,7 +51,7 @@ class LumberjackEnchant extends RecursiveEnchant
         for ($i = 0; $i <= 5; $i++) {
             if ($mined > $this->extraData["limit"]) break;
             $side = $block->getSide($i);
-            if (in_array($side, self::LOG_TYPES)) continue;
+            if (!in_array($side->getTypeId(), self::LOG_TYPES)) continue;
             $player->getWorld()->useBreakOn($side->getPosition(), $item, $player);
             $mined++;
             $this->breakTree($side, $player, $mined);
