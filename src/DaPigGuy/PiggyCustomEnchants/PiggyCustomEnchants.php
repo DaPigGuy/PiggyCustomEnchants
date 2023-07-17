@@ -162,7 +162,7 @@ class PiggyCustomEnchants extends PluginBase
     private static function registerItemsAndBlocks(): void
     {
         self::registerItem(ItemTypeNames::ENCHANTED_BOOK, EnchantedBook::ENCHANTED_BOOK(), ["enchanted_book"]);
-        self::registerBlock(BlockTypeNames::OBSIDIAN, PiggyObsidian::PIGGY_OBSIDIAN(), ["obsidian"]);
+        self::registerBlock(BlockTypeNames::OBSIDIAN, PiggyObsidian::PIGGY_OBSIDIAN(), ["piggy_obsidian"]);
     }
 
     /**
