@@ -39,6 +39,6 @@ final class PiggyObsidian
 
     protected static function setup(): void
     {
-        self::register("obsidian", new PiggyObsidianBlock(new BlockIdentifier(BlockTypeIds::newId(), 15), "Magmawalker Obsidian", new BlockTypeInfo(BlockBreakInfo::instant())));
+        self::register("obsidian", new PiggyObsidianBlock(new BlockIdentifier(BlockTypeIds::newId()), "Magmawalker Obsidian", new BlockTypeInfo(BlockBreakInfo::instant())));
     }
 }

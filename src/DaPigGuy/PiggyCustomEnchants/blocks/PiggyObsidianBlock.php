@@ -39,7 +39,7 @@ class PiggyObsidianBlock extends Opaque
     {
         $i = 0;
         foreach ($this->getAllSides() as $block) {
-            if ($block instanceof PiggyObsidian) {
+            if ($block instanceof PiggyObsidianBlock) {
                 $i++;
                 if ($i >= 4) return $i;
             }

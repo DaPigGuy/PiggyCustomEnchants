@@ -68,7 +68,7 @@ class JackpotEnchant extends ReactiveEnchantment
             BlockTypeIds::GOLD_ORE => VanillaBlocks::GOLD_ORE(),
             BlockTypeIds::DIAMOND_ORE => VanillaBlocks::DIAMOND_ORE(),
             BlockTypeIds::EMERALD_ORE => VanillaBlocks::EMERALD_ORE(),
-            default => VanillaItems::AIR(),
+            default => VanillaBlocks::AIR(),
         };
         return $drop->getDrops(VanillaItems::DIAMOND_PICKAXE());
     }
