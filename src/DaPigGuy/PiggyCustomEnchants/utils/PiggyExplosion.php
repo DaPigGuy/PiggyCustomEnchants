@@ -21,15 +21,15 @@ use pocketmine\world\sound\ExplodeSound;
 
 class PiggyExplosion extends Explosion
 {
-    public function __construct(Position $center, float $size, protected Player $player, protected bool $entityDamage = true)
+    public function __construct(Position $center, float $radius, protected Player $player, protected bool $entityDamage = true)
     {
-        parent::__construct($center, $size, $this->player);
+        parent::__construct($center, $radius, $this->player);
     }
 
     public function explodeB(): bool
     {
         $source = (new Vector3($this->source->x, $this->source->y, $this->source->z))->floor();
-        $yield = (1 / $this->size) * 100;
+        $yield = (1 / $this->radius) * 100;
 
         $ev = new EntityExplodeEvent($this->player, $this->source, $this->affectedBlocks, $yield);
         $ev->call();
@@ -39,7 +39,7 @@ class PiggyExplosion extends Explosion
             $this->affectedBlocks = $ev->getBlockList();
         }
 
-        $explosionSize = $this->size * 2;
+        $explosionSize = $this->radius * 2;
         $minX = (int)floor($this->source->x - $explosionSize - 1);
         $maxX = (int)ceil($this->source->x + $explosionSize + 1);
         $minY = (int)floor($this->source->y - $explosionSize - 1);

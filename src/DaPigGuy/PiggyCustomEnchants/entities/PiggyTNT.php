@@ -7,7 +7,7 @@ namespace DaPigGuy\PiggyCustomEnchants\entities;
 use DaPigGuy\PiggyCustomEnchants\utils\PiggyExplosion;
 use pocketmine\entity\Location;
 use pocketmine\entity\object\PrimedTNT;
-use pocketmine\event\entity\ExplosionPrimeEvent;
+use pocketmine\event\entity\EntityPreExplodeEvent;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\player\Player;
 use pocketmine\world\Position;
@@ -28,11 +28,11 @@ class PiggyTNT extends PrimedTNT
         if (!$ownerEntity instanceof Player) {
             return;
         }
-        $ev = new ExplosionPrimeEvent($this, 4);
+        $ev = new EntityPreExplodeEvent($this, 4);
         $ev->setBlockBreaking($this->worldDamage);
         $ev->call();
         if (!$ev->isCancelled()) {
-            $explosion = new PiggyExplosion(Position::fromObject($this->location->add(0, $this->size->getHeight() / 2, 0), $this->location->world), $ev->getForce(), $ownerEntity);
+            $explosion = new PiggyExplosion(Position::fromObject($this->location->add(0, $this->size->getHeight() / 2, 0), $this->location->world), $ev->getRadius(), $ownerEntity);
             if ($ev->isBlockBreaking()) $explosion->explodeA();
             $explosion->explodeB();
         }
