@@ -14,7 +14,7 @@ final class PiggyEnchantedBookItem extends Item implements ItemComponents
     public function __construct(ItemIdentifier $identifier, string $name = "Enchanted Book")
     {
         parent::__construct($identifier, $name);
-        $this->initComponent("enchanted_book");
+        $this->initComponent("book_enchanted");
     }
 
     public function getMaxStackSize(): int
