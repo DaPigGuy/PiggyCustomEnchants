@@ -6,7 +6,10 @@ namespace DaPigGuy\PiggyCustomEnchants;
 
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\PacketHooker;
+use customiesdevs\customies\block\CustomiesBlockFactory;
+use customiesdevs\customies\item\CustomiesItemFactory;
 use DaPigGuy\libPiggyUpdateChecker\libPiggyUpdateChecker;
+use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidianBlock;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
@@ -17,25 +20,21 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
-use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
+use DaPigGuy\PiggyCustomEnchants\items\PiggyEnchantedBookItem;
 use DaPigGuy\PiggyCustomEnchants\tasks\CheckDisabledEnchantsTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
-use pocketmine\block\Block;
-use pocketmine\block\RuntimeBlockStateRegistry;
+use pocketmine\block\BlockBreakInfo;
+use pocketmine\block\BlockIdentifier;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\block\BlockTypeInfo;
 use pocketmine\color\Color;
 use pocketmine\data\bedrock\EffectIdMap;
-use pocketmine\data\bedrock\item\ItemTypeNames;
-use pocketmine\data\bedrock\item\SavedItemData;
 use pocketmine\entity\effect\Effect;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
-use pocketmine\item\Item;
-use pocketmine\item\StringToItemParser;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
-use pocketmine\world\format\io\GlobalBlockStateHandlers;
-use pocketmine\world\format\io\GlobalItemDataHandlers;
 use pocketmine\world\World;
 use Vecnavium\FormsUI\Form;
 
@@ -159,35 +158,10 @@ class PiggyCustomEnchants extends PluginBase
 
     private static function registerItemsAndBlocks(): void
     {
-        self::registerItem(ItemTypeNames::ENCHANTED_BOOK, EnchantedBook::ENCHANTED_BOOK(), ["enchanted_book"]);
-//        self::registerBlock(BlockTypeNames::OBSIDIAN, PiggyObsidian::PIGGY_OBSIDIAN(), ["piggy_obsidian"]);
-    }
-
-    /**
-     * @param string[] $stringToItemParserNames
-     */
-    private static function registerBlock(string $id, Block $block, array $stringToItemParserNames): void
-    {
-        RuntimeBlockStateRegistry::getInstance()->register($block);
-
-        GlobalBlockStateHandlers::getDeserializer()->mapSimple($id, fn() => clone $block);
-        GlobalBlockStateHandlers::getSerializer()->mapSimple($block, $id);
-
-        foreach ($stringToItemParserNames as $name) {
-            StringToItemParser::getInstance()->registerBlock($name, fn() => clone $block);
-        }
-    }
-
-    /**
-     * @param string[] $stringToItemParserNames
-     */
-    private static function registerItem(string $id, Item $item, array $stringToItemParserNames): void
-    {
-        GlobalItemDataHandlers::getDeserializer()->map($id, fn() => clone $item);
-        GlobalItemDataHandlers::getSerializer()->map($item, fn() => new SavedItemData($id));
-
-        foreach ($stringToItemParserNames as $name) {
-            StringToItemParser::getInstance()->register($name, fn() => clone $item);
-        }
+        CustomiesItemFactory::getInstance()->registerItem(PiggyEnchantedBookItem::class, "piggyce:enchanted_book", "Enchanted Book");
+        CustomiesBlockFactory::getInstance()->registerBlock(
+            static fn() => new PiggyObsidianBlock(new BlockIdentifier(BlockTypeIds::newId()), "Magmawalker Obsidian", new BlockTypeInfo(BlockBreakInfo::instant())),
+            "piggyce:magmawalker_obsidian",
+        );
     }
 }

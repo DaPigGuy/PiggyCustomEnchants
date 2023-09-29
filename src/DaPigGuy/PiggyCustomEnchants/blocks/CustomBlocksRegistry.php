@@ -2,17 +2,14 @@
 
 namespace DaPigGuy\PiggyCustomEnchants\blocks;
 
+use customiesdevs\customies\block\CustomiesBlockFactory;
 use pocketmine\block\Block;
-use pocketmine\block\BlockBreakInfo;
-use pocketmine\block\BlockIdentifier;
-use pocketmine\block\BlockTypeIds;
-use pocketmine\block\BlockTypeInfo;
 use pocketmine\utils\CloningRegistryTrait;
 
 /**
- * @method static PiggyObsidianBlock PIGGY_OBSIDIAN()
+ * @method static PiggyObsidianBlock OBSIDIAN()
  */
-final class PiggyObsidian
+final class CustomBlocksRegistry
 {
     use CloningRegistryTrait;
 
@@ -39,6 +36,7 @@ final class PiggyObsidian
 
     protected static function setup(): void
     {
-        self::register("piggy_obsidian", new PiggyObsidianBlock(new BlockIdentifier(BlockTypeIds::newId()), "Magmawalker Obsidian", new BlockTypeInfo(BlockBreakInfo::instant())));
+        $blockFactory = CustomiesBlockFactory::getInstance();
+        self::register("obsidian", $blockFactory->get("piggyce:magmawalker_obsidian"));
     }
 }

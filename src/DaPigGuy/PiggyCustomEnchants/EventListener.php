@@ -11,7 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
 use DaPigGuy\PiggyCustomEnchants\enchants\tools\DrillerEnchant;
 use DaPigGuy\PiggyCustomEnchants\entities\BombardmentTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
-use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
+use DaPigGuy\PiggyCustomEnchants\items\CustomItemsRegistry;
 use DaPigGuy\PiggyCustomEnchants\utils\ProjectileTracker;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\block\BlockTypeIds;
@@ -304,9 +304,9 @@ class EventListener implements Listener
         if (count($actions) === 2) {
             foreach ($actions as $i => $action) {
                 if ($action instanceof SlotChangeAction && ($otherAction = $actions[($i + 1) % 2]) instanceof SlotChangeAction &&
-                    ($itemClickedWith = $action->getTargetItem())->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId() &&
+                    ($itemClickedWith = $action->getTargetItem())->getTypeId() === CustomItemsRegistry::ENCHANTED_BOOK()->getTypeId() &&
                     ($itemClicked = $action->getSourceItem())->getTypeId() !== BlockTypeIds::AIR &&
-                    ($itemClicked->getTypeId() !== EnchantedBook::ENCHANTED_BOOK()->getTypeId() || count($itemClicked->getEnchantments()) >= count($itemClickedWith->getEnchantments()))) {
+                    ($itemClicked->getTypeId() !== CustomItemsRegistry::ENCHANTED_BOOK()->getTypeId() || count($itemClicked->getEnchantments()) >= count($itemClickedWith->getEnchantments()))) {
                     if (count($itemClickedWith->getEnchantments()) < 1) return;
                     $enchantmentSuccessful = false;
                     foreach ($itemClickedWith->getEnchantments() as $enchantment) {
@@ -328,7 +328,7 @@ class EventListener implements Listener
                             ) ||
                             $itemClicked->getCount() !== 1 ||
                             $newLevel > $enchantmentType->getMaxLevel() ||
-                            ($itemClicked->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId() && count($itemClicked->getEnchantments()) === 0) ||
+                            ($itemClicked->getTypeId() === CustomItemsRegistry::ENCHANTED_BOOK()->getTypeId() && count($itemClicked->getEnchantments()) === 0) ||
                             $itemClicked->getTypeId() === ItemTypeIds::BOOK
                         ) continue;
                         $itemClicked->addEnchantment(new EnchantmentInstance($enchantmentType, $newLevel));

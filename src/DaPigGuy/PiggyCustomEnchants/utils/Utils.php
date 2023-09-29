@@ -11,7 +11,7 @@ use DaPigGuy\PiggyCustomEnchants\entities\HomingArrow;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyFireball;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
-use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
+use DaPigGuy\PiggyCustomEnchants\items\CustomItemsRegistry;
 use InvalidArgumentException;
 use pocketmine\entity\Location;
 use pocketmine\entity\projectile\Arrow;
@@ -130,7 +130,7 @@ class Utils
 
     public static function itemMatchesItemType(Item $item, int $itemType): bool
     {
-        if ($item->getTypeId() === ItemTypeIds::BOOK || $item->getTypeId() === EnchantedBook::ENCHANTED_BOOK()->getTypeId()) return true;
+        if ($item->getTypeId() === ItemTypeIds::BOOK || $item->getTypeId() === CustomItemsRegistry::ENCHANTED_BOOK()->getTypeId()) return true;
         return match ($itemType) {
             CustomEnchant::ITEM_TYPE_GLOBAL => true,
             CustomEnchant::ITEM_TYPE_DAMAGEABLE => $item instanceof Durable,

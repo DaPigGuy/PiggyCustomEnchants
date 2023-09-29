@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\enchants\armor\boots;
 
-use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
+use DaPigGuy\PiggyCustomEnchants\blocks\CustomBlocksRegistry;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
+use pocketmine\block\Block;
+use pocketmine\block\BlockBreakInfo;
+use pocketmine\block\BlockIdentifier;
 use pocketmine\block\BlockTypeIds;
+use pocketmine\block\BlockTypeInfo;
 use pocketmine\block\Lava;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
@@ -45,8 +49,8 @@ class MagmaWalkerEnchant extends ReactiveEnchantment
                     for ($z = -$radius; $z <= $radius; $z++) {
                         $b = $world->getBlock($player->getPosition()->add($x, -1, $z));
                         if ($world->getBlock($b->getPosition()->add(0, 1, 0))->getTypeId() === BlockTypeIds::AIR) {
-                            if ($b instanceof Lava && $b->getStateId() === 0) {
-                                $world->setBlock($b->getPosition()->asVector3(), PiggyObsidian::PIGGY_OBSIDIAN());
+                            if ($b instanceof Lava && $b->isSource()) {
+                                $world->setBlock($b->getPosition()->asVector3(), CustomBlocksRegistry::OBSIDIAN());
                             }
                         }
                     }

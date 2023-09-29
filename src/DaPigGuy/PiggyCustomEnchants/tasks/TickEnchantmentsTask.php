@@ -6,7 +6,7 @@ namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
-use DaPigGuy\PiggyCustomEnchants\items\EnchantedBook;
+use DaPigGuy\PiggyCustomEnchants\items\CustomItemsRegistry;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\Item;
@@ -29,7 +29,7 @@ class TickEnchantmentsTask extends Task
             foreach ($player->getInventory()->getContents() as $slot => $content) {
                 if ($content->getTypeId() === ItemTypeIds::BOOK) {
                     if (count($content->getEnchantments()) > 0) {
-                        $enchantedBook = EnchantedBook::ENCHANTED_BOOK()->setNamedTag($content->getNamedTag())->setCount($content->getCount());
+                        $enchantedBook = CustomItemsRegistry::ENCHANTED_BOOK()->setNamedTag($content->getNamedTag())->setCount($content->getCount());
                         $enchantedBook->setCustomName(TextFormat::RESET . TextFormat::YELLOW . "Enchanted Book" . TextFormat::RESET);
                         $enchantedBook->addEnchantment(...$content->getEnchantments());
                         $player->getInventory()->setItem($slot, $enchantedBook);

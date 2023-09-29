@@ -5,6 +5,7 @@ api: 5.3.0
 load: POSTWORLD
 author: DaPigGuy
 website: "https://github.com/DaPigGuy/PiggyCustomEnchants/"
+depend: ["Customies"]
 permissions:
   piggycustomenchants:
     default: false

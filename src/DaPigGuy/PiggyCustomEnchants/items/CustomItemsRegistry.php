@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace DaPigGuy\PiggyCustomEnchants\items;
 
+use customiesdevs\customies\item\CustomiesItemFactory;
 use pocketmine\item\Item;
-use pocketmine\item\ItemIdentifier;
-use pocketmine\item\ItemTypeIds;
 use pocketmine\utils\CloningRegistryTrait;
 
 /**
- * @method static Item ENCHANTED_BOOK()
+ * @method static PiggyEnchantedBookItem ENCHANTED_BOOK()
  */
-final class EnchantedBook
+final class CustomItemsRegistry
 {
     use CloningRegistryTrait;
 
@@ -39,6 +38,7 @@ final class EnchantedBook
 
     protected static function setup(): void
     {
-        self::register("enchanted_book", new EnchantedBookItem(new ItemIdentifier(ItemTypeIds::newId()), "Enchanted Book"));
+        $itemFactory = CustomiesItemFactory::getInstance();
+        self::register("enchanted_book", $itemFactory->get("piggyce:enchanted_book"));
     }
 }

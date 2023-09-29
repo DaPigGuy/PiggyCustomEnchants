@@ -7,7 +7,7 @@ use pocketmine\block\VanillaBlocks;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-class PiggyObsidianBlock extends Opaque
+final class PiggyObsidianBlock extends Opaque
 {
     private int $age = 0;
 
