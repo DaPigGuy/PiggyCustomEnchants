@@ -2,22 +2,14 @@
 
 namespace DaPigGuy\PiggyCustomEnchants\blocks;
 
-use pocketmine\block\Block;
-use pocketmine\block\BlockBreakInfo;
-use pocketmine\block\BlockIdentifier;
-use pocketmine\block\BlockLegacyIds;
+use pocketmine\block\Opaque;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 
-class PiggyObsidian extends Block
+final class PiggyObsidianBlock extends Opaque
 {
     private int $age = 0;
-
-    public function __construct()
-    {
-        parent::__construct(new BlockIdentifier(BlockLegacyIds::OBSIDIAN, 15), "Magmawalker Obsidian", BlockBreakInfo::instant());
-    }
 
     public function onScheduledUpdate(): void
     {
@@ -28,9 +20,13 @@ class PiggyObsidian extends Block
         }
     }
 
-    public function onBreak(Item $item, Player $player = null): bool
+    public function onBreak(Item $item, ?Player $player = null, array &$returnedItems = []): bool
     {
-        $this->getPosition()->getWorld()->setBlock($this->getPosition(), VanillaBlocks::LAVA());
+        $world = $this->position->getWorld();
+        if (($t = $world->getTile($this->position)) !== null) {
+            $t->onBlockDestroyed();
+        }
+        $world->setBlock($this->position, VanillaBlocks::LAVA());
         return true;
     }
 
@@ -43,7 +39,7 @@ class PiggyObsidian extends Block
     {
         $i = 0;
         foreach ($this->getAllSides() as $block) {
-            if ($block instanceof PiggyObsidian) {
+            if ($block instanceof PiggyObsidianBlock) {
                 $i++;
                 if ($i >= 4) return $i;
             }
@@ -60,7 +56,7 @@ class PiggyObsidian extends Block
             $this->getPosition()->getWorld()->useBreakOn($this->getPosition());
             if ($meltNeighbors) {
                 foreach ($this->getAllSides() as $block) {
-                    if ($block instanceof PiggyObsidian) {
+                    if ($block instanceof PiggyObsidianBlock) {
                         $block->slightlyMelt(false);
                     }
                 }

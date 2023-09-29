@@ -230,13 +230,13 @@ class CustomEnchantManager
         self::$plugin->getLogger()->debug("Custom Enchantment '" . $enchant->getDisplayName() . "' unregistered with id " . $enchant->getId());
         unset(self::$enchants[$id]);
 
-        $property = new ReflectionProperty(EnchantmentIdMap::class, "enchToId");
+        $property = new ReflectionProperty(EnchantmentIdMap::class, "enumToId");
         $property->setAccessible(true);
         $value = $property->getValue(EnchantmentIdMap::getInstance());
         unset($value[spl_object_id(EnchantmentIdMap::getInstance()->fromId($id))]);
         $property->setValue(EnchantmentIdMap::getInstance(), $value);
 
-        $property = new ReflectionProperty(EnchantmentIdMap::class, "idToEnch");
+        $property = new ReflectionProperty(EnchantmentIdMap::class, "idToEnum");
         $property->setAccessible(true);
         $value = $property->getValue(EnchantmentIdMap::getInstance());
         unset($value[$id]);

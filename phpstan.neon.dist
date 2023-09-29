@@ -5,12 +5,11 @@ parameters:
   bootstrapFiles:
     - phar:///pocketmine/PocketMine-MP.phar/vendor/autoload.php
   scanDirectories:
-    - phar:///source/vendor/libFormAPI.phar/src/
+    - phar:///source/vendor/FormsUI.phar/src/
     - phar:///source/vendor/Commando.phar/src/
     - phar:///source/vendor/libPiggyUpdateChecker.phar/src/
+    - phar:///source/vendor/Customies.phar/src/
   excludePaths:
     analyse:
       - source/vendor
   checkMissingIterableValueType: false
-  ignoreErrors:
-    - "#Strict comparison using === between pocketmine\\\\inventory\\\\PlayerInventory and null will always evaluate to false.#"

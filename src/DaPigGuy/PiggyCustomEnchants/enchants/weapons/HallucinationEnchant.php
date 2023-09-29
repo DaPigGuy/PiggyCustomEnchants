@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace DaPigGuy\PiggyCustomEnchants\enchants\weapons;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\ReactiveEnchantment;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockLegacyIds;
 use pocketmine\block\tile\Sign;
 use pocketmine\block\tile\Tile;
 use pocketmine\block\VanillaBlocks;
@@ -16,7 +14,8 @@ use pocketmine\inventory\Inventory;
 use pocketmine\item\enchantment\Rarity;
 use pocketmine\item\Item;
 use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\convert\RuntimeBlockMapping;
+use pocketmine\network\mcpe\convert\TypeConverter;
+use pocketmine\network\mcpe\NetworkBroadcastUtils;
 use pocketmine\network\mcpe\protocol\BlockActorDataPacket;
 use pocketmine\network\mcpe\protocol\serializer\NetworkNbtSerializer;
 use pocketmine\network\mcpe\protocol\types\BlockPosition;
@@ -32,8 +31,7 @@ class HallucinationEnchant extends ReactiveEnchantment
     public string $name = "Hallucination";
     public int $rarity = Rarity::MYTHIC;
 
-    /** @var NetworkNbtSerializer */
-    public $nbtWriter = null;
+    public ?NetworkNbtSerializer $nbtWriter = null;
 
     /** @var bool[] */
     public static array $hallucinating;
@@ -54,7 +52,7 @@ class HallucinationEnchant extends ReactiveEnchantment
                                 $block = VanillaBlocks::BEDROCK();
                                 if ($position->equals($originalPosition)) $block = VanillaBlocks::LAVA();
                                 if ($position->equals($originalPosition->add(0, 1, 0))) {
-                                    $block = BlockFactory::getInstance()->get(BlockLegacyIds::WALL_SIGN, 2);
+                                    $block = VanillaBlocks::OAK_WALL_SIGN();
                                     if ($this->nbtWriter === null) $this->nbtWriter = new NetworkNbtSerializer();
                                     $packets[] = BlockActorDataPacket::create(BlockPosition::fromVector3($position->floor()), new CacheableNbt(
                                         CompoundTag::create()->
@@ -68,11 +66,12 @@ class HallucinationEnchant extends ReactiveEnchantment
                                             ])
                                         )));
                                 }
-                                $packets[] = UpdateBlockPacket::create(BlockPosition::fromVector3($position->floor()), RuntimeBlockMapping::getInstance()->toRuntimeId($block->getFullId()), UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
+                                $blockTranslator = TypeConverter::getInstance()->getBlockTranslator();
+                                $packets[] = UpdateBlockPacket::create(BlockPosition::fromVector3($position->floor()), $blockTranslator->internalIdToNetworkId($block->getStateId()), UpdateBlockPacket::FLAG_NETWORK, UpdateBlockPacket::DATA_LAYER_NORMAL);
                             }
                         }
                     }
-                    $entity->getServer()->broadcastPackets([$entity], $packets);
+                    NetworkBroadcastUtils::broadcastPackets([$entity], $packets);
                 })), 1);
                 $this->plugin->getScheduler()->scheduleDelayedTask(new ClosureTask(function () use ($originalPosition, $entity, $task): void {
                     $task->getHandler()->cancel();
@@ -84,7 +83,7 @@ class HallucinationEnchant extends ReactiveEnchantment
                             }
                         }
                     }
-                    $entity->getServer()->broadcastPackets([$entity], $entity->getWorld()->createBlockUpdatePackets($blocks));
+                    NetworkBroadcastUtils::broadcastPackets([$entity], $entity->getWorld()->createBlockUpdatePackets($blocks));
                     unset(self::$hallucinating[$entity->getName()]);
                 }), 20 * 60);
             }

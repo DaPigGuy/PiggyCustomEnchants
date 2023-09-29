@@ -21,7 +21,7 @@ class DisarmorEnchant extends DisarmingEnchant
         if ($event instanceof EntityDamageByEntityEvent) {
             $entity = $event->getEntity();
             if ($entity instanceof Player) {
-                if (count($armorContents = $entity->getArmorInventory()->getContents(false)) > 0) {
+                if (count($armorContents = $entity->getArmorInventory()->getContents()) > 0) {
                     $item = $armorContents[array_rand($armorContents)];
                     $entity->getArmorInventory()->removeItem($item);
                     $entity->dropItem($item);

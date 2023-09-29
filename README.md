@@ -1,4 +1,4 @@
-# PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/shield.dl/PiggyCustomEnchants)](https://poggit.pmmp.io/p/PiggyCustomEnchants) [![Discord](https://img.shields.io/discord/330850307607363585?logo=discord)](https://discord.gg/qmnDsSD)
+# PiggyCustomEnchants [![Poggit-CI](https://poggit.pmmp.io/shield.dl.total/PiggyCustomEnchants)](https://poggit.pmmp.io/p/PiggyCustomEnchants) [![Discord](https://img.shields.io/discord/330850307607363585?logo=discord)](https://discord.gg/qmnDsSD)
 
 PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP](https://github.com/pmmp/PocketMine-MP) featuring over 90 custom enchantments.
 
@@ -13,7 +13,8 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
 
 ## Installation & Setup
 1. Install the plugin from Poggit.
-2. (Optional) Configure your PiggyCE
+2. Install [Customies](https://poggit.pmmp.io/p/Customies) from Poggit.
+3. (Optional) Configure your PiggyCE
    * Enchantment rarities, max levels, names, descriptions, & chances can be configured in their respective JSON files.
         * `chances.json`: Allows custom chance multipliers for any reactive enchantments.
             * Reaction chances are calculated by `chance multiplier * enchantment level`.
@@ -39,7 +40,7 @@ PiggyCustomEnchants is an open-sourced custom enchants plugin for [PocketMine-MP
                 - Jetpack
          ```
      * `world-damage`: Toggles world damage for explosive enchantments
-3. (Optional) Install additional plugins supporting PiggyCE:
+4. (Optional) Install additional plugins supporting PiggyCE:
    * [PiggyCrates](https://poggit.pmmp.io/p/PiggyCrates) (Official)
    * [PiggyCustomEnchantsShop](https://poggit.pmmp.io/p/PiggyCustomEnchantsShop) (Official)
    * [PCEAllyChecks](https://poggit.pmmp.io/p/PCEAllyChecks) (Official)

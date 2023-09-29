@@ -13,10 +13,10 @@ use DaPigGuy\PiggyCustomEnchants\commands\subcommands\ListSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\NBTSubCommand;
 use DaPigGuy\PiggyCustomEnchants\commands\subcommands\RemoveSubCommand;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use Vecnavium\FormsUI\SimpleForm;
 
 class CustomEnchantsCommand extends BaseCommand
 {
@@ -44,6 +44,8 @@ class CustomEnchantsCommand extends BaseCommand
 
     public function prepare(): void
     {
+        $this->setPermission("piggycustomenchants.command.ce");
+
         $this->registerSubCommand(new AboutSubCommand($this->plugin, "about", "Displays basic information about the plugin"));
         $this->registerSubCommand(new EnchantSubCommand($this->plugin, "enchant", "Apply an enchantment on an item"));
         $this->registerSubCommand(new InfoSubCommand($this->plugin, "info", "Get info on a custom enchant"));

@@ -17,4 +17,14 @@ abstract class PiggyProjectile extends Projectile
     {
         return false;
     }
+
+    protected function getInitialDragMultiplier(): float
+    {
+        return 0.01;
+    }
+
+    protected function getInitialGravity(): float
+    {
+        return 0.05;
+    }
 }

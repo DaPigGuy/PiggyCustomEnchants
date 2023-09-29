@@ -6,8 +6,10 @@ namespace DaPigGuy\PiggyCustomEnchants;
 
 use CortexPE\Commando\BaseCommand;
 use CortexPE\Commando\PacketHooker;
+use customiesdevs\customies\block\CustomiesBlockFactory;
+use customiesdevs\customies\item\CustomiesItemFactory;
 use DaPigGuy\libPiggyUpdateChecker\libPiggyUpdateChecker;
-use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidian;
+use DaPigGuy\PiggyCustomEnchants\blocks\PiggyObsidianBlock;
 use DaPigGuy\PiggyCustomEnchants\commands\CustomEnchantsCommand;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\ToggleableEnchantment;
@@ -18,10 +20,13 @@ use DaPigGuy\PiggyCustomEnchants\entities\PiggyLightning;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyTNT;
 use DaPigGuy\PiggyCustomEnchants\entities\PiggyWitherSkull;
 use DaPigGuy\PiggyCustomEnchants\entities\PigProjectile;
+use DaPigGuy\PiggyCustomEnchants\items\PiggyEnchantedBookItem;
 use DaPigGuy\PiggyCustomEnchants\tasks\CheckDisabledEnchantsTask;
 use DaPigGuy\PiggyCustomEnchants\tasks\TickEnchantmentsTask;
-use jojoe77777\FormAPI\Form;
-use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockBreakInfo;
+use pocketmine\block\BlockIdentifier;
+use pocketmine\block\BlockTypeIds;
+use pocketmine\block\BlockTypeInfo;
 use pocketmine\color\Color;
 use pocketmine\data\bedrock\EffectIdMap;
 use pocketmine\entity\effect\Effect;
@@ -31,12 +36,13 @@ use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\world\World;
+use Vecnavium\FormsUI\Form;
 
 class PiggyCustomEnchants extends PluginBase
 {
     public static Effect $SLOW_FALL;
 
-    /** @var mixed[] */
+    /** @var array */
     private array $enchantmentData;
 
     public function onEnable(): void
@@ -44,7 +50,7 @@ class PiggyCustomEnchants extends PluginBase
         foreach (
             [
                 "Commando" => BaseCommand::class,
-                "libformapi" => Form::class,
+                "FormsUI" => Form::class,
                 "libPiggyUpdateChecker" => libPiggyUpdateChecker::class
             ] as $virion => $class
         ) {
@@ -65,9 +71,9 @@ class PiggyCustomEnchants extends PluginBase
 
         CustomEnchantManager::init($this);
 
-        BlockFactory::getInstance()->register(new PiggyObsidian(), true);
+        self::registerItemsAndBlocks();
 
-        //TODO: Use real effect
+        // TODO: Use real effect
         self::$SLOW_FALL = new Effect("%potion.slowFalling", new Color(206, 255, 255));
         EffectIdMap::getInstance()->register(27, self::$SLOW_FALL);
 
@@ -148,5 +154,14 @@ class PiggyCustomEnchants extends PluginBase
     public function areFormsEnabled(): bool
     {
         return $this->getConfig()->getNested("forms.enabled", true);
+    }
+
+    private static function registerItemsAndBlocks(): void
+    {
+        CustomiesItemFactory::getInstance()->registerItem(PiggyEnchantedBookItem::class, "piggyce:enchanted_book", "Enchanted Book");
+        CustomiesBlockFactory::getInstance()->registerBlock(
+            static fn() => new PiggyObsidianBlock(new BlockIdentifier(BlockTypeIds::newId()), "Magmawalker Obsidian", new BlockTypeInfo(BlockBreakInfo::instant())),
+            "piggyce:magmawalker_obsidian",
+        );
     }
 }

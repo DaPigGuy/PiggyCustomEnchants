@@ -11,7 +11,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\Event;
 use pocketmine\inventory\Inventory;
 use pocketmine\item\Item;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\player\Player;
 
 class HeavyEnchant extends ReactiveEnchantment
@@ -31,7 +31,7 @@ class HeavyEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
             if ($damager instanceof Player) {
-                if ($damager->getInventory()->getItemInHand()->getId() === ItemIds::BOW) {
+                if ($damager->getInventory()->getItemInHand()->getTypeId() === ItemTypeIds::BOW) {
                     $event->setModifier(-($event->getFinalDamage() * $this->extraData["absorbedDamageMultiplier"] * $level), CustomEnchantIds::HEAVY);
                 }
             }

@@ -23,7 +23,7 @@ trait ReactiveTrait
     protected PiggyCustomEnchants $plugin;
 
     /** @var float[] */
-    public $chanceMultiplier;
+    public array $chanceMultiplier;
 
     public function canReact(): bool
     {
@@ -94,7 +94,7 @@ trait ReactiveTrait
 
     public static function attemptReaction(Player $player, Event $event): void
     {
-        if ($player->getInventory() === null) return;
+        if (!$player->spawned) return;
         if ($event instanceof EntityDamageByChildEntityEvent || $event instanceof ProjectileHitBlockEvent) {
             $projectile = $event instanceof EntityDamageByEntityEvent ? $event->getChild() : $event->getEntity();
             if ($projectile instanceof Projectile && ProjectileTracker::isTrackedProjectile($projectile)) {

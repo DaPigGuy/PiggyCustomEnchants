@@ -6,10 +6,10 @@ namespace DaPigGuy\PiggyCustomEnchants\commands\subcommands;
 
 use CortexPE\Commando\BaseSubCommand;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
-use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use Vecnavium\FormsUI\SimpleForm;
 
 class AboutSubCommand extends BaseSubCommand
 {

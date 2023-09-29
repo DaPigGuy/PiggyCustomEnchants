@@ -17,10 +17,11 @@ jobs:
         run: mkdir vendor
       - name: Download Virion Dependencies
         run: |
-          wget -O vendor/libFormAPI.phar https://poggit.pmmp.io/r/207248/libFormAPI_dev-4.phar
-          wget -O vendor/Commando.phar https://poggit.pmmp.io/r/162923/Commando_dev-30.phar
-          wget -O vendor/libPiggyUpdateChecker.phar https://poggit.pmmp.io/r/163495/libPiggyUpdateChecker_dev-1.phar
+          wget -O vendor/FormsUI.phar https://poggit.pmmp.io/r/209836/FormsUI_dev-20.phar
+          wget -O vendor/Commando.phar https://poggit.pmmp.io/r/216831/Commando_dev-34.phar
+          wget -O vendor/libPiggyUpdateChecker.phar https://poggit.pmmp.io/r/211732/libPiggyUpdateChecker_dev-2.phar
+          wget -O vendor/Customies.phar https://poggit.pmmp.io/r/216154/Customies.phar
       - name: Run PHPStan
-        uses: paroxity/pmmp-phpstan-action@4.21.0
+        uses: paroxity/pmmp-phpstan-action@5.3.0
         with:
           phpstan-config: phpstan.neon.dist

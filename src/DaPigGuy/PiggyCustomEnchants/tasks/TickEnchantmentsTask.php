@@ -6,11 +6,11 @@ namespace DaPigGuy\PiggyCustomEnchants\tasks;
 
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\enchants\TickingEnchantment;
+use DaPigGuy\PiggyCustomEnchants\items\CustomItemsRegistry;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
 use pocketmine\item\Item;
-use pocketmine\item\ItemFactory;
-use pocketmine\item\ItemIds;
+use pocketmine\item\ItemTypeIds;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
 use pocketmine\utils\TextFormat;
@@ -27,9 +27,9 @@ class TickEnchantmentsTask extends Task
         foreach ($this->plugin->getServer()->getOnlinePlayers() as $player) {
             $successfulEnchantments = [];
             foreach ($player->getInventory()->getContents() as $slot => $content) {
-                if ($content->getId() === ItemIds::BOOK) {
+                if ($content->getTypeId() === ItemTypeIds::BOOK) {
                     if (count($content->getEnchantments()) > 0) {
-                        $enchantedBook = ItemFactory::getInstance()->get(ItemIds::ENCHANTED_BOOK, 0, $content->getCount(), $content->getNamedTag());
+                        $enchantedBook = CustomItemsRegistry::ENCHANTED_BOOK()->setNamedTag($content->getNamedTag())->setCount($content->getCount());
                         $enchantedBook->setCustomName(TextFormat::RESET . TextFormat::YELLOW . "Enchanted Book" . TextFormat::RESET);
                         $enchantedBook->addEnchantment(...$content->getEnchantments());
                         $player->getInventory()->setItem($slot, $enchantedBook);

@@ -12,7 +12,6 @@ use pocketmine\block\Water;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\inventory\Inventory;
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\scheduler\ClosureTask;
@@ -25,7 +24,7 @@ class ImplantsEnchant extends ReactiveEnchantment
     public int $itemType = CustomEnchant::ITEM_TYPE_HELMET;
 
     /** @var ClosureTask[] */
-    public static $tasks;
+    public static array $tasks;
 
     public function getReagent(): array
     {
@@ -52,7 +51,7 @@ class ImplantsEnchant extends ReactiveEnchantment
                             unset(self::$tasks[$player->getName()]);
                             return;
                         }
-                        $player->setAirSupplyTicks($player->getAirSupplyTicks() + ($enchantment->getLevel() * $this->extraData["airTicksReplenishAmountMultiplier"]) > $player->getMaxAirSupplyTicks() ? $player->getMaxAirSupplyTicks() : $player->getAirSupplyTicks() + ($enchantment->getLevel() * $this->extraData["airTicksReplenishAmountMultiplier"]));
+                        $player->setAirSupplyTicks(min($player->getAirSupplyTicks() + ($enchantment->getLevel() * $this->extraData["airTicksReplenishAmountMultiplier"]), $player->getMaxAirSupplyTicks()));
                     } else {
                         self::$tasks[$player->getName()]->getHandler()->cancel();
                         unset(self::$tasks[$player->getName()]);

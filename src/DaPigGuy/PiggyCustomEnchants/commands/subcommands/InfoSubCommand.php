@@ -11,11 +11,11 @@ use DaPigGuy\PiggyCustomEnchants\CustomEnchantManager;
 use DaPigGuy\PiggyCustomEnchants\enchants\CustomEnchant;
 use DaPigGuy\PiggyCustomEnchants\PiggyCustomEnchants;
 use DaPigGuy\PiggyCustomEnchants\utils\Utils;
-use jojoe77777\FormAPI\CustomForm;
-use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\command\CommandSender;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
+use Vecnavium\FormsUI\CustomForm;
+use Vecnavium\FormsUI\SimpleForm;
 
 class InfoSubCommand extends BaseSubCommand
 {
@@ -77,7 +77,7 @@ class InfoSubCommand extends BaseSubCommand
      */
     public function prepare(): void
     {
-        $this->setPermission("piggycustomenchants.command.ce.list");
+        $this->setPermission("piggycustomenchants.command.ce.info");
         $this->registerArgument(0, new RawStringArgument("enchantment", true));
     }
 }

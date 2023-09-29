@@ -15,7 +15,6 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerToggleSneakEvent;
 use pocketmine\inventory\Inventory;
-use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\Item;
 use pocketmine\player\Player;
 use pocketmine\utils\TextFormat;
@@ -32,12 +31,10 @@ class JetpackEnchant extends ReactiveEnchantment
     public int $itemType = CustomEnchant::ITEM_TYPE_BOOTS;
 
     /** @var Player[] */
-    public $activeJetpacks = [];
+    public array $activeJetpacks = [];
 
-    /** @var array */
-    public $powerRemaining;
-    /** @var array */
-    public $lastActivated;
+    public array $powerRemaining;
+    public array $lastActivated;
 
     public function getReagent(): array
     {
@@ -102,7 +99,6 @@ class JetpackEnchant extends ReactiveEnchantment
         if ($power) {
             if (!isset($this->powerRemaining[$player->getName()])) {
                 $this->powerRemaining[$player->getName()] = $this->extraData["power"];
-                $this->activeJetpacks[$player->getName()] = $player;
             } else {
                 $this->powerRemaining[$player->getName()] += (time() - $this->lastActivated[$player->getName()]) * $this->extraData["rechargeAmount"];
                 if ($this->powerRemaining[$player->getName()] > $this->extraData["power"]) $this->powerRemaining[$player->getName()] = $this->extraData["power"];
@@ -110,8 +106,8 @@ class JetpackEnchant extends ReactiveEnchantment
                     $player->sendTip(TextFormat::RED . "Jetpack needs to charge up to " . $this->extraData["enableAmount"] . " before it can be re-enabled. (" . round(abs($this->powerRemaining[$player->getName()]), 2) . " / " . $this->extraData["power"] . ")");
                     return;
                 }
-                $this->activeJetpacks[$player->getName()] = $player;
             }
+            $this->activeJetpacks[$player->getName()] = $player;
         } else {
             unset($this->activeJetpacks[$player->getName()]);
             $this->lastActivated[$player->getName()] = time();

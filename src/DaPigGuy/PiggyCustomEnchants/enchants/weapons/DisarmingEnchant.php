@@ -22,7 +22,7 @@ class DisarmingEnchant extends ReactiveEnchantment
         if ($event instanceof EntityDamageByEntityEvent) {
             $entity = $event->getEntity();
             if ($entity instanceof Player) {
-                if (count($contents = $entity->getInventory()->getContents(false)) > 0) {
+                if (count($contents = $entity->getInventory()->getContents()) > 0) {
                     $item = $contents[array_rand($contents)];
                     $entity->getInventory()->removeItem($item);
                     $entity->dropItem($item);
