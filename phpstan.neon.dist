@@ -8,6 +8,7 @@ parameters:
     - phar:///source/vendor/FormsUI.phar/src/
     - phar:///source/vendor/Commando.phar/src/
     - phar:///source/vendor/libPiggyUpdateChecker.phar/src/
+    - phar:///source/vendor/Customies.phar/src/
   excludePaths:
     analyse:
       - source/vendor
